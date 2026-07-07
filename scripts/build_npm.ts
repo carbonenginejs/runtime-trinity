@@ -15,7 +15,7 @@ await emptyDir("./npm");
 // Map each resolved local path the import map points at back to the npm subpath.
 const coreMath = (subPath: string) => ({
   name: "@carbonenginejs/core-math",
-  version: "^0.1.1",
+  version: "^0.1.2",
   subPath,
 });
 
@@ -55,7 +55,7 @@ await build({
     sideEffects: false,
     engines: { node: ">=18" },
     dependencies: {
-      "@carbonenginejs/core-math": "^0.1.1",
+      "@carbonenginejs/core-math": "^0.1.2",
       "@carbonenginejs/core-types": "^0.4.1",
     },
     repository: {
