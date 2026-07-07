@@ -1,0 +1,17 @@
+{
+  "name": "@carbonenginejs/runtime-trinity",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "@carbonenginejs/core-types/schema": "../core-types/src/schema/index.js"
+  },
+  "tasks": {
+    "test": "deno test --allow-read",
+    "lint": "deno lint",
+    "fmt": "deno fmt",
+    "check": "deno check src/index.ts test/*.test.ts"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}

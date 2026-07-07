@@ -1,0 +1,23 @@
+@carbonenginejs/runtime-trinity
+
+CarbonEngine and Fenris Creations (CCP Games) are named for interoperability
+and provenance context. This package ports CarbonEngine class structure and
+behavior from the local CarbonEngine C++ source tree and uses ccpwgl only as
+optional reference material when it helps explain JavaScript behavior.
+
+CarbonEngine / EVE Online names, formats, and class semantics remain the
+property of their respective owners. This project is not affiliated with or
+endorsed by CCP Games.
+
+Current ported source references:
+
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.h
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.cpp
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.h
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.cpp
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveCombiner.h
+- E:\carbonengine\trinity\trinity\Curves\Tr2CurveCombiner.cpp
+- E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.h
+- E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.cpp
+- E:\carbonengine\trinity\trinity\Curves\TriCurveSet.h
+- E:\carbonengine\trinity\trinity\Curves\TriCurveSet.cpp
