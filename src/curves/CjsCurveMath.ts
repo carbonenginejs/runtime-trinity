@@ -1,9 +1,11 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.cpp
+import { num } from "@carbonenginejs/core-math/num";
 import { Tr2CurveExtrapolation, Tr2CurveInterpolation } from "./enums.ts";
 import type { Tr2CurveScalarKey } from "./Tr2CurveScalarKey.ts";
 
-const EPSILON = 1e-6;
-
+/**
+ * Computes Carbon's blended automatic scalar tangent for a middle key.
+ */
 export function GetAutoTangent(
   prevTime: number,
   prevValue: number,
@@ -11,14 +13,17 @@ export function GetAutoTangent(
   value: number,
   nextTime: number,
   nextValue: number,
-): number {
+): number
+{
   let left = 0;
-  if (time - prevTime > EPSILON) {
+  if (time - prevTime > num.EPSILON)
+  {
     left = (value - prevValue) / (time - prevTime);
   }
 
   let right = 0;
-  if (nextTime - time > EPSILON) {
+  if (nextTime - time > num.EPSILON)
+  {
     right = (nextValue - value) / (nextTime - time);
   }
 
@@ -26,6 +31,9 @@ export function GetAutoTangent(
   return left * (1 - x) + right * x;
 }
 
+/**
+ * Computes Carbon's slope-limited automatic tangent for local extrema.
+ */
 export function GetAutoClampedTangent(
   prevTime: number,
   prevValue: number,
@@ -33,45 +41,56 @@ export function GetAutoClampedTangent(
   value: number,
   nextTime: number,
   nextValue: number,
-): number {
+): number
+{
   if (
     (value < prevValue && value < nextValue) ||
     (value > prevValue && value > nextValue)
-  ) {
+  )
+  {
     return 0;
   }
 
   const valueDiff = Math.abs(prevValue - nextValue);
-  if (valueDiff === 0) {
+  if (valueDiff === 0)
+  {
     return 0;
   }
 
   let keyDistance = Math.abs(value - prevValue) / valueDiff;
-  keyDistance = Math.min(1, Math.min(keyDistance, 1 - keyDistance) * 6);
+  keyDistance = num.min(1, num.min(keyDistance, 1 - keyDistance) * 6);
 
   const autoTangent = (nextValue - prevValue) / (nextTime - prevTime);
   return autoTangent * keyDistance;
 }
 
+/**
+ * Evaluates the scalar value inside a key segment using the segment interpolation mode.
+ */
 export function GetScalarSegmentValue(
   time: number,
   k0: Tr2CurveScalarKey,
   k1: Tr2CurveScalarKey,
-): number {
-  switch (k0.interpolation) {
+): number
+{
+  switch (k0.interpolation)
+  {
     case Tr2CurveInterpolation.CONSTANT:
       return time === k1.time ? k1.value : k0.value;
 
     case Tr2CurveInterpolation.LINEAR:
-      if (k1.time === k0.time) {
+      if (k1.time === k0.time)
+      {
         return k1.value;
       }
       return k0.value + (k1.value - k0.value) * (time - k0.time) /
           (k1.time - k0.time);
 
-    case Tr2CurveInterpolation.HERMITE: {
+    case Tr2CurveInterpolation.HERMITE:
+    {
       const length = k1.time - k0.time;
-      if (length === 0) {
+      if (length === 0)
+      {
         return k1.value;
       }
 
@@ -95,21 +114,28 @@ export function GetScalarSegmentValue(
   }
 }
 
+/**
+ * Evaluates the scalar derivative inside a key segment using the segment interpolation mode.
+ */
 export function GetScalarSegmentTangent(
   time: number,
   k0: Tr2CurveScalarKey,
   k1: Tr2CurveScalarKey,
-): number {
-  switch (k0.interpolation) {
+): number
+{
+  switch (k0.interpolation)
+  {
     case Tr2CurveInterpolation.CONSTANT:
       return 0;
 
     case Tr2CurveInterpolation.LINEAR:
       return (k1.value - k0.value) / (k1.time - k0.time);
 
-    case Tr2CurveInterpolation.HERMITE: {
+    case Tr2CurveInterpolation.HERMITE:
+    {
       const length = k1.time - k0.time;
-      if (length === 0) {
+      if (length === 0)
+      {
         return k1.rightTangent;
       }
 
@@ -133,44 +159,55 @@ export function GetScalarSegmentTangent(
   }
 }
 
+/**
+ * Maps scaled time into the authored key range using Carbon extrapolation rules.
+ */
 export function GetWrappedLocalTime(
   scaledTime: number,
   first: number,
   last: number,
   extrapolationBefore: number,
   extrapolationAfter: number,
-): number {
+): number
+{
   const length = last - first;
-  if (length === 0) {
+  if (length === 0)
+  {
     return first;
   }
 
-  if (scaledTime < first) {
+  if (scaledTime < first)
+  {
     const quotient = -(scaledTime - first) / length;
-    const intPart = Math.trunc(quotient);
+    const intPart = num.roundToZero(quotient);
     let fracPart = quotient - intPart;
 
-    if (extrapolationBefore === Tr2CurveExtrapolation.CYCLE) {
+    if (extrapolationBefore === Tr2CurveExtrapolation.CYCLE)
+    {
       fracPart = 1 - fracPart;
-    } else if (intPart % 2 !== 0) {
+    }
+    else if (intPart % 2 !== 0)
+    {
       fracPart = 1 - fracPart;
     }
 
     return fracPart * length + first;
   }
 
-  if (scaledTime <= last) {
+  if (scaledTime <= last)
+  {
     return scaledTime;
   }
 
   const quotient = (scaledTime - first) / length;
-  const intPart = Math.trunc(quotient);
+  const intPart = num.roundToZero(quotient);
   let fracPart = quotient - intPart;
 
   if (
     extrapolationAfter === Tr2CurveExtrapolation.MIRROR &&
     intPart % 2 !== 0
-  ) {
+  )
+  {
     fracPart = 1 - fracPart;
   }
 

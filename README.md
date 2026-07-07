@@ -2,11 +2,10 @@
 
 Faithful CarbonEngine Trinity/Eve scene-graph model (the serializable Trinity
 Graph) and visual resource classes. Ports Tr2*/Eve* 1:1 from CarbonEngine.
-ccpwgl is historical/archaeological reference only, not the model. GPU-free.
+GPU-free.
 
 Part of the CarbonEngineJS runtime/engine tier (Deno + TypeScript,
-WebGPU-first). See carbonenginejs.md for the CarbonEngine source files this
-package is a candidate to port.
+WebGPU-first).
 
 ## Status
 
@@ -16,7 +15,6 @@ under `src/curves`.
 Baseline checks:
 
 ```sh
-deno task fmt
 deno task lint
 deno task check
 deno task test
@@ -27,6 +25,4 @@ deno task test
 CarbonEngine and Fenris Creations (CCP Games) are named for interoperability and
 provenance context. This package's runtime code is CarbonEngineJS original work
 that ports or adapts CarbonEngine class structure and behavior, verified against
-the CarbonEngine C++ source. ccpwgl may be consulted only after Carbon when a
-JS-shaped clue is genuinely useful. Not affiliated with or endorsed by CCP
-Games.
+the CarbonEngine C++ source. Not affiliated with or endorsed by CCP Games.

@@ -21,62 +21,115 @@ import type {
 import type { ITriCurveLength, ITriScalarFunction } from "./contracts.ts";
 import { Tr2CurveScalarKey } from "./Tr2CurveScalarKey.ts";
 
-export interface Tr2CurveScalarDefinition {
+export interface Tr2CurveScalarDefinition
+{
   keys: Tr2CurveScalarKey[];
   keyCount: number;
   extrapolationBefore: Tr2CurveExtrapolationValue;
   extrapolationAfter: Tr2CurveExtrapolationValue;
 }
 
-export interface Tr2CurveRasterizeDestination {
+export interface Tr2CurveRasterizeDestination
+{
   width: number;
   stride: number;
   data: ArrayLike<number> & { [index: number]: number };
 }
 
-export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
+@CjsSchema.type.define({ className: "Tr2CurveScalar" })
+export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
+{
+
+  @CjsSchema.type.array({ kind: "struct", className: "Tr2CurveScalarKey" })
   keys: Tr2CurveScalarKey[] = [];
+
+  @CjsSchema.type.string
   name = "";
+
+  @CjsSchema.type.float32
   timeOffset = 0;
+
+  @CjsSchema.type.float32
   timeScale = 1;
+
+  @CjsSchema.type.float32
   currentValue = 0;
+
+  @CjsSchema.type.uint32
   extrapolationBefore: Tr2CurveExtrapolationValue = Tr2CurveExtrapolation.CLAMP;
+
+  @CjsSchema.type.uint32
   extrapolationAfter: Tr2CurveExtrapolationValue = Tr2CurveExtrapolation.CLAMP;
 
   #lastSegment = 0;
 
-  UpdateValue(time: number): void {
+  /**
+   * Updates the cached scalar value for the supplied time.
+   */
+  UpdateValue(time: number): void
+  {
     this.currentValue = this.GetValue(time);
   }
 
-  Update(time: number): number {
+  /**
+   * Updates and returns the cached scalar value for the supplied time.
+   */
+  Update(time: number): number
+  {
     this.currentValue = this.GetValue(time);
     return this.currentValue;
   }
 
-  GetValueAt(time: number): number {
+  /**
+   * Gets the scalar value at the supplied time.
+   */
+  GetValueAt(time: number): number
+  {
     return this.GetValue(time);
   }
 
-  ScaleTime(scale: number): void {
+  /**
+   * Sets the curve time scale used by `GetScaledTime`.
+   */
+  ScaleTime(scale: number): void
+  {
     this.timeScale = scale;
   }
 
-  Length(): number {
+  /**
+   * Gets the last authored key time, or zero for an empty curve.
+   */
+  Length(): number
+  {
     return this.keys.length ? this.keys[this.keys.length - 1].time : 0;
   }
 
-  GetName(): string {
+  /**
+   * Gets the authored curve name.
+   */
+  GetName(): string
+  {
     return this.name;
   }
 
-  SetName(name: string): void {
+  /**
+   * Sets the authored curve name.
+   */
+  SetName(name: string): void
+  {
     this.name = name;
   }
 
-  GetValue(time: number): number {
+  /**
+   * Evaluates the scalar curve with Carbon extrapolation and interpolation rules.
+   */
+  GetValue(time: number): number
+  {
     const count = this.keys.length;
-    if (!count) return 0;
+    if (!count)
+    {
+      return 0;
+    }
 
     const scaledTime = this.GetScaledTime(time);
     const firstKey = this.keys[0];
@@ -85,7 +138,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     if (
       this.extrapolationBefore === Tr2CurveExtrapolation.LINEAR &&
       scaledTime < firstKey.time
-    ) {
+    )
+    {
       return firstKey.value -
         (firstKey.time - scaledTime) * firstKey.leftTangent;
     }
@@ -93,24 +147,30 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     if (
       this.extrapolationAfter === Tr2CurveExtrapolation.LINEAR &&
       scaledTime > lastKey.time
-    ) {
+    )
+    {
       return lastKey.value + (scaledTime - lastKey.time) *
           lastKey.rightTangent;
     }
 
-    if (count === 1) return firstKey.value;
+    if (count === 1)
+    {
+      return firstKey.value;
+    }
 
     if (
       this.extrapolationBefore === Tr2CurveExtrapolation.CLAMP &&
       scaledTime <= firstKey.time
-    ) {
+    )
+    {
       return firstKey.value;
     }
 
     if (
       this.extrapolationAfter === Tr2CurveExtrapolation.CLAMP &&
       scaledTime >= lastKey.time
-    ) {
+    )
+    {
       return lastKey.value;
     }
 
@@ -119,9 +179,16 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     return GetScalarSegmentValue(localTime, k0, k1);
   }
 
-  GetTangent(time: number): number {
+  /**
+   * Evaluates the scalar tangent with Carbon extrapolation and interpolation rules.
+   */
+  GetTangent(time: number): number
+  {
     const count = this.keys.length;
-    if (!count) return 0;
+    if (!count)
+    {
+      return 0;
+    }
 
     const scaledTime = this.GetScaledTime(time);
     const firstKey = this.keys[0];
@@ -130,30 +197,37 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     if (
       this.extrapolationBefore === Tr2CurveExtrapolation.LINEAR &&
       scaledTime < firstKey.time
-    ) {
+    )
+    {
       return firstKey.leftTangent;
     }
 
     if (
       this.extrapolationAfter === Tr2CurveExtrapolation.LINEAR &&
       scaledTime > lastKey.time
-    ) {
+    )
+    {
       return lastKey.rightTangent;
     }
 
-    if (count === 1) return firstKey.rightTangent;
+    if (count === 1)
+    {
+      return firstKey.rightTangent;
+    }
 
     if (
       this.extrapolationBefore === Tr2CurveExtrapolation.CLAMP &&
       scaledTime <= firstKey.time
-    ) {
+    )
+    {
       return 0;
     }
 
     if (
       this.extrapolationAfter === Tr2CurveExtrapolation.CLAMP &&
       scaledTime >= lastKey.time
-    ) {
+    )
+    {
       return 0;
     }
 
@@ -162,35 +236,67 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     return GetScalarSegmentTangent(localTime, k0, k1);
   }
 
-  GetTangentAt(time: number): number {
+  /**
+   * Carbon-compatible alias for `GetTangent`.
+   */
+  GetTangentAt(time: number): number
+  {
     return this.GetTangent(time);
   }
 
-  GetCurrentValue(): number {
+  /**
+   * Gets the last cached value.
+   */
+  GetCurrentValue(): number
+  {
     return this.currentValue;
   }
 
-  GetTimeOffset(): number {
+  /**
+   * Gets the time offset applied by `GetScaledTime`.
+   */
+  GetTimeOffset(): number
+  {
     return this.timeOffset;
   }
 
-  SetTimeOffset(timeOffset: number): void {
+  /**
+   * Sets the time offset applied by `GetScaledTime`.
+   */
+  SetTimeOffset(timeOffset: number): void
+  {
     this.timeOffset = timeOffset;
   }
 
-  GetTimeScale(): number {
+  /**
+   * Gets the time scale applied by `GetScaledTime`.
+   */
+  GetTimeScale(): number
+  {
     return this.timeScale;
   }
 
-  SetTimeScale(timeScale: number): void {
+  /**
+   * Sets the time scale applied by `GetScaledTime`.
+   */
+  SetTimeScale(timeScale: number): void
+  {
     this.timeScale = timeScale;
   }
 
-  IsEmpty(): boolean {
+  /**
+   * Checks whether the curve has no authored keys.
+   */
+  IsEmpty(): boolean
+  {
     return this.keys.length === 0;
   }
 
-  OnKeysChanged(): void {
+  /**
+   * Sorts keys and recomputes automatic tangents after key edits.
+   */
+  OnKeysChanged(): void
+  {
     this.keys = this.keys
       .map((key, index) => ({ key, index }))
       .sort((a, b) => a.key.time - b.key.time || a.index - b.index)
@@ -198,15 +304,20 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
 
     this.#lastSegment = 0;
 
-    for (let i = 0; i < this.keys.length; i++) {
+    for (let i = 0; i < this.keys.length; i++)
+    {
       const key = this.keys[i];
 
-      switch (key.tangentType) {
+      switch (key.tangentType)
+      {
         case Tr2CurveTangentType.AUTO_CLAMP:
-          if (i === 0 || i + 1 === this.keys.length) {
+          if (i === 0 || i + 1 === this.keys.length)
+          {
             key.leftTangent = 0;
             key.rightTangent = 0;
-          } else {
+          }
+          else
+          {
             const tangent = GetAutoClampedTangent(
               this.keys[i - 1].time,
               this.keys[i - 1].value,
@@ -221,10 +332,13 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
           break;
 
         case Tr2CurveTangentType.AUTO:
-          if (i === 0 || i + 1 === this.keys.length) {
+          if (i === 0 || i + 1 === this.keys.length)
+          {
             key.leftTangent = 0;
             key.rightTangent = 0;
-          } else {
+          }
+          else
+          {
             const tangent = GetAutoTangent(
               this.keys[i - 1].time,
               this.keys[i - 1].value,
@@ -245,6 +359,9 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     }
   }
 
+  /**
+   * Adds a scalar key and refreshes key ordering and derived tangents.
+   */
   AddKey(
     time: number,
     value: number,
@@ -252,7 +369,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     leftTangent = 0,
     rightTangent = 0,
     tangentType: Tr2CurveTangentTypeValue = Tr2CurveTangentType.AUTO_CLAMP,
-  ): void {
+  ): void
+  {
     const key = new Tr2CurveScalarKey();
     key.time = time;
     key.value = value;
@@ -265,23 +383,39 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     this.OnKeysChanged();
   }
 
-  SetExtrapolation(extrapolation: Tr2CurveExtrapolationValue): void {
+  /**
+   * Sets both before and after extrapolation modes.
+   */
+  SetExtrapolation(extrapolation: Tr2CurveExtrapolationValue): void
+  {
     this.extrapolationAfter = extrapolation;
     this.extrapolationBefore = extrapolation;
   }
 
-  GetKeys(): Tr2CurveScalarKey[] {
+  /**
+   * Gets the mutable key list.
+   */
+  GetKeys(): Tr2CurveScalarKey[]
+  {
     return this.keys;
   }
 
-  SetDefinition(definition: Tr2CurveScalarDefinition): void {
+  /**
+   * Applies a compact curve definition and refreshes derived key state.
+   */
+  SetDefinition(definition: Tr2CurveScalarDefinition): void
+  {
     this.extrapolationBefore = definition.extrapolationBefore;
     this.extrapolationAfter = definition.extrapolationAfter;
     this.keys = definition.keys.slice(0, definition.keyCount);
     this.OnKeysChanged();
   }
 
-  GetDefinition(): Tr2CurveScalarDefinition {
+  /**
+   * Gets a compact curve definition using the current key list.
+   */
+  GetDefinition(): Tr2CurveScalarDefinition
+  {
     return {
       keys: this.keys,
       keyCount: this.keys.length,
@@ -290,19 +424,35 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     };
   }
 
-  Rasterize(destination: Tr2CurveRasterizeDestination): void {
-    for (let i = 0; i < destination.width; i++) {
+  /**
+   * Samples the curve into the destination buffer.
+   */
+  Rasterize(destination: Tr2CurveRasterizeDestination): void
+  {
+    for (let i = 0; i < destination.width; i++)
+    {
       const t = destination.width === 1 ? 0.5 : i / (destination.width - 1);
       destination.data[i * destination.stride] = this.GetValue(t);
     }
   }
 
-  GetScaledTime(time: number): number {
+  /**
+   * Converts caller time into curve-local scaled time.
+   */
+  GetScaledTime(time: number): number
+  {
     return time / this.timeScale - this.timeOffset;
   }
 
-  GetLocalTime(time: number): number {
-    if (!this.keys.length) return 0;
+  /**
+   * Converts caller time into the authored key range according to extrapolation.
+   */
+  GetLocalTime(time: number): number
+  {
+    if (!this.keys.length)
+    {
+      return 0;
+    }
 
     const scaledTime = this.GetScaledTime(time);
     const first = this.keys[0].time;
@@ -316,77 +466,86 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction {
     );
   }
 
+  /**
+   * Finds the key segment containing local time, optionally updating the segment cache.
+   */
   FindSegment(
     time: number,
     updateCache = true,
-  ): [Tr2CurveScalarKey, Tr2CurveScalarKey] {
+  ): [Tr2CurveScalarKey, Tr2CurveScalarKey]
+  {
     const count = this.keys.length;
 
-    if (this.#lastSegment + 1 < count) {
+    if (this.#lastSegment + 1 < count)
+    {
       let k0 = this.keys[this.#lastSegment];
       let k1 = this.keys[this.#lastSegment + 1];
-      if (time >= k0.time && time < k1.time) return [k0, k1];
+      if (time >= k0.time && time < k1.time)
+      {
+        return [k0, k1];
+      }
 
-      if (this.#lastSegment + 2 < count) {
+      if (this.#lastSegment + 2 < count)
+      {
         k0 = this.keys[this.#lastSegment + 1];
         k1 = this.keys[this.#lastSegment + 2];
-        if (time >= k0.time && time < k1.time) {
-          if (updateCache) this.#lastSegment++;
+        if (time >= k0.time && time < k1.time)
+        {
+          if (updateCache)
+          {
+            this.#lastSegment++;
+          }
           return [k0, k1];
         }
       }
 
-      if (this.#lastSegment > 1) {
+      if (this.#lastSegment > 1)
+      {
         k0 = this.keys[this.#lastSegment - 1];
         k1 = this.keys[this.#lastSegment];
-        if (time >= k0.time && time < k1.time) {
-          if (updateCache) this.#lastSegment--;
+        if (time >= k0.time && time < k1.time)
+        {
+          if (updateCache)
+          {
+            this.#lastSegment--;
+          }
           return [k0, k1];
         }
       }
     }
 
-    for (let i = 0; i + 1 < count; i++) {
+    for (let i = 0; i + 1 < count; i++)
+    {
       const k0 = this.keys[i];
       const k1 = this.keys[i + 1];
-      if (time >= k0.time && time < k1.time) {
-        if (updateCache) this.#lastSegment = i;
+      if (time >= k0.time && time < k1.time)
+      {
+        if (updateCache)
+        {
+          this.#lastSegment = i;
+        }
         return [k0, k1];
       }
     }
 
-    if (updateCache) this.#lastSegment = count - 2;
+    if (updateCache)
+    {
+      this.#lastSegment = count - 2;
+    }
     return [this.keys[count - 2], this.keys[count - 1]];
   }
 
+  /**
+   * One-shot static rasterization helper for compact curve definitions.
+   */
   static rasterize(
     destination: Tr2CurveRasterizeDestination,
     definition: Tr2CurveScalarDefinition,
-  ): void {
+  ): void
+  {
     const curve = new Tr2CurveScalar();
     curve.SetDefinition(definition);
     curve.Rasterize(destination);
   }
-}
 
-CjsSchema.define(Tr2CurveScalar, { className: "Tr2CurveScalar" });
-CjsSchema.defineField(Tr2CurveScalar, "keys", "type", {
-  kind: "array",
-  itemType: { kind: "struct", className: "Tr2CurveScalarKey" },
-});
-CjsSchema.defineField(Tr2CurveScalar, "name", "type", { kind: "string" });
-CjsSchema.defineField(Tr2CurveScalar, "timeOffset", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalar, "timeScale", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalar, "currentValue", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalar, "extrapolationBefore", "type", {
-  kind: "uint32",
-});
-CjsSchema.defineField(Tr2CurveScalar, "extrapolationAfter", "type", {
-  kind: "uint32",
-});
+}

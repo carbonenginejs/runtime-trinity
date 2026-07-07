@@ -8,8 +8,12 @@ coverage/
 Thumbs.db
 
 # Agent / tool scratch — nested repos do NOT inherit the org-root .gitignore
+.agent/
 .agents/
 .claude/
 .codex/
 .skill/
 .skills/
+review/
+_review/
+carbonenginejs.md

@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.h
 
-export interface Tr2CurveInterpolationEnum {
+export interface Tr2CurveInterpolationEnum
+{
   readonly CONSTANT: 0;
   readonly LINEAR: 1;
   readonly HERMITE: 2;
@@ -15,7 +16,8 @@ export const Tr2CurveInterpolation: Tr2CurveInterpolationEnum = Object.freeze({
   HERMITE: 2,
 });
 
-export interface Tr2CurveTangentTypeEnum {
+export interface Tr2CurveTangentTypeEnum
+{
   readonly AUTO_CLAMP: 0;
   readonly AUTO: 1;
   readonly FREE_JOINED: 2;
@@ -32,7 +34,8 @@ export const Tr2CurveTangentType: Tr2CurveTangentTypeEnum = Object.freeze({
   FREE_SPLIT: 3,
 });
 
-export interface Tr2CurveExtrapolationEnum {
+export interface Tr2CurveExtrapolationEnum
+{
   readonly CLAMP: 0;
   readonly CYCLE: 1;
   readonly MIRROR: 2;

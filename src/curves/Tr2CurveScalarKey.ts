@@ -7,33 +7,29 @@ import type {
   Tr2CurveTangentTypeValue,
 } from "./enums.ts";
 
-export class Tr2CurveScalarKey {
-  time = 0;
-  value = 0;
-  leftTangent = 0;
-  rightTangent = 0;
-  id = 0;
-  interpolation: Tr2CurveInterpolationValue = Tr2CurveInterpolation.HERMITE;
-  tangentType: Tr2CurveTangentTypeValue = Tr2CurveTangentType.AUTO_CLAMP;
-}
+@CjsSchema.type.define({ className: "Tr2CurveScalarKey" })
+export class Tr2CurveScalarKey
+{
 
-CjsSchema.define(Tr2CurveScalarKey, { className: "Tr2CurveScalarKey" });
-CjsSchema.defineField(Tr2CurveScalarKey, "time", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalarKey, "value", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalarKey, "leftTangent", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalarKey, "rightTangent", "type", {
-  kind: "float32",
-});
-CjsSchema.defineField(Tr2CurveScalarKey, "id", "type", { kind: "uint16" });
-CjsSchema.defineField(Tr2CurveScalarKey, "interpolation", "type", {
-  kind: "uint8",
-});
-CjsSchema.defineField(Tr2CurveScalarKey, "tangentType", "type", {
-  kind: "uint8",
-});
+  @CjsSchema.type.float32
+  time = 0;
+
+  @CjsSchema.type.float32
+  value = 0;
+
+  @CjsSchema.type.float32
+  leftTangent = 0;
+
+  @CjsSchema.type.float32
+  rightTangent = 0;
+
+  @CjsSchema.type.uint16
+  id = 0;
+
+  @CjsSchema.type.uint8
+  interpolation: Tr2CurveInterpolationValue = Tr2CurveInterpolation.HERMITE;
+
+  @CjsSchema.type.uint8
+  tangentType: Tr2CurveTangentTypeValue = Tr2CurveTangentType.AUTO_CLAMP;
+
+}

@@ -3,22 +3,27 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "compilerOptions": {
-    "experimentalDecorators": true,
     "strict": true
   },
   "fmt": {
-    "include": ["src/", "test/"]
+    "include": ["deno.json"]
   },
   "lint": {
     "include": ["src/", "test/"]
   },
   "imports": {
-    "@carbonenginejs/core-types/schema": "../core-types/src/schema/index.js"
+    "@carbonenginejs/core-math/num": "../core-math/src/num.js",
+    "@carbonenginejs/core-math/quat": "../core-math/src/quat.js",
+    "@carbonenginejs/core-math/vec2": "../core-math/src/vec2.js",
+    "@carbonenginejs/core-math/vec3": "../core-math/src/vec3.js",
+    "@carbonenginejs/core-math/vec4": "../core-math/src/vec4.js",
+    "@carbonenginejs/core-types/schema": "../core-types/src/schema/index.js",
+    "gl-matrix/": "../core-math/node_modules/gl-matrix/"
   },
   "tasks": {
     "test": "deno test --allow-read",
     "lint": "deno lint",
-    "fmt": "deno fmt",
+    "fmt": "deno fmt --check deno.json",
     "check": "deno check src/index.ts test/*.test.ts"
   }
 }
