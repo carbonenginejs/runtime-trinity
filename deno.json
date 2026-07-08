@@ -12,11 +12,18 @@
     "include": ["src/", "test/"]
   },
   "imports": {
+    "@carbonenginejs/core-math/mat3": "../core-math/src/mat3.js",
+    "@carbonenginejs/core-math/mat4": "../core-math/src/mat4.js",
+    "@carbonenginejs/core-math/is": "../core-math/src/is.js",
     "@carbonenginejs/core-math/num": "../core-math/src/num.js",
+    "@carbonenginejs/core-math/noise": "../core-math/src/noise.js",
     "@carbonenginejs/core-math/quat": "../core-math/src/quat.js",
+    "@carbonenginejs/core-math/types": "../core-math/src/types.ts",
+    "@carbonenginejs/core-math/utils": "../core-math/src/utils.js",
     "@carbonenginejs/core-math/vec2": "../core-math/src/vec2.js",
     "@carbonenginejs/core-math/vec3": "../core-math/src/vec3.js",
     "@carbonenginejs/core-math/vec4": "../core-math/src/vec4.js",
+    "@carbonenginejs/core-types/model": "../core-types/src/model/index.js",
     "@carbonenginejs/core-types/schema": "../core-types/src/schema/index.js",
     "gl-matrix/": "../core-math/node_modules/gl-matrix/"
   },

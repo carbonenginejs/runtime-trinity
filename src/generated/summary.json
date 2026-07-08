@@ -1,0 +1,657 @@
+{
+  "sourceRoot": "E:\\carbonenginejs-org\\.scratch\\carbon-class-trinity-populated",
+  "outRoot": "E:\\carbonenginejs-org\\runtime-trinity\\src\\generated",
+  "classes": {
+    "created": 0,
+    "updated": 0,
+    "unchanged": 567,
+    "skipped": 104
+  },
+  "enums": {
+    "created": 0,
+    "updated": 0,
+    "unchanged": 10,
+    "skippedEntries": 7
+  },
+  "skipped": [
+    {
+      "family": "controllers",
+      "className": "ITr2ControllerAction",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "ITr2ControllerOwner",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionAnimateCurveSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionAnimateValue",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionBindRTPC",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionCallback",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionChildEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionOverlay",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionPlayCurveSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionPlayMeshAnimation",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionPlaySound",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionPython",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionResetClipSphereCenter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetAttenuationScaling",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetAudioEmitterPrefix",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetAudioSwitch",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetExternalControllerVariable",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetShaderOption",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSetValue",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ActionSpawnParticles",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2BindingPoint",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2Controller",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ControllerEventHandler",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ControllerExpression",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ControllerFloatVariable",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2ControllerReference",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2StateMachine",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2StateMachineState",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2StateMachineTransition",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2SyncToAnimation",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2TimelineController",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "controllers",
+      "className": "Tr2TimelineEntry",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2BoneMatrixCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CameraFollowCurveKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveColor",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveColorMixer",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveCombiner",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveConstant",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveEulerRotation",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveEulerRotationExpression",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveQuaternion",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveQuaternionKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveRandomAxisRotation",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveRasterizeDestination",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveScalar",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveScalarDefinition",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveScalarExpression",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveScalarKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveSetRange",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveVector2",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveVector3",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveVector3Expression",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveVector3Lerp",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2DistanceTracker",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2FollowCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2GrannyEventTrack",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2GrannyTrack",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2GrannyTransformTrack",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2GrannyVectorTrack",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2MatrixKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2ObjectFollowCurveKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2QuaternionLerpCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2RotationAdapter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2ScalarExprKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2ScalarExprKeyCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2ScalarFader",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2TranslationAdapter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "TriCurveSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "TriEventCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "TriEventKey",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "BackAndForthData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "DecalVSPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveBasicPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveChildSpherePinPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveChildUpdateParams",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveLineData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveLocator2",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveLocatorSets",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EvePerObjectPSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EvePerObjectVSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveRemotePositionCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveSpaceObjectPSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveSpaceObjectVSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveSpacePerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveSpherePinPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveThrottleable",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "FollowASplineData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "FormationData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "InertiaData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "Locator",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "LocatorData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "PlacementDataWithIdentifier",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "PlayFXData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "ProcessLifetimeData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "SeekTargetData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2FloatParameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2Matrix4Parameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2RuntimeTextureParameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2Vector2Parameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2Vector3Parameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "Tr2Vector4Parameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "TriFloatArrayParameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "TriTextureParameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "shader",
+      "className": "TriVector4",
+      "reason": "hand-maintained source exists"
+    }
+  ],
+  "enumSkipped": [
+    {
+      "family": "controllers",
+      "enum": "DestinationType",
+      "reason": "export collision: DestinationType"
+    },
+    {
+      "family": "controllers",
+      "enum": "PlayAction",
+      "reason": "export collision: PlayAction"
+    },
+    {
+      "family": "controllers",
+      "enum": "ResetBehavior",
+      "reason": "export collision: ResetBehavior"
+    },
+    {
+      "family": "controllers",
+      "enum": "StopAction",
+      "reason": "export collision: StopAction"
+    },
+    {
+      "family": "controllers",
+      "enum": "Type",
+      "reason": "export collision: Type"
+    },
+    {
+      "family": "controllers",
+      "enum": "UnlinkReason",
+      "reason": "export collision: UnlinkReason"
+    },
+    {
+      "family": "curves",
+      "enum": "RotationSetting",
+      "reason": "export collision: RotationSetting"
+    }
+  ],
+  "families": {
+    "eve": {
+      "exports": 316,
+      "classes": 315,
+      "enumsFile": true
+    },
+    "font": {
+      "exports": 3,
+      "classes": 3,
+      "enumsFile": false
+    },
+    "include": {
+      "exports": 21,
+      "classes": 20,
+      "enumsFile": true
+    },
+    "interior": {
+      "exports": 12,
+      "classes": 11,
+      "enumsFile": true
+    },
+    "lights": {
+      "exports": 8,
+      "classes": 7,
+      "enumsFile": true
+    },
+    "particle": {
+      "exports": 28,
+      "classes": 28,
+      "enumsFile": false
+    },
+    "postProcess": {
+      "exports": 23,
+      "classes": 22,
+      "enumsFile": true
+    },
+    "raytracing": {
+      "exports": 5,
+      "classes": 5,
+      "enumsFile": false
+    },
+    "renderJob": {
+      "exports": 45,
+      "classes": 44,
+      "enumsFile": true
+    },
+    "resources": {
+      "exports": 38,
+      "classes": 37,
+      "enumsFile": true
+    },
+    "shader": {
+      "exports": 31,
+      "classes": 30,
+      "enumsFile": true
+    },
+    "sprite2d": {
+      "exports": 28,
+      "classes": 27,
+      "enumsFile": true
+    },
+    "trinityAudio": {
+      "exports": 2,
+      "classes": 2,
+      "enumsFile": false
+    },
+    "ui": {
+      "exports": 6,
+      "classes": 5,
+      "enumsFile": true
+    },
+    "utilities": {
+      "exports": 9,
+      "classes": 9,
+      "enumsFile": false
+    },
+    "wod": {
+      "exports": 2,
+      "classes": 2,
+      "enumsFile": false
+    }
+  }
+}

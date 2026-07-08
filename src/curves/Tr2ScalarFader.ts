@@ -1,7 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.cpp
 import { num } from "@carbonenginejs/core-math/num";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 
 const TRI_PI = Math.PI;
 
@@ -11,17 +12,20 @@ export interface EveUpdateContextLike
   deltaT?: number;
 }
 
-@CjsSchema.type.define({ className: "Tr2ScalarFader" })
-export class Tr2ScalarFader
+@type.define({ className: "Tr2ScalarFader", family: "curves" })
+export class Tr2ScalarFader extends CjsModel
 {
 
-  @CjsSchema.type.float32
+  @io.readwrite
+  @type.float32
   value = 0;
 
-  @CjsSchema.type.float32
+  @io.readwrite
+  @type.float32
   fading = 0;
 
-  @CjsSchema.type.float32
+  @io.read
+  @type.float32
   fadeTime = -1;
 
   kickInLength = 3;
@@ -29,6 +33,8 @@ export class Tr2ScalarFader
   /**
    * Advances fade state by the update context delta time.
    */
+  @carbon.method
+  @impl.adapted
   Update(updateContext: EveUpdateContextLike): void
   {
     const deltaT = getDeltaT(updateContext);
@@ -61,6 +67,8 @@ export class Tr2ScalarFader
   /**
    * Starts a fade-in or fade-out over the supplied duration.
    */
+  @carbon.method
+  @impl.implemented
   StartFade(isFadeIn: boolean, fadeLength: number): void
   {
     this.kickInLength = fadeLength;
@@ -74,6 +82,8 @@ export class Tr2ScalarFader
   /**
    * Checks whether the fader is fully inactive and contributes no value.
    */
+  @carbon.method
+  @impl.implemented
   IsZero(): boolean
   {
     return this.value === 0 && this.fading === 0;
@@ -82,6 +92,8 @@ export class Tr2ScalarFader
   /**
    * Gets the current linear fade value.
    */
+  @carbon.method
+  @impl.implemented
   GetFaderValue(): number
   {
     return this.value;
@@ -90,6 +102,8 @@ export class Tr2ScalarFader
   /**
    * Checks whether the non-linear kick-in envelope has not started.
    */
+  @carbon.method
+  @impl.implemented
   IsKickInZero(): boolean
   {
     return this.fadeTime <= 0;
@@ -98,6 +112,8 @@ export class Tr2ScalarFader
   /**
    * Gets Carbon's non-linear kick-in envelope value.
    */
+  @carbon.method
+  @impl.implemented
   GetKickInValue(): number
   {
     if (this.fadeTime < 0)

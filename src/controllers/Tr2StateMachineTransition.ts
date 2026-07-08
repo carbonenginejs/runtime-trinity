@@ -1,0 +1,282 @@
+// Source: E:\carbonengine\trinity\trinity\Controllers\Tr2StateMachineTransition.h
+// Source: E:\carbonengine\trinity\trinity\Controllers\Tr2StateMachineTransition.cpp
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import type {
+  ITr2StateMachine,
+  ITr2StateMachineState,
+  ITr2StateMachineTransition,
+} from "./contracts.ts";
+import type { ITr2ActionController } from "./ITr2ControllerAction.ts";
+import type { Tr2ExpressionTermInfoLike } from "./ITr2ControllerAction.ts";
+import {
+  CjsAddControllerExpressionTermInfo,
+  type CjsActionControllerRuntime,
+} from "./CjsControllerActionHelpers.ts";
+import {
+  type CjsControllerExpressionContext,
+  CjsControllerExpressionProgram,
+} from "./CjsControllerExpressionProgram.ts";
+
+@type.define({ className: "Tr2StateMachineTransition", family: "controllers" })
+export class Tr2StateMachineTransition extends CjsModel
+  implements ITr2StateMachineTransition {
+  @io.notify
+  @io.persist
+  @type.string
+  condition = "";
+
+  @io.notify
+  @io.persist
+  @type.string
+  name = "";
+
+  #source: ITr2StateMachineState | null = null;
+  #destination: ITr2StateMachineState | null = null;
+  #program: CjsControllerExpressionProgram | null = null;
+  #programSource: string | null = null;
+  #variableNames: string[] = [];
+  #functionNames: string[] = [];
+  #isConditionValid = false;
+
+  /**
+   * Links this transition to its source state.
+   */
+  @carbon.method
+  @impl.adapted
+  Link(state: ITr2StateMachineState): void {
+    this.Unlink();
+    this.#source = state;
+    this.#destination = this.#resolveDestination();
+  }
+
+  /**
+   * Unlinks this transition from its source state.
+   */
+  @carbon.method
+  @impl.adapted
+  Unlink(): void {
+    this.#source = null;
+    this.#destination = null;
+    this.#program = null;
+    this.#programSource = null;
+    this.#variableNames = [];
+    this.#functionNames = [];
+  }
+
+  /**
+   * Refreshes cached destination/expression state after modification.
+   */
+  @carbon.method
+  @impl.adapted
+  OnModified(_value: unknown = null): boolean {
+    this.#destination = this.#resolveDestination();
+    this.#program = null;
+    this.#programSource = null;
+    this.#variableNames = [];
+    this.#functionNames = [];
+    this.#source?.UpdateVariableMask?.();
+    return true;
+  }
+
+  /**
+   * Compiles and caches the transition condition.
+   */
+  Compile(): CjsControllerExpressionProgram {
+    if (!this.#program || this.#programSource !== this.condition) {
+      this.#program = CjsControllerExpressionProgram.Compile(this.condition, {
+        emptyValue: 1,
+      });
+      this.#programSource = this.condition;
+      this.#variableNames = this.#program.GetVariableNames();
+      this.#functionNames = this.#program.GetFunctionNames();
+      this.#isConditionValid = this.#program.IsValid();
+    }
+    return this.#program;
+  }
+
+  /**
+   * Carbon-compatible alias for transition activation.
+   */
+  @carbon.method
+  @impl.adapted
+  CanActivate(variableDirtyMask: bigint | number = 0): boolean {
+    const stateMachine = this.#source?.GetStateMachine?.() ?? null;
+    const controller = stateMachine?.GetController?.() ?? null;
+    const owner = controller?.GetOwner?.() ?? null;
+    const program = this.Compile();
+    if (!program.IsValid()) {
+      return false;
+    }
+    if (!DirtyMaskMatches(this.GetVariableMask(), variableDirtyMask)) {
+      return false;
+    }
+
+    const context = this.#getExpressionContext(controller, owner, stateMachine);
+    return program.EvaluateBoolean(context);
+  }
+
+  /**
+   * Gets this transition's destination state by name.
+   */
+  @carbon.method
+  @impl.adapted
+  GetDestination(): ITr2StateMachineState | null {
+    return this.#destination ?? this.#resolveDestination();
+  }
+
+  /**
+   * Gets the source state.
+   */
+  @carbon.method
+  @impl.adapted
+  GetSource(): ITr2StateMachineState | null {
+    return this.#source;
+  }
+
+  /**
+   * Gets the source state.
+   */
+  @carbon.method
+  @impl.adapted
+  GetState(): ITr2StateMachineState | null {
+    return this.GetSource();
+  }
+
+  @carbon.method
+  @impl.adapted
+  GetVariableMask(): bigint {
+    const program = this.Compile();
+    if (program.HasNonPureFunctions()) {
+      return 0n;
+    }
+    const stateMachine = this.#source?.GetStateMachine?.() ?? null;
+    const controller = stateMachine?.GetController?.() ?? null;
+    const variableView = controller?.GetVariableView?.();
+    if (!Array.isArray(variableView)) {
+      return 0n;
+    }
+
+    let mask = 0n;
+    for (const name of this.#variableNames) {
+      const index = variableView.find((variable) =>
+        variable && typeof variable === "object" && "name" in variable &&
+        String(variable.name) === name
+      )?.index;
+      if (typeof index !== "number" || index < 0 || index >= 64) {
+        return 0n;
+      }
+      mask |= 1n << BigInt(index);
+    }
+    return mask;
+  }
+
+  /**
+   * Checks whether the condition is valid.
+   */
+  @carbon.method
+  @impl.adapted
+  IsConditionValid(): boolean {
+    return this.Compile().IsValid();
+  }
+
+  /**
+   * Checks whether the condition expression is valid.
+   */
+  @carbon.method
+  @impl.adapted
+  IsExpressionValid(): boolean {
+    return this.IsConditionValid();
+  }
+
+  /**
+   * Evaluates an arbitrary expression against this transition's current context.
+   */
+  @carbon.method
+  @impl.adapted
+  EvaluateExpression(expression: string): number {
+    const stateMachine = this.#source?.GetStateMachine?.() ?? null;
+    const controller = stateMachine?.GetController?.() ?? null;
+    const owner = controller?.GetOwner?.() ?? null;
+    const program = CjsControllerExpressionProgram.Compile(expression, {
+      emptyValue: 0,
+    });
+    if (!program.IsValid()) {
+      return 0;
+    }
+    return Number(program.Evaluate(
+      this.#getExpressionContext(controller, owner, stateMachine),
+    ));
+  }
+
+  /**
+   * Gets expression term metadata known by the linked controller.
+   */
+  @carbon.method
+  @impl.adapted
+  GetExpressionTermInfo(): Tr2ExpressionTermInfoLike[] {
+    const result: Tr2ExpressionTermInfoLike[] = [];
+    CjsAddControllerExpressionTermInfo(result);
+    const controller = this.#source?.GetStateMachine?.()?.GetController?.();
+    controller?.GetExpressionTermInfo?.(result);
+    return result;
+  }
+
+  /**
+   * Gets variable names referenced by the compiled condition.
+   */
+  GetVariableNames(): string[] {
+    this.Compile();
+    return this.#variableNames.slice();
+  }
+
+  /**
+   * Gets function names referenced by the compiled condition.
+   */
+  GetFunctionNames(): string[] {
+    this.Compile();
+    return this.#functionNames.slice();
+  }
+
+  #getExpressionContext(
+    controller: ITr2ActionController | null,
+    owner: object | null,
+    stateMachine: ITr2StateMachine | null,
+  ): CjsControllerExpressionContext {
+    const runtime = controller as CjsActionControllerRuntime | null;
+    if (runtime?.GetExpressionContext) {
+      return runtime.GetExpressionContext(
+        owner,
+        stateMachine,
+      ) as CjsControllerExpressionContext;
+    }
+
+    return {
+      controller: runtime ?? undefined,
+      owner: (owner as Record<string, unknown> | null) ?? undefined,
+      stateMachine:
+        stateMachine as CjsControllerExpressionContext["stateMachine"],
+    };
+  }
+
+  #resolveDestination(): ITr2StateMachineState | null {
+    const stateMachine = this.#source?.GetStateMachine?.() ?? null;
+    if (!stateMachine || !this.name) {
+      return null;
+    }
+    return stateMachine.GetStateByName?.(this.name) ?? null;
+  }
+}
+
+function DirtyMaskMatches(
+  variableMask: bigint,
+  dirtyVariables: bigint | number,
+): boolean {
+  if (variableMask === 0n) {
+    return true;
+  }
+  const dirtyMask = typeof dirtyVariables === "bigint"
+    ? dirtyVariables
+    : BigInt(dirtyVariables);
+  return (variableMask & dirtyMask) !== 0n;
+}

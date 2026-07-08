@@ -1,12 +1,10 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveVector2.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveVector2.cpp
 import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import type { ITriCurveLength, Vec2 } from "./contracts.ts";
-import {
-  Tr2CurveInterpolation,
-  Tr2CurveTangentType,
-} from "./enums.ts";
+import { Tr2CurveInterpolation, Tr2CurveTangentType } from "./enums.ts";
 import type {
   Tr2CurveExtrapolationValue,
   Tr2CurveInterpolationValue,
@@ -14,27 +12,30 @@ import type {
 } from "./enums.ts";
 import { Tr2CurveScalar } from "./Tr2CurveScalar.ts";
 
-@CjsSchema.type.define({ className: "Tr2CurveVector2" })
-export class Tr2CurveVector2 implements ITriCurveLength
-{
-
-  @CjsSchema.type.string
+@type.define({ className: "Tr2CurveVector2", family: "curves" })
+export class Tr2CurveVector2 extends CjsModel implements ITriCurveLength {
+  @io.persist
+  @type.string
   name = "";
 
-  @CjsSchema.type.objectRef("Tr2CurveScalar")
+  @io.persist
+  @type.objectRef("Tr2CurveScalar")
   x: Tr2CurveScalar = new Tr2CurveScalar();
 
-  @CjsSchema.type.objectRef("Tr2CurveScalar")
+  @io.persist
+  @type.objectRef("Tr2CurveScalar")
   y: Tr2CurveScalar = new Tr2CurveScalar();
 
-  @CjsSchema.type.vec2
+  @io.read
+  @type.vec2
   currentValue: Vec2 = vec2.create();
 
   /**
    * Updates the cached vector value by updating each scalar component curve.
    */
-  UpdateValue(time: number): void
-  {
+  @carbon.method
+  @impl.implemented
+  UpdateValue(time: number): void {
     this.currentValue[0] = this.x.Update(time);
     this.currentValue[1] = this.y.Update(time);
   }
@@ -42,23 +43,26 @@ export class Tr2CurveVector2 implements ITriCurveLength
   /**
    * Gets the longest scalar component curve length.
    */
-  Length(): number
-  {
+  @carbon.method
+  @impl.implemented
+  Length(): number {
     return Math.max(this.x.Length(), this.y.Length());
   }
 
   /**
-   * Gets a new vector containing the value at the supplied time.
+   * Gets the vector value at `time` into `out`.
    */
-  GetValue(time: number): Vec2
-  {
-    const out: Vec2 = vec2.create();
-    return this.GetValueAt(out, time);
+  @carbon.method
+  @impl.adapted
+  GetValue(time: number, out: Vec2): Vec2 {
+    return this.GetValueAt(time, out);
   }
 
   /**
    * Adds one vector key by adding matching scalar keys to each component curve.
    */
+  @carbon.method
+  @impl.adapted
   AddKey(
     time: number,
     value: Vec2,
@@ -66,20 +70,32 @@ export class Tr2CurveVector2 implements ITriCurveLength
     leftTangent?: Vec2,
     rightTangent?: Vec2,
     tangentType: Tr2CurveTangentTypeValue = Tr2CurveTangentType.AUTO_CLAMP,
-  ): void
-  {
-    const lt = leftTangent ?? vec2.create();
-    const rt = rightTangent ?? vec2.create();
-
-    this.x.AddKey(time, value[0], interpolation, lt[0], rt[0], tangentType);
-    this.y.AddKey(time, value[1], interpolation, lt[1], rt[1], tangentType);
+  ): void {
+    const useRightTangent = !!leftTangent && !!rightTangent;
+    this.x.AddKey(
+      time,
+      value[0],
+      interpolation,
+      leftTangent?.[0] ?? 0,
+      useRightTangent ? rightTangent[0] : 0,
+      tangentType,
+    );
+    this.y.AddKey(
+      time,
+      value[1],
+      interpolation,
+      leftTangent?.[1] ?? 0,
+      useRightTangent ? rightTangent[1] : 0,
+      tangentType,
+    );
   }
 
   /**
    * Sets extrapolation on all scalar component curves.
    */
-  SetExtrapolation(extrapolation: Tr2CurveExtrapolationValue): void
-  {
+  @carbon.method
+  @impl.implemented
+  SetExtrapolation(extrapolation: Tr2CurveExtrapolationValue): void {
     this.x.SetExtrapolation(extrapolation);
     this.y.SetExtrapolation(extrapolation);
   }
@@ -87,11 +103,11 @@ export class Tr2CurveVector2 implements ITriCurveLength
   /**
    * Gets the vector value at `time` into `out`.
    */
-  GetValueAt(out: Vec2, time: number): Vec2
-  {
+  @carbon.method
+  @impl.adapted
+  GetValueAt(time: number, out: Vec2): Vec2 {
     out[0] = this.x.GetValue(time);
     out[1] = this.y.GetValue(time);
     return out;
   }
-
 }

@@ -96,17 +96,13 @@ export function GetScalarSegmentValue(
 
       const inTangent = k0.rightTangent * length;
       const outTangent = k1.leftTangent * length;
-      const s = (time - k0.time) / length;
-      const s2 = s * s;
-      const s3 = s2 * s;
-
-      const c2 = -2 * s3 + 3 * s2;
-      const c1 = 1 - c2;
-      const c4 = s3 - s2;
-      const c3 = s + c4 - s2;
-
-      return k0.value * c1 + k1.value * c2 + inTangent * c3 +
-        outTangent * c4;
+      return num.hermite(
+        k0.value,
+        inTangent,
+        outTangent,
+        k1.value,
+        (time - k0.time) / length,
+      );
     }
 
     default:
@@ -142,16 +138,13 @@ export function GetScalarSegmentTangent(
       const inTangent = k0.rightTangent * length;
       const outTangent = k1.leftTangent * length;
       const s = (time - k0.time) / length;
-      const s2 = s * s;
-      const m2s = 2 * s;
-
-      const c1 = 6 * s2 - 6 * s;
-      const c2 = -c1;
-      const c4 = 3 * s2 - m2s;
-      const c3 = c4 - m2s + 1;
-
-      return (k0.value * c1 + k1.value * c2 + inTangent * c3 +
-        outTangent * c4) / length;
+      return num.hermiteDerivative(
+        k0.value,
+        inTangent,
+        outTangent,
+        k1.value,
+        s,
+      ) / length;
     }
 
     default:

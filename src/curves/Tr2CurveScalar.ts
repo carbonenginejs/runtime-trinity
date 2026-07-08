@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveScalar.cpp
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import {
   GetAutoClampedTangent,
   GetAutoTangent,
@@ -36,29 +37,38 @@ export interface Tr2CurveRasterizeDestination
   data: ArrayLike<number> & { [index: number]: number };
 }
 
-@CjsSchema.type.define({ className: "Tr2CurveScalar" })
-export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
+@type.define({ className: "Tr2CurveScalar", family: "curves" })
+export class Tr2CurveScalar extends CjsModel implements ITriCurveLength, ITriScalarFunction
 {
 
-  @CjsSchema.type.array({ kind: "struct", className: "Tr2CurveScalarKey" })
+  @io.persist
+  @type.array({ kind: "struct", className: "Tr2CurveScalarKey" })
   keys: Tr2CurveScalarKey[] = [];
 
-  @CjsSchema.type.string
+  @io.persist
+  @type.string
   name = "";
 
-  @CjsSchema.type.float32
+  @io.persist
+  @type.float32
   timeOffset = 0;
 
-  @CjsSchema.type.float32
+  @io.persist
+  @type.float32
   timeScale = 1;
 
-  @CjsSchema.type.float32
+  @io.read
+  @type.float32
   currentValue = 0;
 
-  @CjsSchema.type.uint32
+  @io.persist
+  @type.uint32
+  @schema.enum("Tr2CurveExtrapolation")
   extrapolationBefore: Tr2CurveExtrapolationValue = Tr2CurveExtrapolation.CLAMP;
 
-  @CjsSchema.type.uint32
+  @io.persist
+  @type.uint32
+  @schema.enum("Tr2CurveExtrapolation")
   extrapolationAfter: Tr2CurveExtrapolationValue = Tr2CurveExtrapolation.CLAMP;
 
   #lastSegment = 0;
@@ -66,6 +76,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Updates the cached scalar value for the supplied time.
    */
+  @carbon.method
+  @impl.implemented
   UpdateValue(time: number): void
   {
     this.currentValue = this.GetValue(time);
@@ -74,6 +86,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Updates and returns the cached scalar value for the supplied time.
    */
+  @carbon.method
+  @impl.implemented
   Update(time: number): number
   {
     this.currentValue = this.GetValue(time);
@@ -83,6 +97,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the scalar value at the supplied time.
    */
+  @carbon.method
+  @impl.implemented
   GetValueAt(time: number): number
   {
     return this.GetValue(time);
@@ -91,6 +107,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sets the curve time scale used by `GetScaledTime`.
    */
+  @carbon.method
+  @impl.implemented
   ScaleTime(scale: number): void
   {
     this.timeScale = scale;
@@ -99,6 +117,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the last authored key time, or zero for an empty curve.
    */
+  @carbon.method
+  @impl.implemented
   Length(): number
   {
     return this.keys.length ? this.keys[this.keys.length - 1].time : 0;
@@ -107,6 +127,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the authored curve name.
    */
+  @carbon.method
+  @impl.implemented
   GetName(): string
   {
     return this.name;
@@ -115,6 +137,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sets the authored curve name.
    */
+  @carbon.method
+  @impl.implemented
   SetName(name: string): void
   {
     this.name = name;
@@ -123,6 +147,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Evaluates the scalar curve with Carbon extrapolation and interpolation rules.
    */
+  @carbon.method
+  @impl.implemented
   GetValue(time: number): number
   {
     const count = this.keys.length;
@@ -175,13 +201,19 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
     }
 
     const localTime = this.GetLocalTime(time);
-    const [k0, k1] = this.FindSegment(localTime);
-    return GetScalarSegmentValue(localTime, k0, k1);
+    const segment = this.FindSegment(localTime);
+    return GetScalarSegmentValue(
+      localTime,
+      this.keys[segment],
+      this.keys[segment + 1],
+    );
   }
 
   /**
    * Evaluates the scalar tangent with Carbon extrapolation and interpolation rules.
    */
+  @carbon.method
+  @impl.implemented
   GetTangent(time: number): number
   {
     const count = this.keys.length;
@@ -232,13 +264,19 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
     }
 
     const localTime = this.GetLocalTime(time);
-    const [k0, k1] = this.FindSegment(localTime, false);
-    return GetScalarSegmentTangent(localTime, k0, k1);
+    const segment = this.FindSegment(localTime, false);
+    return GetScalarSegmentTangent(
+      localTime,
+      this.keys[segment],
+      this.keys[segment + 1],
+    );
   }
 
   /**
    * Carbon-compatible alias for `GetTangent`.
    */
+  @carbon.method
+  @impl.implemented
   GetTangentAt(time: number): number
   {
     return this.GetTangent(time);
@@ -247,6 +285,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the last cached value.
    */
+  @carbon.method
+  @impl.implemented
   GetCurrentValue(): number
   {
     return this.currentValue;
@@ -255,6 +295,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the time offset applied by `GetScaledTime`.
    */
+  @carbon.method
+  @impl.implemented
   GetTimeOffset(): number
   {
     return this.timeOffset;
@@ -263,6 +305,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sets the time offset applied by `GetScaledTime`.
    */
+  @carbon.method
+  @impl.implemented
   SetTimeOffset(timeOffset: number): void
   {
     this.timeOffset = timeOffset;
@@ -271,6 +315,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the time scale applied by `GetScaledTime`.
    */
+  @carbon.method
+  @impl.implemented
   GetTimeScale(): number
   {
     return this.timeScale;
@@ -279,6 +325,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sets the time scale applied by `GetScaledTime`.
    */
+  @carbon.method
+  @impl.implemented
   SetTimeScale(timeScale: number): void
   {
     this.timeScale = timeScale;
@@ -287,6 +335,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Checks whether the curve has no authored keys.
    */
+  @carbon.method
+  @impl.implemented
   IsEmpty(): boolean
   {
     return this.keys.length === 0;
@@ -295,6 +345,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sorts keys and recomputes automatic tangents after key edits.
    */
+  @carbon.method
+  @impl.adapted
   OnKeysChanged(): void
   {
     this.keys = this.keys
@@ -362,6 +414,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Adds a scalar key and refreshes key ordering and derived tangents.
    */
+  @carbon.method
+  @impl.implemented
   AddKey(
     time: number,
     value: number,
@@ -386,6 +440,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Sets both before and after extrapolation modes.
    */
+  @carbon.method
+  @impl.implemented
   SetExtrapolation(extrapolation: Tr2CurveExtrapolationValue): void
   {
     this.extrapolationAfter = extrapolation;
@@ -395,6 +451,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets the mutable key list.
    */
+  @carbon.method
+  @impl.implemented
   GetKeys(): Tr2CurveScalarKey[]
   {
     return this.keys;
@@ -403,6 +461,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Applies a compact curve definition and refreshes derived key state.
    */
+  @carbon.method
+  @impl.adapted
   SetDefinition(definition: Tr2CurveScalarDefinition): void
   {
     this.extrapolationBefore = definition.extrapolationBefore;
@@ -414,6 +474,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Gets a compact curve definition using the current key list.
    */
+  @carbon.method
+  @impl.adapted
   GetDefinition(): Tr2CurveScalarDefinition
   {
     return {
@@ -427,6 +489,8 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Samples the curve into the destination buffer.
    */
+  @carbon.method
+  @impl.adapted
   Rasterize(destination: Tr2CurveRasterizeDestination): void
   {
     for (let i = 0; i < destination.width; i++)
@@ -469,10 +533,7 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
   /**
    * Finds the key segment containing local time, optionally updating the segment cache.
    */
-  FindSegment(
-    time: number,
-    updateCache = true,
-  ): [Tr2CurveScalarKey, Tr2CurveScalarKey]
+  FindSegment(time: number, updateCache = true): number
   {
     const count = this.keys.length;
 
@@ -482,7 +543,7 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
       let k1 = this.keys[this.#lastSegment + 1];
       if (time >= k0.time && time < k1.time)
       {
-        return [k0, k1];
+        return this.#lastSegment;
       }
 
       if (this.#lastSegment + 2 < count)
@@ -491,11 +552,12 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
         k1 = this.keys[this.#lastSegment + 2];
         if (time >= k0.time && time < k1.time)
         {
+          const segment = this.#lastSegment + 1;
           if (updateCache)
           {
-            this.#lastSegment++;
+            this.#lastSegment = segment;
           }
-          return [k0, k1];
+          return segment;
         }
       }
 
@@ -505,11 +567,12 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
         k1 = this.keys[this.#lastSegment];
         if (time >= k0.time && time < k1.time)
         {
+          const segment = this.#lastSegment - 1;
           if (updateCache)
           {
-            this.#lastSegment--;
+            this.#lastSegment = segment;
           }
-          return [k0, k1];
+          return segment;
         }
       }
     }
@@ -524,7 +587,7 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
         {
           this.#lastSegment = i;
         }
-        return [k0, k1];
+        return i;
       }
     }
 
@@ -532,7 +595,20 @@ export class Tr2CurveScalar implements ITriCurveLength, ITriScalarFunction
     {
       this.#lastSegment = count - 2;
     }
-    return [this.keys[count - 2], this.keys[count - 1]];
+    return count - 2;
+  }
+
+  /**
+   * One-shot static rasterization helper for compact curve definitions.
+   */
+  @carbon.method
+  @impl.adapted
+  static Rasterize(
+    destination: Tr2CurveRasterizeDestination,
+    definition: Tr2CurveScalarDefinition,
+  ): void
+  {
+    this.rasterize(destination, definition);
   }
 
   /**

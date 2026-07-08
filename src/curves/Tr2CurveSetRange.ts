@@ -1,21 +1,26 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\TriCurveSet.h
 // Source: E:\carbonengine\trinity\trinity\Curves\TriCurveSet.cpp
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { io, type } from "@carbonenginejs/core-types/schema";
 
-@CjsSchema.type.define({ className: "Tr2CurveSetRange" })
-export class Tr2CurveSetRange
+@type.define({ className: "Tr2CurveSetRange", family: "curves" })
+export class Tr2CurveSetRange extends CjsModel
 {
 
-  @CjsSchema.type.string
+  @io.persist
+  @type.string
   name = "";
 
-  @CjsSchema.type.float32
+  @io.persist
+  @type.float32
   startTime = 0;
 
-  @CjsSchema.type.float32
+  @io.persist
+  @type.float32
   endTime = 1;
 
-  @CjsSchema.type.boolean
+  @io.persist
+  @type.boolean
   looped = false;
 
 }

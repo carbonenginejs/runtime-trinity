@@ -1,27 +1,26 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.cpp
 import { quat } from "@carbonenginejs/core-math/quat";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { type } from "@carbonenginejs/core-types/schema";
 import type { Quat } from "./contracts.ts";
 import { Tr2CurveInterpolation } from "./enums.ts";
 import type { Tr2CurveInterpolationValue } from "./enums.ts";
 
-@CjsSchema.type.define({
-  className: "Tr2CurveQuaternionKey",
-})
-export class Tr2CurveQuaternionKey
+@type.define({ className: "Tr2CurveQuaternionKey", family: "curves" })
+export class Tr2CurveQuaternionKey extends CjsModel
 {
 
-  @CjsSchema.type.float32
+  @type.float32
   time = 0;
 
-  @CjsSchema.type.quat
+  @type.quat
   value: Quat = quat.create();
 
-  @CjsSchema.type.uint16
+  @type.uint16
   id = 0;
 
-  @CjsSchema.type.uint16
+  @type.uint16
   interpolation: Tr2CurveInterpolationValue = Tr2CurveInterpolation.LINEAR;
 
 }

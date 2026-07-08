@@ -1,40 +1,48 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveCombiner.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveCombiner.cpp
 import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import type { ITriCurveLength, ITriVectorFunction, Vec3 } from "./contracts.ts";
 
-@CjsSchema.type.define({ className: "Tr2CurveCombiner" })
-export class Tr2CurveCombiner implements ITriCurveLength, ITriVectorFunction
+@type.define({ className: "Tr2CurveCombiner", family: "curves" })
+export class Tr2CurveCombiner extends CjsModel implements ITriCurveLength, ITriVectorFunction
 {
 
-  @CjsSchema.type.string
+  @io.persist
+  @type.string
   name = "";
 
-  @CjsSchema.type.array({ kind: "objectRef", className: "ITriVectorFunction" })
+  @io.persist
+  @type.array({ kind: "objectRef", className: "ITriVectorFunction" })
   curves: ITriVectorFunction[] = [];
 
-  @CjsSchema.type.vec3
+  @io.read
+  @type.vec3
   currentValue: Vec3 = vec3.create();
+
+  #childValue: Vec3 = vec3.create();
 
   /**
    * Updates the cached sum of every child vector function.
    */
+  @carbon.method
+  @impl.implemented
   UpdateValue(time: number): void
   {
-    const out: Vec3 = vec3.create();
+    vec3.zero(this.currentValue);
     for (const curve of this.curves)
     {
-      const temp: Vec3 = vec3.create();
-      curve.Update(temp, time);
-      vec3.add(out, out, temp);
+      curve.Update(time, this.#childValue);
+      vec3.add(this.currentValue, this.currentValue, this.#childValue);
     }
-    this.currentValue = out;
   }
 
   /**
    * Gets the longest child curve length.
    */
+  @carbon.method
+  @impl.implemented
   Length(): number
   {
     let maxLength = 0;
@@ -50,48 +58,48 @@ export class Tr2CurveCombiner implements ITriCurveLength, ITriVectorFunction
   }
 
   /**
-   * Gets the summed vector value without mutating a caller-provided output.
+   * Gets the summed vector value at `time` into `out`.
    */
-  GetValue(time: number): Vec3
+  @carbon.method
+  @impl.adapted
+  GetValue(time: number, out: Vec3): Vec3
   {
-    const out: Vec3 = vec3.create();
-    for (const curve of this.curves)
-    {
-      const temp: Vec3 = vec3.create();
-      curve.GetValueAt(temp, time);
-      vec3.add(out, out, temp);
-    }
-    return out;
+    return this.GetValueAt(time, out);
   }
 
   /**
    * Updates the cached value and copies it into `out`.
    */
-  Update(out: Vec3, time: number): Vec3
+  @carbon.method
+  @impl.adapted
+  Update(time: number, out: Vec3): Vec3
   {
     this.UpdateValue(time);
-    out[0] = this.currentValue[0];
-    out[1] = this.currentValue[1];
-    out[2] = this.currentValue[2];
-    return out;
+    return vec3.copy(out, this.currentValue);
   }
 
   /**
    * Gets the summed vector value at `time` into `out`.
    */
-  GetValueAt(out: Vec3, time: number): Vec3
+  @carbon.method
+  @impl.adapted
+  GetValueAt(time: number, out: Vec3): Vec3
   {
-    const value = this.GetValue(time);
-    out[0] = value[0];
-    out[1] = value[1];
-    out[2] = value[2];
+    vec3.zero(out);
+    for (const curve of this.curves)
+    {
+      curve.GetValueAt(time, this.#childValue);
+      vec3.add(out, out, this.#childValue);
+    }
     return out;
   }
 
   /**
    * Derivative stub retained for Carbon interface compatibility.
    */
-  GetValueDotAt(out: Vec3, _time: number): Vec3
+  @carbon.method
+  @impl.noop
+  GetValueDotAt(_time: number, out: Vec3): Vec3
   {
     return out;
   }
@@ -99,7 +107,9 @@ export class Tr2CurveCombiner implements ITriCurveLength, ITriVectorFunction
   /**
    * Second-derivative stub retained for Carbon interface compatibility.
    */
-  GetValueDoubleDotAt(out: Vec3, _time: number): Vec3
+  @carbon.method
+  @impl.noop
+  GetValueDoubleDotAt(_time: number, out: Vec3): Vec3
   {
     return out;
   }
@@ -107,7 +117,9 @@ export class Tr2CurveCombiner implements ITriCurveLength, ITriVectorFunction
   /**
    * Position interpolation stub retained for Carbon interface compatibility.
    */
-  InterpolatedPosition(out: Vec3, _time: number): Vec3
+  @carbon.method
+  @impl.noop
+  InterpolatedPosition(_time: number, out: Vec3): Vec3
   {
     return out;
   }
