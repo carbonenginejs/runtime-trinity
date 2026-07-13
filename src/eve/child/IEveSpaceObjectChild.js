@@ -1,0 +1,14 @@
+// Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\IEveSpaceObjectChild.h
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { type } from "@carbonenginejs/core-types/schema";
+
+
+@type.define({ className: "IEveSpaceObjectChild", family: "eve/child" })
+export class IEveSpaceObjectChild extends CjsModel
+{
+  static Origin = Object.freeze({
+    SPACE: 0,
+    SOF: 1
+  });
+
+}

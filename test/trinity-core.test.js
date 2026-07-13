@@ -1,0 +1,487 @@
+import test from "node:test";
+import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriViewport } from "../npm/dist/trinityCore/index.js";
+import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
+import { TermType, TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
+
+
+function assertEquals(actual, expected, message)
+{
+  if (actual !== expected)
+  {
+    throw new Error(message || `expected ${String(expected)}, got ${String(actual)}`);
+  }
+}
+
+function assertAlmostEquals(actual, expected, epsilon = 1e-6)
+{
+  if (Math.abs(actual - expected) > epsilon)
+  {
+    throw new Error(`expected ${expected}, got ${actual}`);
+  }
+}
+
+function assertMatrixValues(actual, expected)
+{
+  assertEquals(actual.length, 16);
+  for (let i = 0; i < 16; i++)
+  {
+    assertAlmostEquals(actual[i], expected[i]);
+  }
+}
+
+test("Carbon device graph descriptions remain canonical runtime-trinity classes", () =>
+{
+  const graphClasses = [
+    TriDevice,
+    Tr2RenderContext,
+    Tr2PrimaryRenderContext,
+    Tr2RenderTarget,
+    Tr2DepthStencil,
+    Tr2GpuBuffer,
+    Tr2RuntimeGpuBuffer,
+    Tr2SwapChain,
+    Tr2VideoAdapters,
+    Tr2PresentParameters
+  ];
+  for (const Class of graphClasses)
+  {
+    new Class();
+    assertEquals(CjsSchema.getClass(Class.name), Class);
+  }
+});
+
+test("device graph descriptions keep Carbon defaults without realizing a backend", () =>
+{
+  const device = new TriDevice();
+  assertEquals(device.presentationInterval, 1);
+  assertEquals(device.multiSampleType, 0);
+  assertEquals(device.upscalingSetting, 1);
+  assertEquals(CjsSchema.getField(TriDevice, "adapterWidth")?.type.kind, "uint32");
+
+  const target = new Tr2RenderTarget();
+  assertEquals(target.type, 6);
+  assertEquals(target.isValid, false);
+  assertEquals(new Tr2DepthStencil().format, 7);
+
+  const buffer = new Tr2GpuBuffer();
+  assertEquals(buffer.creationFlags, 0);
+  assertEquals(buffer.isValid, false);
+  assertEquals(CjsSchema.getField(Tr2GpuBuffer, "creationFlags")?.type.kind, "uint32");
+
+  const present = new Tr2PresentParameters();
+  assertEquals(present.backBufferWidth, 0);
+  assertEquals(present.windowed, false);
+  assertEquals(CjsSchema.getField(Tr2PresentParameters, "windowed")?.type.kind, "boolean");
+
+  assertEquals(TriDevice.ThrottlingReason.WINDOW_HIDDEN, 2);
+  assertEquals(TriDevice.ThrottlingReason.THERMAL_STATE, 4);
+  assertEquals(Tr2GpuBuffer.CreationFlags.DRAW_INDIRECT, 4);
+  assertEquals(Tr2VideoAdapters.DEFAULT_ADAPTER, 0);
+  assertEquals(Tr2RenderContext.TextureAddressMode.TA_WRAP, 1);
+  assertEquals(Tr2RenderContext.TextureFilter.TF_ANISOTROPIC, 3);
+});
+
+test("mesh graph routes every Carbon batch type without realizing geometry", () =>
+{
+  const mesh = new Tr2Mesh();
+  const expected = [
+    "opaqueAreas", "decalAreas", "transparentAreas", "depthAreas",
+    "additiveAreas", "pickableAreas", "mirrorAreas", "decalNormalAreas",
+    "depthNormalAreas", "opaquePrepassAreas", "decalPrepassAreas",
+    "geometryEraserAreas", "flareAreas", "distortionAreas"
+  ];
+  assertEquals(mesh.GetAreasCount(), 14);
+  for (let index = 0; index < expected.length; index++)
+  {
+    assertEquals(mesh.GetAreas(index), mesh[expected[index]], `batch ${index}`);
+  }
+  assertEquals(mesh.GetAreas(-1), null);
+  assertEquals(mesh.GetAreas(14), null);
+  assertEquals(mesh.GetAreas("4"), null);
+  assertEquals(new Set(expected.map(name => mesh[name])).size, 14);
+
+  const opaque = new Tr2MeshArea();
+  const flare = new Tr2MeshArea();
+  mesh.AddArea(TriBatchType.TRIBATCHTYPE_OPAQUE, opaque);
+  mesh.AddArea(TriBatchType.TRIBATCHTYPE_FLARE, flare);
+  const all = mesh.GetAllAreas();
+  assertEquals(all[0], opaque);
+  assertEquals(all[1], flare);
+  all.length = 0;
+  assertEquals(mesh.opaqueAreas.length, 1);
+  assertEquals(mesh.flareAreas.length, 1);
+});
+
+test("SOF shield mesh construction stays a CPU object graph", () =>
+{
+  const shader = { calls: 0, SetOption() { this.calls++; } };
+  const area = new Tr2MeshArea();
+  area.SetMaterial(shader);
+  area.SetCount(7);
+  area.SetIndex(2);
+  assertEquals(area.GetMaterialInterface(), shader);
+  assertEquals(area.GetCount(), 7);
+  assertEquals(area.GetIndex(), 2);
+  assertEquals(area.count, 7);
+  assertEquals(CjsSchema.getField(Tr2MeshArea, "effect")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(Tr2MeshArea, "display")?.io?.persist, undefined);
+
+  const mesh = new Tr2Mesh();
+  mesh.SetMeshResPath("res:/shield.gr2");
+  mesh.GetAreas(TriBatchType.TRIBATCHTYPE_ADDITIVE).push(area);
+  assertEquals(mesh.geometryResPath, "res:/shield.gr2");
+  assertEquals(mesh.additiveAreas[0], area);
+  assertEquals(mesh.SetShaderOption("SHIELD", "1"), true);
+  assertEquals(shader.calls, 1);
+
+  const resource = { GetPath: () => "res:/provided.gr2", IsLoading: () => true };
+  mesh.SetGeometryRes(resource);
+  assertEquals(mesh.geometry, resource);
+  assertEquals(mesh.geometryResPath, "");
+  assertEquals(mesh.GetGeometryResPath(), "res:/provided.gr2");
+  assertEquals(mesh.isLoading, true);
+  assertEquals(mesh.Initialize(), true);
+  assertEquals(mesh.OnModified(), true);
+});
+
+test("mesh bounds adjustment is corrected source-backed graph data", () =>
+{
+  const mesh = new Tr2MeshBase();
+  assertEquals(mesh.maxVertexScale, 1);
+  assertEquals(mesh.maxVertexDisplacement, 0);
+  assertEquals(mesh.rotatesVertices, false);
+  assertEquals(CjsSchema.getField(Tr2MeshBase, "maxVertexScale")?.type?.kind, "float32");
+  assertEquals(CjsSchema.getField(Tr2MeshBase, "rotatesVertices")?.type?.kind, "boolean");
+  const input = { maxLocalScale: 3, maxLocalDisplacement: 4, rotatesVertices: true };
+  mesh.SetMaterialBoundsAdjustment(input);
+  const output = mesh.GetMaterialBoundsAdjustment();
+  assertEquals(output.maxLocalScale, 3);
+  assertEquals(output.maxLocalDisplacement, 4);
+  assertEquals(output.rotatesVertices, true);
+  input.maxLocalScale = 99;
+  assertEquals(mesh.maxVertexScale, 3);
+});
+
+test("instanced meshes retain the Tr2Mesh CPU graph and distinct resource paths", () =>
+{
+  const mesh = new Tr2InstancedMesh();
+  assertEquals(mesh instanceof Tr2Mesh, true);
+  assertEquals(mesh.boundsMethod, Tr2InstancedMesh.BoundsMethod.STATIC);
+  assertEquals(mesh.instanceGeometryResPath, "");
+  assertEquals(mesh.instanceGeometryResource, null);
+  assertEquals(mesh.instanceMeshIndex, 0);
+  assertEquals(mesh.maxInstanceSize, 0);
+  assertEquals(Object.isFrozen(Tr2InstancedMesh.BoundsMethod), true);
+  assertEquals(CjsSchema.getField(Tr2InstancedMesh, "geometryResPath")?.type.kind, "string");
+  assertEquals(CjsSchema.getField(Tr2InstancedMesh, "instanceGeometryResource")?.io?.persistOnly, true);
+
+  mesh.SetMeshResPath("res:/mesh/base.gr2");
+  mesh.SetInstanceMeshResPath("res:/mesh/instances.gr2");
+  assertEquals(mesh.geometryResPath, "res:/mesh/base.gr2");
+  assertEquals(mesh.GetInstanceMeshResPath(), "res:/mesh/instances.gr2");
+
+  const instanceData = new Tr2RuntimeInstanceData();
+  mesh.SetInstanceGeometryRes(instanceData);
+  assertEquals(mesh.GetInstanceGeometryResource(), instanceData);
+  mesh.opaqueAreas.push(new Tr2MeshArea());
+  assertEquals(mesh.GetAreas(TriBatchType.TRIBATCHTYPE_OPAQUE).length, 1);
+
+  mesh.SetDynamicBounds(3);
+  assertEquals(mesh.boundsMethod, Tr2InstancedMesh.BoundsMethod.DYNAMIC);
+  assertEquals(mesh.maxInstanceSize, 3);
+  mesh.SetDynamicScaledBounds(4);
+  assertEquals(mesh.boundsMethod, Tr2InstancedMesh.BoundsMethod.DYNAMIC_SCALED);
+  assertEquals(mesh.maxInstanceSize, 4);
+});
+
+test("runtime instance data packs Carbon SOF records without realizing a GPU buffer", () =>
+{
+  const data = new Tr2RuntimeInstanceData();
+  const layout = [
+    { usage: "TEXCOORD", usageIndex: 0, type: "FLOAT32_4", name: "transform0" },
+    { usage: "TEXCOORD", usageIndex: 1, type: "FLOAT32_4", name: "transform1" },
+    { usage: "TEXCOORD", usageIndex: 2, type: "FLOAT32_4", name: "transform2" },
+    { usage: "TEXCOORD", usageIndex: 3, type: "FLOAT32_4", name: "lastTransform0" },
+    { usage: "TEXCOORD", usageIndex: 4, type: "FLOAT32_4", name: "lastTransform1" },
+    { usage: "TEXCOORD", usageIndex: 5, type: "FLOAT32_4", name: "lastTransform2" },
+    { usage: "TEXCOORD", usageIndex: 6, type: "BYTE_4", name: "boneIndex" }
+  ];
+  data.SetElementLayout(layout);
+  assertEquals(data.GetStride(), 100);
+  assertEquals(Object.isFrozen(data.GetLayout()), true);
+
+  const row = {
+    transform0: [1, 2, 3, 4],
+    transform1: [5, 6, 7, 8],
+    transform2: [9, 10, 11, 12],
+    lastTransform0: [13, 14, 15, 16],
+    lastTransform1: [17, 18, 19, 20],
+    lastTransform2: [21, 22, 23, 24],
+    boneIndex: 0x01020304
+  };
+  data.SetData([row]);
+  row.transform0[0] = 99;
+  row.boneIndex = 0;
+
+  assertEquals(data.count, 1);
+  assertEquals(data.GetCount(), 1);
+  assertEquals(data.dirty, true);
+  assertEquals(data.dataRevision, 0);
+  const bytes = data.GetData();
+  assertEquals(bytes.byteLength, 100);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  assertAlmostEquals(view.getFloat32(0, true), 1);
+  assertAlmostEquals(view.getFloat32(92, true), 24);
+  assertEquals(view.getUint8(96), 4);
+  assertEquals(view.getUint8(97), 3);
+  assertEquals(view.getUint8(98), 2);
+  assertEquals(view.getUint8(99), 1);
+  assertEquals(data.GetItemElement(0, 6), 0x01020304);
+
+  const transform = data.GetItemElement(0, 0);
+  transform[0] = 77;
+  assertEquals(data.GetItemElement(0, 0)[0], 1);
+  data.SetItemElement(0, 0, [2, 3, 4, 5]);
+  assertAlmostEquals(new DataView(data.GetData().buffer).getFloat32(0, true), 2);
+  assertEquals(data.UpdateData(), true);
+  assertEquals(data.UpdateData(), false);
+  assertEquals(data.dirty, false);
+  assertEquals(data.dataRevision, 1);
+  assertEquals(Object.hasOwn(data, "gpuBuffer"), false);
+});
+
+test("runtime instance data preserves explicit bounds and computes position bounds", () =>
+{
+  const data = new Tr2RuntimeInstanceData();
+  assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "count")?.type.kind, "uint32");
+  assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "aabbMin")?.type.kind, "vec3");
+  assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "aabbMax")?.type.kind, "vec3");
+  assertEquals(data.aabbMin.join(","), "0,0,0");
+  assertEquals(data.aabbMax.join(","), "0,0,0");
+
+  data.SetElementLayout([
+    { usage: "POSITION", usageIndex: 0, type: "FLOAT32_3", name: "position" }
+  ]);
+  data.SetData([
+    { position: [4, -2, 7] },
+    { position: [-3, 5, 1] }
+  ]);
+  assertEquals(data.UpdateBoundingBox(), true);
+  assertEquals(data.aabbMin.join(","), "-3,-2,1");
+  assertEquals(data.aabbMax.join(","), "4,5,7");
+
+  const min = [-10, -11, -12];
+  const max = [10, 11, 12];
+  data.SetBoundingBox({ min, max });
+  min[0] = 100;
+  max[0] = 100;
+  assertEquals(data.UpdateBoundingBox(), false);
+  assertEquals(data.aabbMin.join(","), "-10,-11,-12");
+  assertEquals(data.aabbMax.join(","), "10,11,12");
+  assertEquals(data.GetInstanceBufferBoundingBox(0).min.join(","), "-10,-11,-12");
+
+  const mesh = new Tr2InstancedMesh();
+  mesh.SetInstanceGeometryRes(data);
+  mesh.SetDynamicBounds(2);
+  const bounds = mesh.GetBounds();
+  assertEquals(bounds.min.join(","), "-12,-13,-14");
+  assertEquals(bounds.max.join(","), "12,13,14");
+
+  data.SetElementLayout([[4, 0, 4]]);
+  assertEquals(data.GetStride(), 16);
+  assertEquals(data.count, 0);
+  assertEquals(data.GetData(), null);
+});
+
+test("TriObserverLocal maintains Carbon placement and mute state without creating audio objects", () =>
+{
+  const calls = [];
+  const placementObserver = {
+    UpdatePlacement(front, up, position)
+    {
+      calls.push([
+        "placement",
+        Array.from(front),
+        Array.from(up),
+        Array.from(position)
+      ]);
+    },
+    Mute()
+    {
+      calls.push(["mute"]);
+    },
+    Unmute()
+    {
+      calls.push(["unmute"]);
+    }
+  };
+  const observer = new TriObserverLocal();
+  observer.SetPosition([1, 2, 3]);
+  observer.SetFront([1, 0, 0]);
+  observer.SetObserver(placementObserver);
+
+  const transform = mat4.fromRotationTranslationScale(
+    mat4.create(),
+    [0, 0, 0, 1],
+    [10, 20, 30],
+    [2, 3, 4]
+  );
+  assertEquals(observer.Update(transform), true);
+  assertEquals(calls[0][1].join(","), "2,0,0");
+  assertEquals(calls[0][2].join(","), "0,3,0");
+  assertEquals(calls[0][3].join(","), "12,26,42");
+
+  assertEquals(observer.SetMute(true), true);
+  assertEquals(observer.SetMute(true), false);
+  assertEquals(observer.GetMute(), true);
+  assertEquals(observer.SetMute(false), true);
+  assertEquals(calls.slice(1).map(call => call[0]).join(","), "mute,unmute");
+  assertEquals(CjsSchema.getField(TriObserverLocal, "observer")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(TriObserverLocal, "mute")?.io?.persist, undefined);
+});
+
+test("TriObserverLocal preserves Carbon's degenerate-front fallback", () =>
+{
+  let placement = null;
+  const observer = new TriObserverLocal();
+  observer.SetObserver({
+    UpdatePlacement(front, up, position)
+    {
+      placement = { front: Array.from(front), up: Array.from(up), position: Array.from(position) };
+    }
+  });
+  const transform = mat4.fromScaling(mat4.create(), [0, 0, 0]);
+  observer.Update(transform);
+  assertEquals(placement.front.join(","), "0,0,1");
+  assertEquals(placement.up.join(","), "0,1,0");
+});
+
+test("TriProjection exposes its source-backed schema and identity default", () =>
+{
+  const projection = new TriProjection();
+  assertEquals(CjsSchema.getClass("TriProjection"), TriProjection);
+  assertEquals(CjsSchema.getField(TriProjection, "transform")?.type.kind, "mat4");
+  assertEquals(CjsSchema.getField(TriProjection, "transform")?.io?.read, true);
+  assertEquals(projection.GetProjectionType(), 0);
+  assertMatrixValues(projection.GetTransform(), mat4.create());
+});
+
+test("TriProjection constructs left-handed perspective and orthographic matrices", () =>
+{
+  const projection = new TriProjection();
+
+  projection.PerspectiveFov(Math.PI / 2, 2, 1, 11);
+  assertEquals(projection.GetProjectionType(), TriProjection.FOV);
+  assertMatrixValues(projection.GetTransform(), [
+    0.5, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1.1, 1,
+    0, 0, -1.1, 0
+  ]);
+
+  projection.PerspectiveOffCenter(-1, 3, -2, 2, 1, 11);
+  assertEquals(projection.GetProjectionType(), TriProjection.OFF_CENTER);
+  assertMatrixValues(projection.GetTransform(), [
+    0.5, 0, 0, 0,
+    0, 0.5, 0, 0,
+    -0.5, 0, 1.1, 1,
+    0, 0, -1.1, 0
+  ]);
+
+  projection.PerspectiveOrthographic(8, 4, 1, 11);
+  assertEquals(projection.GetProjectionType(), TriProjection.ORTHO);
+  assertMatrixValues(projection.GetTransform(), [
+    0.25, 0, 0, 0,
+    0, 0.5, 0, 0,
+    0, 0, 0.1, 0,
+    0, 0, -0.1, 1
+  ]);
+});
+
+test("TriProjection custom transforms are copied at both API boundaries", () =>
+{
+  const projection = new TriProjection();
+  const source = mat4.create();
+  source[12] = 4;
+  projection.CustomProjection(source);
+  source[12] = 8;
+
+  const first = projection.GetTransform();
+  assertEquals(projection.GetProjectionType(), TriProjection.CUSTOM);
+  assertAlmostEquals(first[12], 4);
+  first[12] = 12;
+  assertAlmostEquals(projection.GetTransform()[12], 4);
+});
+
+test("TriViewport preserves Carbon defaults, initialization, and aspect ratios", () =>
+{
+  const viewport = new TriViewport();
+  assertEquals(viewport.x, 0);
+  assertEquals(viewport.y, 0);
+  assertEquals(viewport.width, 1);
+  assertEquals(viewport.height, 1);
+  assertEquals(viewport.minZ, 0);
+  assertEquals(viewport.maxZ, 1);
+  assertEquals(viewport.GetAspectRatio(), 1);
+  assertEquals(CjsSchema.getField(TriViewport, "width")?.type.kind, "int32");
+  assertEquals(CjsSchema.getField(TriViewport, "maxZ")?.type.kind, "float32");
+
+  viewport.__init__(10, 20, 1920, 1080, 0.25);
+  assertEquals(viewport.x, 10);
+  assertEquals(viewport.y, 20);
+  assertEquals(viewport.width, 1920);
+  assertEquals(viewport.height, 1080);
+  assertEquals(viewport.minZ, 0.25);
+  assertEquals(viewport.maxZ, 1);
+  assertAlmostEquals(viewport.GetAspectRatio(), 16 / 9);
+
+  viewport.__init__(0, 0, 4, 0, 0, 0.75);
+  assertEquals(viewport.GetAspectRatio(), Infinity);
+  assertEquals(viewport.maxZ, 0.75);
+});
+
+test("TriRect uses int32 fields and preserves omitted SetRect components", () =>
+{
+  const rect = new TriRect();
+  assertEquals(CjsSchema.getClass("TriRect"), TriRect);
+  assertEquals(CjsSchema.getField(TriRect, "left")?.type.kind, "int32");
+  assertEquals(rect.left, 0);
+  assertEquals(rect.top, 0);
+  assertEquals(rect.right, 0);
+  assertEquals(rect.bottom, 0);
+
+  rect.__init__(1, 2, 3, 4);
+  rect.SetRect(undefined, 20, undefined, 40);
+  assertEquals(rect.left, 1);
+  assertEquals(rect.top, 20);
+  assertEquals(rect.right, 3);
+  assertEquals(rect.bottom, 40);
+  rect.SetRect(-1);
+  assertEquals(rect.left, -1);
+  assertEquals(rect.top, 20);
+});
+
+test("Tr2ExpressionTermInfo factories preserve Carbon term types and isolate arguments", () =>
+{
+  const variable = Tr2ExpressionTermInfo.Variable("Math", "Time", "Current time");
+  assertEquals(variable.type, TermType.VARIABLE);
+  assertEquals(variable.category, "Math");
+  assertEquals(variable.name, "Time");
+  assertEquals(variable.description, "Current time");
+  assertEquals(variable.GetArguments().length, 0);
+
+  const fn = Tr2ExpressionTermInfo.Function("Math", "Clamp", "value", "min", "max", "Clamps a value");
+  assertEquals(fn.type, TermType.FUNCTION);
+  assertEquals(fn.GetArguments().join(","), "value,min,max");
+  const copiedArguments = fn.GetArguments();
+  copiedArguments.push("mutated");
+  assertEquals(fn.GetArguments().join(","), "value,min,max");
+
+  const stringFn = Tr2ExpressionTermInfo.StringFunction("Object", "Find", "name", "Finds by name");
+  assertEquals(stringFn.type, TermType.STRING_FUNCTION);
+  assertEquals(stringFn.GetArguments().join(","), "name");
+  assertEquals(CjsSchema.getField(Tr2ExpressionTermInfo, "type")?.type.kind, "int32");
+  assertEquals(CjsSchema.getMethod(Tr2ExpressionTermInfo, "GetArguments")?.impl?.status, "implemented");
+});

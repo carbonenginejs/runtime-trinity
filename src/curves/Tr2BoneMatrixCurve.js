@@ -1,0 +1,253 @@
+// Source: E:\carbonengine\trinity\trinity\Curves\Tr2BoneMatrixCurve.h
+// Source: E:\carbonengine\trinity\trinity\Curves\Tr2BoneMatrixCurve.cpp
+import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { isArrayLike } from "@carbonenginejs/core-math/is";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { Tr2MatrixKey } from "./Tr2MatrixKey.js";
+
+
+@type.define({
+  className: "Tr2BoneMatrixCurve",
+  family: "curves"
+})
+export class Tr2BoneMatrixCurve extends CjsModel
+{
+  static #identityMatrix = mat4.create();
+
+  @io.read
+  @type.unknown
+  currentValue = mat4.create();
+
+  @io.persist
+  @type.unknown
+  name = "";
+
+  @io.persist
+  @type.unknown
+  length = 1;
+
+  @io.persist
+  @type.unknown
+  cycle = true;
+
+  @io.persist
+  @type.unknown
+  reversed = false;
+
+  @io.persist
+  @type.unknown
+  startValue = mat4.create();
+
+  @io.persist
+  @type.unknown
+  endValue = mat4.create();
+
+  @io.readwrite
+  @type.objectRef("Tr2SkinnedObject")
+  skinnedObject = null;
+
+  @io.persist
+  @type.mat4
+  transform = mat4.create();
+
+  @io.persistOnly
+  @type.unknown
+  keys = [];
+
+  #bone = "";
+
+  #scratch = mat4.create();
+
+  /**
+   * Initializes sorted keys and cached value.
+   */
+  @carbon.method
+  @impl.adapted
+  Initialize()
+  {
+    this.Sort();
+    this.UpdateValue(0);
+    return true;
+  }
+
+  /**
+   * Gets authored duration.
+   */
+  @carbon.method
+  @impl.implemented
+  Length()
+  {
+    const keys = this.keys;
+    const length = this.length;
+    return length || (keys.length ? keys[keys.length - 1].time : 0);
+  }
+
+  /**
+   * Updates cached matrix value.
+   */
+  @carbon.method
+  @impl.adapted
+  UpdateValue(time)
+  {
+    this.GetValueAt(time, this.currentValue);
+  }
+
+  /**
+   * Gets matrix value at a time.
+   */
+  @carbon.method
+  @impl.adapted
+  GetValueAt(_time, out)
+  {
+    const boneMatrix = Tr2BoneMatrixCurve.#getBoneMatrix(this.skinnedObject, this.#bone);
+    if (!boneMatrix)
+    {
+      return mat4.identity(out);
+    }
+    mat4.multiply(this.#scratch, this.transform, boneMatrix);
+    const worldTransform = Tr2BoneMatrixCurve.#getSkinnedObjectTransform(this.skinnedObject);
+    return worldTransform ? mat4.multiply(out, this.#scratch, worldTransform) : mat4.copy(out, this.#scratch);
+  }
+
+  /**
+   * Gets matrix value at a time.
+   */
+  @carbon.method
+  @impl.adapted
+  GetValue(time, out)
+  {
+    return this.GetValueAt(time, out);
+  }
+
+  /**
+   * Sorts keys by time.
+   */
+  @carbon.method
+  @impl.implemented
+  Sort()
+  {
+    const keys = this.keys;
+    keys.sort((a, b) => a.time - b.time);
+    const lastKey = keys.at(-1);
+    const length = this.length;
+    if (lastKey && lastKey.time > length)
+    {
+      const previousLength = this.length;
+      mat4.copy(this.#scratch, this.endValue);
+      this.length = lastKey.time;
+      mat4.copy(this.endValue, lastKey.value);
+      if (previousLength > 0)
+      {
+        lastKey.time = previousLength;
+        mat4.copy(lastKey.value, this.#scratch);
+      }
+    }
+  }
+
+  /**
+   * Adds a matrix key.
+   */
+  @carbon.method
+  @impl.adapted
+  AddKey(time, value = null)
+  {
+    const keyValue = value ?? Tr2BoneMatrixCurve.#identityMatrix;
+    const keys = this.keys;
+    for (let i = 0; i < this.keys.length; i++)
+    {
+      const key = keys[i];
+      if (key.time === time)
+      {
+        mat4.copy(key.value, keyValue);
+        return i;
+      }
+    }
+    const key = new Tr2MatrixKey();
+    key.time = time;
+    mat4.copy(key.value, keyValue);
+    keys.push(key);
+    this.Sort();
+    return keys.indexOf(key);
+  }
+
+  /**
+   * Removes a matrix key.
+   */
+  @carbon.method
+  @impl.implemented
+  RemoveKey(index)
+  {
+    this.keys.splice(index, 1);
+  }
+
+  /**
+   * Sets the source bone name.
+   */
+  @carbon.method
+  @impl.implemented
+  SetBone(bone)
+  {
+    this.#bone = bone;
+  }
+
+  /**
+   * Gets the source bone name.
+   */
+  @carbon.method
+  @impl.implemented
+  GetBone()
+  {
+    return this.#bone;
+  }
+  GetKeyForTime(time)
+  {
+    const keys = this.keys;
+    if (!this.keys.length)
+    {
+      return null;
+    }
+    let best = keys[0];
+    for (const key of keys)
+    {
+      if (key.time <= time)
+      {
+        best = key;
+      }
+      else
+      {
+        break;
+      }
+    }
+    return best;
+  }
+
+  static #getBoneMatrix(skinnedObject, bone)
+  {
+    if (!skinnedObject || !bone)
+    {
+      return null;
+    }
+    if (typeof skinnedObject === "object" && "GetBoneMatrix" in skinnedObject && typeof skinnedObject.GetBoneMatrix === "function")
+    {
+      const value = skinnedObject.GetBoneMatrix(bone);
+      return isArrayLike(value, 16) ? value : null;
+    }
+    if (typeof skinnedObject === "object" && "GetBoneTransform" in skinnedObject && typeof skinnedObject.GetBoneTransform === "function")
+    {
+      const value = skinnedObject.GetBoneTransform(bone);
+      return isArrayLike(value, 16) ? value : null;
+    }
+    return null;
+  }
+
+  static #getSkinnedObjectTransform(skinnedObject)
+  {
+    if (skinnedObject && typeof skinnedObject === "object" && "GetTransform" in skinnedObject && typeof skinnedObject.GetTransform === "function")
+    {
+      const value = skinnedObject.GetTransform();
+      return isArrayLike(value, 16) ? value : null;
+    }
+    return null;
+  }
+}
