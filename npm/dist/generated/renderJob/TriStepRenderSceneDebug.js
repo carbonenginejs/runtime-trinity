@@ -1,0 +1,36 @@
+import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
+
+let _initProto, _initClass, _init_scene, _init_extra_scene;
+
+/** TriStepRenderSceneDebug (renderJob) - generated from schema shapeHash 4d372330.... */
+let _TriStepRenderSceneDe;
+class TriStepRenderSceneDebug extends _TriRenderStep {
+  static {
+    ({
+      e: [_init_scene, _init_extra_scene, _initProto],
+      c: [_TriStepRenderSceneDe, _initClass]
+    } = _applyDecs2311(this, [type.define({
+      className: "TriStepRenderSceneDebug",
+      family: "renderJob"
+    })], [[[io, io.readwrite, void 0, type.objectRef("ITr2Scene")], 16, "scene"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_scene(this);
+  }
+  /** m_scene (ITr2ScenePtr) [READWRITE] */
+  scene = (_initProto(this), _init_scene(this, null));
+
+  /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
+  __init__(...args) {
+    throw _TriRenderStep.notImplemented("TriStepRenderSceneDebug", "__init__", args);
+  }
+  static {
+    _initClass();
+  }
+}
+
+export { _TriStepRenderSceneDe as TriStepRenderSceneDebug };
+//# sourceMappingURL=TriStepRenderSceneDebug.js.map

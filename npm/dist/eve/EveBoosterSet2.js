@@ -1,0 +1,388 @@
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
+import { EveBoosterSet2Renderable as _EveBoosterSet2Render } from './EveBoosterSet2Renderable.js';
+
+let _initProto, _initClass, _init_flareLodEnabled, _init_extra_flareLodEnabled, _init_staticTrailLength, _init_extra_staticTrailLength, _init_trailsStaticOffsets, _init_extra_trailsStaticOffsets, _init_trailsStaticOffsets2, _init_extra_trailsStaticOffsets2, _init_trailsStaticOffsets3, _init_extra_trailsStaticOffsets3, _init_trailsStaticOffsets4, _init_extra_trailsStaticOffsets4, _init_trailsStaticOffsets5, _init_extra_trailsStaticOffsets5, _init_lightOffset, _init_extra_lightOffset, _init_lightFlickerAmplitude, _init_extra_lightFlickerAmplitude, _init_lightFlickerFrequency, _init_extra_lightFlickerFrequency, _init_lightRadius, _init_extra_lightRadius, _init_lightColor, _init_extra_lightColor, _init_lightWarpRadius, _init_extra_lightWarpRadius, _init_lightWarpColor, _init_extra_lightWarpColor, _init_display, _init_extra_display, _init_alwaysOnIntensity, _init_extra_alwaysOnIntensity, _init_warpGlowColor, _init_extra_warpGlowColor, _init_glowColor, _init_extra_glowColor, _init_haloColor, _init_extra_haloColor, _init_warpHaloColor, _init_extra_warpHaloColor, _init_effectFar, _init_extra_effectFar, _init_effect, _init_extra_effect, _init_instances, _init_extra_instances, _init_maxVel, _init_extra_maxVel, _init_glowScale, _init_extra_glowScale, _init_symHaloScale, _init_extra_symHaloScale, _init_haloScaleX, _init_extra_haloScaleX, _init_haloScaleY, _init_extra_haloScaleY, _init_trailsSmoothing, _init_extra_trailsSmoothing, _init_glows, _init_extra_glows, _init_maxSize, _init_extra_maxSize, _init_boosterBoundingSphereCenter, _init_extra_boosterBoundingSphereCenter, _init_boosterBoundingSphereRadius, _init_extra_boosterBoundingSphereRadius, _init_warpIntensity, _init_extra_warpIntensity, _init_physicsUpdate, _init_extra_physicsUpdate, _init_destinyUpdate, _init_extra_destinyUpdate, _init_alwaysOn, _init_extra_alwaysOn, _init_trails, _init_extra_trails;
+let _EveBoosterSet;
+new class extends _identity {
+  static [class EveBoosterSet2 extends _EveEntity {
+    static {
+      ({
+        e: [_init_flareLodEnabled, _init_extra_flareLodEnabled, _init_staticTrailLength, _init_extra_staticTrailLength, _init_trailsStaticOffsets, _init_extra_trailsStaticOffsets, _init_trailsStaticOffsets2, _init_extra_trailsStaticOffsets2, _init_trailsStaticOffsets3, _init_extra_trailsStaticOffsets3, _init_trailsStaticOffsets4, _init_extra_trailsStaticOffsets4, _init_trailsStaticOffsets5, _init_extra_trailsStaticOffsets5, _init_lightOffset, _init_extra_lightOffset, _init_lightFlickerAmplitude, _init_extra_lightFlickerAmplitude, _init_lightFlickerFrequency, _init_extra_lightFlickerFrequency, _init_lightRadius, _init_extra_lightRadius, _init_lightColor, _init_extra_lightColor, _init_lightWarpRadius, _init_extra_lightWarpRadius, _init_lightWarpColor, _init_extra_lightWarpColor, _init_display, _init_extra_display, _init_alwaysOnIntensity, _init_extra_alwaysOnIntensity, _init_warpGlowColor, _init_extra_warpGlowColor, _init_glowColor, _init_extra_glowColor, _init_haloColor, _init_extra_haloColor, _init_warpHaloColor, _init_extra_warpHaloColor, _init_effectFar, _init_extra_effectFar, _init_effect, _init_extra_effect, _init_instances, _init_extra_instances, _init_maxVel, _init_extra_maxVel, _init_glowScale, _init_extra_glowScale, _init_symHaloScale, _init_extra_symHaloScale, _init_haloScaleX, _init_extra_haloScaleX, _init_haloScaleY, _init_extra_haloScaleY, _init_trailsSmoothing, _init_extra_trailsSmoothing, _init_glows, _init_extra_glows, _init_maxSize, _init_extra_maxSize, _init_boosterBoundingSphereCenter, _init_extra_boosterBoundingSphereCenter, _init_boosterBoundingSphereRadius, _init_extra_boosterBoundingSphereRadius, _init_warpIntensity, _init_extra_warpIntensity, _init_physicsUpdate, _init_extra_physicsUpdate, _init_destinyUpdate, _init_extra_destinyUpdate, _init_alwaysOn, _init_extra_alwaysOn, _init_trails, _init_extra_trails, _initProto],
+        c: [_EveBoosterSet, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "EveBoosterSet2",
+        family: "eve/attachment/boosters"
+      })], [[[io, io.notify, io, io.readwrite, type, type.boolean], 16, "flareLodEnabled"], [[io, io.notify, io, io.persist, type, type.float32], 16, "staticTrailLength"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets0"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets1"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets2"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets3"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets4"], [[io, io.persist, type, type.float32], 16, "lightOffset"], [[io, io.persist, type, type.float32], 16, "lightFlickerAmplitude"], [[io, io.persist, type, type.float32], 16, "lightFlickerFrequency"], [[io, io.persist, type, type.float32], 16, "lightRadius"], [[io, io.persist, type, type.color], 16, "lightColor"], [[io, io.persist, type, type.float32], 16, "lightWarpRadius"], [[io, io.persist, type, type.color], 16, "lightWarpColor"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "alwaysOnIntensity"], [[io, io.notify, io, io.persist, type, type.color], 16, "warpGlowColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "glowColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "haloColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "warpHaloColor"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effectFar"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.read, void 0, type.list("EveBoosterSet2Renderable")], 16, "instances"], [[io, io.readwrite, type, type.float32], 16, "maxVel"], [[io, io.notify, io, io.persist, type, type.float32], 16, "glowScale"], [[io, io.notify, io, io.persist, type, type.float32], 16, "symHaloScale"], [[io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleX"], [[io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleY"], [[io, io.persist, type, type.float32], 16, "trailsSmoothing"], [[io, io.persist, void 0, type.objectRef("EveSpriteSet")], 16, "glows"], [[io, io.read, type, type.float32], 16, "maxSize"], [[io, io.read, type, type.vec3], 16, "boosterBoundingSphereCenter"], [[io, io.read, type, type.float32], 16, "boosterBoundingSphereRadius"], [[io, io.readwrite, type, type.float32], 16, "warpIntensity"], [[io, io.persist, type, type.boolean], 16, "physicsUpdate"], [[io, io.persist, type, type.boolean], 16, "destinyUpdate"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.objectRef("EveTrailsSet")], 16, "trails"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateTrails"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlow"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTrail"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
+    }
+    /** m_flareLodEnabled (bool) [READWRITE, NOTIFY] */
+    flareLodEnabled = (_initProto(this), _init_flareLodEnabled(this, true));
+
+    /** m_staticTrailLength (float) [READWRITE, PERSIST, NOTIFY] */
+    staticTrailLength = (_init_extra_flareLodEnabled(this), _init_staticTrailLength(this, 0));
+
+    /** m_trailsStaticOffsets[0] (Vector3) [READWRITE, PERSIST] */
+    trailsStaticOffsets0 = (_init_extra_staticTrailLength(this), _init_trailsStaticOffsets(this, vec3.create()));
+
+    /** m_trailsStaticOffsets[1] (Vector3) [READWRITE, PERSIST] */
+    trailsStaticOffsets1 = (_init_extra_trailsStaticOffsets(this), _init_trailsStaticOffsets2(this, vec3.create()));
+
+    /** m_trailsStaticOffsets[2] (Vector3) [READWRITE, PERSIST] */
+    trailsStaticOffsets2 = (_init_extra_trailsStaticOffsets2(this), _init_trailsStaticOffsets3(this, vec3.create()));
+
+    /** m_trailsStaticOffsets[3] (Vector3) [READWRITE, PERSIST] */
+    trailsStaticOffsets3 = (_init_extra_trailsStaticOffsets3(this), _init_trailsStaticOffsets4(this, vec3.create()));
+
+    /** m_trailsStaticOffsets[4] (Vector3) [READWRITE, PERSIST] */
+    trailsStaticOffsets4 = (_init_extra_trailsStaticOffsets4(this), _init_trailsStaticOffsets5(this, vec3.create()));
+
+    /** m_lightOffset (float) [READWRITE, PERSIST] */
+    lightOffset = (_init_extra_trailsStaticOffsets5(this), _init_lightOffset(this, 0));
+
+    /** m_lightFlickerAmplitude (float) [READWRITE, PERSIST] */
+    lightFlickerAmplitude = (_init_extra_lightOffset(this), _init_lightFlickerAmplitude(this, 0));
+
+    /** m_lightFlickerFrequency (float) [READWRITE, PERSIST] */
+    lightFlickerFrequency = (_init_extra_lightFlickerAmplitude(this), _init_lightFlickerFrequency(this, 0));
+
+    /** m_lightRadius (float) [READWRITE, PERSIST] */
+    lightRadius = (_init_extra_lightFlickerFrequency(this), _init_lightRadius(this, 0));
+
+    /** m_lightColor (Color) [READWRITE, PERSIST] */
+    lightColor = (_init_extra_lightRadius(this), _init_lightColor(this, vec4.create()));
+
+    /** m_lightWarpRadius (float) [READWRITE, PERSIST] */
+    lightWarpRadius = (_init_extra_lightColor(this), _init_lightWarpRadius(this, 0));
+
+    /** m_lightWarpColor (Color) [READWRITE, PERSIST] */
+    lightWarpColor = (_init_extra_lightWarpRadius(this), _init_lightWarpColor(this, vec4.create()));
+
+    /** m_display (bool) [READWRITE, PERSIST] */
+    display = (_init_extra_lightWarpColor(this), _init_display(this, true));
+
+    /** m_alwaysOnIntensity (float) [READWRITE, PERSIST] */
+    alwaysOnIntensity = (_init_extra_display(this), _init_alwaysOnIntensity(this, 1));
+
+    /** m_warpGlowColor (Color) [READWRITE, PERSIST, NOTIFY] */
+    warpGlowColor = (_init_extra_alwaysOnIntensity(this), _init_warpGlowColor(this, vec4.create()));
+
+    /** m_glowColor (Color) [READWRITE, PERSIST, NOTIFY] */
+    glowColor = (_init_extra_warpGlowColor(this), _init_glowColor(this, vec4.create()));
+
+    /** m_haloColor (Color) [READWRITE, PERSIST, NOTIFY] */
+    haloColor = (_init_extra_glowColor(this), _init_haloColor(this, vec4.create()));
+
+    /** m_warpHaloColor (Color) [READWRITE, PERSIST, NOTIFY] */
+    warpHaloColor = (_init_extra_haloColor(this), _init_warpHaloColor(this, vec4.create()));
+
+    /** m_effectFar (Tr2EffectPtr) [READWRITE, PERSIST] */
+    effectFar = (_init_extra_warpHaloColor(this), _init_effectFar(this, null));
+
+    /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
+    effect = (_init_extra_effectFar(this), _init_effect(this, null));
+
+    /** m_boosterRenderables (PEveBoosterSet2RenderableVector) [READ] */
+    instances = (_init_extra_effect(this), _init_instances(this, []));
+
+    /** m_maxVel (float) [READWRITE] */
+    maxVel = (_init_extra_instances(this), _init_maxVel(this, 250));
+
+    /** m_glowScale (float) [READWRITE, PERSIST, NOTIFY] */
+    glowScale = (_init_extra_maxVel(this), _init_glowScale(this, 1));
+
+    /** m_symHaloScale (float) [READWRITE, PERSIST, NOTIFY] */
+    symHaloScale = (_init_extra_glowScale(this), _init_symHaloScale(this, 1));
+
+    /** m_haloScaleX (float) [READWRITE, PERSIST, NOTIFY] */
+    haloScaleX = (_init_extra_symHaloScale(this), _init_haloScaleX(this, 1));
+
+    /** m_haloScaleY (float) [READWRITE, PERSIST, NOTIFY] */
+    haloScaleY = (_init_extra_haloScaleX(this), _init_haloScaleY(this, 1));
+
+    /** m_trailsSmoothing (float) [READWRITE, PERSIST] */
+    trailsSmoothing = (_init_extra_haloScaleY(this), _init_trailsSmoothing(this, 10));
+
+    /** m_glows (EveSpriteSetPtr) [READWRITE, PERSIST] */
+    glows = (_init_extra_trailsSmoothing(this), _init_glows(this, null));
+
+    /** m_maxSize (float) [READ] */
+    maxSize = (_init_extra_glows(this), _init_maxSize(this, 0));
+
+    /** m_boosterBoundingSphere.xyz (Vector4) [READ] */
+    boosterBoundingSphereCenter = (_init_extra_maxSize(this), _init_boosterBoundingSphereCenter(this, vec3.create()));
+
+    /** m_boosterBoundingSphere.w (float) [READ] */
+    boosterBoundingSphereRadius = (_init_extra_boosterBoundingSphereCenter(this), _init_boosterBoundingSphereRadius(this, 0));
+
+    /** m_warpIntensity (float) [READWRITE] */
+    warpIntensity = (_init_extra_boosterBoundingSphereRadius(this), _init_warpIntensity(this, 0));
+
+    /** m_physicsUpdate (bool) [READWRITE, PERSIST] */
+    physicsUpdate = (_init_extra_warpIntensity(this), _init_physicsUpdate(this, true));
+
+    /** m_destinyUpdate (bool) [READWRITE, PERSIST] */
+    destinyUpdate = (_init_extra_physicsUpdate(this), _init_destinyUpdate(this, true));
+
+    /** m_alwaysOn (bool) [READWRITE, PERSIST] */
+    alwaysOn = (_init_extra_destinyUpdate(this), _init_alwaysOn(this, false));
+
+    /** m_trails (EveTrailsSetPtr) [READWRITE, PERSIST] */
+    trails = (_init_extra_alwaysOn(this), _init_trails(this, null));
+    #singleBoosters = (_init_extra_trails(this), []);
+    #revision = 0;
+    Initialize() {
+      for (const renderable of this.instances) {
+        renderable?.SetBoosterSet?.(this);
+      }
+      this.#revision++;
+      return true;
+    }
+    OnModified(properties = null) {
+      if (CjsModel.hasModifiedProperty(properties, "staticTrailLength")) {
+        _EveBoosterSet.#UpdateStaticTrailOffsets(this);
+      }
+      if (this.glows && _EveBoosterSet.#HasModifiedFlareProperty(properties)) {
+        this.glows.Clear?.();
+        for (const booster of this.#singleBoosters) {
+          _EveBoosterSet.#CreateFlares(this, booster);
+        }
+        this.glows.Rebuild?.();
+      }
+      this.#revision++;
+      return true;
+    }
+    SetCount(count) {
+      const requested = Math.trunc(Number(count));
+      const target = Number.isFinite(requested) ? Math.max(1, requested) : 1;
+      if (this.instances.length > target) {
+        this.instances.length = target;
+      }
+      while (this.instances.length < target) {
+        const renderable = new _EveBoosterSet2Render();
+        renderable.SetBoosterSet(this);
+        this.instances.push(renderable);
+      }
+      for (const renderable of this.instances) {
+        renderable?.SetBoosterSet?.(this);
+      }
+      this.#revision++;
+      return this.instances.length;
+    }
+    Update(deltaTime, time, parentMatrix = mat4.create(), parentSpeed = 0, parentAcceleration = _EveBoosterSet.#zero, parentRotation = _EveBoosterSet.#identityRotation, boosterInstance = 0) {
+      if (!this.instances.length) {
+        this.SetCount(1);
+      }
+      const index = Number(boosterInstance) >>> 0;
+      if (index >= this.instances.length) {
+        return false;
+      }
+      this.instances[index]?.Update?.(deltaTime, time, parentMatrix, parentSpeed, parentAcceleration, parentRotation);
+      return true;
+    }
+    UpdateTrails(deltaTime, time) {
+      if (!this.trails) {
+        return false;
+      }
+      let updated = false;
+      for (const renderable of this.instances) {
+        updated = renderable?.UpdateTrails?.(deltaTime, time) || updated;
+      }
+      this.trails.Update?.(time);
+      return updated;
+    }
+    Clear() {
+      this.#singleBoosters.length = 0;
+      this.glows?.Clear?.();
+      this.trails?.Clear?.();
+      vec3.set(this.boosterBoundingSphereCenter, 0, 0, 0);
+      this.boosterBoundingSphereRadius = 0;
+      this.maxSize = 0;
+      this.#revision++;
+    }
+    Add(localMatrix, functionality, hasTrail, atlasIndex0, atlasIndex1, lightScale = 1) {
+      if (!localMatrix || localMatrix.length !== 16) {
+        throw new TypeError("EveBoosterSet2 transforms must contain 16 values");
+      }
+      const transform = mat4.clone(localMatrix);
+      const scale = Math.max(Math.hypot(transform[0], transform[1], transform[2]), Math.hypot(transform[4], transform[5], transform[6]));
+      const lightPosition = vec3.transformMat4(vec3.create(), [0, 0, -this.lightOffset], transform);
+      const booster = {
+        transform,
+        functionality: vec4.clone(functionality ?? _EveBoosterSet.#defaultFunctionality),
+        lightPosition,
+        lightRadius: scale * (Number(lightScale) || 0),
+        lightPhase: 128 * Math.random(),
+        atlasIndex0: Number(atlasIndex0) >>> 0,
+        atlasIndex1: Number(atlasIndex1) >>> 0,
+        hasTrail: !!hasTrail
+      };
+      this.#singleBoosters.push(booster);
+      if (this.glows) {
+        _EveBoosterSet.#CreateFlares(this, booster);
+      }
+      if (this.trails && hasTrail) {
+        const trailTransform = mat4.clone(transform);
+        trailTransform[12] -= trailTransform[8] * 0.5;
+        trailTransform[13] -= trailTransform[9] * 0.5;
+        trailTransform[14] -= trailTransform[10] * 0.5;
+        this.trails.Add?.(trailTransform, scale);
+      }
+      _EveBoosterSet.#UpdateBoundingSphere(this, transform.subarray(12, 15));
+      this.maxSize = Math.max(this.maxSize, scale);
+      this.#revision++;
+      return this.#singleBoosters.length - 1;
+    }
+    SetData(glowScale, glowColor, warpGlowColor, symHaloScale, haloScaleX, haloScaleY, haloColor, warpHaloColor, alwaysOn) {
+      this.glowScale = Number(glowScale);
+      vec4.copy(this.glowColor, glowColor);
+      vec4.copy(this.warpGlowColor, warpGlowColor);
+      this.symHaloScale = Number(symHaloScale);
+      this.haloScaleX = Number(haloScaleX);
+      this.haloScaleY = Number(haloScaleY);
+      vec4.copy(this.haloColor, haloColor);
+      vec4.copy(this.warpHaloColor, warpHaloColor);
+      this.alwaysOn = !!alwaysOn;
+    }
+    SetLightData(offset, flickerAmplitude, flickerFrequency, radius, color, warpRadius, warpColor) {
+      this.lightOffset = Number(offset);
+      this.lightFlickerAmplitude = Number(flickerAmplitude);
+      this.lightFlickerFrequency = Number(flickerFrequency);
+      this.lightRadius = Number(radius);
+      vec4.copy(this.lightColor, color);
+      this.lightWarpRadius = Number(warpRadius);
+      vec4.copy(this.lightWarpColor, warpColor);
+    }
+    SetEffect(effect, effectFar) {
+      this.effect = effect ?? null;
+      this.effectFar = effectFar ?? null;
+    }
+    SetGlow(glow) {
+      this.glows = glow ?? null;
+    }
+    SetTrail(trail) {
+      this.trails = trail ?? null;
+    }
+    GetBoosterIntensity(index = null) {
+      if (index !== null && index !== undefined) {
+        return this.instances[Number(index) >>> 0]?.GetIntensity?.() ?? 0;
+      }
+      if (!this.instances.length) {
+        return 0;
+      }
+      let intensity = 0;
+      for (const renderable of this.instances) {
+        intensity += renderable?.GetIntensity?.() ?? 0;
+      }
+      return intensity / this.instances.length;
+    }
+    GetBoundingSphere() {
+      const result = vec4.create();
+      for (const renderable of this.instances) {
+        _EveBoosterSet.#MergeSphere(result, renderable?.GetBoundingSphere?.());
+      }
+      return result;
+    }
+    GetBoosterData() {
+      return this.#singleBoosters.map(booster => ({
+        transform: mat4.clone(booster.transform),
+        functionality: vec4.clone(booster.functionality),
+        lightPosition: vec3.clone(booster.lightPosition),
+        lightRadius: booster.lightRadius,
+        lightPhase: booster.lightPhase,
+        atlasIndex0: booster.atlasIndex0,
+        atlasIndex1: booster.atlasIndex1,
+        hasTrail: booster.hasTrail
+      }));
+    }
+    GetRevision() {
+      return this.#revision;
+    }
+  }];
+  #CreateFlares(owner, booster) {
+    const transform = booster.transform;
+    const position = vec3.fromValues(transform[12], transform[13], transform[14]);
+    const direction = vec3.fromValues(transform[8], transform[9], transform[10]);
+    const scale = Math.max(Math.hypot(transform[0], transform[1], transform[2]), Math.hypot(transform[4], transform[5], transform[6]));
+    if (vec3.squaredLength(direction)) {
+      vec3.normalize(direction, direction);
+    }
+    if (scale < 3) {
+      vec3.scale(direction, direction, scale / 3);
+    }
+    const seed = Math.random() * 0.7;
+    _EveBoosterSet.#AddFlare(owner, position, direction, 2.5, seed, seed, scale * owner.glowScale, scale * owner.glowScale, owner.glowColor, owner.warpGlowColor);
+    _EveBoosterSet.#AddFlare(owner, position, direction, 3, seed, 1 + seed, scale * owner.symHaloScale, scale * owner.symHaloScale, owner.haloColor, owner.warpHaloColor);
+    _EveBoosterSet.#AddFlare(owner, position, direction, 3.01, seed, 1 + seed, scale * owner.haloScaleX, scale * owner.haloScaleY, owner.haloColor, owner.warpHaloColor);
+  }
+  #HasModifiedFlareProperty(properties) {
+    return _EveBoosterSet.#flareProperties.some(property => CjsModel.hasModifiedProperty(properties, property));
+  }
+  #AddFlare(owner, position, direction, distance, blinkRate, blinkPhase, minScale, maxScale, color, warpColor) {
+    const spritePosition = vec3.scaleAndAdd(vec3.create(), position, direction, -distance);
+    owner.glows.Add?.(spritePosition, blinkRate, blinkPhase, minScale, maxScale, 0, color, warpColor);
+  }
+  #UpdateBoundingSphere(owner, position) {
+    const delta = vec3.subtract(vec3.create(), position, owner.boosterBoundingSphereCenter);
+    const distance = vec3.length(delta);
+    const radius = owner.boosterBoundingSphereRadius;
+    if (distance * distance <= radius * radius + 1e-4 || !distance) {
+      return;
+    }
+    vec3.scaleAndAdd(owner.boosterBoundingSphereCenter, owner.boosterBoundingSphereCenter, delta, 0.5 * (1 - radius / distance));
+    owner.boosterBoundingSphereRadius = 0.5 * (radius + distance);
+  }
+  #UpdateStaticTrailOffsets(owner) {
+    const step = owner.staticTrailLength / 4;
+    const offsets = [owner.trailsStaticOffsets0, owner.trailsStaticOffsets1, owner.trailsStaticOffsets2, owner.trailsStaticOffsets3, owner.trailsStaticOffsets4];
+    for (let index = 0; index < offsets.length; index++) {
+      vec3.set(offsets[index], 0, 0, -step * index);
+    }
+  }
+  #MergeSphere(target, source) {
+    if (!source || source.length !== 4) {
+      return target;
+    }
+    const targetRadius = target[3];
+    const sourceRadius = source[3];
+    const delta = vec3.fromValues(source[0] - target[0], source[1] - target[1], source[2] - target[2]);
+    const distance = vec3.length(delta);
+    if (targetRadius >= distance + sourceRadius) {
+      return target;
+    }
+    if (sourceRadius >= distance + targetRadius) {
+      vec4.copy(target, source);
+      return target;
+    }
+    if (!distance) {
+      target[3] = Math.max(targetRadius, sourceRadius);
+      return target;
+    }
+    const radius = 0.5 * (distance + targetRadius + sourceRadius);
+    const factor = (radius - targetRadius) / distance;
+    target[0] += delta[0] * factor;
+    target[1] += delta[1] * factor;
+    target[2] += delta[2] * factor;
+    target[3] = radius;
+    return target;
+  }
+  #zero = Object.freeze([0, 0, 0]);
+  #identityRotation = Object.freeze([0, 0, 0, 1]);
+  #defaultFunctionality = Object.freeze([0, 1, 1, 1]);
+  #flareProperties = Object.freeze(["glowScale", "haloScaleX", "haloScaleY", "symHaloScale", "glowColor", "warpGlowColor", "haloColor", "warpHaloColor"]);
+  Shape = Object.freeze({
+    STAR: 0,
+    BOX: 1,
+    SHAPE_COUNT: 2
+  });
+  constructor() {
+    super(_EveBoosterSet), _initClass();
+  }
+}();
+
+export { _EveBoosterSet as EveBoosterSet2 };
+//# sourceMappingURL=EveBoosterSet2.js.map

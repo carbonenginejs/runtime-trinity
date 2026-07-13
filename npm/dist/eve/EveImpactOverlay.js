@@ -1,0 +1,117 @@
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { Tr2ScalarFader as _Tr2ScalarFader } from '../curves/Tr2ScalarFader.js';
+
+let _initProto, _initClass, _init_name, _init_extra_name, _init_seed, _init_extra_seed, _init_display, _init_extra_display, _init_configuration, _init_extra_configuration, _init_impactDataNextIdx, _init_extra_impactDataNextIdx, _init_armorImpactGoalCount, _init_extra_armorImpactGoalCount, _init_armorImpactParentSize, _init_extra_armorImpactParentSize, _init_shieldImpactColorFade, _init_extra_shieldImpactColorFade, _init_shieldImpactParentSize, _init_extra_shieldImpactParentSize, _init_shieldIsEllipsoid, _init_extra_shieldIsEllipsoid, _init_debugForceSpawnDebris, _init_extra_debugForceSpawnDebris, _init_renderPriority, _init_extra_renderPriority, _init_mesh, _init_extra_mesh, _init_dataTextureBlockID, _init_extra_dataTextureBlockID, _init_maxShieldImpacts, _init_extra_maxShieldImpacts, _init_overallShieldImpact, _init_extra_overallShieldImpact, _init_shieldHardening, _init_extra_shieldHardening, _init_shieldBoosting, _init_extra_shieldBoosting, _init_armorDamageShader, _init_extra_armorDamageShader, _init_armorImpactEmitter, _init_extra_armorImpactEmitter, _init_armorRepairing, _init_extra_armorRepairing, _init_armorHardening, _init_extra_armorHardening, _init_hullRepairing, _init_extra_hullRepairing, _init_hullDamageFlickerCurve, _init_extra_hullDamageFlickerCurve, _init_hullDamageFactor, _init_extra_hullDamageFactor, _init_hullImpactEmitter, _init_extra_hullImpactEmitter;
+let _EveImpactOverlay;
+new class extends _identity {
+  static [class EveImpactOverlay extends CjsModel {
+    static {
+      ({
+        e: [_init_name, _init_extra_name, _init_seed, _init_extra_seed, _init_display, _init_extra_display, _init_configuration, _init_extra_configuration, _init_impactDataNextIdx, _init_extra_impactDataNextIdx, _init_armorImpactGoalCount, _init_extra_armorImpactGoalCount, _init_armorImpactParentSize, _init_extra_armorImpactParentSize, _init_shieldImpactColorFade, _init_extra_shieldImpactColorFade, _init_shieldImpactParentSize, _init_extra_shieldImpactParentSize, _init_shieldIsEllipsoid, _init_extra_shieldIsEllipsoid, _init_debugForceSpawnDebris, _init_extra_debugForceSpawnDebris, _init_renderPriority, _init_extra_renderPriority, _init_mesh, _init_extra_mesh, _init_dataTextureBlockID, _init_extra_dataTextureBlockID, _init_maxShieldImpacts, _init_extra_maxShieldImpacts, _init_overallShieldImpact, _init_extra_overallShieldImpact, _init_shieldHardening, _init_extra_shieldHardening, _init_shieldBoosting, _init_extra_shieldBoosting, _init_armorDamageShader, _init_extra_armorDamageShader, _init_armorImpactEmitter, _init_extra_armorImpactEmitter, _init_armorRepairing, _init_extra_armorRepairing, _init_armorHardening, _init_extra_armorHardening, _init_hullRepairing, _init_extra_hullRepairing, _init_hullDamageFlickerCurve, _init_extra_hullDamageFlickerCurve, _init_hullDamageFactor, _init_extra_hullDamageFactor, _init_hullImpactEmitter, _init_extra_hullImpactEmitter, _initProto],
+        c: [_EveImpactOverlay, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "EveImpactOverlay",
+        family: "eve/overlays/impact"
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.uint32], 16, "seed"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.read, type, type.int32, void 0, schema.enum("ImpactConfiguration")], 16, "configuration"], [[io, io.read, type, type.int32], 16, "impactDataNextIdx"], [[io, io.read, type, type.uint64], 16, "armorImpactGoalCount"], [[io, io.read, type, type.float32], 16, "armorImpactParentSize"], [[io, io.readwrite, type, type.float32], 16, "shieldImpactColorFade"], [[io, io.read, type, type.float32], 16, "shieldImpactParentSize"], [[io, io.readwrite, type, type.boolean], 16, "shieldIsEllipsoid"], [[io, io.readwrite, type, type.boolean], 16, "debugForceSpawnDebris"], [[io, io.read, type, type.float32], 16, "renderPriority"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.read, type, type.int32], 16, "dataTextureBlockID"], [[io, io.read, type, type.uint32], 16, "maxShieldImpacts"], [[io, io.readwrite, type, type.float32], 16, "overallShieldImpact"], [[io, io.readwrite, void 0, type.objectRef("Tr2ScalarFader")], 16, "shieldHardening"], [[io, io.readwrite, void 0, type.objectRef("Tr2ScalarFader")], 16, "shieldBoosting"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "armorDamageShader"], [[io, io.persist, void 0, type.objectRef("Tr2GpuUniqueEmitter")], 16, "armorImpactEmitter"], [[io, io.readwrite, void 0, type.objectRef("Tr2ScalarFader")], 16, "armorRepairing"], [[io, io.readwrite, void 0, type.objectRef("Tr2ScalarFader")], 16, "armorHardening"], [[io, io.readwrite, void 0, type.objectRef("Tr2ScalarFader")], 16, "hullRepairing"], [[io, io.persist, void 0, type.objectRef("TriPerlinCurve")], 16, "hullDamageFlickerCurve"], [[io, io.readwrite, type, type.float32], 16, "hullDamageFactor"], [[io, io.persist, void 0, type.objectRef("Tr2GpuUniqueEmitter")], 16, "hullImpactEmitter"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "Set"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetSeed"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetArmorImpactLifeTime"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLastDamageState"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDataTextureOffset"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetImpactConfiguration"], [[carbon, carbon.method, impl, impl.adapted], 18, "HasShieldEllipsoid"], [[carbon, carbon.method, impl, impl.adapted], 18, "ToggleEffect"]], 0, void 0, CjsModel));
+    }
+    name = (_initProto(this), _init_name(this, ""));
+    seed = (_init_extra_name(this), _init_seed(this, 0));
+    display = (_init_extra_seed(this), _init_display(this, true));
+    configuration = (_init_extra_display(this), _init_configuration(this, 0));
+    impactDataNextIdx = (_init_extra_configuration(this), _init_impactDataNextIdx(this, 1));
+    armorImpactGoalCount = (_init_extra_impactDataNextIdx(this), _init_armorImpactGoalCount(this, 0));
+    armorImpactParentSize = (_init_extra_armorImpactGoalCount(this), _init_armorImpactParentSize(this, 0));
+    shieldImpactColorFade = (_init_extra_armorImpactParentSize(this), _init_shieldImpactColorFade(this, 0));
+    shieldImpactParentSize = (_init_extra_shieldImpactColorFade(this), _init_shieldImpactParentSize(this, 0));
+    shieldIsEllipsoid = (_init_extra_shieldImpactParentSize(this), _init_shieldIsEllipsoid(this, true));
+    debugForceSpawnDebris = (_init_extra_shieldIsEllipsoid(this), _init_debugForceSpawnDebris(this, false));
+    renderPriority = (_init_extra_debugForceSpawnDebris(this), _init_renderPriority(this, 0));
+    mesh = (_init_extra_renderPriority(this), _init_mesh(this, null));
+    dataTextureBlockID = (_init_extra_mesh(this), _init_dataTextureBlockID(this, -1));
+    maxShieldImpacts = (_init_extra_dataTextureBlockID(this), _init_maxShieldImpacts(this, 8));
+    overallShieldImpact = (_init_extra_maxShieldImpacts(this), _init_overallShieldImpact(this, -1));
+    shieldHardening = (_init_extra_overallShieldImpact(this), _init_shieldHardening(this, new _Tr2ScalarFader()));
+    shieldBoosting = (_init_extra_shieldHardening(this), _init_shieldBoosting(this, new _Tr2ScalarFader()));
+    armorDamageShader = (_init_extra_shieldBoosting(this), _init_armorDamageShader(this, null));
+    armorImpactEmitter = (_init_extra_armorDamageShader(this), _init_armorImpactEmitter(this, null));
+    armorRepairing = (_init_extra_armorImpactEmitter(this), _init_armorRepairing(this, new _Tr2ScalarFader()));
+    armorHardening = (_init_extra_armorRepairing(this), _init_armorHardening(this, new _Tr2ScalarFader()));
+    hullRepairing = (_init_extra_armorHardening(this), _init_hullRepairing(this, new _Tr2ScalarFader()));
+    hullDamageFlickerCurve = (_init_extra_hullRepairing(this), _init_hullDamageFlickerCurve(this, null));
+    hullDamageFactor = (_init_extra_hullDamageFlickerCurve(this), _init_hullDamageFactor(this, 0));
+    hullImpactEmitter = (_init_extra_hullDamageFactor(this), _init_hullImpactEmitter(this, null));
+    #armorImpactLifeTime = (_init_extra_hullImpactEmitter(this), 10);
+    #damageLocatorCount = 0;
+    #dataTextureOffset = -1;
+    #lastDamageState = vec3.fromValues(1, 1, 1);
+    Initialize() {
+      return true;
+    }
+    Set(hullDamageFlickerCurve, armorDamageEmitter, hullImpactEmitter, armorDamageShader, shieldImpactMesh, shieldIsEllipsoid) {
+      this.shieldIsEllipsoid = !!shieldIsEllipsoid;
+      this.hullDamageFlickerCurve = hullDamageFlickerCurve ?? null;
+      this.armorImpactEmitter = armorDamageEmitter ?? null;
+      this.hullImpactEmitter = hullImpactEmitter ?? null;
+      this.armorDamageShader = armorDamageShader ?? null;
+      this.mesh = shieldImpactMesh ?? null;
+      return true;
+    }
+    SetSeed(seed) {
+      this.seed = Number(seed) >>> 0;
+      return true;
+    }
+    SetDamageLocatorCount(count) {
+      this.#damageLocatorCount = Number(count) >>> 0;
+      return true;
+    }
+    GetDamageLocatorCount() {
+      return this.#damageLocatorCount;
+    }
+    GetArmorImpactLifeTime() {
+      return this.#armorImpactLifeTime;
+    }
+    GetLastDamageState(out = vec3.create()) {
+      return vec3.copy(out, this.#lastDamageState);
+    }
+    GetDataTextureOffset() {
+      return this.#dataTextureOffset;
+    }
+    GetImpactConfiguration() {
+      return this.configuration;
+    }
+    HasShieldEllipsoid() {
+      return this.shieldIsEllipsoid;
+    }
+    ToggleEffect(name, on, duration) {
+      const fader = _EveImpactOverlay.#effectFader(this, name);
+      if (!fader) return false;
+      fader.StartFade(!!on, Number(duration) / 4);
+      return true;
+    }
+  }];
+  #effectFader(overlay, name) {
+    switch (name) {
+      case "shieldboost":
+        return overlay.shieldBoosting;
+      case "shieldhardening":
+        return overlay.shieldHardening;
+      case "armorhardening":
+        return overlay.armorHardening;
+      case "armorrepair":
+        return overlay.armorRepairing;
+      case "hullrepair":
+        return overlay.hullRepairing;
+      default:
+        return null;
+    }
+  }
+  constructor() {
+    super(_EveImpactOverlay), _initClass();
+  }
+}();
+
+export { _EveImpactOverlay as EveImpactOverlay };
+//# sourceMappingURL=EveImpactOverlay.js.map

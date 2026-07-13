@@ -1,0 +1,30 @@
+import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type } from '@carbonenginejs/core-types/schema';
+
+let _initClass, _init_time, _init_extra_time, _init_value, _init_extra_value;
+let _Tr2MatrixKey;
+class Tr2MatrixKey extends CjsModel {
+  static {
+    ({
+      e: [_init_time, _init_extra_time, _init_value, _init_extra_value],
+      c: [_Tr2MatrixKey, _initClass]
+    } = _applyDecs2311(this, [type.define({
+      className: "Tr2MatrixKey",
+      family: "curves"
+    })], [[[io, io.persist, type, type.unknown], 16, "time"], [[io, io.persist, type, type.unknown], 16, "value"]], 0, void 0, CjsModel));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_value(this);
+  }
+  time = _init_time(this, 0);
+  value = (_init_extra_time(this), _init_value(this, mat4.create()));
+  static {
+    _initClass();
+  }
+}
+
+export { _Tr2MatrixKey as Tr2MatrixKey };
+//# sourceMappingURL=Tr2MatrixKey.js.map

@@ -1,0 +1,44 @@
+import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
+import { io, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/core-types/model';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+
+let _initClass, _init_minScale, _init_extra_minScale, _init_maxScale, _init_extra_maxScale, _init_consistentRandom, _init_extra_consistentRandom, _init_uniformScale, _init_extra_uniformScale, _init_overrideScale, _init_extra_overrideScale;
+
+/** EveDistributionSpawnModifierRandomScale (eve/distribution/spawnModifiers) - generated from schema shapeHash 721180bc.... */
+let _EveDistributionSpawn;
+class EveDistributionSpawnModifierRandomScale extends CjsModel {
+  static {
+    ({
+      e: [_init_minScale, _init_extra_minScale, _init_maxScale, _init_extra_maxScale, _init_consistentRandom, _init_extra_consistentRandom, _init_uniformScale, _init_extra_uniformScale, _init_overrideScale, _init_extra_overrideScale],
+      c: [_EveDistributionSpawn, _initClass]
+    } = _applyDecs2311(this, [type.define({
+      className: "EveDistributionSpawnModifierRandomScale",
+      family: "eve/distribution/spawnModifiers"
+    })], [[[io, io.persist, type, type.vec3], 16, "minScale"], [[io, io.persist, type, type.vec3], 16, "maxScale"], [[io, io.persist, type, type.boolean], 16, "consistentRandom"], [[io, io.persist, type, type.boolean], 16, "uniformScale"], [[io, io.persist, type, type.boolean], 16, "overrideScale"]], 0, void 0, CjsModel));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_overrideScale(this);
+  }
+  /** m_minScale (Vector3) [READWRITE, PERSIST] */
+  minScale = _init_minScale(this, vec3.fromValues(1, 1, 1));
+
+  /** m_maxScale (Vector3) [READWRITE, PERSIST] */
+  maxScale = (_init_extra_minScale(this), _init_maxScale(this, vec3.fromValues(1, 1, 1)));
+
+  /** m_consistentRandom (bool) [READWRITE, PERSIST] */
+  consistentRandom = (_init_extra_maxScale(this), _init_consistentRandom(this, false));
+
+  /** m_uniformScale (bool) [READWRITE, PERSIST] */
+  uniformScale = (_init_extra_consistentRandom(this), _init_uniformScale(this, false));
+
+  /** m_overrideScale (bool) [READWRITE, PERSIST] */
+  overrideScale = (_init_extra_uniformScale(this), _init_overrideScale(this, false));
+  static {
+    _initClass();
+  }
+}
+
+export { _EveDistributionSpawn as EveDistributionSpawnModifierRandomScale };
+//# sourceMappingURL=EveDistributionSpawnModifierRandomScale.js.map
