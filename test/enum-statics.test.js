@@ -6,36 +6,10 @@ import test from "node:test";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import * as trinity from "../npm/dist/index.js";
 
-// Deferred: source-only enums not yet stamped (device/window/GPU tail and two
-// format-carbon scoped-enum projection quirks). See the 2026-07-16 enum brief.
-const KNOWN_GAPS = new Set([
-  "EveChildFogVolume.priority -> FroxelFogSettings",
-  "EveChildLightingOverride.priority -> OverrideInfo",
-  "EveTurretSet.impactBehaviour -> ImpactBehaviour",
-  "EveTurretTarget.behaviour -> ImpactBehaviour",
-  "Tr2CurveScalarDefinition.extrapolationBefore -> Tr2CurveExtrapolation",
-  "Tr2CurveScalarDefinition.extrapolationAfter -> Tr2CurveExtrapolation",
-  "Tr2DepthStencil.format -> DepthStencilFormat",
-  "Tr2EffectResource.type -> Type",
-  "Tr2EffectStateManager.renderingMode -> Tr2EffectStateManager",
-  "Tr2GpuBuffer.format -> PixelFormat",
-  "Tr2MainWindow.imeState_MacOS -> Tr2ImeState_MacOS",
-  "Tr2MainWindowState.presentInterval -> PresentInterval",
-  "Tr2MainWindowState.showState -> Tr2WindowShowState",
-  "Tr2MainWindowState.windowMode -> Tr2WindowMode",
-  "Tr2RenderTarget.format -> PixelFormat",
-  "Tr2RenderTarget.type -> TextureType",
-  "Tr2TextureArray.cpuUsage -> Tr2CpuUsage",
-  "Tr2TextureArray.gpuUsage -> Tr2GpuUsage",
-  "TriColorSequencer.operator -> TRIOPERATOR",
-  "TriDevice.presentationInterval -> PresentInterval",
-  "TriDevice.swapEffect -> SwapEffect",
-  "TriDevice.upscalingSetting -> UpscalingSetting",
-  "TriDevice.upscalingTechnique -> UpscalingTechnique",
-  "TriStepSetRenderState.state -> RenderState",
-  "TriTransformParameter.transformBase -> TRITRANSFORMBASE",
-  "TriVectorSequencer.operator -> TRIOPERATOR"
-]);
+// All @schema.enum fields now resolve a class-static member map: trinity-owned
+// enums inline, global graphics/device/render-context vocabulary aliased from
+// @carbonenginejs/runtime-const. The allowlist is intentionally empty.
+const KNOWN_GAPS = new Set([]);
 
 test("every @schema.enum field resolves a class-static member map or is a known gap", () =>
 {

@@ -9,10 +9,10 @@ import { EveChildTransform } from "../../../eve/child/EveChildTransform.js";
 export class EveChildFogVolume extends EveChildTransform
 {
 
-  /** m_settings.priority (FroxelFogSettings - enum FroxelFogSettings) [READWRITE, PERSIST, ENUM] */
+  /** m_settings.priority (FroxelFogSettings - enum Priority) [READWRITE, PERSIST, ENUM] */
   @io.persist
   @type.int32
-  @schema.enum("FroxelFogSettings")
+  @schema.enum("Priority")
   priority = 0;
 
   /** m_volumes (PIEveVolumeVector) [READ, PERSIST] */
@@ -49,5 +49,14 @@ export class EveChildFogVolume extends EveChildTransform
   @io.persist
   @type.float32
   intensity = 1;
+
+  static Priority = Object.freeze({
+    SCENE_DEFAULT_PRIORITY: 0,
+    LOW_PRIORITY: 1,
+    MEDIUM_PRIORITY: 2,
+    HIGH_PRIORITY: 3,
+    UI_PRIORITY: 4,
+    PRIORITY_COUNT: 5,
+  });
 
 }

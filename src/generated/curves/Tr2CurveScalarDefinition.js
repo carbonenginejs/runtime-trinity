@@ -27,4 +27,11 @@ export class Tr2CurveScalarDefinition extends CjsModel
   @schema.enum("Tr2CurveExtrapolation")
   extrapolationAfter = 0;
 
+  static Tr2CurveExtrapolation = Object.freeze({
+    CLAMP: 0,
+    CYCLE: 1,
+    MIRROR: 2,
+    LINEAR: 3,
+  });
+
 }

@@ -41,4 +41,10 @@ export class EveTurretTarget extends CjsModel
   @type.int32
   locator = -1;
 
+  static ImpactBehaviour = Object.freeze({
+    DAMAGE_LOCATOR: 0,
+    SHIELD_ELLIPSOID: 1,
+    CENTER: 2,
+  });
+
 }

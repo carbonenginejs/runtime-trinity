@@ -3,6 +3,7 @@
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { PresentInterval, SwapEffect, UpscalingSetting, UpscalingTechnique } from "@carbonenginejs/runtime-const/render-context";
 
 /** TriDevice (trinityCore) - generated from schema shapeHash 1db3a492.... */
 @type.define({ className: "TriDevice", family: "trinityCore" })
@@ -273,5 +274,13 @@ export class TriDevice extends CjsModel
   {
     throw new Error("TriDevice.UpdateAvailableUpscalingTechniques is not implemented in CarbonEngineJS.");
   }
+
+  static PresentInterval = PresentInterval;
+
+  static SwapEffect = SwapEffect;
+
+  static UpscalingSetting = UpscalingSetting;
+
+  static UpscalingTechnique = UpscalingTechnique;
 
 }

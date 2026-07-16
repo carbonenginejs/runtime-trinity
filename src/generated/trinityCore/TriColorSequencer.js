@@ -4,6 +4,7 @@
 import { io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { TriOperator } from "@carbonenginejs/runtime-const/graphics";
 
 /** TriColorSequencer (trinityCore) - generated from schema shapeHash b7ab6f36.... */
 @type.define({ className: "TriColorSequencer", family: "trinityCore" })
@@ -35,5 +36,7 @@ export class TriColorSequencer extends CjsModel
   @io.persist
   @type.string
   name = "";
+
+  static TRIOPERATOR = TriOperator;
 
 }

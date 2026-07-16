@@ -1,6 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { PixelFormat } from '@carbonenginejs/runtime-const/render-context';
 
 let _initProto, _initClass, _init_creationFlags, _init_extra_creationFlags, _init_format, _init_extra_format, _init_count, _init_extra_count, _init_isValid, _init_extra_isValid;
 
@@ -46,6 +47,7 @@ new class extends _identity {
     GPU_WRITABLE: 2,
     DRAW_INDIRECT: 4
   });
+  PixelFormat = PixelFormat;
   constructor() {
     super(_Tr2GpuBuffer), _initClass();
   }

@@ -37,6 +37,23 @@ new class extends _identity {
     arrayElements = (_init_extra_type(this), _init_arrayElements(this, 0));
   }];
   BINDLESS_SAMPLER = 100;
+  Type = Object.freeze({
+    TEXTURE_1D: 1,
+    TEXTURE_2D: 2,
+    TEXTURE_3D: 3,
+    TEXTURE_CUBE: 4,
+    TEXTURE_TYPELESS: 5,
+    BUFFER: 6,
+    STRUCTURED_BUFFER: 7,
+    TBUFFER: 8,
+    BYTEADDRESS_BUFFER: 9,
+    UAV_RWTYPED: 10,
+    UAV_RWSTRUCTURED: 11,
+    UAV_RWBYTEADDRESS: 12,
+    UAV_APPEND_STRUCTURED: 13,
+    UAV_CONSUME_STRUCTURED: 14,
+    UAV_RWSTRUCTURED_WITH_COUNTER: 15
+  });
   constructor() {
     super(_Tr2EffectResource), _initClass();
   }

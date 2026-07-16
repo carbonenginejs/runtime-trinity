@@ -11,6 +11,30 @@ const schemaRoot = path.join(workspaceRoot, "format-carbon", "src", "schema");
 const runtimeSrc = path.join(root, "src");
 const outRoot = path.join(runtimeSrc, "generated");
 const RESOURCE_OWNED_CLASSES = new Set(["TriTextureRes", "TriGeometryRes", "Tr2EffectRes", "TriEffectRes", "Tr2ImageRes"]);
+
+// Global vocabularies owned by runtime-const: generated classes import and
+// alias them as statics instead of inlining, keeping one source of truth.
+// The render-context numeric enums come from Carbon's Tr2RenderContextEnum /
+// Tr2MainWindow / Tr2UpscalingAL headers (not the Blue schema scan).
+const RENDER_CONTEXT = "@carbonenginejs/runtime-const/render-context";
+const CONST_GRAPHICS = "@carbonenginejs/runtime-const/graphics";
+const ENUM_IMPORT_MAP = {
+  PixelFormat: { import: "PixelFormat", from: RENDER_CONTEXT },
+  DepthStencilFormat: { import: "DepthStencilFormat", from: RENDER_CONTEXT },
+  TextureType: { import: "TextureType", from: RENDER_CONTEXT },
+  Tr2CpuUsage: { import: "Tr2CpuUsage", from: RENDER_CONTEXT },
+  Tr2GpuUsage: { import: "Tr2GpuUsage", from: RENDER_CONTEXT },
+  SwapEffect: { import: "SwapEffect", from: RENDER_CONTEXT },
+  PresentInterval: { import: "PresentInterval", from: RENDER_CONTEXT },
+  RenderState: { import: "RenderState", from: RENDER_CONTEXT },
+  UpscalingTechnique: { import: "UpscalingTechnique", from: RENDER_CONTEXT },
+  UpscalingSetting: { import: "UpscalingSetting", from: RENDER_CONTEXT },
+  Tr2WindowMode: { import: "Tr2WindowMode", from: RENDER_CONTEXT },
+  Tr2WindowShowState: { import: "Tr2WindowShowState", from: RENDER_CONTEXT },
+  Tr2ImeState_MacOS: { import: "Tr2ImeState_MacOS", from: RENDER_CONTEXT },
+  TRIOPERATOR: { import: "TriOperator", from: CONST_GRAPHICS },
+  TRITRANSFORMBASE: { import: "TriTransformBase", from: CONST_GRAPHICS }
+};
 const RUNTIME_FAMILY_OVERRIDES = new Map([
   ["lights", "eve/lights"]
 ]);
@@ -748,6 +772,7 @@ for (const file of docs)
         family
       },
       js: true,
+      enumImportMap: ENUM_IMPORT_MAP,
       ...(baseImport ? {
         extendsClass: expected.meta.sourceBaseClass,
         extendsImport: baseImport

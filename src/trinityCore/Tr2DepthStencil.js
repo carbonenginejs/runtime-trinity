@@ -3,6 +3,7 @@
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { DepthStencilFormat } from "@carbonenginejs/runtime-const/render-context";
 
 /** Tr2DepthStencil (trinityCore) - generated from schema shapeHash 9acb2c99.... */
 @type.define({ className: "Tr2DepthStencil", family: "trinityCore" })
@@ -78,5 +79,7 @@ export class Tr2DepthStencil extends CjsModel
   {
     throw new Error("Tr2DepthStencil.sharedHandle is not implemented in CarbonEngineJS.");
   }
+
+  static DepthStencilFormat = DepthStencilFormat;
 
 }

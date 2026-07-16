@@ -2,7 +2,7 @@
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/core-types/schema";
 
 
 @type.define({
@@ -11,15 +11,19 @@ import { type } from "@carbonenginejs/core-types/schema";
 })
 export class Locator extends CjsModel
 {
+  @io.persist
   @type.vec3
   position = vec3.create();
 
+  @io.persist
   @type.quat
   direction = quat.create();
 
+  @io.persist
   @type.vec3
   scale = vec3.create();
 
+  @io.persist
   @type.int32
   boneIndex = 0;
 

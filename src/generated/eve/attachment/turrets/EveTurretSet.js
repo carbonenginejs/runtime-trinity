@@ -434,6 +434,12 @@ export class EveTurretSet extends EveEntity
     throw new Error("EveTurretSet.StartControllers is not implemented in CarbonEngineJS.");
   }
 
+  static ImpactBehaviour = Object.freeze({
+    DAMAGE_LOCATOR: 0,
+    SHIELD_ELLIPSOID: 1,
+    CENTER: 2,
+  });
+
   static LOD = Object.freeze({
     LOD_INVALID: 0,
     LOD_EMPTY: 1,

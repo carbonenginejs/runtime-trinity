@@ -6,6 +6,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { TriTransformBase } from "@carbonenginejs/runtime-const/graphics";
 
 /** TriTransformParameter (shader) - generated from schema shapeHash de073c4a.... */
 @type.define({ className: "TriTransformParameter", family: "shader" })
@@ -78,5 +79,7 @@ export class TriTransformParameter extends CjsShaderParameter
       dest[i] = out[i];
     }
   }
+
+  static TRITRANSFORMBASE = TriTransformBase;
 
 }

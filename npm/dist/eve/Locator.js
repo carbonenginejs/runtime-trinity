@@ -2,7 +2,7 @@ import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelH
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/core-types/schema';
 
 let _initClass, _init_position, _init_extra_position, _init_direction, _init_extra_direction, _init_scale, _init_extra_scale, _init_boneIndex, _init_extra_boneIndex;
 let _Locator;
@@ -14,7 +14,7 @@ class Locator extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Locator",
       family: "eve/utils"
-    })], [[[type, type.vec3], 16, "position"], [[type, type.quat], 16, "direction"], [[type, type.vec3], 16, "scale"], [[type, type.int32], 16, "boneIndex"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.quat], 16, "direction"], [[io, io.persist, type, type.vec3], 16, "scale"], [[io, io.persist, type, type.int32], 16, "boneIndex"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

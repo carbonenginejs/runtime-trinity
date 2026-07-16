@@ -3,6 +3,7 @@
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
+import { RenderState } from "@carbonenginejs/runtime-const/render-context";
 
 
 @type.define({ className: "TriStepSetRenderState", family: "renderJob" })
@@ -46,4 +47,7 @@ export class TriStepSetRenderState extends TriRenderStep
     executor?.SetRenderState?.(this.state, this.value);
     return TriRenderJob.StepResult.RS_OK;
   }
+
+  static RenderState = RenderState;
+
 }

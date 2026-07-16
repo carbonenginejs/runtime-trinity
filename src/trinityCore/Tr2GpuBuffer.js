@@ -3,6 +3,7 @@
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { PixelFormat } from "@carbonenginejs/runtime-const/render-context";
 
 /** Tr2GpuBuffer (trinityCore) - generated from schema shapeHash 7a225a45.... */
 @type.define({ className: "Tr2GpuBuffer", family: "trinityCore" })
@@ -49,5 +50,7 @@ export class Tr2GpuBuffer extends CjsModel
   {
     throw new Error("Tr2GpuBuffer.DebugGetData is not implemented in CarbonEngineJS.");
   }
+
+  static PixelFormat = PixelFormat;
 
 }

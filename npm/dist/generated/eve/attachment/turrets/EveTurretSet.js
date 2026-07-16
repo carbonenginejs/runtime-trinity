@@ -277,6 +277,11 @@ new class extends _identity {
       throw new Error("EveTurretSet.StartControllers is not implemented in CarbonEngineJS.");
     }
   }];
+  ImpactBehaviour = Object.freeze({
+    DAMAGE_LOCATOR: 0,
+    SHIELD_ELLIPSOID: 1,
+    CENTER: 2
+  });
   LOD = Object.freeze({
     LOD_INVALID: 0,
     LOD_EMPTY: 1,

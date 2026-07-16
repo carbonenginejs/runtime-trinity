@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { Tr2RenderContext as _Tr2RenderContext } from '../../trinityCore/Tr2RenderContext.js';
 
@@ -16,7 +16,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2SamplerOverride",
         family: "shader"
-      })], [[[type, type.string], 16, "name"], [[type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressU"], [[type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressV"], [[type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressW"], [[type, type.int32, void 0, schema.enum("TextureFilter")], 16, "filter"], [[type, type.int32, void 0, schema.enum("TextureFilter")], 16, "mipFilter"], [[type, type.float32], 16, "lodBias"], [[type, type.uint32], 16, "maxMipLevel"], [[type, type.uint32], 16, "maxAnisotropy"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressU"], [[io, io.persist, type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressV"], [[io, io.persist, type, type.int32, void 0, schema.enum("TextureAddressMode")], 16, "addressW"], [[io, io.persist, type, type.int32, void 0, schema.enum("TextureFilter")], 16, "filter"], [[io, io.persist, type, type.int32, void 0, schema.enum("TextureFilter")], 16, "mipFilter"], [[io, io.persist, type, type.float32], 16, "lodBias"], [[io, io.persist, type, type.uint32], 16, "maxMipLevel"], [[io, io.persist, type, type.uint32], 16, "maxAnisotropy"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);

@@ -3,6 +3,7 @@
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { PixelFormat, TextureType } from "@carbonenginejs/runtime-const/render-context";
 
 /** Tr2RenderTarget (trinityCore) - generated from schema shapeHash dc39c914.... */
 @type.define({ className: "Tr2RenderTarget", family: "trinityCore" })
@@ -111,5 +112,9 @@ export class Tr2RenderTarget extends CjsModel
   {
     throw new Error("Tr2RenderTarget.sharedHandle is not implemented in CarbonEngineJS.");
   }
+
+  static PixelFormat = PixelFormat;
+
+  static TextureType = TextureType;
 
 }

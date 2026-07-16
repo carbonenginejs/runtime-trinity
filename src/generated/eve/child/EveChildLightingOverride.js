@@ -9,10 +9,10 @@ import { EveChildTransform } from "../../../eve/child/EveChildTransform.js";
 export class EveChildLightingOverride extends EveChildTransform
 {
 
-  /** m_overrides.priority (OverrideInfo - enum OverrideInfo) [READWRITE, PERSIST, ENUM] */
+  /** m_overrides.priority (OverrideInfo - enum Priority) [READWRITE, PERSIST, ENUM] */
   @io.persist
   @type.int32
-  @schema.enum("OverrideInfo")
+  @schema.enum("Priority")
   priority = 0;
 
   /** m_name (BlueSharedString) [READWRITE, PERSIST] */
@@ -49,5 +49,14 @@ export class EveChildLightingOverride extends EveChildTransform
   @io.persist
   @type.list("IEveVolume")
   volumes = [];
+
+  static Priority = Object.freeze({
+    SCENE_DEFAULT_PRIORITY: 0,
+    LOW_PRIORITY: 1,
+    MEDIUM_PRIORITY: 2,
+    HIGH_PRIORITY: 3,
+    UI_PRIORITY: 4,
+    PRIORITY_COUNT: 5,
+  });
 
 }

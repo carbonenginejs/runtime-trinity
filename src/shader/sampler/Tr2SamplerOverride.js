@@ -1,7 +1,7 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Shader/Tr2Effect.h
 // Hand-maintained from Tr2Effect.cpp's Blue structure definition and defaults.
-import { schema, type } from "@carbonenginejs/core-types/schema";
+import { io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { Tr2RenderContext } from "../../trinityCore/Tr2RenderContext.js";
 
@@ -11,43 +11,52 @@ export class Tr2SamplerOverride extends CjsModel
 {
 
   /** name (BlueSharedString) */
+  @io.persist
   @type.string
   name = "";
 
   /** addressU (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")
   addressU = 1;
 
   /** addressV (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")
   addressV = 1;
 
   /** addressW (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")
   addressW = 1;
 
   /** filter (Tr2RenderContextEnum::TextureFilter) */
+  @io.persist
   @type.int32
   @schema.enum("TextureFilter")
   filter = 2;
 
   /** mipFilter (Tr2RenderContextEnum::TextureFilter) */
+  @io.persist
   @type.int32
   @schema.enum("TextureFilter")
   mipFilter = 2;
 
   /** lodBias (float) */
+  @io.persist
   @type.float32
   lodBias = 0;
 
   /** maxMipLevel (uint32_t) */
+  @io.persist
   @type.uint32
   maxMipLevel = 0;
 
   /** maxAnisotropy (uint32_t) */
+  @io.persist
   @type.uint32
   maxAnisotropy = 4;
 
