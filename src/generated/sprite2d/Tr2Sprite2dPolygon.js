@@ -24,7 +24,7 @@ export class Tr2Sprite2dPolygon extends Tr2TexturedSpriteObject
   @impl.notImplemented
   AppendTriangles(...args)
   {
-    throw Tr2TexturedSpriteObject.notImplemented("Tr2Sprite2dPolygon", "AppendTriangles", args);
+    throw new Error("Tr2Sprite2dPolygon.AppendTriangles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AppendVertices -> PyAppendVertices (MAP_METHOD). */
@@ -32,7 +32,7 @@ export class Tr2Sprite2dPolygon extends Tr2TexturedSpriteObject
   @impl.notImplemented
   AppendVertices(...args)
   {
-    throw Tr2TexturedSpriteObject.notImplemented("Tr2Sprite2dPolygon", "AppendVertices", args);
+    throw new Error("Tr2Sprite2dPolygon.AppendVertices is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetVertices -> PySetVertices (MAP_METHOD). */
@@ -40,7 +40,7 @@ export class Tr2Sprite2dPolygon extends Tr2TexturedSpriteObject
   @impl.notImplemented
   SetVertices(...args)
   {
-    throw Tr2TexturedSpriteObject.notImplemented("Tr2Sprite2dPolygon", "SetVertices", args);
+    throw new Error("Tr2Sprite2dPolygon.SetVertices is not implemented in CarbonEngineJS.");
   }
 
 }

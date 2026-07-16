@@ -4,10 +4,13 @@
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../generated/eve/EveEntity.js";
 import { EveChildUpdateParams } from "../EveChildUpdateParams.js";
+import { EveChildInheritProperties } from "../child/EveChildInheritProperties.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { ReflectionMode } from "../../generated/eve/enums.js";
+import { Tr2Lod } from "../EveLODHelper.js";
 
 @type.define({ className: "EveSpaceObject2", family: "eve/spaceObject" })
 export class EveSpaceObject2 extends EveEntity
@@ -385,6 +388,26 @@ export class EveSpaceObject2 extends EveEntity
 
   @carbon.method
   @impl.implemented
+  SetInheritProperties(colorSet)
+  {
+    if (!this.inheritProperties)
+    {
+      this.inheritProperties = new EveChildInheritProperties();
+    }
+    this.inheritProperties.SetProperties(colorSet);
+    const properties = this.inheritProperties.GetProperties();
+    for (const child of this.effectChildren)
+    {
+      child?.SetInheritProperties?.(properties);
+    }
+    for (const light of this.lights)
+    {
+      light?.SetInheritProperties?.(properties);
+    }
+  }
+
+  @carbon.method
+  @impl.implemented
   GetEffectChildByName(name)
   {
     const target = String(name ?? "");
@@ -404,12 +427,29 @@ export class EveSpaceObject2 extends EveEntity
   {
     if (this.inheritProperties)
     {
-      const properties = this.inheritProperties.GetProperties?.() ?? this.inheritProperties.properties;
-      child?.SetInheritProperties?.(properties);
+      child?.SetInheritProperties?.(this.inheritProperties.GetProperties());
     }
     this.effectChildren.push(child);
     EveSpaceObject2.#ApplyControllerVariables(child, this.#controllerVariables, "SetControllerVariable");
     return child;
+  }
+
+  @carbon.method
+  @impl.implemented
+  AddLight(light)
+  {
+    if (this.inheritProperties)
+    {
+      light?.SetInheritProperties?.(this.inheritProperties.GetProperties());
+    }
+    this.lights.push(light);
+  }
+
+  @carbon.method
+  @impl.implemented
+  ClearLights()
+  {
+    this.lights.length = 0;
   }
 
   @carbon.method
@@ -670,7 +710,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   PlayAnimationEx(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "PlayAnimationEx", args);
+    throw new Error("EveSpaceObject2.PlayAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CalculateSkinnedBoundingBoxFromTransform (MAP_METHOD_AND_WRAP). */
@@ -678,7 +718,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   CalculateSkinnedBoundingBoxFromTransform(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "CalculateSkinnedBoundingBoxFromTransform", args);
+    throw new Error("EveSpaceObject2.CalculateSkinnedBoundingBoxFromTransform is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CalculateSkinnedBoundingSphere (MAP_METHOD_AND_WRAP). */
@@ -686,7 +726,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   CalculateSkinnedBoundingSphere(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "CalculateSkinnedBoundingSphere", args);
+    throw new Error("EveSpaceObject2.CalculateSkinnedBoundingSphere is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearImpactDamage (MAP_METHOD_AND_WRAP). */
@@ -694,7 +734,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   ClearImpactDamage(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "ClearImpactDamage", args);
+    throw new Error("EveSpaceObject2.ClearImpactDamage is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
@@ -702,7 +742,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   ClearAnimations(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "ClearAnimations", args);
+    throw new Error("EveSpaceObject2.ClearAnimations is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CreateImpactFromPosition (MAP_METHOD_AND_WRAP). */
@@ -710,7 +750,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   CreateImpactFromPosition(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "CreateImpactFromPosition", args);
+    throw new Error("EveSpaceObject2.CreateImpactFromPosition is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CreateImpact (MAP_METHOD_AND_WRAP). */
@@ -718,7 +758,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   CreateImpact(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "CreateImpact", args);
+    throw new Error("EveSpaceObject2.CreateImpact is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
@@ -726,7 +766,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   EndAnimation(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "EndAnimation", args);
+    throw new Error("EveSpaceObject2.EndAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method FreezeHighDetailMesh (MAP_METHOD_AND_WRAP). */
@@ -734,7 +774,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   FreezeHighDetailMesh(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "FreezeHighDetailMesh", args);
+    throw new Error("EveSpaceObject2.FreezeHighDetailMesh is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDamageLocatorCount (MAP_METHOD_AND_WRAP). */
@@ -742,7 +782,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetDamageLocatorCount(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetDamageLocatorCount", args);
+    throw new Error("EveSpaceObject2.GetDamageLocatorCount is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocatorCount (MAP_METHOD_AND_WRAP). */
@@ -750,7 +790,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLocatorCount(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLocatorCount", args);
+    throw new Error("EveSpaceObject2.GetLocatorCount is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
@@ -758,7 +798,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetCloseLocatorIndex(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetCloseLocatorIndex", args);
+    throw new Error("EveSpaceObject2.GetCloseLocatorIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetGoodLocatorIndex -> GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
@@ -766,7 +806,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetGoodLocatorIndex(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetGoodLocatorIndex", args);
+    throw new Error("EveSpaceObject2.GetGoodLocatorIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDamageLocatorDirection -> GetDamageLocatorDirectionLocal (MAP_METHOD_AND_WRAP). */
@@ -774,7 +814,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetDamageLocatorDirection(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetDamageLocatorDirection", args);
+    throw new Error("EveSpaceObject2.GetDamageLocatorDirection is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDamageLocator (MAP_METHOD_AND_WRAP). */
@@ -782,7 +822,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetDamageLocator(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetDamageLocator", args);
+    throw new Error("EveSpaceObject2.GetDamageLocator is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTransformedDamageLocator (MAP_METHOD_AND_WRAP). */
@@ -790,7 +830,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetTransformedDamageLocator(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetTransformedDamageLocator", args);
+    throw new Error("EveSpaceObject2.GetTransformedDamageLocator is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsImpostor (MAP_METHOD_AND_WRAP). */
@@ -798,7 +838,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   IsImpostor(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "IsImpostor", args);
+    throw new Error("EveSpaceObject2.IsImpostor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocatorPositionFromSet (MAP_METHOD_AND_WRAP). */
@@ -806,7 +846,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLocatorPositionFromSet(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLocatorPositionFromSet", args);
+    throw new Error("EveSpaceObject2.GetLocatorPositionFromSet is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocatorRotationFromSet (MAP_METHOD_AND_WRAP). */
@@ -814,7 +854,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLocatorRotationFromSet(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLocatorRotationFromSet", args);
+    throw new Error("EveSpaceObject2.GetLocatorRotationFromSet is not implemented in CarbonEngineJS.");
   }
 
   @carbon.method
@@ -841,7 +881,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   PlayAnimation(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "PlayAnimation", args);
+    throw new Error("EveSpaceObject2.PlayAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
@@ -849,7 +889,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   ChainAnimation(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "ChainAnimation", args);
+    throw new Error("EveSpaceObject2.ChainAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
@@ -857,7 +897,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   ChainAnimationEx(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "ChainAnimationEx", args);
+    throw new Error("EveSpaceObject2.ChainAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebuildBoundingSphereInformation (MAP_METHOD_AND_WRAP). */
@@ -865,7 +905,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   RebuildBoundingSphereInformation(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "RebuildBoundingSphereInformation", args);
+    throw new Error("EveSpaceObject2.RebuildBoundingSphereInformation is not implemented in CarbonEngineJS.");
   }
 
   @carbon.method
@@ -880,7 +920,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLastUsedMeshLod(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLastUsedMeshLod", args);
+    throw new Error("EveSpaceObject2.GetLastUsedMeshLod is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocatorTransform -> GetEveLocatorTransform (MAP_METHOD_AND_WRAP). */
@@ -888,7 +928,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLocatorTransform(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLocatorTransform", args);
+    throw new Error("EveSpaceObject2.GetLocatorTransform is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocalBoundingBox -> GetLocalBoundingBoxFromScript (MAP_METHOD_AND_WRAP). */
@@ -896,7 +936,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetLocalBoundingBox(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetLocalBoundingBox", args);
+    throw new Error("EveSpaceObject2.GetLocalBoundingBox is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoundingSphereCenter (MAP_METHOD_AND_WRAP). */
@@ -904,7 +944,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetBoundingSphereCenter(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetBoundingSphereCenter", args);
+    throw new Error("EveSpaceObject2.GetBoundingSphereCenter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
@@ -912,7 +952,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetBoundingSphereRadius(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetBoundingSphereRadius", args);
+    throw new Error("EveSpaceObject2.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoneCount (MAP_METHOD_AND_WRAP). */
@@ -920,7 +960,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   GetBoneCount(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "GetBoneCount", args);
+    throw new Error("EveSpaceObject2.GetBoneCount is not implemented in CarbonEngineJS.");
   }
 
   @carbon.method
@@ -938,7 +978,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   SetImpactAnimation(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "SetImpactAnimation", args);
+    throw new Error("EveSpaceObject2.SetImpactAnimation is not implemented in CarbonEngineJS.");
   }
 
   @carbon.method
@@ -995,7 +1035,7 @@ export class EveSpaceObject2 extends EveEntity
   @impl.notImplemented
   TransformLocators(...args)
   {
-    throw EveEntity.notImplemented("EveSpaceObject2", "TransformLocators", args);
+    throw new Error("EveSpaceObject2.TransformLocators is not implemented in CarbonEngineJS.");
   }
 
   static #ApplyControllerVariables(target, variables, methodName)
@@ -1061,5 +1101,9 @@ export class EveSpaceObject2 extends EveEntity
   static #zero = Object.freeze([0, 0, 0]);
 
   static #identityRotation = Object.freeze([0, 0, 0, 1]);
+
+  static ReflectionMode = ReflectionMode;
+
+  static Tr2Lod = Tr2Lod;
 
 }

@@ -101,72 +101,72 @@ new class extends _identity {
 
     /** Carbon method CreateUpscalingContext (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
     CreateUpscalingContext(...args) {
-      throw CjsModel.notImplemented("TriDevice", "CreateUpscalingContext", args);
+      throw new Error("TriDevice.CreateUpscalingContext is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method DeleteUpscalingContext (MAP_METHOD_AND_WRAP). */
     DeleteUpscalingContext(...args) {
-      throw CjsModel.notImplemented("TriDevice", "DeleteUpscalingContext", args);
+      throw new Error("TriDevice.DeleteUpscalingContext is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method GetRenderResolution (MAP_METHOD_AND_WRAP). */
     GetRenderResolution(...args) {
-      throw CjsModel.notImplemented("TriDevice", "GetRenderResolution", args);
+      throw new Error("TriDevice.GetRenderResolution is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method RefreshDeviceResources (MAP_METHOD_AND_WRAP). */
     RefreshDeviceResources(...args) {
-      throw CjsModel.notImplemented("TriDevice", "RefreshDeviceResources", args);
+      throw new Error("TriDevice.RefreshDeviceResources is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method Render -> PyRender (MAP_METHOD_AND_WRAP). */
     Render(...args) {
-      throw CjsModel.notImplemented("TriDevice", "Render", args);
+      throw new Error("TriDevice.Render is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method GetRenderingPlatformID (MAP_METHOD_AND_WRAP). */
     GetRenderingPlatformID(...args) {
-      throw CjsModel.notImplemented("TriDevice", "GetRenderingPlatformID", args);
+      throw new Error("TriDevice.GetRenderingPlatformID is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method SupportsRenderTargetFormat (MAP_METHOD_AND_WRAP). */
     SupportsRenderTargetFormat(...args) {
-      throw CjsModel.notImplemented("TriDevice", "SupportsRenderTargetFormat", args);
+      throw new Error("TriDevice.SupportsRenderTargetFormat is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method IsVariableRefreshRateSupported (MAP_METHOD_AND_WRAP). */
     IsVariableRefreshRateSupported(...args) {
-      throw CjsModel.notImplemented("TriDevice", "IsVariableRefreshRateSupported", args);
+      throw new Error("TriDevice.IsVariableRefreshRateSupported is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method SupportsRaytracing (MAP_METHOD_AND_WRAP). */
     SupportsRaytracing(...args) {
-      throw CjsModel.notImplemented("TriDevice", "SupportsRaytracing", args);
+      throw new Error("TriDevice.SupportsRaytracing is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method DoesD3DDeviceExist -> DeviceExists (MAP_METHOD_AND_WRAP). */
     DoesD3DDeviceExist(...args) {
-      throw CjsModel.notImplemented("TriDevice", "DoesD3DDeviceExist", args);
+      throw new Error("TriDevice.DoesD3DDeviceExist is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method SetRenderJobs (MAP_METHOD_AND_WRAP). */
     SetRenderJobs(...args) {
-      throw CjsModel.notImplemented("TriDevice", "SetRenderJobs", args);
+      throw new Error("TriDevice.SetRenderJobs is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method SetUpscaling (MAP_METHOD_AND_WRAP). */
     SetUpscaling(...args) {
-      throw CjsModel.notImplemented("TriDevice", "SetUpscaling", args);
+      throw new Error("TriDevice.SetUpscaling is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method GetRenderContext (MAP_METHOD_AND_WRAP). */
     GetRenderContext(...args) {
-      throw CjsModel.notImplemented("TriDevice", "GetRenderContext", args);
+      throw new Error("TriDevice.GetRenderContext is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method UpdateAvailableUpscalingTechniques (MAP_METHOD_AND_WRAP). */
     UpdateAvailableUpscalingTechniques(...args) {
-      throw CjsModel.notImplemented("TriDevice", "UpdateAvailableUpscalingTechniques", args);
+      throw new Error("TriDevice.UpdateAvailableUpscalingTechniques is not implemented in CarbonEngineJS.");
     }
   }];
   ThrottlingReason = Object.freeze({

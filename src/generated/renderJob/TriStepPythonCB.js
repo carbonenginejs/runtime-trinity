@@ -18,7 +18,7 @@ export class TriStepPythonCB extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepPythonCB", "__init__", args);
+    throw new Error("TriStepPythonCB.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCallback (MAP_METHOD_AND_WRAP). */
@@ -26,7 +26,7 @@ export class TriStepPythonCB extends TriRenderStep
   @impl.notImplemented
   SetCallback(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepPythonCB", "SetCallback", args);
+    throw new Error("TriStepPythonCB.SetCallback is not implemented in CarbonEngineJS.");
   }
 
 }

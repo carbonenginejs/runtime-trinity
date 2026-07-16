@@ -37,17 +37,17 @@ class EveChildPlug extends _EveChildTransform {
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   HandleControllerEvent(...args) {
-    throw _EveChildTransform.notImplemented("EveChildPlug", "HandleControllerEvent", args);
+    throw new Error("EveChildPlug.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw _EveChildTransform.notImplemented("EveChildPlug", "SetControllerVariable", args);
+    throw new Error("EveChildPlug.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers(...args) {
-    throw _EveChildTransform.notImplemented("EveChildPlug", "StartControllers", args);
+    throw new Error("EveChildPlug.StartControllers is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

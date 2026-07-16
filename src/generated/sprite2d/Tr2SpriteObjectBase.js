@@ -65,7 +65,13 @@ export class Tr2SpriteObjectBase extends CjsModel
   @impl.notImplemented
   SetDirty(...args)
   {
-    throw CjsModel.notImplemented("Tr2SpriteObjectBase", "SetDirty", args);
+    throw new Error("Tr2SpriteObjectBase.SetDirty is not implemented in CarbonEngineJS.");
   }
+
+  static Tr2SpriteObjectPickState = Object.freeze({
+    TR2_SPS_OFF: 0,
+    TR2_SPS_ON: 1,
+    TR2_SPS_CHILDREN: 2,
+  });
 
 }

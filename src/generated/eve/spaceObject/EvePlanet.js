@@ -12,7 +12,7 @@ export class EvePlanet extends EveEffectRoot2
 
   /** m_zOnlyModel (EveChildMeshPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveChildMesh")
+  @type.model("EveChildMesh")
   zOnlyModel = null;
 
   /** m_emissiveColor (Color) [READWRITE, PERSIST] */

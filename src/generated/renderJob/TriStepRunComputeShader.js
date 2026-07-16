@@ -44,7 +44,7 @@ export class TriStepRunComputeShader extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRunComputeShader", "__init__", args);
+    throw new Error("TriStepRunComputeShader.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

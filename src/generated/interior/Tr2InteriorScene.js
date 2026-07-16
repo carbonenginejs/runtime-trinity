@@ -133,7 +133,7 @@ export class Tr2InteriorScene extends CjsModel
 
   /** m_backgroundEffect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   backgroundEffect = null;
 
   /** Carbon method PickObject -> PickObjectOnly (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -141,7 +141,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   PickObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "PickObject", args);
+    throw new Error("Tr2InteriorScene.PickObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddDynamic (MAP_METHOD_AND_WRAP). */
@@ -149,7 +149,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   AddDynamic(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "AddDynamic", args);
+    throw new Error("Tr2InteriorScene.AddDynamic is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddLightSource (MAP_METHOD_AND_WRAP). */
@@ -157,7 +157,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   AddLightSource(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "AddLightSource", args);
+    throw new Error("Tr2InteriorScene.AddLightSource is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Pick -> PyPick (MAP_METHOD). */
@@ -165,7 +165,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   Pick(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "Pick", args);
+    throw new Error("Tr2InteriorScene.Pick is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickObjectAndArea -> PyPickObjectAndArea (MAP_METHOD). */
@@ -173,7 +173,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   PickObjectAndArea(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "PickObjectAndArea", args);
+    throw new Error("Tr2InteriorScene.PickObjectAndArea is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickPointAndObject -> PyInteriorPickPointAndObject (MAP_METHOD). */
@@ -181,7 +181,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   PickPointAndObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "PickPointAndObject", args);
+    throw new Error("Tr2InteriorScene.PickPointAndObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickObjectUV (MAP_METHOD_AND_WRAP). */
@@ -189,7 +189,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   PickObjectUV(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "PickObjectUV", args);
+    throw new Error("Tr2InteriorScene.PickObjectUV is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebuildSceneData (MAP_METHOD_AND_WRAP). */
@@ -197,7 +197,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   RebuildSceneData(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "RebuildSceneData", args);
+    throw new Error("Tr2InteriorScene.RebuildSceneData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveDynamic (MAP_METHOD_AND_WRAP). */
@@ -205,7 +205,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   RemoveDynamic(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "RemoveDynamic", args);
+    throw new Error("Tr2InteriorScene.RemoveDynamic is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveLightSource (MAP_METHOD_AND_WRAP). */
@@ -213,7 +213,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   RemoveLightSource(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "RemoveLightSource", args);
+    throw new Error("Tr2InteriorScene.RemoveLightSource is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateScene -> UpdateSceneFromScript (MAP_METHOD_AND_WRAP). */
@@ -221,7 +221,7 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   UpdateScene(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "UpdateScene", args);
+    throw new Error("Tr2InteriorScene.UpdateScene is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetupShadowMaps (MAP_METHOD_AND_WRAP). */
@@ -229,7 +229,34 @@ export class Tr2InteriorScene extends CjsModel
   @impl.notImplemented
   SetupShadowMaps(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorScene", "SetupShadowMaps", args);
+    throw new Error("Tr2InteriorScene.SetupShadowMaps is not implemented in CarbonEngineJS.");
   }
+
+  static VisualizeMethod = Object.freeze({
+    VM_NONE: 0,
+    VM_WHITE: 1,
+    VM_OBJECT_NORMAL: 2,
+    VM_TANGENT: 3,
+    VM_BITANGENT: 4,
+    VM_TEXCOORD0: 5,
+    VM_TEXCOORD1: 6,
+    VM_TEXELDENSITY0: 7,
+    VM_NORMALMAP: 8,
+    VM_DIFFUSEMAP: 9,
+    VM_SPECULARMAP: 10,
+    VM_OVERDRAW: 11,
+    VM_EN_ONLY: 12,
+    VM_DEPTH: 13,
+    VM_ALL_LIGHTING: 14,
+    VM_LIGHT_PRE_PASS_NORMALS: 15,
+    VM_LIGHT_PRE_PASS_DEPTH: 16,
+    VM_LIGHT_PRE_PASS_WORLD_POSITION: 17,
+    VM_LIGHT_PRE_PASS_LIGHTING: 18,
+    VM_LIGHT_PRE_PASS_LIGHT_OVERDRAW: 19,
+    VM_LIGHT_PRE_PASS_DIFFUSE_LIGHTING: 20,
+    VM_LIGHT_PRE_PASS_SPECULAR_LIGHTING: 21,
+    VM_OCCLUSION: 22,
+    VM_COUNT: 23,
+  });
 
 }

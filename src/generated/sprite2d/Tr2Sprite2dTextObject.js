@@ -56,4 +56,26 @@ export class Tr2Sprite2dTextObject extends Tr2SpriteObject
   @type.float32
   textWidth = 0;
 
+  static Tr2SpriteObjectEffect = Object.freeze({
+    TR2_SFX_NO_TEXTURE: 0,
+    TR2_SFX_FILL_AA: 1,
+    TR2_SFX_ONE_TEXTURE: 32,
+    TR2_SFX_DOT: 33,
+    TR2_SFX_NOALPHA: 34,
+    TR2_SFX_DROPSHADOW: 35,
+    TR2_SFX_OUTLINE: 36,
+    TR2_SFX_COLOROVERLAY: 37,
+    TR2_SFX_SOFTLIGHT: 38,
+    TR2_SFX_BLUR: 39,
+    TR2_SFX_BLURBACKGROUNDCOLORED: 40,
+    TR2_SFX_BLURBACKGROUND: 41,
+    TR2_SFX_GLOW: 42,
+    TR2_SFX_FONT: 43,
+    TR2_SFX_TWO_TEXTURES: 64,
+    TR2_SFX_MASK: 65,
+    TR2_SFX_COPY_DOT: 66,
+    TR2_SFX_COUNT: 67,
+    TR2_SFX_NONE: 4294967295,
+  });
+
 }

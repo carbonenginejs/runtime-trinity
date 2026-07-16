@@ -31,17 +31,17 @@ class Tr2SolidSet extends _Tr2PrimitiveSet {
 
   /** Carbon method AddTriangle (MAP_METHOD_AND_WRAP). */
   AddTriangle(...args) {
-    throw _Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "AddTriangle", args);
+    throw new Error("Tr2SolidSet.AddTriangle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearTriangles (MAP_METHOD_AND_WRAP). */
   ClearTriangles(...args) {
-    throw _Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "ClearTriangles", args);
+    throw new Error("Tr2SolidSet.ClearTriangles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
   SubmitChanges(...args) {
-    throw _Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "SubmitChanges", args);
+    throw new Error("Tr2SolidSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

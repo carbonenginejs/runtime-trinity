@@ -16,7 +16,7 @@ class EveDistributionModifierTransformOffset extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveDistributionModifierTransformOffset",
       family: "eve/distribution/attributeModifiers"
-    })], [[[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "scaleCurve"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "scaleCurve"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "translationCurve"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

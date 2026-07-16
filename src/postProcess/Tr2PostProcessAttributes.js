@@ -1082,4 +1082,14 @@ export class Tr2PostProcessAttributes extends CjsModel
     }
     return postProcess;
   }
+
+  static Shape = Object.freeze({
+    Disk: 0,
+    Triangle: 1,
+    Rectangle: 2,
+    Pentagon: 3,
+    Hexagon: 4,
+    Heart: 5
+  });
+
 }

@@ -23,7 +23,7 @@ export class EveChildAudio extends EveChildTransform
 
   /** m_audioEmitter (ITr2AudEmitterPtr) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2AudEmitter")
+  @type.model("ITr2AudEmitter")
   audioEmitter = null;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
@@ -31,7 +31,7 @@ export class EveChildAudio extends EveChildTransform
   @impl.notImplemented
   __init__(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildAudio", "__init__", args);
+    throw new Error("EveChildAudio.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetEmitterName (MAP_METHOD_AND_WRAP). */
@@ -39,7 +39,7 @@ export class EveChildAudio extends EveChildTransform
   @impl.notImplemented
   SetEmitterName(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildAudio", "SetEmitterName", args);
+    throw new Error("EveChildAudio.SetEmitterName is not implemented in CarbonEngineJS.");
   }
 
 }

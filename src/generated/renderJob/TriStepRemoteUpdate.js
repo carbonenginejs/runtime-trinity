@@ -50,7 +50,7 @@ export class TriStepRemoteUpdate extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRemoteUpdate", "__init__", args);
+    throw new Error("TriStepRemoteUpdate.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

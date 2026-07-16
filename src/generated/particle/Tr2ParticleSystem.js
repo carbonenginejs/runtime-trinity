@@ -38,13 +38,13 @@ export class Tr2ParticleSystem extends CjsModel
   /** m_emissionOnDeathEmitter (ITr2GenericEmitterPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("ITr2GenericEmitter")
+  @type.model("ITr2GenericEmitter")
   emitParticleOnDeathEmitter = null;
 
   /** m_emissionWhileAliveEmitter (ITr2GenericEmitterPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("ITr2GenericEmitter")
+  @type.model("ITr2GenericEmitter")
   emitParticleDuringLifeEmitter = null;
 
   /** m_applyForce (bool) [READWRITE, PERSIST] */
@@ -114,7 +114,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   ClearParticles(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "ClearParticles", args);
+    throw new Error("Tr2ParticleSystem.ClearParticles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebindConstraints (MAP_METHOD_AND_WRAP). */
@@ -122,7 +122,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   RebindConstraints(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "RebindConstraints", args);
+    throw new Error("Tr2ParticleSystem.RebindConstraints is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SaveToCMF (MAP_METHOD_AND_WRAP). */
@@ -130,7 +130,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   SaveToCMF(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "SaveToCMF", args);
+    throw new Error("Tr2ParticleSystem.SaveToCMF is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SaveToGranny (MAP_METHOD_AND_WRAP). */
@@ -138,7 +138,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   SaveToGranny(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "SaveToGranny", args);
+    throw new Error("Tr2ParticleSystem.SaveToGranny is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateElementDeclaration (MAP_METHOD_AND_WRAP). */
@@ -146,7 +146,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   UpdateElementDeclaration(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "UpdateElementDeclaration", args);
+    throw new Error("Tr2ParticleSystem.UpdateElementDeclaration is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateSimulation -> UpdateSimulationScript (MAP_METHOD_AND_WRAP). */
@@ -154,7 +154,7 @@ export class Tr2ParticleSystem extends CjsModel
   @impl.notImplemented
   UpdateSimulation(...args)
   {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "UpdateSimulation", args);
+    throw new Error("Tr2ParticleSystem.UpdateSimulation is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -25,52 +25,52 @@ class TriStepRenderDebug extends _TriRenderStep {
 
   /** Carbon method Clear (MAP_METHOD_AND_WRAP). */
   Clear(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "Clear", args);
+    throw new Error("TriStepRenderDebug.Clear is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawBox (MAP_METHOD_AND_WRAP). */
   DrawBox(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawBox", args);
+    throw new Error("TriStepRenderDebug.DrawBox is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawCapsule (MAP_METHOD_AND_WRAP). */
   DrawCapsule(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawCapsule", args);
+    throw new Error("TriStepRenderDebug.DrawCapsule is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawCone (MAP_METHOD_AND_WRAP). */
   DrawCone(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawCone", args);
+    throw new Error("TriStepRenderDebug.DrawCone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawCylinder (MAP_METHOD_AND_WRAP). */
   DrawCylinder(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawCylinder", args);
+    throw new Error("TriStepRenderDebug.DrawCylinder is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawLine -> PyDrawLine (MAP_METHOD_AND_WRAP). */
   DrawLine(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawLine", args);
+    throw new Error("TriStepRenderDebug.DrawLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawSphere (MAP_METHOD_AND_WRAP). */
   DrawSphere(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "DrawSphere", args);
+    throw new Error("TriStepRenderDebug.DrawSphere is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Print3D (MAP_METHOD_AND_WRAP). */
   Print3D(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "Print3D", args);
+    throw new Error("TriStepRenderDebug.Print3D is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Print2D (MAP_METHOD_AND_WRAP). */
   Print2D(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "Print2D", args);
+    throw new Error("TriStepRenderDebug.Print2D is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Print2Df (MAP_METHOD_AND_WRAP). */
   Print2Df(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderDebug", "Print2Df", args);
+    throw new Error("TriStepRenderDebug.Print2Df is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

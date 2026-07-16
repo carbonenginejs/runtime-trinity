@@ -1,4 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { ITr2ControllerAction } from './ITr2ControllerAction.js';
@@ -65,7 +66,7 @@ new class extends _identity {
      * Relinks the destination when authored fields change.
      */
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "destinationOwner")) {
+      if (hasModifiedProperty(properties, "destinationOwner")) {
         this.#linkToDestinationOwner();
       }
       return true;

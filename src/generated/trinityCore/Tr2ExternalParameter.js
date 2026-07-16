@@ -17,7 +17,7 @@ export class Tr2ExternalParameter extends CjsModel
   /** m_destinationObject (IRootPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("IRoot")
+  @type.model("IRoot")
   destinationObject = null;
 
   /** m_destinationAttribute (std::string) [READWRITE, PERSIST, NOTIFY] */
@@ -36,7 +36,7 @@ export class Tr2ExternalParameter extends CjsModel
   @impl.notImplemented
   GetValue(...args)
   {
-    throw CjsModel.notImplemented("Tr2ExternalParameter", "GetValue", args);
+    throw new Error("Tr2ExternalParameter.GetValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValue (MAP_METHOD_AND_WRAP). */
@@ -44,7 +44,7 @@ export class Tr2ExternalParameter extends CjsModel
   @impl.notImplemented
   SetValue(...args)
   {
-    throw CjsModel.notImplemented("Tr2ExternalParameter", "SetValue", args);
+    throw new Error("Tr2ExternalParameter.SetValue is not implemented in CarbonEngineJS.");
   }
 
 }

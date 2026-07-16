@@ -24,7 +24,7 @@ export class _className extends CjsModel
   @impl.notImplemented
   Used(...args)
   {
-    throw CjsModel.notImplemented("_className", "Used", args);
+    throw new Error("_className.Used is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValueToDefault -> \ SetValueToDefault (MAP_METHOD_AND_WRAP). */
@@ -32,7 +32,7 @@ export class _className extends CjsModel
   @impl.notImplemented
   SetValueToDefault(...args)
   {
-    throw CjsModel.notImplemented("_className", "SetValueToDefault", args);
+    throw new Error("_className.SetValueToDefault is not implemented in CarbonEngineJS.");
   }
 
 }

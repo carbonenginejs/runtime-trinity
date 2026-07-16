@@ -39,7 +39,7 @@ export class EveMissile extends EveSpaceObject2
   @impl.notImplemented
   RebuildMissileBoundingSphere(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveMissile", "RebuildMissileBoundingSphere", args);
+    throw new Error("EveMissile.RebuildMissileBoundingSphere is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Start (MAP_METHOD_AND_WRAP). */
@@ -47,7 +47,7 @@ export class EveMissile extends EveSpaceObject2
   @impl.notImplemented
   Start(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveMissile", "Start", args);
+    throw new Error("EveMissile.Start is not implemented in CarbonEngineJS.");
   }
 
 }

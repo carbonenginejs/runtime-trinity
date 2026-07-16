@@ -62,4 +62,13 @@ export class ITr2FroxelFogSettings extends CjsModel
   @schema.enum("Priority")
   priority = 2;
 
+  static Priority = Object.freeze({
+    SCENE_DEFAULT_PRIORITY: 0,
+    LOW_PRIORITY: 1,
+    MEDIUM_PRIORITY: 2,
+    HIGH_PRIORITY: 3,
+    UI_PRIORITY: 4,
+    PRIORITY_COUNT: 5,
+  });
+
 }

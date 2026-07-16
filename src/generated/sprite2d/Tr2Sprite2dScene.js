@@ -175,7 +175,13 @@ export class Tr2Sprite2dScene extends CjsModel
   @impl.notImplemented
   PickObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2Sprite2dScene", "PickObject", args);
+    throw new Error("Tr2Sprite2dScene.PickObject is not implemented in CarbonEngineJS.");
   }
+
+  static Tr2SpriteObjectPickState = Object.freeze({
+    TR2_SPS_OFF: 0,
+    TR2_SPS_ON: 1,
+    TR2_SPS_CHILDREN: 2,
+  });
 
 }

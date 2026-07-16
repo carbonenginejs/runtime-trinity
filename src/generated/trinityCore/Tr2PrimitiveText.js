@@ -31,4 +31,10 @@ export class Tr2PrimitiveText extends CjsModel
   @type.vec3
   position = vec3.create();
 
+  static TriDebugFont = Object.freeze({
+    TRI_DBG_FONT_SMALL: 0,
+    TRI_DBG_FONT_MEDIUM: 1,
+    TRI_DBG_FONT_LARGE: 2,
+  });
+
 }

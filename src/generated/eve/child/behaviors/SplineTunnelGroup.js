@@ -51,7 +51,13 @@ export class SplineTunnelGroup extends CjsModel
   @impl.notImplemented
   createSplineTunnels(...args)
   {
-    throw CjsModel.notImplemented("SplineTunnelGroup", "createSplineTunnels", args);
+    throw new Error("SplineTunnelGroup.createSplineTunnels is not implemented in CarbonEngineJS.");
   }
+
+  static TunnelGroupType = Object.freeze({
+    EXIT_TUNNELS: 0,
+    ENTRANCE_TUNNELS: 1,
+    OTHER_TUNNELS: 2,
+  });
 
 }

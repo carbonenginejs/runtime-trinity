@@ -33,7 +33,7 @@ export class BehaviorGroupBooster extends CjsModel
 
   /** m_boosterEffect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   boosterEffect = null;
 
   /** m_flareCount (unsigned int) [READ] */
@@ -88,13 +88,13 @@ export class BehaviorGroupBooster extends CjsModel
   /** m_ambientFlareEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   ambientFlareEffect = null;
 
   /** m_haloFlareEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   haloFlareEffect = null;
 
   /** m_ambientFlareNoiseAmplitude (float) [READWRITE, PERSIST] */
@@ -161,7 +161,7 @@ export class BehaviorGroupBooster extends CjsModel
   @impl.notImplemented
   InitializeEffects(...args)
   {
-    throw CjsModel.notImplemented("BehaviorGroupBooster", "InitializeEffects", args);
+    throw new Error("BehaviorGroupBooster.InitializeEffects is not implemented in CarbonEngineJS.");
   }
 
 }

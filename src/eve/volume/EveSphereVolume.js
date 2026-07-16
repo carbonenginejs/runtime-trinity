@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume_Blue.cpp
+import { hasModifiedProperty } from "../../utilities/hasModifiedProperty.js";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
@@ -84,8 +85,8 @@ export class EveSphereVolume extends CjsModel
   @impl.adapted
   OnModified(value = null)
   {
-    const innerChanged = CjsModel.hasModifiedProperty(value, "innerRadius");
-    const outerChanged = CjsModel.hasModifiedProperty(value, "radius");
+    const innerChanged = hasModifiedProperty(value, "innerRadius");
+    const outerChanged = hasModifiedProperty(value, "radius");
     if (innerChanged && !outerChanged && this.innerRadius > this.radius)
     {
       this.radius = this.innerRadius;

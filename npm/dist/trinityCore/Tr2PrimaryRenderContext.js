@@ -22,12 +22,12 @@ class Tr2PrimaryRenderContext extends CjsModel {
   }
   /** Carbon method GetDefaultBackBuffer -> GetBackBuffer (MAP_METHOD_AND_WRAP). */
   GetDefaultBackBuffer(...args) {
-    throw CjsModel.notImplemented("Tr2PrimaryRenderContext", "GetDefaultBackBuffer", args);
+    throw new Error("Tr2PrimaryRenderContext.GetDefaultBackBuffer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBackBufferFormat (MAP_METHOD_AND_WRAP). */
   GetBackBufferFormat(...args) {
-    throw CjsModel.notImplemented("Tr2PrimaryRenderContext", "GetBackBufferFormat", args);
+    throw new Error("Tr2PrimaryRenderContext.GetBackBufferFormat is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

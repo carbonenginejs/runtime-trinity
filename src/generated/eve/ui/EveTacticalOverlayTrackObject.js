@@ -12,7 +12,7 @@ export class EveTacticalOverlayTrackObject extends CjsModel
 
   /** m_positionCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** m_position (Vector3) [READWRITE, PERSIST] */

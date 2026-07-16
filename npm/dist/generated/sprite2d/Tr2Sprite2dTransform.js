@@ -38,7 +38,7 @@ class Tr2Sprite2dTransform extends _Tr2Sprite2dContainer {
 
   /** Carbon method TransformPoint (MAP_METHOD_AND_WRAP). */
   TransformPoint(...args) {
-    throw _Tr2Sprite2dContainer.notImplemented("Tr2Sprite2dTransform", "TransformPoint", args);
+    throw new Error("Tr2Sprite2dTransform.TransformPoint is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

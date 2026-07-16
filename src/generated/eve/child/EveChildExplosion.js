@@ -27,17 +27,17 @@ export class EveChildExplosion extends EveChildContainer
 
   /** m_globalExplosion (IEveSpaceObjectChildPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   globalExplosion = null;
 
   /** m_localExplosion (IEveSpaceObjectChildPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   localExplosion = null;
 
   /** m_localExplosionShared (IEveSpaceObjectChildPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   localExplosionShared = null;
 
   /** m_globalExplosions (PIEveSpaceObjectChildVector) [READ, PERSIST] */
@@ -115,7 +115,7 @@ export class EveChildExplosion extends EveChildContainer
   @impl.notImplemented
   SetLocalExplosionTransforms(...args)
   {
-    throw EveChildContainer.notImplemented("EveChildExplosion", "SetLocalExplosionTransforms", args);
+    throw new Error("EveChildExplosion.SetLocalExplosionTransforms is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetGlobalExplosionOffset (MAP_METHOD_AND_WRAP). */
@@ -123,7 +123,7 @@ export class EveChildExplosion extends EveChildContainer
   @impl.notImplemented
   SetGlobalExplosionOffset(...args)
   {
-    throw EveChildContainer.notImplemented("EveChildExplosion", "SetGlobalExplosionOffset", args);
+    throw new Error("EveChildExplosion.SetGlobalExplosionOffset is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Play (MAP_METHOD_AND_WRAP). */
@@ -131,7 +131,7 @@ export class EveChildExplosion extends EveChildContainer
   @impl.notImplemented
   Play(...args)
   {
-    throw EveChildContainer.notImplemented("EveChildExplosion", "Play", args);
+    throw new Error("EveChildExplosion.Play is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Stop (MAP_METHOD_AND_WRAP). */
@@ -139,7 +139,7 @@ export class EveChildExplosion extends EveChildContainer
   @impl.notImplemented
   Stop(...args)
   {
-    throw EveChildContainer.notImplemented("EveChildExplosion", "Stop", args);
+    throw new Error("EveChildExplosion.Stop is not implemented in CarbonEngineJS.");
   }
 
 }

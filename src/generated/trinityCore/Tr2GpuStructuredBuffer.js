@@ -12,7 +12,7 @@ export class Tr2GpuStructuredBuffer extends CjsModel
   /** m_creationFlags (CreationFlags) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.struct("CreationFlags")
+  @type.uint32
   creationFlags = 0;
 
   /** m_count (uint32_t) [READWRITE, PERSIST, NOTIFY] */
@@ -32,7 +32,7 @@ export class Tr2GpuStructuredBuffer extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("Tr2GpuStructuredBuffer", "__init__", args);
+    throw new Error("Tr2GpuStructuredBuffer.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DebugGetData -> PyGetData (MAP_METHOD). */
@@ -40,7 +40,7 @@ export class Tr2GpuStructuredBuffer extends CjsModel
   @impl.notImplemented
   DebugGetData(...args)
   {
-    throw CjsModel.notImplemented("Tr2GpuStructuredBuffer", "DebugGetData", args);
+    throw new Error("Tr2GpuStructuredBuffer.DebugGetData is not implemented in CarbonEngineJS.");
   }
 
 }

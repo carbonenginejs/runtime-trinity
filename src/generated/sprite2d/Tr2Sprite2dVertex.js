@@ -14,7 +14,7 @@ export class Tr2Sprite2dVertex extends Tr2Sprite2dVertexBase
   @impl.notImplemented
   GetTexCoord(...args)
   {
-    throw Tr2Sprite2dVertexBase.notImplemented("Tr2Sprite2dVertex", "GetTexCoord", args);
+    throw new Error("Tr2Sprite2dVertex.GetTexCoord is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTexCoord (MAP_METHOD_AND_WRAP). */
@@ -22,7 +22,7 @@ export class Tr2Sprite2dVertex extends Tr2Sprite2dVertexBase
   @impl.notImplemented
   SetTexCoord(...args)
   {
-    throw Tr2Sprite2dVertexBase.notImplemented("Tr2Sprite2dVertex", "SetTexCoord", args);
+    throw new Error("Tr2Sprite2dVertex.SetTexCoord is not implemented in CarbonEngineJS.");
   }
 
 }

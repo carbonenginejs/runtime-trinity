@@ -46,7 +46,7 @@ class Tr2MainWindowState extends CjsModel {
 
   /** Carbon method __str__ -> ToString (MAP_METHOD_AND_WRAP). */
   __str__(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindowState", "__str__", args);
+    throw new Error("Tr2MainWindowState.__str__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

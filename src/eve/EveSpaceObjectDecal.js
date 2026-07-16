@@ -1,11 +1,13 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal_Blue.cpp
+import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { TriBatchType } from "../generated/trinityCore/enums.js";
 
 
 @type.define({ className: "EveSpaceObjectDecal", family: "eve/attachment/decal" })
@@ -84,9 +86,9 @@ export class EveSpaceObjectDecal extends CjsModel
   OnModified(properties = null)
   {
     if (
-      CjsModel.hasModifiedProperty(properties, "position") ||
-      CjsModel.hasModifiedProperty(properties, "rotation") ||
-      CjsModel.hasModifiedProperty(properties, "scaling")
+      hasModifiedProperty(properties, "position") ||
+      hasModifiedProperty(properties, "rotation") ||
+      hasModifiedProperty(properties, "scaling")
     )
     {
       this.#updateDecalMatrix();
@@ -266,4 +268,7 @@ export class EveSpaceObjectDecal extends CjsModel
   static #one = vec3.fromValues(1, 1, 1);
 
   static #identityRotation = quat.create();
+
+  static TriBatchType = TriBatchType;
+
 }

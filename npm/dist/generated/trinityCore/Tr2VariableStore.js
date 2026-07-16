@@ -25,42 +25,42 @@ class Tr2VariableStore extends CjsModel {
 
   /** Carbon method RegisterVariable -> PyRegisterVariable (MAP_METHOD). */
   RegisterVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "RegisterVariable", args);
+    throw new Error("Tr2VariableStore.RegisterVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocalNames (MAP_METHOD_AND_WRAP). */
   GetLocalNames(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "GetLocalNames", args);
+    throw new Error("Tr2VariableStore.GetLocalNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetVariable -> PyGetVariable (MAP_METHOD). */
   GetVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "GetVariable", args);
+    throw new Error("Tr2VariableStore.GetVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method FindVariable -> PyFindVariable (MAP_METHOD). */
   FindVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "FindVariable", args);
+    throw new Error("Tr2VariableStore.FindVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLocalVariable -> PyGetLocalVariable (MAP_METHOD). */
   GetLocalVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "GetLocalVariable", args);
+    throw new Error("Tr2VariableStore.GetLocalVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method FindLocalVariable -> PyFindLocalVariable (MAP_METHOD). */
   FindLocalVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "FindLocalVariable", args);
+    throw new Error("Tr2VariableStore.FindLocalVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnregisterVariable (MAP_METHOD_AND_WRAP). */
   UnregisterVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "UnregisterVariable", args);
+    throw new Error("Tr2VariableStore.UnregisterVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnregisterLocalVariable (MAP_METHOD_AND_WRAP). */
   UnregisterLocalVariable(...args) {
-    throw CjsModel.notImplemented("Tr2VariableStore", "UnregisterLocalVariable", args);
+    throw new Error("Tr2VariableStore.UnregisterLocalVariable is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -14,7 +14,7 @@ class EveDistributionModifierScaleBySpaceObjectParent extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveDistributionModifierScaleBySpaceObjectParent",
       family: "eve/distribution/attributeModifiers"
-    })], [[[io, io.persist, type, type.float32], 16, "scaleFactor"], [[io, io.persist, type, type.float32], 16, "authoredForBoundingRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "scaleCurve"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.float32], 16, "scaleFactor"], [[io, io.persist, type, type.float32], 16, "authoredForBoundingRadius"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "scaleCurve"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

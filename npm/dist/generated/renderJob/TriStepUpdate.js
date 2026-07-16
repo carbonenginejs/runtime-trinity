@@ -25,7 +25,7 @@ class TriStepUpdate extends _TriRenderStep {
 
   /** Carbon method __init__ -> SetUpdateable (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepUpdate", "__init__", args);
+    throw new Error("TriStepUpdate.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

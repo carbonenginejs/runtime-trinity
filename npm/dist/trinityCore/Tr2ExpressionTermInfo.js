@@ -48,6 +48,7 @@ new class extends _identity {
   #create(_0, _1, _2, _3, _4) {
     return _create.apply(this, arguments);
   }
+  TermType = TermType;
   constructor() {
     super(_Tr2ExpressionTermInf), _initClass();
   }

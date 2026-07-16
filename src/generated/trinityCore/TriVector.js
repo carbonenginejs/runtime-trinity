@@ -29,7 +29,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   TransformCoord(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "TransformCoord", args);
+    throw new Error("TriVector.TransformCoord is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TransformNormal -> PyTransformNormal (MAP_METHOD_AND_WRAP). */
@@ -37,7 +37,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   TransformNormal(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "TransformNormal", args);
+    throw new Error("TriVector.TransformNormal is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Lerp -> PyLerp (MAP_METHOD_AND_WRAP). */
@@ -45,7 +45,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Lerp(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Lerp", args);
+    throw new Error("TriVector.Lerp is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Maximize -> PyMaximize (MAP_METHOD_AND_WRAP). */
@@ -53,7 +53,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Maximize(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Maximize", args);
+    throw new Error("TriVector.Maximize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Minimize -> PyMinimize (MAP_METHOD_AND_WRAP). */
@@ -61,7 +61,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Minimize(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Minimize", args);
+    throw new Error("TriVector.Minimize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Subtract -> PySubtract (MAP_METHOD_AND_WRAP). */
@@ -69,7 +69,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Subtract(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Subtract", args);
+    throw new Error("TriVector.Subtract is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Project -> PyProject (MAP_METHOD_AND_WRAP). */
@@ -77,7 +77,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Project(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Project", args);
+    throw new Error("TriVector.Project is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Unproject -> PyUnproject (MAP_METHOD_AND_WRAP). */
@@ -85,7 +85,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Unproject(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Unproject", args);
+    throw new Error("TriVector.Unproject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> SetXYZ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -93,7 +93,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "__init__", args);
+    throw new Error("TriVector.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Add -> PyAdd (MAP_METHOD_AND_WRAP). */
@@ -101,7 +101,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Add(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Add", args);
+    throw new Error("TriVector.Add is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Cross -> PyCross (MAP_METHOD_AND_WRAP). */
@@ -109,7 +109,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Cross(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Cross", args);
+    throw new Error("TriVector.Cross is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Dot -> PyDot (MAP_METHOD_AND_WRAP). */
@@ -117,7 +117,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Dot(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Dot", args);
+    throw new Error("TriVector.Dot is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DotProduct -> PyDotProduct (MAP_METHOD_AND_WRAP). */
@@ -125,7 +125,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   DotProduct(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "DotProduct", args);
+    throw new Error("TriVector.DotProduct is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Normalize (MAP_METHOD_AND_WRAP). */
@@ -133,7 +133,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Normalize(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Normalize", args);
+    throw new Error("TriVector.Normalize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Length (MAP_METHOD_AND_WRAP). */
@@ -141,7 +141,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Length(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Length", args);
+    throw new Error("TriVector.Length is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LengthSq (MAP_METHOD_AND_WRAP). */
@@ -149,7 +149,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   LengthSq(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "LengthSq", args);
+    throw new Error("TriVector.LengthSq is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Scale (MAP_METHOD_AND_WRAP). */
@@ -157,7 +157,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   Scale(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "Scale", args);
+    throw new Error("TriVector.Scale is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetXYZ (MAP_METHOD_AND_WRAP). */
@@ -165,7 +165,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   SetXYZ(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "SetXYZ", args);
+    throw new Error("TriVector.SetXYZ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCrossProduct -> PySetCrossProduct (MAP_METHOD_AND_WRAP). */
@@ -173,7 +173,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   SetCrossProduct(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "SetCrossProduct", args);
+    throw new Error("TriVector.SetCrossProduct is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TransformQuaternion -> PyTransformQuaternion (MAP_METHOD_AND_WRAP). */
@@ -181,7 +181,7 @@ export class TriVector extends CjsModel
   @impl.notImplemented
   TransformQuaternion(...args)
   {
-    throw CjsModel.notImplemented("TriVector", "TransformQuaternion", args);
+    throw new Error("TriVector.TransformQuaternion is not implemented in CarbonEngineJS.");
   }
 
 }

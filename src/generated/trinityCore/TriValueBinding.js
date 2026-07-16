@@ -24,7 +24,7 @@ export class TriValueBinding extends CjsModel
 
   /** m_destinationObject (IRootPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IRoot")
+  @type.model("IRoot")
   destinationObject = null;
 
   /** m_isEnabled (bool) [READWRITE] */
@@ -39,7 +39,7 @@ export class TriValueBinding extends CjsModel
 
   /** m_sourceObject (IRootPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IRoot")
+  @type.model("IRoot")
   sourceObject = null;
 
   /** m_offset (Vector4) [READWRITE, PERSIST] */

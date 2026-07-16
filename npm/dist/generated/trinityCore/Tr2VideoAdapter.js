@@ -49,7 +49,7 @@ class Tr2VideoAdapter extends CjsModel {
 
   /** Carbon method GetDriverInfo (MAP_METHOD_AND_WRAP). */
   GetDriverInfo(...args) {
-    throw CjsModel.notImplemented("Tr2VideoAdapter", "GetDriverInfo", args);
+    throw new Error("Tr2VideoAdapter.GetDriverInfo is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

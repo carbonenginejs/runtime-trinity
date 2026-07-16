@@ -31,7 +31,7 @@ export class EveSpotlightLight extends CjsModel
   static FromSOF(value)
   {
     const result = new EveSpotlightLight();
-    result.lightData = LightData.fromValues(value?.lightData ?? {});
+    result.lightData = LightData.from(value?.lightData ?? {});
     if (value?.boneMatrix) mat4.copy(result.boneMatrix, value.boneMatrix);
     result.lightProfile = value?.lightProfile ?? null;
     result.boosterGainInfluence = value?.boosterGainInfluence === true;

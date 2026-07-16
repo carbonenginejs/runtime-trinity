@@ -16,22 +16,22 @@ export class EveRootTransform extends EveTransform
 
   /** m_ballRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   rotationCurve = null;
 
   /** m_modelTranslation (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   modelTranslationCurve = null;
 
   /** m_modelRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   modelRotationCurve = null;
 
   /** m_ballPosition (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
@@ -39,7 +39,7 @@ export class EveRootTransform extends EveTransform
   @impl.notImplemented
   GetBoundingSphereRadius(...args)
   {
-    throw EveTransform.notImplemented("EveRootTransform", "GetBoundingSphereRadius", args);
+    throw new Error("EveRootTransform.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
   }
 
 }

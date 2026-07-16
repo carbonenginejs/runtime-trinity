@@ -28,7 +28,7 @@ new class extends _identity {
     lightProfilePath = (_init_extra_boneMatrix(this), "");
     static FromSOF(value) {
       const result = new _EvePlaneLight();
-      result.lightData = _LightData.fromValues(value?.lightData ?? {});
+      result.lightData = _LightData.from(value?.lightData ?? {});
       result.saturation = Number(value?.saturation ?? 1);
       result.lightProfile = value?.lightProfile ?? null;
       result.fadeType = Number(value?.fadeType ?? _EvePlaneLight.FT_NONE) | 0;

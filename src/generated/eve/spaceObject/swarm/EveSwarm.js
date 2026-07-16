@@ -12,72 +12,72 @@ export class EveSwarm extends EveShip2
   /** m_behavior.m_weightFormation (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightFormation = 0;
+  weightFormation = 1;
 
   /** m_behavior.m_weightCohesion (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightCohesion = 0;
+  weightCohesion = 0.1;
 
   /** m_behavior.m_weightSeparation (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightSeparation = 0;
+  weightSeparation = 0.1;
 
   /** m_behavior.m_weightWander (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightWander = 0;
+  weightWander = 0.33;
 
   /** m_behavior.m_weightAnchor (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightAnchor = 0;
+  weightAnchor = 0.5;
 
   /** m_behavior.m_anchorRadius0 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  anchorRadius0 = 0;
+  anchorRadius0 = 75;
 
   /** m_behavior.m_anchorRadius1 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  anchorRadius1 = 0;
+  anchorRadius1 = 250;
 
   /** m_behavior.m_weightDecelerate (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightDeceleration = 0;
+  weightDeceleration = 0.1;
 
   /** m_behavior.m_maxDeceleration (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  maxDeceleration = 0;
+  maxDeceleration = 200;
 
   /** m_behavior.m_separationDistance (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  separationDistance = 0;
+  separationDistance = 250;
 
   /** m_behavior.m_formationDistance (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  formationDistance = 0;
+  formationDistance = 50;
 
   /** m_behavior.m_wanderFluctuation (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  wanderFluctuation = 0;
+  wanderFluctuation = 0.05;
 
   /** m_behavior.m_wanderDistance (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  wanderDistance = 0;
+  wanderDistance = 100;
 
   /** m_behavior.m_wanderRadius (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  wanderRadius = 0;
+  wanderRadius = 80;
 
   /** m_debugShowForces (bool) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
@@ -98,64 +98,64 @@ export class EveSwarm extends EveShip2
   /** m_behavior.m_mass (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  mass = 0;
+  mass = 1;
 
   /** m_behavior.m_speedMultiplier (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  speedMultiplier = 0;
+  speedMultiplier = 1.1;
 
   /** m_behavior.m_speedMinimum (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  speedMinimum = 0;
+  speedMinimum = 10;
 
   /** m_behavior.m_maxDistance0 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  maxDistance0 = 0;
+  maxDistance0 = 500;
 
   /** m_behavior.m_maxDistance1 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  maxDistance1 = 0;
+  maxDistance1 = 125;
 
   /** m_behavior.m_maxTime (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  maxTime = 0;
+  maxTime = 0.2;
 
   /** m_behavior.m_agility (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  agility = 0;
+  agility = 2;
 
   /** m_behavior.m_speed0 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  speed0 = 0;
+  speed0 = 700;
 
   /** m_behavior.m_speed1 (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  speed1 = 0;
+  speed1 = 1000;
 
   /** m_behavior.m_timeMultiplier (float) [READWRITE] */
   @io.readwrite
   @type.float32
-  timeMultiplier = 0;
+  timeMultiplier = 1;
 
   /** m_behavior.m_weightAlign (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  weightAlign = 0;
+  weightAlign = 50;
 
   /** Carbon method AddSwarmer (MAP_METHOD_AND_WRAP). */
   @carbon.method
   @impl.notImplemented
   AddSwarmer(...args)
   {
-    throw EveShip2.notImplemented("EveSwarm", "AddSwarmer", args);
+    throw new Error("EveSwarm.AddSwarmer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveSwarmer (MAP_METHOD_AND_WRAP). */
@@ -163,7 +163,7 @@ export class EveSwarm extends EveShip2
   @impl.notImplemented
   RemoveSwarmer(...args)
   {
-    throw EveShip2.notImplemented("EveSwarm", "RemoveSwarmer", args);
+    throw new Error("EveSwarm.RemoveSwarmer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickFiringOrigin (MAP_METHOD_AND_WRAP). */
@@ -171,7 +171,7 @@ export class EveSwarm extends EveShip2
   @impl.notImplemented
   PickFiringOrigin(...args)
   {
-    throw EveShip2.notImplemented("EveSwarm", "PickFiringOrigin", args);
+    throw new Error("EveSwarm.PickFiringOrigin is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnableSwarming (MAP_METHOD_AND_WRAP). */
@@ -179,7 +179,7 @@ export class EveSwarm extends EveShip2
   @impl.notImplemented
   EnableSwarming(...args)
   {
-    throw EveShip2.notImplemented("EveSwarm", "EnableSwarming", args);
+    throw new Error("EveSwarm.EnableSwarming is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
@@ -187,7 +187,7 @@ export class EveSwarm extends EveShip2
   @impl.notImplemented
   SetCount(...args)
   {
-    throw EveShip2.notImplemented("EveSwarm", "SetCount", args);
+    throw new Error("EveSwarm.SetCount is not implemented in CarbonEngineJS.");
   }
 
 }

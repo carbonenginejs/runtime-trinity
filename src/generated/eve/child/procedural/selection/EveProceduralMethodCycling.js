@@ -39,7 +39,7 @@ export class EveProceduralMethodCycling extends CjsModel
   @impl.notImplemented
   restart(...args)
   {
-    throw CjsModel.notImplemented("EveProceduralMethodCycling", "restart", args);
+    throw new Error("EveProceduralMethodCycling.restart is not implemented in CarbonEngineJS.");
   }
 
 }

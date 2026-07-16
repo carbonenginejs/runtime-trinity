@@ -14,7 +14,7 @@ class Tr2AudioStretchBase extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2AudioStretchBase",
       family: "trinityAudio"
-    })], [[[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "stretchEmitter"], [[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "destinationEmitter"], [[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "sourceEmitter"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("ITr2AudEmitter")], 16, "stretchEmitter"], [[io, io.persist, void 0, type.model("ITr2AudEmitter")], 16, "destinationEmitter"], [[io, io.persist, void 0, type.model("ITr2AudEmitter")], 16, "sourceEmitter"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

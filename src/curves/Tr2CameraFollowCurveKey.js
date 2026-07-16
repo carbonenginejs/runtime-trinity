@@ -156,4 +156,7 @@ export class Tr2CameraFollowCurveKey extends CjsModel
   {
     return vec3.copy(out, this.rotatedRightTangent);
   }
+
+  static Tr2FollowCurveKeyInterpolation = Tr2FollowCurveKeyInterpolation;
+
 }

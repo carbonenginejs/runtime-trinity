@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import '@carbonenginejs/core-types/model';
 import { CjsShaderParameter } from './CjsShaderParameter.js';
 
 let _initProto, _initClass, _init_resourcePath, _init_extra_resourcePath, _init_uavMipLevel, _init_extra_uavMipLevel, _init_positionScale, _init_extra_positionScale, _init_resource, _init_extra_resource, _init_usedByCurrentTechnique, _init_extra_usedByCurrentTechnique, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_name, _init_extra_name, _init_uvDensityScale, _init_extra_uvDensityScale, _init_uvDensityScale2, _init_extra_uvDensityScale2, _init_uvDensityScale3, _init_extra_uvDensityScale3, _init_uvDensityScale4, _init_extra_uvDensityScale4;
@@ -108,12 +109,12 @@ class TriTextureParameter extends CjsShaderParameter {
     return requestedLod;
   }
   OnModified(properties = null) {
-    if (CjsModel.hasModifiedProperty(properties, "resourcePath")) {
+    if (hasModifiedProperty(properties, "resourcePath")) {
       this.resource = null;
       this.#lowResResource = null;
       this.Initialize();
     }
-    if (CjsModel.hasModifiedProperty(properties, "name")) {
+    if (hasModifiedProperty(properties, "name")) {
       this.RebuildEffectHandles(this.#cachedEffect);
     }
     return true;
@@ -148,6 +149,11 @@ class TriTextureParameter extends CjsShaderParameter {
   #requestResourceResolution(lod) {
     const target = this.GetResource();
     target?.RequestResolution?.(lod);
+  }
+
+  /** JS convenience: raw values this parameter class claims for map-form inference. */
+  static isValue(value) {
+    return typeof value === "string";
   }
   static {
     _initClass();

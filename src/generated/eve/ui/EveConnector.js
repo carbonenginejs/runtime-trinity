@@ -64,12 +64,12 @@ export class EveConnector extends CjsModel
 
   /** m_destObject (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   destObject = null;
 
   /** m_sourceObject (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   sourceObject = null;
 
   /** m_normal (Vector3) [READWRITE, PERSIST] */
@@ -81,5 +81,16 @@ export class EveConnector extends CjsModel
   @io.persist
   @type.float32
   length = 0;
+
+  static ConnectorType = Object.freeze({
+    PointToPoint: 0,
+    XZ_CircleStraight: 1,
+    XZ_Circle: 2,
+    StraightAnchor: 3,
+    CurvedAnchor: 4,
+    Orbit: 5,
+    Circle: 6,
+    Ellipse: 7,
+  });
 
 }

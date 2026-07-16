@@ -42,7 +42,7 @@ export class TriSettings extends CjsModel
   @impl.notImplemented
   GetValue(...args)
   {
-    throw CjsModel.notImplemented("TriSettings", "GetValue", args);
+    throw new Error("TriSettings.GetValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __repr__ -> PyRepr (MAP_METHOD). */
@@ -50,7 +50,7 @@ export class TriSettings extends CjsModel
   @impl.notImplemented
   __repr__(...args)
   {
-    throw CjsModel.notImplemented("TriSettings", "__repr__", args);
+    throw new Error("TriSettings.__repr__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValue -> PySetValue (MAP_METHOD). */
@@ -58,7 +58,7 @@ export class TriSettings extends CjsModel
   @impl.notImplemented
   SetValue(...args)
   {
-    throw CjsModel.notImplemented("TriSettings", "SetValue", args);
+    throw new Error("TriSettings.SetValue is not implemented in CarbonEngineJS.");
   }
 
 }

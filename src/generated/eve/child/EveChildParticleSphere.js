@@ -16,12 +16,12 @@ export class EveChildParticleSphere extends CjsModel
 
   /** m_particleSystem (Tr2ParticleSystemPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2ParticleSystem")
+  @type.model("Tr2ParticleSystem")
   particleSystem = null;
 
   /** m_mesh (Tr2InstancedMeshPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2InstancedMesh")
+  @type.model("Tr2InstancedMesh")
   mesh = null;
 
   /** m_useSpaceObjectData (bool) [READWRITE, PERSIST] */
@@ -89,7 +89,7 @@ export class EveChildParticleSphere extends CjsModel
   @impl.notImplemented
   Refresh(...args)
   {
-    throw CjsModel.notImplemented("EveChildParticleSphere", "Refresh", args);
+    throw new Error("EveChildParticleSphere.Refresh is not implemented in CarbonEngineJS.");
   }
 
 }

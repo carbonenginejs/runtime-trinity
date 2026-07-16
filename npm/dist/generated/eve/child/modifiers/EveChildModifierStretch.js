@@ -14,7 +14,7 @@ class EveChildModifierStretch extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildModifierStretch",
       family: "eve/child/modifiers"
-    })], [[[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "dest"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "dest"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

@@ -48,7 +48,7 @@ test("Carbon device graph descriptions remain canonical runtime-trinity classes"
   for (const Class of graphClasses)
   {
     new Class();
-    assertEquals(CjsSchema.getClass(Class.name), Class);
+    assertEquals(CjsSchema.GetConstructor(Class.name), Class);
   }
 });
 
@@ -361,7 +361,7 @@ test("TriObserverLocal preserves Carbon's degenerate-front fallback", () =>
 test("TriProjection exposes its source-backed schema and identity default", () =>
 {
   const projection = new TriProjection();
-  assertEquals(CjsSchema.getClass("TriProjection"), TriProjection);
+  assertEquals(CjsSchema.GetConstructor("TriProjection"), TriProjection);
   assertEquals(CjsSchema.getField(TriProjection, "transform")?.type.kind, "mat4");
   assertEquals(CjsSchema.getField(TriProjection, "transform")?.io?.read, true);
   assertEquals(projection.GetProjectionType(), 0);
@@ -445,7 +445,7 @@ test("TriViewport preserves Carbon defaults, initialization, and aspect ratios",
 test("TriRect uses int32 fields and preserves omitted SetRect components", () =>
 {
   const rect = new TriRect();
-  assertEquals(CjsSchema.getClass("TriRect"), TriRect);
+  assertEquals(CjsSchema.GetConstructor("TriRect"), TriRect);
   assertEquals(CjsSchema.getField(TriRect, "left")?.type.kind, "int32");
   assertEquals(rect.left, 0);
   assertEquals(rect.top, 0);

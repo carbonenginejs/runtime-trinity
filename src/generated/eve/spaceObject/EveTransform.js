@@ -12,7 +12,7 @@ export class EveTransform extends CjsModel
 
   /** m_meshLod (Tr2MeshBasePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2MeshBase")
+  @type.model("Tr2MeshBase")
   meshLod = null;
 
   /** m_children (PIEveTransformVector) [READ, PERSIST] */
@@ -65,5 +65,14 @@ export class EveTransform extends CjsModel
   @io.persist
   @type.boolean
   useLodLevel = true;
+
+  static Tr2Lod = Object.freeze({
+    TR2_LOD_UNSPECIFIED: -1,
+    TR2_LOD_LOW: 0,
+    TR2_LOD_MEDIUM: 1,
+    TR2_LOD_HIGH: 2,
+    TR2_LOD_ULTRA: 3,
+    TR2_LOD_COUNT: 4,
+  });
 
 }

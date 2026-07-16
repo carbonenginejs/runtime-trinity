@@ -52,7 +52,7 @@ export class Tr2InteriorLightSource extends CjsModel
 
   /** m_kelvinColor (Tr2KelvinColorPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2KelvinColor")
+  @type.model("Tr2KelvinColor")
   kelvinColor = null;
 
   /** m_radius (float) [READWRITE, PERSIST, NOTIFY] */
@@ -87,7 +87,7 @@ export class Tr2InteriorLightSource extends CjsModel
   @impl.notImplemented
   IsSpotLight(...args)
   {
-    throw CjsModel.notImplemented("Tr2InteriorLightSource", "IsSpotLight", args);
+    throw new Error("Tr2InteriorLightSource.IsSpotLight is not implemented in CarbonEngineJS.");
   }
 
 }

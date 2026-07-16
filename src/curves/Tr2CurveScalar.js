@@ -621,4 +621,7 @@ export class Tr2CurveScalar extends CjsModel
     curve.SetDefinition(definition);
     curve.Rasterize(destination);
   }
+
+  static Tr2CurveExtrapolation = Tr2CurveExtrapolation;
+
 }

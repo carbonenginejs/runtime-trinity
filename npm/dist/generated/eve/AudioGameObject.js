@@ -16,7 +16,7 @@ class AudioGameObject extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "AudioGameObject",
       family: "eve"
-    })], [[[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "audioEmitter"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetAudioEmitter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAudioEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetEmitterName"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "audioEmitter"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.model("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetAudioEmitter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAudioEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetEmitterName"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -51,22 +51,22 @@ class AudioGameObject extends CjsModel {
 
   /** Carbon method GetAudioEmitter (MAP_METHOD_AND_WRAP). */
   GetAudioEmitter(...args) {
-    throw CjsModel.notImplemented("AudioGameObject", "GetAudioEmitter", args);
+    throw new Error("AudioGameObject.GetAudioEmitter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
   __init__(...args) {
-    throw CjsModel.notImplemented("AudioGameObject", "__init__", args);
+    throw new Error("AudioGameObject.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayAudioEvent (MAP_METHOD_AND_WRAP). */
   PlayAudioEvent(...args) {
-    throw CjsModel.notImplemented("AudioGameObject", "PlayAudioEvent", args);
+    throw new Error("AudioGameObject.PlayAudioEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetEmitterName (MAP_METHOD_AND_WRAP). */
   SetEmitterName(...args) {
-    throw CjsModel.notImplemented("AudioGameObject", "SetEmitterName", args);
+    throw new Error("AudioGameObject.SetEmitterName is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

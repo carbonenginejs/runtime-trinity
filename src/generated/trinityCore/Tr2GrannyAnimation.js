@@ -54,7 +54,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   PlayAnimationEx(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayAnimationEx", args);
+    throw new Error("Tr2GrannyAnimation.PlayAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayer (MAP_METHOD_AND_WRAP). */
@@ -62,7 +62,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   AddAnimationLayer(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayer", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayerAllBones (MAP_METHOD_AND_WRAP). */
@@ -70,7 +70,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   AddAnimationLayerAllBones(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayerAllBones", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayerAllBones is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayerBone (MAP_METHOD_AND_WRAP). */
@@ -78,7 +78,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   AddAnimationLayerBone(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayerBone", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayerBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddSecondaryResPath (MAP_METHOD_AND_WRAP). */
@@ -86,7 +86,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   AddSecondaryResPath(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddSecondaryResPath", args);
+    throw new Error("Tr2GrannyAnimation.AddSecondaryResPath is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AimBone (MAP_METHOD_AND_WRAP). */
@@ -94,7 +94,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   AimBone(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AimBone", args);
+    throw new Error("Tr2GrannyAnimation.AimBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
@@ -102,7 +102,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   ChainAnimation(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ChainAnimation", args);
+    throw new Error("Tr2GrannyAnimation.ChainAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
@@ -110,7 +110,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   ChainAnimationEx(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ChainAnimationEx", args);
+    throw new Error("Tr2GrannyAnimation.ChainAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
@@ -118,7 +118,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   ClearAnimations(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ClearAnimations", args);
+    throw new Error("Tr2GrannyAnimation.ClearAnimations is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearAnimationLayers (MAP_METHOD_AND_WRAP). */
@@ -126,7 +126,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   ClearAnimationLayers(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ClearAnimationLayers", args);
+    throw new Error("Tr2GrannyAnimation.ClearAnimationLayers is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DisableAimBone (MAP_METHOD_AND_WRAP). */
@@ -134,7 +134,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   DisableAimBone(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "DisableAimBone", args);
+    throw new Error("Tr2GrannyAnimation.DisableAimBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
@@ -142,7 +142,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   EndAnimation(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "EndAnimation", args);
+    throw new Error("Tr2GrannyAnimation.EndAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
@@ -150,7 +150,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   GetAdditiveBlendMode(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetAdditiveBlendMode", args);
+    throw new Error("Tr2GrannyAnimation.GetAdditiveBlendMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLayerWeight (MAP_METHOD_AND_WRAP). */
@@ -158,7 +158,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   GetLayerWeight(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetLayerWeight", args);
+    throw new Error("Tr2GrannyAnimation.GetLayerWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetSecondaryAnimationName (MAP_METHOD_AND_WRAP). */
@@ -166,7 +166,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   GetSecondaryAnimationName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetSecondaryAnimationName", args);
+    throw new Error("Tr2GrannyAnimation.GetSecondaryAnimationName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayAnimation -> PlayAnimationOnce (MAP_METHOD_AND_WRAP). */
@@ -174,7 +174,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   PlayAnimation(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayAnimation", args);
+    throw new Error("Tr2GrannyAnimation.PlayAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayLayerAnimation -> PlayLayerAnimationByName (MAP_METHOD_AND_WRAP). */
@@ -182,7 +182,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   PlayLayerAnimation(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayLayerAnimation", args);
+    throw new Error("Tr2GrannyAnimation.PlayLayerAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveAnimationLayerBone (MAP_METHOD_AND_WRAP). */
@@ -190,7 +190,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   RemoveAnimationLayerBone(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "RemoveAnimationLayerBone", args);
+    throw new Error("Tr2GrannyAnimation.RemoveAnimationLayerBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAnimationNames (MAP_METHOD_AND_WRAP). */
@@ -198,7 +198,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   GetAnimationNames(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetAnimationNames", args);
+    throw new Error("Tr2GrannyAnimation.GetAnimationNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
@@ -206,7 +206,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   SetAdditiveBlendMode(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetAdditiveBlendMode", args);
+    throw new Error("Tr2GrannyAnimation.SetAdditiveBlendMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerControlParam (MAP_METHOD_AND_WRAP). */
@@ -214,7 +214,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   SetLayerControlParam(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerControlParam", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerControlParam is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerControlParamSkewRate (MAP_METHOD_AND_WRAP). */
@@ -222,7 +222,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   SetLayerControlParamSkewRate(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerControlParamSkewRate", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerControlParamSkewRate is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerWeight (MAP_METHOD_AND_WRAP). */
@@ -230,7 +230,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   SetLayerWeight(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerWeight", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TogglePauseAnimations (MAP_METHOD_AND_WRAP). */
@@ -238,7 +238,7 @@ export class Tr2GrannyAnimation extends CjsModel
   @impl.notImplemented
   TogglePauseAnimations(...args)
   {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "TogglePauseAnimations", args);
+    throw new Error("Tr2GrannyAnimation.TogglePauseAnimations is not implemented in CarbonEngineJS.");
   }
 
 }

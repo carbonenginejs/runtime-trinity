@@ -14,7 +14,7 @@ class Tr2StaticEmitter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2StaticEmitter",
       family: "particle"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "geometryResource"], [[io, io.persist, type, type.uint32], 16, "meshIndex"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2ParticleSystem")], 16, "particleSystem"], [[io, io.notify, io, io.persist, type, type.string], 16, "geometryResourcePath"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Spawn"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ForceSpawn"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "geometryResource"], [[io, io.persist, type, type.uint32], 16, "meshIndex"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2ParticleSystem")], 16, "particleSystem"], [[io, io.notify, io, io.persist, type, type.string], 16, "geometryResourcePath"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Spawn"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ForceSpawn"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -37,12 +37,12 @@ class Tr2StaticEmitter extends CjsModel {
 
   /** Carbon method Spawn (MAP_METHOD_AND_WRAP). */
   Spawn(...args) {
-    throw CjsModel.notImplemented("Tr2StaticEmitter", "Spawn", args);
+    throw new Error("Tr2StaticEmitter.Spawn is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ForceSpawn -> DoSpawn (MAP_METHOD_AND_WRAP). */
   ForceSpawn(...args) {
-    throw CjsModel.notImplemented("Tr2StaticEmitter", "ForceSpawn", args);
+    throw new Error("Tr2StaticEmitter.ForceSpawn is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

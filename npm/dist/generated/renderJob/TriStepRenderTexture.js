@@ -44,7 +44,7 @@ class TriStepRenderTexture extends _TriRenderStep {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderTexture", "__init__", args);
+    throw new Error("TriStepRenderTexture.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

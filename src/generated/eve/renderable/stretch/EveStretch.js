@@ -16,17 +16,17 @@ export class EveStretch extends EveEntity
 
   /** m_source (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   source = null;
 
   /** m_dest (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   dest = null;
 
   /** m_stretchAudio (IStretchAudioPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IStretchAudio")
+  @type.model("IStretchAudio")
   stretchAudio = null;
 
   /** m_lodLevel (Tr2Lod - enum Tr2Lod) [READ] */
@@ -37,12 +37,12 @@ export class EveStretch extends EveEntity
 
   /** m_progressCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriScalarFunction")
+  @type.model("ITriScalarFunction")
   progressCurve = null;
 
   /** m_moveCompletion (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   moveCompletion = null;
 
   /** m_curveSets (PTriCurveSetVector) [READ, PERSIST] */
@@ -52,7 +52,7 @@ export class EveStretch extends EveEntity
 
   /** m_length (TriFloatPtr) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("TriFloat")
+  @type.model("TriFloat")
   length = null;
 
   /** m_moving (bool) [READWRITE] */
@@ -88,17 +88,17 @@ export class EveStretch extends EveEntity
 
   /** m_destObject (EveTransformPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveTransform")
+  @type.model("EveTransform")
   destObject = null;
 
   /** m_sourceObject (EveTransformPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveTransform")
+  @type.model("EveTransform")
   sourceObject = null;
 
   /** m_stretchObject (EveTransformPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveTransform")
+  @type.model("EveTransform")
   stretchObject = null;
 
   /** m_useCurveLod (bool) [READWRITE, PERSIST] */
@@ -113,12 +113,12 @@ export class EveStretch extends EveEntity
 
   /** m_audio (ITr2AudioPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2Audio")
+  @type.model("ITr2Audio")
   audio = null;
 
   /** m_moveObject (EveTransformPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveTransform")
+  @type.model("EveTransform")
   moveObject = null;
 
   /** Carbon method Start (MAP_METHOD_AND_WRAP). */
@@ -126,7 +126,16 @@ export class EveStretch extends EveEntity
   @impl.notImplemented
   Start(...args)
   {
-    throw EveEntity.notImplemented("EveStretch", "Start", args);
+    throw new Error("EveStretch.Start is not implemented in CarbonEngineJS.");
   }
+
+  static Tr2Lod = Object.freeze({
+    TR2_LOD_UNSPECIFIED: -1,
+    TR2_LOD_LOW: 0,
+    TR2_LOD_MEDIUM: 1,
+    TR2_LOD_HIGH: 2,
+    TR2_LOD_ULTRA: 3,
+    TR2_LOD_COUNT: 4,
+  });
 
 }

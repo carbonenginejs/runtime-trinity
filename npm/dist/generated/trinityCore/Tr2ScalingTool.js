@@ -26,7 +26,7 @@ class Tr2ScalingTool extends _Tr2ManipulationTool {
 
   /** Carbon method ResetPrimitives (MAP_METHOD_AND_WRAP). */
   ResetPrimitives(...args) {
-    throw _Tr2ManipulationTool.notImplemented("Tr2ScalingTool", "ResetPrimitives", args);
+    throw new Error("Tr2ScalingTool.ResetPrimitives is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

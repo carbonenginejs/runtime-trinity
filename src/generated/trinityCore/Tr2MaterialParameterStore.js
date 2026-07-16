@@ -27,7 +27,7 @@ export class Tr2MaterialParameterStore extends CjsModel
 
   /** m_parameters (PITriEffectParameterDict) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("ITriEffectParameterDict")
+  @type.model("ITriEffectParameterDict")
   parameters = null;
 
   /** Carbon method FindParameter (MAP_METHOD_AND_WRAP). */
@@ -35,7 +35,7 @@ export class Tr2MaterialParameterStore extends CjsModel
   @impl.notImplemented
   FindParameter(...args)
   {
-    throw CjsModel.notImplemented("Tr2MaterialParameterStore", "FindParameter", args);
+    throw new Error("Tr2MaterialParameterStore.FindParameter is not implemented in CarbonEngineJS.");
   }
 
 }

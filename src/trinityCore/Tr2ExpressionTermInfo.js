@@ -65,4 +65,7 @@ export class Tr2ExpressionTermInfo extends CjsModel
     term.#arguments = args.slice();
     return term;
   }
+
+  static TermType = TermType;
+
 }

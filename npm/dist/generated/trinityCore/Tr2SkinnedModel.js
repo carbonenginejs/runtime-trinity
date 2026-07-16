@@ -35,7 +35,7 @@ class Tr2SkinnedModel extends _Tr2Model {
 
   /** Carbon method ResetAnimationBindings -> ResetBindings (MAP_METHOD_AND_WRAP). */
   ResetAnimationBindings(...args) {
-    throw _Tr2Model.notImplemented("Tr2SkinnedModel", "ResetAnimationBindings", args);
+    throw new Error("Tr2SkinnedModel.ResetAnimationBindings is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

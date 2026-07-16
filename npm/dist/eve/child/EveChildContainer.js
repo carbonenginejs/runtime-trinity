@@ -4,6 +4,7 @@ import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { EveChildTransform as _EveChildTransform } from './EveChildTransform.js';
+import { Origin } from '../../generated/eve/child/enums.js';
 
 let _initProto, _initClass, _init_displayFilter, _init_extra_displayFilter, _init_objects, _init_extra_objects, _init_transformModifiers, _init_extra_transformModifiers, _init_curveSets, _init_extra_curveSets, _init_worldTransform, _init_extra_worldTransform, _init_mute, _init_extra_mute, _init_display, _init_extra_display, _init_name, _init_extra_name, _init_translation, _init_extra_translation, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_localTransform, _init_extra_localTransform, _init_staticTransform, _init_extra_staticTransform, _init_alwaysOn, _init_extra_alwaysOn, _init_updateOnDisplay, _init_extra_updateOnDisplay, _init_attachments, _init_extra_attachments, _init_observers, _init_extra_observers, _init_fxAttributes, _init_extra_fxAttributes, _init_lights, _init_extra_lights, _init_controllers, _init_extra_controllers, _init_inheritProperties, _init_extra_inheritProperties, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale, _init_animationOwner, _init_extra_animationOwner, _init_origin, _init_extra_origin;
 let _EveChildContainer;
@@ -189,6 +190,7 @@ new class extends _identity {
     SHADER_MED: 2,
     SHADER_LOW: 0
   });
+  Origin = Origin;
   constructor() {
     super(_EveChildContainer), _initClass();
   }

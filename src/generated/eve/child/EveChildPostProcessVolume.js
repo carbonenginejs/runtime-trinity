@@ -36,7 +36,7 @@ export class EveChildPostProcessVolume extends EveChildTransform
 
   /** m_postProcessAttributes (Tr2PostProcessAttributesPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2PostProcessAttributes")
+  @type.model("Tr2PostProcessAttributes")
   postProcessAttributes = null;
 
 }

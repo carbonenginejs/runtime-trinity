@@ -14,7 +14,7 @@ class Tr2RenderNodeSprite2dScene extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2RenderNodeSprite2dScene",
       family: "trinityCore"
-    })], [[[io, io.persist, void 0, type.objectRef("Tr2Sprite2dScene")], 16, "scene"], [[io, io.persist, void 0, type.objectRef("ITr2RenderNode")], 16, "background"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("Tr2Sprite2dScene")], 16, "scene"], [[io, io.persist, void 0, type.model("ITr2RenderNode")], 16, "background"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

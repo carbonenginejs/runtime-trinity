@@ -15,7 +15,7 @@ class Tr2SkinnedObject extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2SkinnedObject",
       family: "trinityCore"
-    })], [[[io, io.read, type, type.uint32], 16, "frameDelay"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "explicitMaxBounds"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "explicitMinBounds"], [[io, io.readwrite, type, type.float32], 16, "updatePeriod"], [[io, io.persist, void 0, type.objectRef("TriMatrix")], 16, "transform"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2SkinnedModel")], 16, "visualModel"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("ITr2AnimationUpdater")], 16, "animationUpdater"], [[io, io.persist, void 0, type.objectRef("ITr2WorldTransformUpdater")], 16, "worldTransformUpdater"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "highDetailModel"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "lowDetailModel"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "mediumDetailModel"], [[io, io.read, type, type.uint32], 16, "renderRigBoneCount"], [[io, io.read, type, type.uint32], 16, "skinningMatrixCount"], [[io, io.readwrite, type, type.boolean], 16, "useDynamicBounds"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "useExplicitBounds"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingBoxInLocalSpace"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetAnimationBindings"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetSkeletonTag"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoneIndex"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBonePosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PrintAllBones"]], 0, void 0, CjsModel));
+    })], [[[io, io.read, type, type.uint32], 16, "frameDelay"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "explicitMaxBounds"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "explicitMinBounds"], [[io, io.readwrite, type, type.float32], 16, "updatePeriod"], [[io, io.persist, void 0, type.model("TriMatrix")], 16, "transform"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2SkinnedModel")], 16, "visualModel"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("ITr2AnimationUpdater")], 16, "animationUpdater"], [[io, io.persist, void 0, type.model("ITr2WorldTransformUpdater")], 16, "worldTransformUpdater"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "highDetailModel"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "lowDetailModel"], [[io, io.notify, io, io.persist, type, type.unknown], 16, "mediumDetailModel"], [[io, io.read, type, type.uint32], 16, "renderRigBoneCount"], [[io, io.read, type, type.uint32], 16, "skinningMatrixCount"], [[io, io.readwrite, type, type.boolean], 16, "useDynamicBounds"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "useExplicitBounds"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingBoxInLocalSpace"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetAnimationBindings"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetSkeletonTag"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoneIndex"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBonePosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PrintAllBones"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -80,32 +80,32 @@ class Tr2SkinnedObject extends CjsModel {
 
   /** Carbon method GetBoundingBoxInLocalSpace (MAP_METHOD_AND_WRAP). */
   GetBoundingBoxInLocalSpace(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBoundingBoxInLocalSpace", args);
+    throw new Error("Tr2SkinnedObject.GetBoundingBoxInLocalSpace is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetAnimationBindings (MAP_METHOD_AND_WRAP). */
   ResetAnimationBindings(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "ResetAnimationBindings", args);
+    throw new Error("Tr2SkinnedObject.ResetAnimationBindings is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetSkeletonTag (MAP_METHOD_AND_WRAP). */
   GetSkeletonTag(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetSkeletonTag", args);
+    throw new Error("Tr2SkinnedObject.GetSkeletonTag is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoneIndex (MAP_METHOD_AND_WRAP). */
   GetBoneIndex(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBoneIndex", args);
+    throw new Error("Tr2SkinnedObject.GetBoneIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBonePosition (MAP_METHOD_AND_WRAP). */
   GetBonePosition(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBonePosition", args);
+    throw new Error("Tr2SkinnedObject.GetBonePosition is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PrintAllBones (MAP_METHOD_AND_WRAP). */
   PrintAllBones(...args) {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "PrintAllBones", args);
+    throw new Error("Tr2SkinnedObject.PrintAllBones is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

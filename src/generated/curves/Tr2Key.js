@@ -22,4 +22,13 @@ export class Tr2Key extends CjsModel
   @schema.enum("Interpolation")
   interpolation = 0;
 
+  static Interpolation = Object.freeze({
+    CONSTANT: 0,
+    LINEAR: 1,
+    HERMITE: 2,
+    CATMULLROM: 3,
+    SPHERICAL_LINEAR: 4,
+    SPHERICAL_QUADRANGLE: 5,
+  });
+
 }

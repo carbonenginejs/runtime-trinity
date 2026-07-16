@@ -62,7 +62,7 @@ export class Tr2Sprite2dLineTrace extends Tr2TexturedSpriteObject
   @impl.notImplemented
   AppendVertices(...args)
   {
-    throw Tr2TexturedSpriteObject.notImplemented("Tr2Sprite2dLineTrace", "AppendVertices", args);
+    throw new Error("Tr2Sprite2dLineTrace.AppendVertices is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetVertices -> PySetVertices (MAP_METHOD). */
@@ -70,7 +70,7 @@ export class Tr2Sprite2dLineTrace extends Tr2TexturedSpriteObject
   @impl.notImplemented
   SetVertices(...args)
   {
-    throw Tr2TexturedSpriteObject.notImplemented("Tr2Sprite2dLineTrace", "SetVertices", args);
+    throw new Error("Tr2Sprite2dLineTrace.SetVertices is not implemented in CarbonEngineJS.");
   }
 
 }

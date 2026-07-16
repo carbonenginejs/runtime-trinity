@@ -15,7 +15,7 @@ class EvePlanet extends _EveEffectRoot {
     } = _applyDecs2311(this, [type.define({
       className: "EvePlanet",
       family: "eve/spaceObject"
-    })], [[[io, io.persist, void 0, type.objectRef("EveChildMesh")], 16, "zOnlyModel"], [[io, io.persist, type, type.color], 16, "emissiveColor"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, type, type.color], 16, "albedoColor"], [[io, io.persist, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.persist, type, type.float32], 16, "radius"]], 0, void 0, _EveEffectRoot));
+    })], [[[io, io.persist, void 0, type.model("EveChildMesh")], 16, "zOnlyModel"], [[io, io.persist, type, type.color], 16, "emissiveColor"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, type, type.color], 16, "albedoColor"], [[io, io.persist, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.persist, type, type.float32], 16, "radius"]], 0, void 0, _EveEffectRoot));
   }
   constructor(...args) {
     super(...args);

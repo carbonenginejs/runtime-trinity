@@ -14,7 +14,7 @@ class EveDistributionPlacementGeneratorVolume extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveDistributionPlacementGeneratorVolume",
       family: "eve/distribution/placement"
-    })], [[[io, io.notify, io, io.persist, type, type.uint32], 16, "numGenerated"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "hollowVolume"], [[io, io.notify, io, io.persist, type, type.float32], 16, "falloffFactor"], [[io, io.persistOnly, void 0, type.objectRef("IEveVolume")], 16, "volume"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.uint32], 16, "numGenerated"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "hollowVolume"], [[io, io.notify, io, io.persist, type, type.float32], 16, "falloffFactor"], [[io, io.persistOnly, void 0, type.model("IEveVolume")], 16, "volume"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

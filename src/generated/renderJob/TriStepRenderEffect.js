@@ -35,7 +35,7 @@ export class TriStepRenderEffect extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderEffect", "__init__", args);
+    throw new Error("TriStepRenderEffect.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

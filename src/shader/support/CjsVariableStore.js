@@ -1,7 +1,4 @@
-import { CjsModel } from "@carbonenginejs/core-types/model";
-
-
-export class CjsVariableStore extends CjsModel
+export class CjsVariableStore
 {
 
   static #global = null;
@@ -10,7 +7,6 @@ export class CjsVariableStore extends CjsModel
 
   constructor(values = null)
   {
-    super();
     if (values)
     {
       this.SetValues(values);
@@ -153,7 +149,7 @@ export class CjsVariableStore extends CjsModel
 }
 
 
-export class CjsStoredVariable extends CjsModel
+export class CjsStoredVariable
 {
 
   name = "";
@@ -164,7 +160,6 @@ export class CjsStoredVariable extends CjsModel
 
   constructor(name = "", value = undefined, type = null)
   {
-    super();
     this.name = String(name);
     this.value = value;
     this.type = type ?? CjsStoredVariable.inferType(value);

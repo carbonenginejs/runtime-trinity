@@ -14,7 +14,7 @@ class EveRootTransform extends _EveTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveRootTransform",
       family: "eve/spaceObject"
-    })], [[[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingSphereRadius"]], 0, void 0, _EveTransform));
+    })], [[[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.persist, void 0, type.model("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.model("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "translationCurve"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingSphereRadius"]], 0, void 0, _EveTransform));
   }
   constructor(...args) {
     super(...args);
@@ -37,7 +37,7 @@ class EveRootTransform extends _EveTransform {
 
   /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
   GetBoundingSphereRadius(...args) {
-    throw _EveTransform.notImplemented("EveRootTransform", "GetBoundingSphereRadius", args);
+    throw new Error("EveRootTransform.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

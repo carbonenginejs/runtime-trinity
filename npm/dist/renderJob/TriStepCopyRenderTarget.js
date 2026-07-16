@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { io, carbon, impl, type, CjsSchema } from '@carbonenginejs/core-types/schema';
 import { TriRenderJob as _TriRenderJob } from './TriRenderJob.js';
 import { TriRenderStep as _TriRenderStep } from './TriRenderStep.js';
 
@@ -128,7 +128,7 @@ new class extends _identity {
     return Number(value?.[`Get${method}`]?.() ?? value?.[property]) || 0;
   }
   #isTextureResource(value) {
-    const name = value?.constructor?.name || "";
+    const name = CjsSchema.getClassName(value?.constructor) ?? value?._sourceClassName ?? "";
     return name === "TriTextureRes" || /TextureRes$/.test(name) || typeof value?.GetTexture === "function";
   }
   constructor() {

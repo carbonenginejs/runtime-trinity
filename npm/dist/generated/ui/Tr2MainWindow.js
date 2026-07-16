@@ -73,122 +73,122 @@ class Tr2MainWindow extends CjsModel {
 
   /** Carbon method IsActive -> HasFocus (MAP_METHOD_AND_WRAP). */
   IsActive(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "IsActive", args);
+    throw new Error("Tr2MainWindow.IsActive is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetMinimumSize (MAP_METHOD_AND_WRAP). */
   SetMinimumSize(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SetMinimumSize", args);
+    throw new Error("Tr2MainWindow.SetMinimumSize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetWindowState -> SetStateScript (MAP_METHOD_AND_WRAP). */
   SetWindowState(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SetWindowState", args);
+    throw new Error("Tr2MainWindow.SetWindowState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetWindowsMessageFilter (MAP_METHOD_AND_WRAP). */
   SetWindowsMessageFilter(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SetWindowsMessageFilter", args);
+    throw new Error("Tr2MainWindow.SetWindowsMessageFilter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClipCursor (MAP_METHOD_AND_WRAP). */
   ClipCursor(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "ClipCursor", args);
+    throw new Error("Tr2MainWindow.ClipCursor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnclipCursor (MAP_METHOD_AND_WRAP). */
   UnclipCursor(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "UnclipCursor", args);
+    throw new Error("Tr2MainWindow.UnclipCursor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ProcessMessages (MAP_METHOD_AND_WRAP). */
   ProcessMessages(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "ProcessMessages", args);
+    throw new Error("Tr2MainWindow.ProcessMessages is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetWindowState -> GetStateScript (MAP_METHOD_AND_WRAP). */
   GetWindowState(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetWindowState", args);
+    throw new Error("Tr2MainWindow.GetWindowState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetWindowSizeOptions (MAP_METHOD_AND_WRAP). */
   GetWindowSizeOptions(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetWindowSizeOptions", args);
+    throw new Error("Tr2MainWindow.GetWindowSizeOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetCursorPos (MAP_METHOD_AND_WRAP). */
   GetCursorPos(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetCursorPos", args);
+    throw new Error("Tr2MainWindow.GetCursorPos is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetWindowTitle (MAP_METHOD_AND_WRAP). */
   GetWindowTitle(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetWindowTitle", args);
+    throw new Error("Tr2MainWindow.GetWindowTitle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBackBufferFormat (MAP_METHOD_AND_WRAP). */
   GetBackBufferFormat(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetBackBufferFormat", args);
+    throw new Error("Tr2MainWindow.GetBackBufferFormat is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetHwndAsLong -> GetHwnd (MAP_METHOD_AND_WRAP). */
   GetHwndAsLong(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetHwndAsLong", args);
+    throw new Error("Tr2MainWindow.GetHwndAsLong is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetWindowsMessageFilter (MAP_METHOD_AND_WRAP). */
   GetWindowsMessageFilter(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetWindowsMessageFilter", args);
+    throw new Error("Tr2MainWindow.GetWindowsMessageFilter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDefaultState (MAP_METHOD_AND_WRAP). */
   GetDefaultState(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetDefaultState", args);
+    throw new Error("Tr2MainWindow.GetDefaultState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetKeyNameText -> GetKeyName (MAP_METHOD_AND_WRAP). */
   GetKeyNameText(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "GetKeyNameText", args);
+    throw new Error("Tr2MainWindow.GetKeyNameText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Key -> IsKeyPressed (MAP_METHOD_AND_WRAP). */
   Key(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "Key", args);
+    throw new Error("Tr2MainWindow.Key is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsKeyToggled (MAP_METHOD_AND_WRAP). */
   IsKeyToggled(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "IsKeyToggled", args);
+    throw new Error("Tr2MainWindow.IsKeyToggled is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsHidden -> IsMinimized (MAP_METHOD_AND_WRAP). */
   IsHidden(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "IsHidden", args);
+    throw new Error("Tr2MainWindow.IsHidden is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HasFocus (MAP_METHOD_AND_WRAP). */
   HasFocus(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "HasFocus", args);
+    throw new Error("Tr2MainWindow.HasFocus is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SanitizeState -> SanitizeStateScript (MAP_METHOD_AND_WRAP). */
   SanitizeState(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SanitizeState", args);
+    throw new Error("Tr2MainWindow.SanitizeState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCursorPos (MAP_METHOD_AND_WRAP). */
   SetCursorPos(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SetCursorPos", args);
+    throw new Error("Tr2MainWindow.SetCursorPos is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetWindowTitle (MAP_METHOD_AND_WRAP). */
   SetWindowTitle(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "SetWindowTitle", args);
+    throw new Error("Tr2MainWindow.SetWindowTitle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StoreStateSettings (MAP_METHOD_AND_WRAP). */
   StoreStateSettings(...args) {
-    throw CjsModel.notImplemented("Tr2MainWindow", "StoreStateSettings", args);
+    throw new Error("Tr2MainWindow.StoreStateSettings is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

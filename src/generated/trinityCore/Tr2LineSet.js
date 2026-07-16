@@ -46,7 +46,7 @@ export class Tr2LineSet extends Tr2PrimitiveSet
   @impl.notImplemented
   AddLine(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2LineSet", "AddLine", args);
+    throw new Error("Tr2LineSet.AddLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddPickingTriangle (MAP_METHOD_AND_WRAP). */
@@ -54,7 +54,7 @@ export class Tr2LineSet extends Tr2PrimitiveSet
   @impl.notImplemented
   AddPickingTriangle(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2LineSet", "AddPickingTriangle", args);
+    throw new Error("Tr2LineSet.AddPickingTriangle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearLines (MAP_METHOD_AND_WRAP). */
@@ -62,7 +62,7 @@ export class Tr2LineSet extends Tr2PrimitiveSet
   @impl.notImplemented
   ClearLines(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2LineSet", "ClearLines", args);
+    throw new Error("Tr2LineSet.ClearLines is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearPickingTriangles (MAP_METHOD_AND_WRAP). */
@@ -70,7 +70,7 @@ export class Tr2LineSet extends Tr2PrimitiveSet
   @impl.notImplemented
   ClearPickingTriangles(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2LineSet", "ClearPickingTriangles", args);
+    throw new Error("Tr2LineSet.ClearPickingTriangles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
@@ -78,7 +78,7 @@ export class Tr2LineSet extends Tr2PrimitiveSet
   @impl.notImplemented
   SubmitChanges(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2LineSet", "SubmitChanges", args);
+    throw new Error("Tr2LineSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
 
 }

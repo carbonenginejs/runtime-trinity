@@ -26,7 +26,7 @@ export class GrannyBoneOffset extends CjsModel
   @impl.notImplemented
   ClearTransforms(...args)
   {
-    throw CjsModel.notImplemented("GrannyBoneOffset", "ClearTransforms", args);
+    throw new Error("GrannyBoneOffset.ClearTransforms is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetRotation (MAP_METHOD_AND_WRAP). */
@@ -34,7 +34,7 @@ export class GrannyBoneOffset extends CjsModel
   @impl.notImplemented
   SetRotation(...args)
   {
-    throw CjsModel.notImplemented("GrannyBoneOffset", "SetRotation", args);
+    throw new Error("GrannyBoneOffset.SetRotation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetOffset (MAP_METHOD_AND_WRAP). */
@@ -42,7 +42,7 @@ export class GrannyBoneOffset extends CjsModel
   @impl.notImplemented
   SetOffset(...args)
   {
-    throw CjsModel.notImplemented("GrannyBoneOffset", "SetOffset", args);
+    throw new Error("GrannyBoneOffset.SetOffset is not implemented in CarbonEngineJS.");
   }
 
 }

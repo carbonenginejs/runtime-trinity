@@ -29,7 +29,7 @@ export class EveBannerLight extends CjsModel
   static FromSOF(value)
   {
     const result = new EveBannerLight();
-    result.lightData = LightData.fromValues(value?.lightData ?? {});
+    result.lightData = LightData.from(value?.lightData ?? {});
     result.saturation = Number(value?.saturation ?? 1);
     result.lightProfile = value?.lightProfile ?? null;
     result.index = Number(value?.index ?? 0) >>> 0;

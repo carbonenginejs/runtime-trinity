@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\EveDistanceField.h
 // Source: E:\carbonengine\trinity\trinity\Eve\EveDistanceField.cpp
+import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
@@ -155,7 +156,7 @@ export class EveDistanceField extends CjsModel
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "minDistance") || CjsModel.hasModifiedProperty(properties, "maxDistance"))
+    if (hasModifiedProperty(properties, "minDistance") || hasModifiedProperty(properties, "maxDistance"))
     {
       this.#updateDistanceCurve = true;
     }

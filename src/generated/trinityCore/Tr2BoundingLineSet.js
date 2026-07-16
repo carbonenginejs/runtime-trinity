@@ -27,7 +27,7 @@ export class Tr2BoundingLineSet extends Tr2LineSet
   @impl.notImplemented
   UpdateBounds(...args)
   {
-    throw Tr2LineSet.notImplemented("Tr2BoundingLineSet", "UpdateBounds", args);
+    throw new Error("Tr2BoundingLineSet.UpdateBounds is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -24,7 +24,7 @@ class EveBannerLight extends CjsModel {
   lightProfilePath = (_init_extra_boneMatrix(this), "");
   static FromSOF(value) {
     const result = new _EveBannerLight();
-    result.lightData = _LightData.fromValues(value?.lightData ?? {});
+    result.lightData = _LightData.from(value?.lightData ?? {});
     result.saturation = Number(value?.saturation ?? 1);
     result.lightProfile = value?.lightProfile ?? null;
     result.index = Number(value?.index ?? 0) >>> 0;

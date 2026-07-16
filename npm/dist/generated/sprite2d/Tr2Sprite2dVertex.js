@@ -22,12 +22,12 @@ class Tr2Sprite2dVertex extends _Tr2Sprite2dVertexBas {
   }
   /** Carbon method GetTexCoord (MAP_METHOD_AND_WRAP). */
   GetTexCoord(...args) {
-    throw _Tr2Sprite2dVertexBas.notImplemented("Tr2Sprite2dVertex", "GetTexCoord", args);
+    throw new Error("Tr2Sprite2dVertex.GetTexCoord is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTexCoord (MAP_METHOD_AND_WRAP). */
   SetTexCoord(...args) {
-    throw _Tr2Sprite2dVertexBas.notImplemented("Tr2Sprite2dVertex", "SetTexCoord", args);
+    throw new Error("Tr2Sprite2dVertex.SetTexCoord is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

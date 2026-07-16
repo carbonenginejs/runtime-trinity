@@ -94,7 +94,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationZ(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationZ", args);
+    throw new Error("TriMatrix.RotationZ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationX (MAP_METHOD_AND_WRAP). */
@@ -102,7 +102,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationX(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationX", args);
+    throw new Error("TriMatrix.RotationX is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationY (MAP_METHOD_AND_WRAP). */
@@ -110,7 +110,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationY(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationY", args);
+    throw new Error("TriMatrix.RotationY is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationAxis -> PyRotationAxis (MAP_METHOD_AND_WRAP). */
@@ -118,7 +118,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationAxis(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationAxis", args);
+    throw new Error("TriMatrix.RotationAxis is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LookAtRH -> PyLookAtRH (MAP_METHOD_AND_WRAP). */
@@ -126,7 +126,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   LookAtRH(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "LookAtRH", args);
+    throw new Error("TriMatrix.LookAtRH is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Multiply -> PyMultiply (MAP_METHOD_AND_WRAP). */
@@ -134,7 +134,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Multiply(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Multiply", args);
+    throw new Error("TriMatrix.Multiply is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationQuaternion -> PyRotationQuaternion (MAP_METHOD_AND_WRAP). */
@@ -142,7 +142,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationQuaternion(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationQuaternion", args);
+    throw new Error("TriMatrix.RotationQuaternion is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Transformation -> PyTransformation (MAP_METHOD_AND_WRAP). */
@@ -150,7 +150,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Transformation(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Transformation", args);
+    throw new Error("TriMatrix.Transformation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Scaling (MAP_METHOD_AND_WRAP). */
@@ -158,7 +158,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Scaling(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Scaling", args);
+    throw new Error("TriMatrix.Scaling is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Translation (MAP_METHOD_AND_WRAP). */
@@ -166,7 +166,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Translation(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Translation", args);
+    throw new Error("TriMatrix.Translation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationYawPitchRoll (MAP_METHOD_AND_WRAP). */
@@ -174,7 +174,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   RotationYawPitchRoll(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "RotationYawPitchRoll", args);
+    throw new Error("TriMatrix.RotationYawPitchRoll is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Transpose (MAP_METHOD_AND_WRAP). */
@@ -182,7 +182,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Transpose(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Transpose", args);
+    throw new Error("TriMatrix.Transpose is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Determinant (MAP_METHOD_AND_WRAP). */
@@ -190,7 +190,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Determinant(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Determinant", args);
+    throw new Error("TriMatrix.Determinant is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Identity (MAP_METHOD_AND_WRAP). */
@@ -198,7 +198,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Identity(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Identity", args);
+    throw new Error("TriMatrix.Identity is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Inverse (MAP_METHOD_AND_WRAP). */
@@ -206,7 +206,7 @@ export class TriMatrix extends CjsModel
   @impl.notImplemented
   Inverse(...args)
   {
-    throw CjsModel.notImplemented("TriMatrix", "Inverse", args);
+    throw new Error("TriMatrix.Inverse is not implemented in CarbonEngineJS.");
   }
 
 }

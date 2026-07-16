@@ -230,6 +230,7 @@ new class extends _identity {
     }
     return Array.isArray(args) ? args : [args];
   }
+  TRIEXTRAPOLATION = TRIEXTRAPOLATION;
   constructor() {
     super(_TriEventCurve), _initClass();
   }

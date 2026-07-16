@@ -55,13 +55,13 @@ export class Tr2CurveLineSet extends CjsModel
   /** m_lineEffect (Tr2MaterialPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Material")
+  @type.model("Tr2Material")
   lineEffect = null;
 
   /** m_pickEffect (Tr2MaterialPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Material")
+  @type.model("Tr2Material")
   pickEffect = null;
 
   /** Carbon method AddCurvedLineCrt (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -69,7 +69,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   AddCurvedLineCrt(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "AddCurvedLineCrt", args);
+    throw new Error("Tr2CurveLineSet.AddCurvedLineCrt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddCurvedLineSph (MAP_METHOD_AND_WRAP). */
@@ -77,7 +77,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   AddCurvedLineSph(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "AddCurvedLineSph", args);
+    throw new Error("Tr2CurveLineSet.AddCurvedLineSph is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddSpheredLineCrt (MAP_METHOD_AND_WRAP). */
@@ -85,7 +85,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   AddSpheredLineCrt(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "AddSpheredLineCrt", args);
+    throw new Error("Tr2CurveLineSet.AddSpheredLineCrt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddSpheredLineSph (MAP_METHOD_AND_WRAP). */
@@ -93,7 +93,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   AddSpheredLineSph(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "AddSpheredLineSph", args);
+    throw new Error("Tr2CurveLineSet.AddSpheredLineSph is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddStraightLine (MAP_METHOD_AND_WRAP). */
@@ -101,7 +101,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   AddStraightLine(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "AddStraightLine", args);
+    throw new Error("Tr2CurveLineSet.AddStraightLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineIntermediateSph (MAP_METHOD_AND_WRAP). */
@@ -109,7 +109,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineIntermediateSph(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineIntermediateSph", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineIntermediateSph is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineIntermediateCrt (MAP_METHOD_AND_WRAP). */
@@ -117,7 +117,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineIntermediateCrt(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineIntermediateCrt", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineIntermediateCrt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLinePositionSph (MAP_METHOD_AND_WRAP). */
@@ -125,7 +125,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLinePositionSph(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLinePositionSph", args);
+    throw new Error("Tr2CurveLineSet.ChangeLinePositionSph is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLinePositionCrt (MAP_METHOD_AND_WRAP). */
@@ -133,7 +133,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLinePositionCrt(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLinePositionCrt", args);
+    throw new Error("Tr2CurveLineSet.ChangeLinePositionCrt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineAnimation (MAP_METHOD_AND_WRAP). */
@@ -141,7 +141,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineAnimation(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineAnimation", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineMultiColor (MAP_METHOD_AND_WRAP). */
@@ -149,7 +149,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineMultiColor(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineMultiColor", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineMultiColor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineSegmentation (MAP_METHOD_AND_WRAP). */
@@ -157,7 +157,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineSegmentation(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineSegmentation", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineSegmentation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineColor (MAP_METHOD_AND_WRAP). */
@@ -165,7 +165,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineColor(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineColor", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineColor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineWidth (MAP_METHOD_AND_WRAP). */
@@ -173,7 +173,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineWidth(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ChangeLineWidth", args);
+    throw new Error("Tr2CurveLineSet.ChangeLineWidth is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearLines (MAP_METHOD_AND_WRAP). */
@@ -181,7 +181,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   ClearLines(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "ClearLines", args);
+    throw new Error("Tr2CurveLineSet.ClearLines is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveLine (MAP_METHOD_AND_WRAP). */
@@ -189,7 +189,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   RemoveLine(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "RemoveLine", args);
+    throw new Error("Tr2CurveLineSet.RemoveLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
@@ -197,7 +197,7 @@ export class Tr2CurveLineSet extends CjsModel
   @impl.notImplemented
   SubmitChanges(...args)
   {
-    throw CjsModel.notImplemented("Tr2CurveLineSet", "SubmitChanges", args);
+    throw new Error("Tr2CurveLineSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
 
 }

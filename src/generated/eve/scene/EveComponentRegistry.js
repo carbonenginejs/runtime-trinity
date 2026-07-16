@@ -10,7 +10,7 @@ export class EveComponentRegistry extends CjsModel
 {
 
   /** m_componentCollectionLoopGuard (mutable std::shared_mutex) */
-  @type.rawStruct("mutable std::shared_mutex")
+  @type.rawStruct("std::shared_mutex")
   componentCollectionLoopGuard = null;
 
   /** m_registeredEntities (std::vector<EveEntity*>) */
@@ -22,7 +22,7 @@ export class EveComponentRegistry extends CjsModel
   @impl.notImplemented
   GetComponentInfo(...args)
   {
-    throw CjsModel.notImplemented("EveComponentRegistry", "GetComponentInfo", args);
+    throw new Error("EveComponentRegistry.GetComponentInfo is not implemented in CarbonEngineJS.");
   }
 
 }

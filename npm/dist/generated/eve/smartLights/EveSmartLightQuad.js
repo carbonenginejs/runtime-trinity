@@ -15,7 +15,7 @@ class EveSmartLightQuad extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveSmartLightQuad",
       family: "eve/smartLights"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, void 0, type.struct("Float_16")], 16, "brightness"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.vec3], 16, "staticQuadScale"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.readwrite, type, type.boolean], 16, "editMode"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "softQuad"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.float32], 16, "brightness"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.vec3], 16, "staticQuadScale"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.readwrite, type, type.boolean], 16, "editMode"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "softQuad"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -27,7 +27,7 @@ class EveSmartLightQuad extends _EveChildTransform {
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   effect = (_init_extra_name(this), _init_effect(this, null));
 
-  /** m_brightness (Float_16) [READWRITE, PERSIST] */
+  /** m_brightness (float) [READWRITE, PERSIST] */
   brightness = (_init_extra_effect(this), _init_brightness(this, 1));
 
   /** m_display (bool) [READWRITE, PERSIST] */

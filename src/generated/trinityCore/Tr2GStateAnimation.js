@@ -59,7 +59,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   ClearScrub(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "ClearScrub", args);
+    throw new Error("Tr2GStateAnimation.ClearScrub is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ForceChangeToState (MAP_METHOD_AND_WRAP). */
@@ -67,7 +67,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   ForceChangeToState(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "ForceChangeToState", args);
+    throw new Error("Tr2GStateAnimation.ForceChangeToState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetActiveMachineElementName (MAP_METHOD_AND_WRAP). */
@@ -75,7 +75,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetActiveMachineElementName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetActiveMachineElementName", args);
+    throw new Error("Tr2GStateAnimation.GetActiveMachineElementName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAnimationTime (MAP_METHOD_AND_WRAP). */
@@ -83,7 +83,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetAnimationTime(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetAnimationTime", args);
+    throw new Error("Tr2GStateAnimation.GetAnimationTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetGStateAnimFileRefPaths (MAP_METHOD_AND_WRAP). */
@@ -91,7 +91,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetGStateAnimFileRefPaths(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetGStateAnimFileRefPaths", args);
+    throw new Error("Tr2GStateAnimation.GetGStateAnimFileRefPaths is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetParameter (MAP_METHOD_AND_WRAP). */
@@ -99,7 +99,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetParameter(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetParameter", args);
+    throw new Error("Tr2GStateAnimation.GetParameter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetParameterByName (MAP_METHOD_AND_WRAP). */
@@ -107,7 +107,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetParameterByName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetParameterByName", args);
+    throw new Error("Tr2GStateAnimation.GetParameterByName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetParameterIndexByName (MAP_METHOD_AND_WRAP). */
@@ -115,7 +115,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetParameterIndexByName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetParameterIndexByName", args);
+    throw new Error("Tr2GStateAnimation.GetParameterIndexByName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetParameterRange (MAP_METHOD_AND_WRAP). */
@@ -123,7 +123,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetParameterRange(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetParameterRange", args);
+    throw new Error("Tr2GStateAnimation.GetParameterRange is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetParameters (MAP_METHOD_AND_WRAP). */
@@ -131,7 +131,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetParameters(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetParameters", args);
+    throw new Error("Tr2GStateAnimation.GetParameters is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetScrubOffset (MAP_METHOD_AND_WRAP). */
@@ -139,7 +139,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetScrubOffset(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetScrubOffset", args);
+    throw new Error("Tr2GStateAnimation.GetScrubOffset is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetStartStateIdx (MAP_METHOD_AND_WRAP). */
@@ -147,7 +147,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetStartStateIdx(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetStartStateIdx", args);
+    throw new Error("Tr2GStateAnimation.GetStartStateIdx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTopLevelNodeNames (MAP_METHOD_AND_WRAP). */
@@ -155,7 +155,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetTopLevelNodeNames(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetTopLevelNodeNames", args);
+    throw new Error("Tr2GStateAnimation.GetTopLevelNodeNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTopLevelParameterNodeNames (MAP_METHOD_AND_WRAP). */
@@ -163,7 +163,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetTopLevelParameterNodeNames(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetTopLevelParameterNodeNames", args);
+    throw new Error("Tr2GStateAnimation.GetTopLevelParameterNodeNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTopLevelStateNodeNames (MAP_METHOD_AND_WRAP). */
@@ -171,7 +171,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   GetTopLevelStateNodeNames(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "GetTopLevelStateNodeNames", args);
+    throw new Error("Tr2GStateAnimation.GetTopLevelStateNodeNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method InstantiateCharacter (MAP_METHOD_AND_WRAP). */
@@ -179,7 +179,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   InstantiateCharacter(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "InstantiateCharacter", args);
+    throw new Error("Tr2GStateAnimation.InstantiateCharacter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsFullyLoaded (MAP_METHOD_AND_WRAP). */
@@ -187,7 +187,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   IsFullyLoaded(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "IsFullyLoaded", args);
+    throw new Error("Tr2GStateAnimation.IsFullyLoaded is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LoadModelFromGstate (MAP_METHOD_AND_WRAP). */
@@ -195,7 +195,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   LoadModelFromGstate(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "LoadModelFromGstate", args);
+    throw new Error("Tr2GStateAnimation.LoadModelFromGstate is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayFromScrub (MAP_METHOD_AND_WRAP). */
@@ -203,7 +203,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   PlayFromScrub(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "PlayFromScrub", args);
+    throw new Error("Tr2GStateAnimation.PlayFromScrub is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RequestChangeToState (MAP_METHOD_AND_WRAP). */
@@ -211,7 +211,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   RequestChangeToState(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "RequestChangeToState", args);
+    throw new Error("Tr2GStateAnimation.RequestChangeToState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RequestParameter (MAP_METHOD_AND_WRAP). */
@@ -219,7 +219,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   RequestParameter(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "RequestParameter", args);
+    throw new Error("Tr2GStateAnimation.RequestParameter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RequestParameterByName (MAP_METHOD_AND_WRAP). */
@@ -227,7 +227,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   RequestParameterByName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "RequestParameterByName", args);
+    throw new Error("Tr2GStateAnimation.RequestParameterByName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetParamsToDefault (MAP_METHOD_AND_WRAP). */
@@ -235,7 +235,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   ResetParamsToDefault(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "ResetParamsToDefault", args);
+    throw new Error("Tr2GStateAnimation.ResetParamsToDefault is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetParameter (MAP_METHOD_AND_WRAP). */
@@ -243,7 +243,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   SetParameter(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "SetParameter", args);
+    throw new Error("Tr2GStateAnimation.SetParameter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetScrubOffset (MAP_METHOD_AND_WRAP). */
@@ -251,7 +251,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   SetScrubOffset(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "SetScrubOffset", args);
+    throw new Error("Tr2GStateAnimation.SetScrubOffset is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetStartStateByName (MAP_METHOD_AND_WRAP). */
@@ -259,7 +259,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   SetStartStateByName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "SetStartStateByName", args);
+    throw new Error("Tr2GStateAnimation.SetStartStateByName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetStartStateIdx (MAP_METHOD_AND_WRAP). */
@@ -267,7 +267,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   SetStartStateIdx(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "SetStartStateIdx", args);
+    throw new Error("Tr2GStateAnimation.SetStartStateIdx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartScrub (MAP_METHOD_AND_WRAP). */
@@ -275,7 +275,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   StartScrub(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "StartScrub", args);
+    throw new Error("Tr2GStateAnimation.StartScrub is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartTransitionByName (MAP_METHOD_AND_WRAP). */
@@ -283,7 +283,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   StartTransitionByName(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "StartTransitionByName", args);
+    throw new Error("Tr2GStateAnimation.StartTransitionByName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StopPlayFromScrub (MAP_METHOD_AND_WRAP). */
@@ -291,7 +291,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   StopPlayFromScrub(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "StopPlayFromScrub", args);
+    throw new Error("Tr2GStateAnimation.StopPlayFromScrub is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TogglePauseAnimations (MAP_METHOD_AND_WRAP). */
@@ -299,7 +299,7 @@ export class Tr2GStateAnimation extends CjsModel
   @impl.notImplemented
   TogglePauseAnimations(...args)
   {
-    throw CjsModel.notImplemented("Tr2GStateAnimation", "TogglePauseAnimations", args);
+    throw new Error("Tr2GStateAnimation.TogglePauseAnimations is not implemented in CarbonEngineJS.");
   }
 
 }

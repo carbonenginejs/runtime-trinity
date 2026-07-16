@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerReference.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerReference.cpp
+import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { UnlinkReason } from "./enums.js";
@@ -67,7 +68,7 @@ export class Tr2ControllerReference extends CjsModel
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "path"))
+    if (hasModifiedProperty(properties, "path"))
     {
       this.controller = null;
       this.ResolveController();

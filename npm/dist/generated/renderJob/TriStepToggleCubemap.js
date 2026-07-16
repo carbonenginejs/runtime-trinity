@@ -25,7 +25,7 @@ class TriStepToggleCubemap extends _TriRenderStep {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepToggleCubemap", "__init__", args);
+    throw new Error("TriStepToggleCubemap.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

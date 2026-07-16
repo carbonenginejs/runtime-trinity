@@ -61,7 +61,7 @@ export class TriStepRenderAtlas extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderAtlas", "__init__", args);
+    throw new Error("TriStepRenderAtlas.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

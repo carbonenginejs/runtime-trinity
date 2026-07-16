@@ -18,4 +18,11 @@ export class Tr2ParticleElementDeclarationName extends CjsModel
   @type.string
   name = "";
 
+  static Type = Object.freeze({
+    FLOAT: 0,
+    INTEGER: 1,
+    BOOLEAN: 2,
+    ENUM: 3,
+  });
+
 }

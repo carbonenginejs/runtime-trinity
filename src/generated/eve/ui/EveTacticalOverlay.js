@@ -29,19 +29,19 @@ export class EveTacticalOverlay extends CjsModel
   /** m_anchorEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   anchorEffect = null;
 
   /** m_connectorEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   connectorEffect = null;
 
   /** m_velocityEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   velocityEffect = null;
 
   /** m_ranges.x (Vector4) [READWRITE, PERSIST] */
@@ -111,7 +111,7 @@ export class EveTacticalOverlay extends CjsModel
 
   /** m_positionCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** m_rootPosition (Vector3) [READWRITE, PERSIST] */

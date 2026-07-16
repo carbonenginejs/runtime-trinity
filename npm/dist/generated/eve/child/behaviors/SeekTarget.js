@@ -14,7 +14,7 @@ class SeekTarget extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "SeekTarget",
       family: "eve/child/behaviors"
-    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, void 0, type.objectRef("EveSpaceObject2")], 16, "target"], [[io, io.persist, type, type.boolean], 16, "firstSpawnAtRandomPlaces"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onFirstDroneArrivedCallback"], [[io, io.readwrite, type, type.float32], 16, "totalRepairTime"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[io, io.persist, void 0, type.objectRef("EveLocatorSets")], 16, "locatorSet"], [[io, io.readwrite, type, type.boolean], 16, "exit"], [[io, io.readwrite, type, type.boolean], 16, "repair"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLocatorSet"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTarget"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetBehavior"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetBehaviorWeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetExit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTotalRepairTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetupShipRepair"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SplitBoundingBox"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "target"], [[io, io.persist, type, type.boolean], 16, "firstSpawnAtRandomPlaces"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onFirstDroneArrivedCallback"], [[io, io.readwrite, type, type.float32], 16, "totalRepairTime"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[io, io.persist, void 0, type.model("EveLocatorSets")], 16, "locatorSet"], [[io, io.readwrite, type, type.boolean], 16, "exit"], [[io, io.readwrite, type, type.boolean], 16, "repair"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLocatorSet"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTarget"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetBehavior"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetBehaviorWeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetExit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTotalRepairTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetupShipRepair"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SplitBoundingBox"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -67,42 +67,42 @@ class SeekTarget extends CjsModel {
 
   /** Carbon method AddLocatorSet (MAP_METHOD_AND_WRAP). */
   AddLocatorSet(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "AddLocatorSet", args);
+    throw new Error("SeekTarget.AddLocatorSet is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTarget (MAP_METHOD_AND_WRAP). */
   SetTarget(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SetTarget", args);
+    throw new Error("SeekTarget.SetTarget is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetBehavior (MAP_METHOD_AND_WRAP). */
   ResetBehavior(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "ResetBehavior", args);
+    throw new Error("SeekTarget.ResetBehavior is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetBehaviorWeight (MAP_METHOD_AND_WRAP). */
   SetBehaviorWeight(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SetBehaviorWeight", args);
+    throw new Error("SeekTarget.SetBehaviorWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetExit (MAP_METHOD_AND_WRAP). */
   SetExit(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SetExit", args);
+    throw new Error("SeekTarget.SetExit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTotalRepairTime (MAP_METHOD_AND_WRAP). */
   SetTotalRepairTime(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SetTotalRepairTime", args);
+    throw new Error("SeekTarget.SetTotalRepairTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetupShipRepair (MAP_METHOD_AND_WRAP). */
   SetupShipRepair(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SetupShipRepair", args);
+    throw new Error("SeekTarget.SetupShipRepair is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SplitBoundingBox (MAP_METHOD_AND_WRAP). */
   SplitBoundingBox(...args) {
-    throw CjsModel.notImplemented("SeekTarget", "SplitBoundingBox", args);
+    throw new Error("SeekTarget.SplitBoundingBox is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

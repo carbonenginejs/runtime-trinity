@@ -19,7 +19,7 @@ export class TriStepSetVariableStore extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepSetVariableStore", "__init__", args);
+    throw new Error("TriStepSetVariableStore.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

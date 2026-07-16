@@ -82,6 +82,7 @@ new class extends _identity {
     const number = Number(value);
     return Number.isFinite(number) ? number | 0 : fallback;
   }
+  ResetBehavior = ResetBehavior;
   constructor() {
     super(_Tr2ActionResetClipSp), _initClass();
   }

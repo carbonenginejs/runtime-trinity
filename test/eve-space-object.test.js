@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import { EveEntity, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
+import { EveChildInheritProperties } from "../npm/dist/eve/child/EveChildInheritProperties.js";
 
 
 const assertVecNear = (actual, expected, epsilon = 1e-6) =>
@@ -15,6 +16,136 @@ const assertVecNear = (actual, expected, epsilon = 1e-6) =>
       `component ${index}: expected ${expected[index]}, received ${actual[index]}`);
   }
 };
+
+test("EveChildInheritProperties owns Carbon's 44 enum-ordered color copies", () =>
+{
+  const blueFields = [
+    "Primary", "Secondary", "Tertiary", "Black", "White", "Yellow", "Orange", "Red", "Blue", "Green",
+    "Cyan", "Fire", "Hull", "Glass", "Reactor", "Darkhull", "Booster", "Killmark", "PrimaryLight",
+    "SecondaryLight", "TertiaryLight", "WhiteLight", "PrimarySpotlight", "SecondarySpotlight",
+    "TertiarySpotlight", "PrimaryHologram", "SecondaryHologram", "TertiaryHologram", "State0", "State1",
+    "State2", "State3", "StateVulnerable", "StateInvulnerable", "PrimaryForcefield", "SecondaryForcefield",
+    "PrimaryBanner", "PrimaryBillboard", "PrimaryFx", "SecondaryFx", "PrimaryWarpFx", "PrimaryAttackFx",
+    "PrimarySiegeFx", "PrimaryDockedFx"
+  ];
+  const inheritProperties = new EveChildInheritProperties();
+  for (const name of blueFields)
+  {
+    assert.equal(CjsSchema.getField(EveChildInheritProperties, name)?.type.kind, "color", name);
+  }
+  assert.equal(CjsSchema.getField(EveChildInheritProperties, "colorSet"), null);
+
+  const stored = inheritProperties.GetProperties();
+  assert.equal(stored.length, 44);
+  assert.equal(inheritProperties.GetProperties(), stored);
+  assert.deepEqual(stored.map(color => Array.from(color)), Array.from({ length: 44 }, () => [0, 0, 0, 0]));
+
+  const source = Array.from({ length: 44 }, (_value, index) => [index, index + 100, index + 200, index + 300]);
+  inheritProperties.SetProperties(source);
+  assert.equal(inheritProperties.GetProperties(), stored);
+  for (let index = 0; index < source.length; index++)
+  {
+    assert.notEqual(stored[index], source[index]);
+    assert.deepEqual(Array.from(stored[index]), source[index]);
+  }
+
+  assert.equal(stored[22], inheritProperties.PrimaryHologram);
+  assert.equal(stored[25], inheritProperties.State0);
+  assert.equal(stored[34], inheritProperties.PrimaryFx);
+  assert.equal(stored[36], inheritProperties.PrimarySpotlight);
+  assert.equal(stored[39], inheritProperties.PrimaryBillboard);
+  assert.equal(stored[41], inheritProperties.PrimaryAttackFx);
+
+  source[22][0] = -1;
+  inheritProperties.SetProperties(null);
+  assert.equal(stored[22][0], 22);
+});
+
+test("EveSpaceObject2 propagates Carbon inherit properties to existing and future owners", () =>
+{
+  const object = new EveSpaceObject2();
+  const existingChildCalls = [];
+  const existingLightCalls = [];
+  const ordinaryChildCalls = [];
+  object.effectChildren.push({
+    SetInheritProperties(properties)
+    {
+      existingChildCalls.push(properties);
+    }
+  });
+  object.lights.push({
+    SetInheritProperties(properties)
+    {
+      existingLightCalls.push(properties);
+    }
+  });
+  object.children.push({
+    SetInheritProperties(properties)
+    {
+      ordinaryChildCalls.push(properties);
+    }
+  });
+
+  const source = Array.from({ length: 44 }, (_value, index) => [index, 1, 2, 3]);
+  object.SetInheritProperties(source);
+  assert.equal(object.inheritProperties instanceof EveChildInheritProperties, true);
+  const storage = object.inheritProperties;
+  const stored = storage.GetProperties();
+  assert.deepEqual(existingChildCalls, [stored]);
+  assert.deepEqual(existingLightCalls, [stored]);
+  assert.deepEqual(ordinaryChildCalls, []);
+
+  let childWasInserted = null;
+  const futureChildCalls = [];
+  const futureChild = {
+    SetInheritProperties(properties)
+    {
+      childWasInserted = object.effectChildren.includes(futureChild);
+      futureChildCalls.push(properties);
+    }
+  };
+  object.AddToEffectChildrenList(futureChild);
+  assert.equal(childWasInserted, false);
+  assert.equal(object.effectChildren.at(-1), futureChild);
+  assert.deepEqual(futureChildCalls, [stored]);
+
+  let lightWasInserted = null;
+  const futureLightCalls = [];
+  const futureLight = {
+    SetInheritProperties(properties)
+    {
+      lightWasInserted = object.lights.includes(futureLight);
+      futureLightCalls.push(properties);
+    }
+  };
+  object.AddLight(futureLight);
+  assert.equal(lightWasInserted, false);
+  assert.equal(object.lights.at(-1), futureLight);
+  assert.deepEqual(futureLightCalls, [stored]);
+
+  const replacement = Array.from({ length: 44 }, (_value, index) => [43 - index, 4, 5, 6]);
+  object.SetInheritProperties(replacement);
+  assert.equal(object.inheritProperties, storage);
+  assert.equal(object.inheritProperties.GetProperties(), stored);
+  assert.deepEqual(Array.from(stored[0]), replacement[0]);
+  assert.deepEqual(existingChildCalls, [stored, stored]);
+  assert.deepEqual(existingLightCalls, [stored, stored]);
+  assert.deepEqual(futureChildCalls, [stored, stored]);
+  assert.deepEqual(futureLightCalls, [stored, stored]);
+  assert.deepEqual(ordinaryChildCalls, []);
+
+  object.ClearLights();
+  assert.deepEqual(object.lights, []);
+
+  const nullObject = new EveSpaceObject2();
+  const nullCalls = [];
+  nullObject.effectChildren.push({ SetInheritProperties: properties => nullCalls.push(properties) });
+  nullObject.SetInheritProperties(null);
+  const zeroStorage = nullObject.inheritProperties.GetProperties();
+  assert.equal(zeroStorage.length, 44);
+  assert.deepEqual(zeroStorage.map(color => Array.from(color)), Array.from({ length: 44 }, () => [0, 0, 0, 0]));
+  assert.deepEqual(nullCalls, [zeroStorage]);
+});
 
 test("EveSpaceObject2 owns the Carbon controller graph and mesh alias", () =>
 {
@@ -84,7 +215,7 @@ test("EveSpaceObject2 owns the Carbon controller graph and mesh alias", () =>
   };
 
   assert.equal(object instanceof EveEntity, true);
-  assert.equal(CjsSchema.getClass("EveSpaceObject2"), EveSpaceObject2);
+  assert.equal(CjsSchema.GetConstructor("EveSpaceObject2"), EveSpaceObject2);
   object.SetMesh(mesh);
   assert.equal(object.GetMesh(), mesh);
   assert.equal(object.meshLod, mesh);
@@ -313,17 +444,23 @@ test("EveSpaceObject2 drives observers, controller frequency, mute, and emitter 
   assert.equal(object.FindSoundEmitter("silent"), null);
 });
 
-test("maintained EveSpaceObject2 and TriObserverLocal replace generated fallbacks", () =>
+test("maintained EveSpaceObject2, inherit properties, and TriObserverLocal replace generated fallbacks", () =>
 {
   const generatedSpaceObject = new URL("../src/generated/eve/spaceObject/EveSpaceObject2.js", import.meta.url);
+  const generatedInheritProperties = new URL("../src/generated/eve/child/EveChildInheritProperties.js", import.meta.url);
   const generatedObserver = new URL("../src/generated/trinityCore/TriObserverLocal.js", import.meta.url);
   assert.equal(existsSync(generatedSpaceObject), false);
+  assert.equal(existsSync(generatedInheritProperties), false);
   assert.equal(existsSync(generatedObserver), false);
 
   const summary = JSON.parse(readFileSync(new URL("../src/generated/summary.json", import.meta.url), "utf8"));
   const skipped = summary.skipped.filter(entry =>
-    entry.className === "EveSpaceObject2" || entry.className === "TriObserverLocal"
+    ["EveChildInheritProperties", "EveSpaceObject2", "TriObserverLocal"].includes(entry.className)
   );
-  assert.deepEqual(skipped.map(entry => entry.className).sort(), ["EveSpaceObject2", "TriObserverLocal"]);
+  assert.deepEqual(skipped.map(entry => entry.className).sort(), [
+    "EveChildInheritProperties",
+    "EveSpaceObject2",
+    "TriObserverLocal"
+  ]);
   assert.equal(skipped.every(entry => entry.reason === "hand-maintained source exists"), true);
 });

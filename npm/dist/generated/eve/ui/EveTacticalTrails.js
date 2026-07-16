@@ -14,7 +14,7 @@ class EveTacticalTrails extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveTacticalTrails",
       family: "eve/ui"
-    })], [[[io, io.read, type, type.uint32], 16, "segments"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "egoBall"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "trailEffect"], [[io, io.persist, type, type.float32], 16, "fadeOutTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RegisterObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UnregisterObject"]], 0, void 0, CjsModel));
+    })], [[[io, io.read, type, type.uint32], 16, "segments"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "egoBall"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "trailEffect"], [[io, io.persist, type, type.float32], 16, "fadeOutTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RegisterObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UnregisterObject"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -34,12 +34,12 @@ class EveTacticalTrails extends CjsModel {
 
   /** Carbon method RegisterObject (MAP_METHOD_AND_WRAP). */
   RegisterObject(...args) {
-    throw CjsModel.notImplemented("EveTacticalTrails", "RegisterObject", args);
+    throw new Error("EveTacticalTrails.RegisterObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnregisterObject (MAP_METHOD_AND_WRAP). */
   UnregisterObject(...args) {
-    throw CjsModel.notImplemented("EveTacticalTrails", "UnregisterObject", args);
+    throw new Error("EveTacticalTrails.UnregisterObject is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -104,4 +104,22 @@ export class Tr2PostProcessRenderer extends CjsModel
   @type.boolean
   useNewBloom = false;
 
+  static BloomDebugMode = Object.freeze({
+    BLOOM_DEBUG_NONE: 0,
+    BLOOM_DEBUG_ALL: 1,
+    BLOOM_DEBUG_STEP1: 2,
+    BLOOM_DEBUG_STEP2: 3,
+    BLOOM_DEBUG_STEP3: 4,
+    BLOOM_DEBUG_STEP4: 5,
+    BLOOM_DEBUG_STEP5: 6,
+    BLOOM_DEBUG_STEP6: 7,
+  });
+
+  static Quality = Object.freeze({
+    LOW: 0,
+    MEDIUM: 1,
+    HIGH: 2,
+    COUNT: 3,
+  });
+
 }

@@ -52,7 +52,7 @@ export class EveMissileWarhead extends EveTransform
 
   /** m_spriteSet (EveSpriteSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveSpriteSet")
+  @type.model("EveSpriteSet")
   spriteSet = null;
 
   /** m_targetLocator (int) [READ] */
@@ -100,7 +100,7 @@ export class EveMissileWarhead extends EveTransform
   @impl.notImplemented
   PrepareLaunch(...args)
   {
-    throw EveTransform.notImplemented("EveMissileWarhead", "PrepareLaunch", args);
+    throw new Error("EveMissileWarhead.PrepareLaunch is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Launch (MAP_METHOD_AND_WRAP). */
@@ -108,7 +108,7 @@ export class EveMissileWarhead extends EveTransform
   @impl.notImplemented
   Launch(...args)
   {
-    throw EveTransform.notImplemented("EveMissileWarhead", "Launch", args);
+    throw new Error("EveMissileWarhead.Launch is not implemented in CarbonEngineJS.");
   }
 
 }

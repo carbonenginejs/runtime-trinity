@@ -14,7 +14,7 @@ class EveProceduralMethodThresholdParameter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveProceduralMethodThresholdParameter",
       family: "eve/child/procedural/selection"
-    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("EveChild")], 16, "child"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.float32], 16, "threshold"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, void 0, type.model("EveChild")], 16, "child"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.float32], 16, "threshold"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

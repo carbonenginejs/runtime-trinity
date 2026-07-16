@@ -29,7 +29,7 @@ export class Tr2PrimitiveScene extends CjsModel
   @impl.notImplemented
   PickObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2PrimitiveScene", "PickObject", args);
+    throw new Error("Tr2PrimitiveScene.PickObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickPointAndObject -> PyPickPointAndObject (MAP_METHOD). */
@@ -37,7 +37,7 @@ export class Tr2PrimitiveScene extends CjsModel
   @impl.notImplemented
   PickPointAndObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2PrimitiveScene", "PickPointAndObject", args);
+    throw new Error("Tr2PrimitiveScene.PickPointAndObject is not implemented in CarbonEngineJS.");
   }
 
 }

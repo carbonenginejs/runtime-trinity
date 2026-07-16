@@ -52,12 +52,12 @@ class EveBaseDistributionMethod extends CjsModel {
 
   /** Carbon method AddEntity -> AddEntities (MAP_METHOD_AND_WRAP). */
   AddEntity(...args) {
-    throw CjsModel.notImplemented("EveBaseDistributionMethod", "AddEntity", args);
+    throw new Error("EveBaseDistributionMethod.AddEntity is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Restart -> RestartDistribution (MAP_METHOD_AND_WRAP). */
   Restart(...args) {
-    throw CjsModel.notImplemented("EveBaseDistributionMethod", "Restart", args);
+    throw new Error("EveBaseDistributionMethod.Restart is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

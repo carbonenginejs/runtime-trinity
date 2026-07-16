@@ -14,7 +14,7 @@ class EveLineContainer extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveLineContainer",
       family: "eve/ui"
-    })], [[[io, io.persist, void 0, type.list("EveConnector")], 16, "connectors"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("EveCurveLineSet")], 16, "lineSet"], [[io, io.readwrite, type, type.boolean], 16, "display"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.list("EveConnector")], 16, "connectors"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("EveCurveLineSet")], 16, "lineSet"], [[io, io.readwrite, type, type.boolean], 16, "display"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle_Blue.cpp
+import { hasModifiedProperty } from "../../../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { sph3 } from "@carbonenginejs/core-math/sph3";
@@ -123,15 +124,15 @@ export class EveCircle extends EveChildTransform
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "completeness"))
+    if (hasModifiedProperty(properties, "completeness"))
     {
       this.completeness = Math.min(2, Math.max(0, this.completeness));
     }
-    if (CjsModel.hasModifiedProperty(properties, "numSegments"))
+    if (hasModifiedProperty(properties, "numSegments"))
     {
       this.numSegments = Math.min(128, Math.max(1, this.numSegments));
     }
-    if (CjsModel.hasModifiedProperty(properties, "startPoint"))
+    if (hasModifiedProperty(properties, "startPoint"))
     {
       this.startPoint %= 1;
     }

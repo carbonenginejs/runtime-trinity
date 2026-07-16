@@ -51,7 +51,13 @@ export class FollowASpline extends CjsModel
   @impl.notImplemented
   remapTunnels(...args)
   {
-    throw CjsModel.notImplemented("FollowASpline", "remapTunnels", args);
+    throw new Error("FollowASpline.remapTunnels is not implemented in CarbonEngineJS.");
   }
+
+  static TunnelGroupType = Object.freeze({
+    EXIT_TUNNELS: 0,
+    ENTRANCE_TUNNELS: 1,
+    OTHER_TUNNELS: 2,
+  });
 
 }

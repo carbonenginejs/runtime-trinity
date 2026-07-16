@@ -43,12 +43,12 @@ class Tr2TextureAnimation extends CjsModel {
 
   /** Carbon method GetChannelNames (MAP_METHOD_AND_WRAP). */
   GetChannelNames(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAnimation", "GetChannelNames", args);
+    throw new Error("Tr2TextureAnimation.GetChannelNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RestartAnimation (MAP_METHOD_AND_WRAP). */
   RestartAnimation(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAnimation", "RestartAnimation", args);
+    throw new Error("Tr2TextureAnimation.RestartAnimation is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

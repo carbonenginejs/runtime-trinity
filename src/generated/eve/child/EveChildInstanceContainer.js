@@ -38,7 +38,7 @@ export class EveChildInstanceContainer extends EveChildTransform
 
   /** m_inheritProperties (EveChildInheritPropertiesPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveChildInheritProperties")
+  @type.model("EveChildInheritProperties")
   inheritProperties = null;
 
   /** m_reset (bool) [READWRITE] */
@@ -59,7 +59,7 @@ export class EveChildInstanceContainer extends EveChildTransform
 
   /** m_source (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   source = null;
 
   /** m_origin (Origin - enum Origin) [READ] */
@@ -73,7 +73,7 @@ export class EveChildInstanceContainer extends EveChildTransform
   @impl.notImplemented
   HandleControllerEvent(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildInstanceContainer", "HandleControllerEvent", args);
+    throw new Error("EveChildInstanceContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
@@ -81,7 +81,7 @@ export class EveChildInstanceContainer extends EveChildTransform
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildInstanceContainer", "SetControllerVariable", args);
+    throw new Error("EveChildInstanceContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
@@ -89,7 +89,12 @@ export class EveChildInstanceContainer extends EveChildTransform
   @impl.notImplemented
   StartControllers(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildInstanceContainer", "StartControllers", args);
+    throw new Error("EveChildInstanceContainer.StartControllers is not implemented in CarbonEngineJS.");
   }
+
+  static Origin = Object.freeze({
+    SPACE: 0,
+    SOF: 1,
+  });
 
 }

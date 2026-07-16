@@ -21,7 +21,7 @@ export class EveDistributionModifierScaleBySpaceObjectParent extends CjsModel
 
   /** m_scaleCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   scaleCurve = null;
 
 }

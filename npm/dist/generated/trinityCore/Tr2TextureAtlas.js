@@ -1,4 +1,4 @@
-import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 
@@ -6,99 +6,205 @@ let _initProto, _initClass, _init_format, _init_extra_format, _init_mipCount, _i
 
 /** Tr2TextureAtlas (trinityCore) - generated from schema shapeHash 5855bcfc.... */
 let _Tr2TextureAtlas;
-class Tr2TextureAtlas extends CjsModel {
-  static {
-    ({
-      e: [_init_format, _init_extra_format, _init_mipCount, _init_extra_mipCount, _init_height, _init_extra_height, _init_paintEmptyAreas, _init_extra_paintEmptyAreas, _init_optimizeOnRemoval, _init_extra_optimizeOnRemoval, _init_margin, _init_extra_margin, _init_width, _init_extra_width, _initProto],
-      c: [_Tr2TextureAtlas, _initClass]
-    } = _applyDecs2311(this, [type.define({
-      className: "Tr2TextureAtlas",
-      family: "trinityCore"
-    })], [[[io, io.read, type, type.int32, void 0, schema.enum("PixelFormat")], 16, "format"], [[io, io.read, type, type.uint32], 16, "mipCount"], [[io, io.read, type, type.uint32], 16, "height"], [[io, io.readwrite, type, type.boolean], 16, "paintEmptyAreas"], [[io, io.readwrite, type, type.boolean], 16, "optimizeOnRemoval"], [[io, io.readwrite, type, type.uint32], 16, "margin"], [[io, io.read, type, type.uint32], 16, "width"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateTexture"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CollapseFreeAreas"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "EjectAllTextures"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeMaxHeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeMaxWidth"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeTexels"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PullInOutsiders"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeTexelPercentage"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetTexturesOutsideAtlas"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HasALObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ConsolidateFreeAreas"]], 0, void 0, CjsModel));
+new class extends _identity {
+  static [class Tr2TextureAtlas extends CjsModel {
+    static {
+      ({
+        e: [_init_format, _init_extra_format, _init_mipCount, _init_extra_mipCount, _init_height, _init_extra_height, _init_paintEmptyAreas, _init_extra_paintEmptyAreas, _init_optimizeOnRemoval, _init_extra_optimizeOnRemoval, _init_margin, _init_extra_margin, _init_width, _init_extra_width, _initProto],
+        c: [_Tr2TextureAtlas, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "Tr2TextureAtlas",
+        family: "trinityCore"
+      })], [[[io, io.read, type, type.int32, void 0, schema.enum("PixelFormat")], 16, "format"], [[io, io.read, type, type.uint32], 16, "mipCount"], [[io, io.read, type, type.uint32], 16, "height"], [[io, io.readwrite, type, type.boolean], 16, "paintEmptyAreas"], [[io, io.readwrite, type, type.boolean], 16, "optimizeOnRemoval"], [[io, io.readwrite, type, type.uint32], 16, "margin"], [[io, io.read, type, type.uint32], 16, "width"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateTexture"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CollapseFreeAreas"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "EjectAllTextures"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeMaxHeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeMaxWidth"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeTexels"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PullInOutsiders"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetFreeTexelPercentage"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetTexturesOutsideAtlas"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HasALObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ConsolidateFreeAreas"]], 0, void 0, CjsModel));
+    }
+    constructor(...args) {
+      super(...args);
+      _init_extra_width(this);
+    }
+    /** m_format (Tr2RenderContextEnum::PixelFormat - enum PixelFormat) [READ, ENUM] */
+    format = (_initProto(this), _init_format(this, 87));
+
+    /** m_mipLevels (unsigned) [READ] */
+    mipCount = (_init_extra_format(this), _init_mipCount(this, 0));
+
+    /** m_height (unsigned int) [READ] */
+    height = (_init_extra_mipCount(this), _init_height(this, 2048));
+
+    /** m_paintEmptyAreas (bool) [READWRITE] */
+    paintEmptyAreas = (_init_extra_height(this), _init_paintEmptyAreas(this, false));
+
+    /** m_optimizeOnRemoval (bool) [READWRITE] */
+    optimizeOnRemoval = (_init_extra_paintEmptyAreas(this), _init_optimizeOnRemoval(this, true));
+
+    /** m_margin (unsigned int) [READWRITE] */
+    margin = (_init_extra_optimizeOnRemoval(this), _init_margin(this, 2));
+
+    /** m_width (unsigned int) [READ] */
+    width = (_init_extra_margin(this), _init_width(this, 2048));
+
+    /** Carbon method CreateTexture (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
+    CreateTexture(...args) {
+      throw new Error("Tr2TextureAtlas.CreateTexture is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method CollapseFreeAreas (MAP_METHOD_AND_WRAP). */
+    CollapseFreeAreas(...args) {
+      throw new Error("Tr2TextureAtlas.CollapseFreeAreas is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method EjectAllTextures (MAP_METHOD_AND_WRAP). */
+    EjectAllTextures(...args) {
+      throw new Error("Tr2TextureAtlas.EjectAllTextures is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method GetFreeMaxHeight (MAP_METHOD_AND_WRAP). */
+    GetFreeMaxHeight(...args) {
+      throw new Error("Tr2TextureAtlas.GetFreeMaxHeight is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method GetFreeMaxWidth (MAP_METHOD_AND_WRAP). */
+    GetFreeMaxWidth(...args) {
+      throw new Error("Tr2TextureAtlas.GetFreeMaxWidth is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method GetFreeTexels (MAP_METHOD_AND_WRAP). */
+    GetFreeTexels(...args) {
+      throw new Error("Tr2TextureAtlas.GetFreeTexels is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method PullInOutsiders (MAP_METHOD_AND_WRAP). */
+    PullInOutsiders(...args) {
+      throw new Error("Tr2TextureAtlas.PullInOutsiders is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method GetFreeTexelPercentage (MAP_METHOD_AND_WRAP). */
+    GetFreeTexelPercentage(...args) {
+      throw new Error("Tr2TextureAtlas.GetFreeTexelPercentage is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method GetTexturesOutsideAtlas (MAP_METHOD_AND_WRAP). */
+    GetTexturesOutsideAtlas(...args) {
+      throw new Error("Tr2TextureAtlas.GetTexturesOutsideAtlas is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method HasALObject (MAP_METHOD_AND_WRAP). */
+    HasALObject(...args) {
+      throw new Error("Tr2TextureAtlas.HasALObject is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon method ConsolidateFreeAreas (MAP_METHOD_AND_WRAP). */
+    ConsolidateFreeAreas(...args) {
+      throw new Error("Tr2TextureAtlas.ConsolidateFreeAreas is not implemented in CarbonEngineJS.");
+    }
+  }];
+  PixelFormat = Object.freeze({
+    PIXEL_FORMAT_UNKNOWN: 0,
+    PIXEL_FORMAT_R32G32B32A32_TYPELESS: 1,
+    PIXEL_FORMAT_R32G32B32A32_FLOAT: 2,
+    PIXEL_FORMAT_R32G32B32A32_UINT: 3,
+    PIXEL_FORMAT_R32G32B32A32_SINT: 4,
+    PIXEL_FORMAT_R32G32B32_TYPELESS: 5,
+    PIXEL_FORMAT_R32G32B32_FLOAT: 6,
+    PIXEL_FORMAT_R32G32B32_UINT: 7,
+    PIXEL_FORMAT_R32G32B32_SINT: 8,
+    PIXEL_FORMAT_R16G16B16A16_TYPELESS: 9,
+    PIXEL_FORMAT_R16G16B16A16_FLOAT: 10,
+    PIXEL_FORMAT_R16G16B16A16_UNORM: 11,
+    PIXEL_FORMAT_R16G16B16A16_UINT: 12,
+    PIXEL_FORMAT_R16G16B16A16_SNORM: 13,
+    PIXEL_FORMAT_R16G16B16A16_SINT: 14,
+    PIXEL_FORMAT_R32G32_TYPELESS: 15,
+    PIXEL_FORMAT_R32G32_FLOAT: 16,
+    PIXEL_FORMAT_R32G32_UINT: 17,
+    PIXEL_FORMAT_R32G32_SINT: 18,
+    PIXEL_FORMAT_R32G8X24_TYPELESS: 19,
+    PIXEL_FORMAT_D32_FLOAT_S8X24_UINT: 20,
+    PIXEL_FORMAT_R32_FLOAT_X8X24_TYPELESS: 21,
+    PIXEL_FORMAT_X32_TYPELESS_G8X24_UINT: 22,
+    PIXEL_FORMAT_R10G10B10A2_TYPELESS: 23,
+    PIXEL_FORMAT_R10G10B10A2_UNORM: 24,
+    PIXEL_FORMAT_R10G10B10A2_UINT: 25,
+    PIXEL_FORMAT_R11G11B10_FLOAT: 26,
+    PIXEL_FORMAT_R8G8B8A8_TYPELESS: 27,
+    PIXEL_FORMAT_R8G8B8A8_UNORM: 28,
+    PIXEL_FORMAT_R8G8B8A8_UNORM_SRGB: 29,
+    PIXEL_FORMAT_R8G8B8A8_UINT: 30,
+    PIXEL_FORMAT_R8G8B8A8_SNORM: 31,
+    PIXEL_FORMAT_R8G8B8A8_SINT: 32,
+    PIXEL_FORMAT_R16G16_TYPELESS: 33,
+    PIXEL_FORMAT_R16G16_FLOAT: 34,
+    PIXEL_FORMAT_R16G16_UNORM: 35,
+    PIXEL_FORMAT_R16G16_UINT: 36,
+    PIXEL_FORMAT_R16G16_SNORM: 37,
+    PIXEL_FORMAT_R16G16_SINT: 38,
+    PIXEL_FORMAT_R32_TYPELESS: 39,
+    PIXEL_FORMAT_D32_FLOAT: 40,
+    PIXEL_FORMAT_R32_FLOAT: 41,
+    PIXEL_FORMAT_R32_UINT: 42,
+    PIXEL_FORMAT_R32_SINT: 43,
+    PIXEL_FORMAT_R24G8_TYPELESS: 44,
+    PIXEL_FORMAT_D24_UNORM_S8_UINT: 45,
+    PIXEL_FORMAT_R24_UNORM_X8_TYPELESS: 46,
+    PIXEL_FORMAT_X24_TYPELESS_G8_UINT: 47,
+    PIXEL_FORMAT_R8G8_TYPELESS: 48,
+    PIXEL_FORMAT_R8G8_UNORM: 49,
+    PIXEL_FORMAT_R8G8_UINT: 50,
+    PIXEL_FORMAT_R8G8_SNORM: 51,
+    PIXEL_FORMAT_R8G8_SINT: 52,
+    PIXEL_FORMAT_R16_TYPELESS: 53,
+    PIXEL_FORMAT_R16_FLOAT: 54,
+    PIXEL_FORMAT_D16_UNORM: 55,
+    PIXEL_FORMAT_R16_UNORM: 56,
+    PIXEL_FORMAT_R16_UINT: 57,
+    PIXEL_FORMAT_R16_SNORM: 58,
+    PIXEL_FORMAT_R16_SINT: 59,
+    PIXEL_FORMAT_R8_TYPELESS: 60,
+    PIXEL_FORMAT_R8_UNORM: 61,
+    PIXEL_FORMAT_R8_UINT: 62,
+    PIXEL_FORMAT_R8_SNORM: 63,
+    PIXEL_FORMAT_R8_SINT: 64,
+    PIXEL_FORMAT_A8_UNORM: 65,
+    PIXEL_FORMAT_R1_UNORM: 66,
+    PIXEL_FORMAT_R9G9B9E5_SHAREDEXP: 67,
+    PIXEL_FORMAT_R8G8_B8G8_UNORM: 68,
+    PIXEL_FORMAT_G8R8_G8B8_UNORM: 69,
+    PIXEL_FORMAT_BC1_TYPELESS: 70,
+    PIXEL_FORMAT_BC1_UNORM: 71,
+    PIXEL_FORMAT_BC1_UNORM_SRGB: 72,
+    PIXEL_FORMAT_BC2_TYPELESS: 73,
+    PIXEL_FORMAT_BC2_UNORM: 74,
+    PIXEL_FORMAT_BC2_UNORM_SRGB: 75,
+    PIXEL_FORMAT_BC3_TYPELESS: 76,
+    PIXEL_FORMAT_BC3_UNORM: 77,
+    PIXEL_FORMAT_BC3_UNORM_SRGB: 78,
+    PIXEL_FORMAT_BC4_TYPELESS: 79,
+    PIXEL_FORMAT_BC4_UNORM: 80,
+    PIXEL_FORMAT_BC4_SNORM: 81,
+    PIXEL_FORMAT_BC5_TYPELESS: 82,
+    PIXEL_FORMAT_BC5_UNORM: 83,
+    PIXEL_FORMAT_BC5_SNORM: 84,
+    PIXEL_FORMAT_B5G6R5_UNORM: 85,
+    PIXEL_FORMAT_B5G5R5A1_UNORM: 86,
+    PIXEL_FORMAT_B8G8R8A8_UNORM: 87,
+    PIXEL_FORMAT_B8G8R8X8_UNORM: 88,
+    PIXEL_FORMAT_R10G10B10_XR_BIAS_A2_UNORM: 89,
+    PIXEL_FORMAT_B8G8R8A8_TYPELESS: 90,
+    PIXEL_FORMAT_B8G8R8A8_UNORM_SRGB: 91,
+    PIXEL_FORMAT_B8G8R8X8_TYPELESS: 92,
+    PIXEL_FORMAT_B8G8R8X8_UNORM_SRGB: 93,
+    PIXEL_FORMAT_BC6H_TYPELESS: 94,
+    PIXEL_FORMAT_BC6H_UF16: 95,
+    PIXEL_FORMAT_BC6H_SF16: 96,
+    PIXEL_FORMAT_BC7_TYPELESS: 97,
+    PIXEL_FORMAT_BC7_UNORM: 98,
+    PIXEL_FORMAT_BC7_UNORM_SRGB: 99,
+    PIXEL_FORMAT_SENTINEL: 100,
+    PIXEL_FORMAT_FORCE_UINT: 4294967295
+  });
+  constructor() {
+    super(_Tr2TextureAtlas), _initClass();
   }
-  constructor(...args) {
-    super(...args);
-    _init_extra_width(this);
-  }
-  /** m_format (Tr2RenderContextEnum::PixelFormat - enum PixelFormat) [READ, ENUM] */
-  format = (_initProto(this), _init_format(this, 87));
-
-  /** m_mipLevels (unsigned) [READ] */
-  mipCount = (_init_extra_format(this), _init_mipCount(this, 0));
-
-  /** m_height (unsigned int) [READ] */
-  height = (_init_extra_mipCount(this), _init_height(this, 2048));
-
-  /** m_paintEmptyAreas (bool) [READWRITE] */
-  paintEmptyAreas = (_init_extra_height(this), _init_paintEmptyAreas(this, false));
-
-  /** m_optimizeOnRemoval (bool) [READWRITE] */
-  optimizeOnRemoval = (_init_extra_paintEmptyAreas(this), _init_optimizeOnRemoval(this, true));
-
-  /** m_margin (unsigned int) [READWRITE] */
-  margin = (_init_extra_optimizeOnRemoval(this), _init_margin(this, 2));
-
-  /** m_width (unsigned int) [READ] */
-  width = (_init_extra_margin(this), _init_width(this, 2048));
-
-  /** Carbon method CreateTexture (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  CreateTexture(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "CreateTexture", args);
-  }
-
-  /** Carbon method CollapseFreeAreas (MAP_METHOD_AND_WRAP). */
-  CollapseFreeAreas(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "CollapseFreeAreas", args);
-  }
-
-  /** Carbon method EjectAllTextures (MAP_METHOD_AND_WRAP). */
-  EjectAllTextures(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "EjectAllTextures", args);
-  }
-
-  /** Carbon method GetFreeMaxHeight (MAP_METHOD_AND_WRAP). */
-  GetFreeMaxHeight(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "GetFreeMaxHeight", args);
-  }
-
-  /** Carbon method GetFreeMaxWidth (MAP_METHOD_AND_WRAP). */
-  GetFreeMaxWidth(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "GetFreeMaxWidth", args);
-  }
-
-  /** Carbon method GetFreeTexels (MAP_METHOD_AND_WRAP). */
-  GetFreeTexels(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "GetFreeTexels", args);
-  }
-
-  /** Carbon method PullInOutsiders (MAP_METHOD_AND_WRAP). */
-  PullInOutsiders(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "PullInOutsiders", args);
-  }
-
-  /** Carbon method GetFreeTexelPercentage (MAP_METHOD_AND_WRAP). */
-  GetFreeTexelPercentage(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "GetFreeTexelPercentage", args);
-  }
-
-  /** Carbon method GetTexturesOutsideAtlas (MAP_METHOD_AND_WRAP). */
-  GetTexturesOutsideAtlas(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "GetTexturesOutsideAtlas", args);
-  }
-
-  /** Carbon method HasALObject (MAP_METHOD_AND_WRAP). */
-  HasALObject(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "HasALObject", args);
-  }
-
-  /** Carbon method ConsolidateFreeAreas (MAP_METHOD_AND_WRAP). */
-  ConsolidateFreeAreas(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlas", "ConsolidateFreeAreas", args);
-  }
-  static {
-    _initClass();
-  }
-}
+}();
 
 export { _Tr2TextureAtlas as Tr2TextureAtlas };
 //# sourceMappingURL=Tr2TextureAtlas.js.map

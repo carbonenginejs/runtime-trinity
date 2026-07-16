@@ -157,4 +157,7 @@ export class Tr2ControllerFloatVariable extends CjsModel
     }
     destination.value = Number(BigInt(destination.value) | this.#dirtyMask);
   }
+
+  static Type = Type;
+
 }

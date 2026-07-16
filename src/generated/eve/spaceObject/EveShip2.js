@@ -11,7 +11,7 @@ export class EveShip2 extends EveMobile
 
   /** m_boosters (EveBoosterSet2Ptr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("EveBoosterSet2")
+  @type.model("EveBoosterSet2")
   boosters = null;
 
   /** m_displayKillCounterValue (uint32_t) [READWRITE] */
@@ -29,7 +29,7 @@ export class EveShip2 extends EveMobile
   @impl.notImplemented
   RebuildBoosterSet(...args)
   {
-    throw EveMobile.notImplemented("EveShip2", "RebuildBoosterSet", args);
+    throw new Error("EveShip2.RebuildBoosterSet is not implemented in CarbonEngineJS.");
   }
 
 }

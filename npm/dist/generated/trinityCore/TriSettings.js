@@ -43,17 +43,17 @@ class TriSettings extends CjsModel {
 
   /** Carbon method GetValue -> PyGetValue (MAP_METHOD). */
   GetValue(...args) {
-    throw CjsModel.notImplemented("TriSettings", "GetValue", args);
+    throw new Error("TriSettings.GetValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __repr__ -> PyRepr (MAP_METHOD). */
   __repr__(...args) {
-    throw CjsModel.notImplemented("TriSettings", "__repr__", args);
+    throw new Error("TriSettings.__repr__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValue -> PySetValue (MAP_METHOD). */
   SetValue(...args) {
-    throw CjsModel.notImplemented("TriSettings", "SetValue", args);
+    throw new Error("TriSettings.SetValue is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

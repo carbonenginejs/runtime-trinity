@@ -60,7 +60,7 @@ test("EveChildMesh owns Carbon child transforms and detached instance matrices",
 {
   const child = new EveChildMesh();
   assert.equal(child instanceof EveChildTransform, true);
-  assert.equal(CjsSchema.getClass("EveChildMesh"), EveChildMesh);
+  assert.equal(CjsSchema.GetConstructor("EveChildMesh"), EveChildMesh);
   assert.equal(child.reflectionMode, 3);
   assert.equal(child.display, true);
   assert.equal(child.castShadow, false);
@@ -90,7 +90,7 @@ test("EveChildContainer owns Carbon quality defaults and effect-child recursion"
 {
   const container = new EveChildContainer();
   assert.equal(container instanceof EveChildTransform, true);
-  assert.equal(CjsSchema.getClass("EveChildContainer"), EveChildContainer);
+  assert.equal(CjsSchema.GetConstructor("EveChildContainer"), EveChildContainer);
   assert.equal(container.displayFilter, EveChildContainer.DisplayQualityModifier.SHADER_ALL);
   assert.equal(EveChildContainer.DisplayQualityModifier.ONLY_REFLECTIONS, 6);
   assert.equal(Object.isFrozen(EveChildContainer.DisplayQualityModifier), true);

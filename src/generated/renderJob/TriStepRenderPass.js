@@ -17,7 +17,7 @@ export class TriStepRenderPass extends TriRenderStep
 
   /** m_scene (ITr2MultiPassScenePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2MultiPassScene")
+  @type.model("ITr2MultiPassScene")
   scene = null;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -25,7 +25,23 @@ export class TriStepRenderPass extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderPass", "__init__", args);
+    throw new Error("TriStepRenderPass.__init__ is not implemented in CarbonEngineJS.");
   }
+
+  static PassType = Object.freeze({
+    RP_BEGIN_RENDER: 0,
+    RP_PRE_PASS: 1,
+    RP_LIGHT_PASS: 2,
+    RP_GATHER_PASS: 3,
+    RP_FLARE_PASS: 4,
+    RP_END_RENDER: 5,
+    RP_BACKGROUND_RENDER: 6,
+    RP_MAIN_RENDER: 7,
+    RP_REFLECTION_RENDER: 8,
+    RP_DEPTH_PASS: 9,
+    RP_SET_PERFRAME_DATA: 10,
+    RP_RENDER_UI: 11,
+    RP_COUNT: 12,
+  });
 
 }

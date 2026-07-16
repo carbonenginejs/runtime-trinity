@@ -13,7 +13,7 @@ export class EveDistributionModifierTransformOffset extends CjsModel
 
   /** m_rotationCurve (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   rotationCurve = null;
 
   /** m_translation (Vector3) [READWRITE, PERSIST] */
@@ -33,12 +33,12 @@ export class EveDistributionModifierTransformOffset extends CjsModel
 
   /** m_scaleCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   scaleCurve = null;
 
   /** m_translationCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
 }

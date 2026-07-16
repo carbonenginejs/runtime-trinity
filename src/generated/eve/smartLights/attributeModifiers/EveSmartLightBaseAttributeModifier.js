@@ -17,7 +17,7 @@ export class EveSmartLightBaseAttributeModifier extends CjsModel
 
   /** m_activationOverLifetime (Tr2CurveScalarPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2CurveScalar")
+  @type.model("Tr2CurveScalar")
   activationOverLifetime = null;
 
   /** m_activationValue (float) [READ] */
@@ -75,5 +75,11 @@ export class EveSmartLightBaseAttributeModifier extends CjsModel
   @io.persist
   @type.float32
   delayedActivation = 0;
+
+  static LifeTimeFormulas = Object.freeze({
+    PER_INSTANCE_LIFETIME: 0,
+    PER_MODIFIER_PLAYTIME: 1,
+    STATIC: 2,
+  });
 
 }

@@ -14,11 +14,11 @@ export class Tr2InteriorLightSet extends CjsModel
   lightSource = null;
 
   /** lightDataValid (mutable bool) */
-  @type.unknown
-  lightDataValid = null;
+  @type.boolean
+  lightDataValid = false;
 
   /** lightData (mutable Tr2InteriorPerObjectLightData) */
-  @type.unknown
+  @type.rawStruct("Tr2InteriorPerObjectLightData")
   lightData = null;
 
   /** m_lightInstances (std::list<InternalLightInstance>) */

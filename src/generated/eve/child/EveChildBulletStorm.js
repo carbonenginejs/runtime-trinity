@@ -71,7 +71,7 @@ export class EveChildBulletStorm extends CjsModel
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** Carbon method CanChangeState (MAP_METHOD_AND_WRAP). */
@@ -79,7 +79,7 @@ export class EveChildBulletStorm extends CjsModel
   @impl.notImplemented
   CanChangeState(...args)
   {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "CanChangeState", args);
+    throw new Error("EveChildBulletStorm.CanChangeState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Rebuild (MAP_METHOD_AND_WRAP). */
@@ -87,7 +87,7 @@ export class EveChildBulletStorm extends CjsModel
   @impl.notImplemented
   Rebuild(...args)
   {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "Rebuild", args);
+    throw new Error("EveChildBulletStorm.Rebuild is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartEffect (MAP_METHOD_AND_WRAP). */
@@ -95,7 +95,7 @@ export class EveChildBulletStorm extends CjsModel
   @impl.notImplemented
   StartEffect(...args)
   {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "StartEffect", args);
+    throw new Error("EveChildBulletStorm.StartEffect is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StopEffect (MAP_METHOD_AND_WRAP). */
@@ -103,7 +103,7 @@ export class EveChildBulletStorm extends CjsModel
   @impl.notImplemented
   StopEffect(...args)
   {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "StopEffect", args);
+    throw new Error("EveChildBulletStorm.StopEffect is not implemented in CarbonEngineJS.");
   }
 
 }

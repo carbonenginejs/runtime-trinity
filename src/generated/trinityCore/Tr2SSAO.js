@@ -99,4 +99,12 @@ export class Tr2SSAO extends CjsModel
   @type.float32
   radius = 0;
 
+  static SSAOQuality = Object.freeze({
+    HIGHEST: 0,
+    HIGH: 1,
+    MEDIUM: 2,
+    LOW: 3,
+    LOWEST: 4,
+  });
+
 }

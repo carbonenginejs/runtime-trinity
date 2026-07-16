@@ -25,7 +25,7 @@ export class EveTurretSet extends EveEntity
 
   /** m_ambientEffect (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   ambientEffect = null;
 
   /** m_name (std::string) [READWRITE, PERSIST] */
@@ -208,7 +208,7 @@ export class EveTurretSet extends EveEntity
 
   /** m_turretEffect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   turretEffect = null;
 
   /** m_idleToTargetingMovementAudioEvent (std::wstring) [READWRITE, PERSIST] */
@@ -233,7 +233,7 @@ export class EveTurretSet extends EveEntity
 
   /** m_turretMovementObserver (TriObserverLocalPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriObserverLocal")
+  @type.model("TriObserverLocal")
   turretMovementObserver = null;
 
   /** m_slotNumber (int) [READWRITE] */
@@ -303,7 +303,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   RebuildBoundingSphere(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "RebuildBoundingSphere", args);
+    throw new Error("EveTurretSet.RebuildBoundingSphere is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ForceStateDeactive (MAP_METHOD_AND_WRAP). */
@@ -311,7 +311,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   ForceStateDeactive(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "ForceStateDeactive", args);
+    throw new Error("EveTurretSet.ForceStateDeactive is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ForceStateTargeting (MAP_METHOD_AND_WRAP). */
@@ -319,7 +319,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   ForceStateTargeting(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "ForceStateTargeting", args);
+    throw new Error("EveTurretSet.ForceStateTargeting is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method FreezeHighDetailLOD (MAP_METHOD_AND_WRAP). */
@@ -327,7 +327,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   FreezeHighDetailLOD(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "FreezeHighDetailLOD", args);
+    throw new Error("EveTurretSet.FreezeHighDetailLOD is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetShotTimeVariance (MAP_METHOD_AND_WRAP). */
@@ -335,7 +335,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   GetShotTimeVariance(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "GetShotTimeVariance", args);
+    throw new Error("EveTurretSet.GetShotTimeVariance is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method MissQueueSize (MAP_METHOD_AND_WRAP). */
@@ -343,7 +343,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   MissQueueSize(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "MissQueueSize", args);
+    throw new Error("EveTurretSet.MissQueueSize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLastShotTime (MAP_METHOD_AND_WRAP). */
@@ -351,7 +351,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   GetLastShotTime(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "GetLastShotTime", args);
+    throw new Error("EveTurretSet.GetLastShotTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnterStateDeactive (MAP_METHOD_AND_WRAP). */
@@ -359,7 +359,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   EnterStateDeactive(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "EnterStateDeactive", args);
+    throw new Error("EveTurretSet.EnterStateDeactive is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnterStateFiring (MAP_METHOD_AND_WRAP). */
@@ -367,7 +367,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   EnterStateFiring(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "EnterStateFiring", args);
+    throw new Error("EveTurretSet.EnterStateFiring is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnterStateIdle (MAP_METHOD_AND_WRAP). */
@@ -375,7 +375,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   EnterStateIdle(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "EnterStateIdle", args);
+    throw new Error("EveTurretSet.EnterStateIdle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnterStateReloading (MAP_METHOD_AND_WRAP). */
@@ -383,7 +383,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   EnterStateReloading(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "EnterStateReloading", args);
+    throw new Error("EveTurretSet.EnterStateReloading is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnterStateTargeting (MAP_METHOD_AND_WRAP). */
@@ -391,7 +391,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   EnterStateTargeting(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "EnterStateTargeting", args);
+    throw new Error("EveTurretSet.EnterStateTargeting is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
@@ -399,7 +399,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   HandleControllerEvent(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "HandleControllerEvent", args);
+    throw new Error("EveTurretSet.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetFiringBoneWorldTransform (MAP_METHOD_AND_WRAP). */
@@ -407,7 +407,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   GetFiringBoneWorldTransform(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "GetFiringBoneWorldTransform", args);
+    throw new Error("EveTurretSet.GetFiringBoneWorldTransform is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
@@ -415,7 +415,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "SetControllerVariable", args);
+    throw new Error("EveTurretSet.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetShotMissed (MAP_METHOD_AND_WRAP). */
@@ -423,7 +423,7 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   SetShotMissed(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "SetShotMissed", args);
+    throw new Error("EveTurretSet.SetShotMissed is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
@@ -431,7 +431,25 @@ export class EveTurretSet extends EveEntity
   @impl.notImplemented
   StartControllers(...args)
   {
-    throw EveEntity.notImplemented("EveTurretSet", "StartControllers", args);
+    throw new Error("EveTurretSet.StartControllers is not implemented in CarbonEngineJS.");
   }
+
+  static LOD = Object.freeze({
+    LOD_INVALID: 0,
+    LOD_EMPTY: 1,
+    LOD_HIGHEST: 2,
+    LOD_DISABLED: 3,
+  });
+
+  static State = Object.freeze({
+    STATE_DELAYED: 0,
+    STATE_LAUNCH: 1,
+    STATE_EJECTING: 2,
+    STATE_START_TRACKING: 3,
+    STATE_TRACKING_SPREAD: 4,
+    STATE_TRACKING_FINAL: 5,
+    STATE_EXPLODED: 6,
+    STATE_DEAD: 7,
+  });
 
 }

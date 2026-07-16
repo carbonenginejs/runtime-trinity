@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import '@carbonenginejs/core-types/model';
 import { CjsShaderParameter } from './CjsShaderParameter.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_usedByCurrentTechnique, _init_extra_usedByCurrentTechnique, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_variableName, _init_extra_variableName;
@@ -44,10 +45,10 @@ class TriVariableParameter extends CjsShaderParameter {
     return true;
   }
   OnModified(properties = null) {
-    if (CjsModel.hasModifiedProperty(properties, "variableName")) {
+    if (hasModifiedProperty(properties, "variableName")) {
       this.Initialize(this.variableStore);
     }
-    if (CjsModel.hasModifiedProperty(properties, "name")) {
+    if (hasModifiedProperty(properties, "name")) {
       this.RebuildEffectHandles(this.cachedEffect);
     }
     return true;

@@ -22,7 +22,7 @@ export class TriStepFilterVisibilityResults extends TriRenderStep
 
   /** m_inputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2VisibilityResults")
+  @type.model("Tr2VisibilityResults")
   inputResults = null;
 
   /** m_objects (PIRootVector) [READ, PERSIST] */
@@ -32,7 +32,7 @@ export class TriStepFilterVisibilityResults extends TriRenderStep
 
   /** m_outputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2VisibilityResults")
+  @type.model("Tr2VisibilityResults")
   outputResults = null;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -40,7 +40,12 @@ export class TriStepFilterVisibilityResults extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepFilterVisibilityResults", "__init__", args);
+    throw new Error("TriStepFilterVisibilityResults.__init__ is not implemented in CarbonEngineJS.");
   }
+
+  static FilterType = Object.freeze({
+    ONLY_OBJECTS_IN_LIST: 0,
+    EXCLUDE_OBJECTS_IN_LIST: 1,
+  });
 
 }

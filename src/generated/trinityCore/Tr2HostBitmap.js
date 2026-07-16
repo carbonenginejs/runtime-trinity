@@ -44,7 +44,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CreateVolume(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CreateVolume", args);
+    throw new Error("Tr2HostBitmap.CreateVolume is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Create (MAP_METHOD_AND_WRAP). */
@@ -52,7 +52,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   Create(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "Create", args);
+    throw new Error("Tr2HostBitmap.Create is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CreateCube (MAP_METHOD_AND_WRAP). */
@@ -60,7 +60,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CreateCube(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CreateCube", args);
+    throw new Error("Tr2HostBitmap.CreateCube is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PopulateMargin (MAP_METHOD_AND_WRAP). */
@@ -68,7 +68,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   PopulateMargin(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "PopulateMargin", args);
+    throw new Error("Tr2HostBitmap.PopulateMargin is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SaveAsync -> PySaveAsync (MAP_METHOD). */
@@ -76,7 +76,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   SaveAsync(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "SaveAsync", args);
+    throw new Error("Tr2HostBitmap.SaveAsync is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method WaitForSave (MAP_METHOD_AND_WRAP). */
@@ -84,7 +84,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   WaitForSave(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "WaitForSave", args);
+    throw new Error("Tr2HostBitmap.WaitForSave is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeFormat -> ChangeFormatFromScript (MAP_METHOD_AND_WRAP). */
@@ -92,7 +92,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   ChangeFormat(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "ChangeFormat", args);
+    throw new Error("Tr2HostBitmap.ChangeFormat is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Compress (MAP_METHOD_AND_WRAP). */
@@ -100,7 +100,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   Compress(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "Compress", args);
+    throw new Error("Tr2HostBitmap.Compress is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetMipRawData -> PySetMipRawData (MAP_METHOD). */
@@ -108,7 +108,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   SetMipRawData(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "SetMipRawData", args);
+    throw new Error("Tr2HostBitmap.SetMipRawData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CopyFaceFromRenderTarget -> CopyFaceFromRenderTargetPython (MAP_METHOD_AND_WRAP). */
@@ -116,7 +116,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CopyFaceFromRenderTarget(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CopyFaceFromRenderTarget", args);
+    throw new Error("Tr2HostBitmap.CopyFaceFromRenderTarget is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CopyFromRenderTargetRegion -> CopyFromRenderTargetRegionPython (MAP_METHOD_AND_WRAP). */
@@ -124,7 +124,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CopyFromRenderTargetRegion(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CopyFromRenderTargetRegion", args);
+    throw new Error("Tr2HostBitmap.CopyFromRenderTargetRegion is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CopyFromRenderTarget -> CopyFromRenderTargetPython (MAP_METHOD_AND_WRAP). */
@@ -132,7 +132,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CopyFromRenderTarget(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CopyFromRenderTarget", args);
+    throw new Error("Tr2HostBitmap.CopyFromRenderTarget is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CopyFromTextureRes -> CopyFromTextureResPython (MAP_METHOD_AND_WRAP). */
@@ -140,7 +140,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CopyFromTextureRes(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CopyFromTextureRes", args);
+    throw new Error("Tr2HostBitmap.CopyFromTextureRes is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CountPixelsOfValue (MAP_METHOD_AND_WRAP). */
@@ -148,7 +148,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CountPixelsOfValue(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CountPixelsOfValue", args);
+    throw new Error("Tr2HostBitmap.CountPixelsOfValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CreateFromHeightData (MAP_METHOD_AND_WRAP). */
@@ -156,7 +156,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   CreateFromHeightData(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "CreateFromHeightData", args);
+    throw new Error("Tr2HostBitmap.CreateFromHeightData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Crop (MAP_METHOD_AND_WRAP). */
@@ -164,7 +164,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   Crop(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "Crop", args);
+    throw new Error("Tr2HostBitmap.Crop is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsSaveSucceeded (MAP_METHOD_AND_WRAP). */
@@ -172,7 +172,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsSaveSucceeded(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsSaveSucceeded", args);
+    throw new Error("Tr2HostBitmap.IsSaveSucceeded is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Downsample2x2 (MAP_METHOD_AND_WRAP). */
@@ -180,7 +180,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   Downsample2x2(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "Downsample2x2", args);
+    throw new Error("Tr2HostBitmap.Downsample2x2 is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> PyInit (MAP_METHOD). */
@@ -188,7 +188,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "__init__", args);
+    throw new Error("Tr2HostBitmap.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsSaveCompleted (MAP_METHOD_AND_WRAP). */
@@ -196,7 +196,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsSaveCompleted(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsSaveCompleted", args);
+    throw new Error("Tr2HostBitmap.IsSaveCompleted is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsSaving (MAP_METHOD_AND_WRAP). */
@@ -204,7 +204,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsSaving(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsSaving", args);
+    throw new Error("Tr2HostBitmap.IsSaving is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsValid (MAP_METHOD_AND_WRAP). */
@@ -212,7 +212,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsValid(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsValid", args);
+    throw new Error("Tr2HostBitmap.IsValid is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsCompressed (MAP_METHOD_AND_WRAP). */
@@ -220,7 +220,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsCompressed(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsCompressed", args);
+    throw new Error("Tr2HostBitmap.IsCompressed is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsMonochrome (MAP_METHOD_AND_WRAP). */
@@ -228,7 +228,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   IsMonochrome(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "IsMonochrome", args);
+    throw new Error("Tr2HostBitmap.IsMonochrome is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetMipRawData -> PyGetMipRawData (MAP_METHOD). */
@@ -236,7 +236,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   GetMipRawData(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "GetMipRawData", args);
+    throw new Error("Tr2HostBitmap.GetMipRawData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetRawData -> PyGetRawData (MAP_METHOD). */
@@ -244,7 +244,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   GetRawData(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "GetRawData", args);
+    throw new Error("Tr2HostBitmap.GetRawData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Save -> PySave (MAP_METHOD). */
@@ -252,7 +252,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   Save(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "Save", args);
+    throw new Error("Tr2HostBitmap.Save is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ConvertToVolume (MAP_METHOD_AND_WRAP). */
@@ -260,7 +260,7 @@ export class Tr2HostBitmap extends CjsModel
   @impl.notImplemented
   ConvertToVolume(...args)
   {
-    throw CjsModel.notImplemented("Tr2HostBitmap", "ConvertToVolume", args);
+    throw new Error("Tr2HostBitmap.ConvertToVolume is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -12,12 +12,12 @@ export class EveTurretFiringFX extends EveEntity
 
   /** m_startCurveSet (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   startCurveSet = null;
 
   /** m_stopCurveSet (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   stopCurveSet = null;
 
   /** m_stretch (PIEveFiringEffectElementVector) [READ, PERSIST] */
@@ -112,12 +112,12 @@ export class EveTurretFiringFX extends EveEntity
 
   /** m_destinationObserver (TriObserverLocalPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriObserverLocal")
+  @type.model("TriObserverLocal")
   destinationObserver = null;
 
   /** m_sourceObserver (TriObserverLocalPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriObserverLocal")
+  @type.model("TriObserverLocal")
   sourceObserver = null;
 
   /** m_firingDurationOverride (float) [READWRITE, NOTIFY, PERSIST] */
@@ -177,7 +177,7 @@ export class EveTurretFiringFX extends EveEntity
   @impl.notImplemented
   GetPerMuzzleEffectCount(...args)
   {
-    throw EveEntity.notImplemented("EveTurretFiringFX", "GetPerMuzzleEffectCount", args);
+    throw new Error("EveTurretFiringFX.GetPerMuzzleEffectCount is not implemented in CarbonEngineJS.");
   }
 
 }

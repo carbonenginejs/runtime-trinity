@@ -15,7 +15,7 @@ class EveMissileWarhead extends _EveTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveMissileWarhead",
       family: "eve/spaceObject"
-    })], [[[io, io.persist, type, type.float32], 16, "pathOffsetNoiseScale"], [[io, io.persist, type, type.float32], 16, "pathOffsetNoiseSpeed"], [[io, io.readwrite, type, type.boolean], 16, "startDataValid"], [[io, io.readwrite, type, type.vec3], 16, "pathOffset"], [[io, io.persist, type, type.float32], 16, "maxExplosionDistance"], [[io, io.persist, type, type.float32], 16, "impactDuration"], [[io, io.read, type, type.vec3], 16, "explosionPosition"], [[io, io.persist, type, type.float32], 16, "impactSize"], [[io, io.persist, void 0, type.objectRef("EveSpriteSet")], 16, "spriteSet"], [[io, io.read, type, type.int32], 16, "targetLocatorID"], [[io, io.persist, type, type.float32], 16, "durationEjectPhase"], [[io, io.readwrite, type, type.boolean], 16, "doSpread"], [[io, io.persist, type, type.float32], 16, "acceleration"], [[io, io.readwrite, type, type.int32], 16, "id"], [[io, io.persist, type, type.float32], 16, "startEjectVelocity"], [[io, io.persist, type, type.float32], 16, "warheadLength"], [[io, io.persist, type, type.float32], 16, "warheadRadius"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PrepareLaunch"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Launch"]], 0, void 0, _EveTransform));
+    })], [[[io, io.persist, type, type.float32], 16, "pathOffsetNoiseScale"], [[io, io.persist, type, type.float32], 16, "pathOffsetNoiseSpeed"], [[io, io.readwrite, type, type.boolean], 16, "startDataValid"], [[io, io.readwrite, type, type.vec3], 16, "pathOffset"], [[io, io.persist, type, type.float32], 16, "maxExplosionDistance"], [[io, io.persist, type, type.float32], 16, "impactDuration"], [[io, io.read, type, type.vec3], 16, "explosionPosition"], [[io, io.persist, type, type.float32], 16, "impactSize"], [[io, io.persist, void 0, type.model("EveSpriteSet")], 16, "spriteSet"], [[io, io.read, type, type.int32], 16, "targetLocatorID"], [[io, io.persist, type, type.float32], 16, "durationEjectPhase"], [[io, io.readwrite, type, type.boolean], 16, "doSpread"], [[io, io.persist, type, type.float32], 16, "acceleration"], [[io, io.readwrite, type, type.int32], 16, "id"], [[io, io.persist, type, type.float32], 16, "startEjectVelocity"], [[io, io.persist, type, type.float32], 16, "warheadLength"], [[io, io.persist, type, type.float32], 16, "warheadRadius"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PrepareLaunch"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Launch"]], 0, void 0, _EveTransform));
   }
   constructor(...args) {
     super(...args);
@@ -74,12 +74,12 @@ class EveMissileWarhead extends _EveTransform {
 
   /** Carbon method PrepareLaunch (MAP_METHOD_AND_WRAP). */
   PrepareLaunch(...args) {
-    throw _EveTransform.notImplemented("EveMissileWarhead", "PrepareLaunch", args);
+    throw new Error("EveMissileWarhead.PrepareLaunch is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Launch (MAP_METHOD_AND_WRAP). */
   Launch(...args) {
-    throw _EveTransform.notImplemented("EveMissileWarhead", "Launch", args);
+    throw new Error("EveMissileWarhead.Launch is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

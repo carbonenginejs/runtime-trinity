@@ -14,7 +14,7 @@ class EveChildPostProcessVolume extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildPostProcessVolume",
       family: "eve/child"
-    })], [[[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "exclusionVolumes"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereCenter"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereRadius"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2PostProcessAttributes")], 16, "postProcessAttributes"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "exclusionVolumes"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereCenter"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereRadius"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2PostProcessAttributes")], 16, "postProcessAttributes"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);

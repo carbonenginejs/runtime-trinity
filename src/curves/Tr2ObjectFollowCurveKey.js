@@ -221,4 +221,9 @@ export class Tr2ObjectFollowCurveKey extends CjsModel
     }
     return vec3.transformQuat(out, value, rotation);
   }
+
+  static RotationSetting = RotationSetting;
+
+  static Tr2FollowCurveKeyInterpolation = Tr2FollowCurveKeyInterpolation;
+
 }

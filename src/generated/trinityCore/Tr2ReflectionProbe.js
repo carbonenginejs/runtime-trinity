@@ -82,7 +82,7 @@ export class Tr2ReflectionProbe extends CjsModel
   @impl.notImplemented
   RunFilter(...args)
   {
-    throw CjsModel.notImplemented("Tr2ReflectionProbe", "RunFilter", args);
+    throw new Error("Tr2ReflectionProbe.RunFilter is not implemented in CarbonEngineJS.");
   }
 
   static ReflectionProbeRenderFrequency = Object.freeze({

@@ -14,7 +14,7 @@ class PlayFX extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "PlayFX",
       family: "eve/child/behaviors"
-    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, void 0, type.objectRef("IEveFiringEffectElement")], 16, "firingEffect"], [[io, io.read, void 0, type.list("IEveFiringEffectElement")], 16, "generatedFiringEffects"], [[io, io.persist, type, type.int32], 16, "sec"], [[io, io.persist, type, type.boolean], 16, "enabled"]], 0, void 0, _EveEntity));
+    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, void 0, type.model("IEveFiringEffectElement")], 16, "firingEffect"], [[io, io.read, void 0, type.list("IEveFiringEffectElement")], 16, "generatedFiringEffects"], [[io, io.persist, type, type.int32], 16, "sec"], [[io, io.persist, type, type.boolean], 16, "enabled"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);

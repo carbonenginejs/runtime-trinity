@@ -23,13 +23,13 @@ export class EveStretch3 extends EveEntity
   /** m_source (ITriVectorFunctionPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   source = null;
 
   /** m_dest (ITriVectorFunctionPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   dest = null;
 
   /** m_name (std::string) [READWRITE, PERSIST] */
@@ -39,12 +39,12 @@ export class EveStretch3 extends EveEntity
 
   /** m_moveProgression (TriFloatPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriFloat")
+  @type.model("TriFloat")
   moveProgression = null;
 
   /** m_stretchAudio (IStretchAudioPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IStretchAudio")
+  @type.model("IStretchAudio")
   stretchAudio = null;
 
   /** m_controllers (PITr2ControllerVector) [READ, PERSIST] */
@@ -59,7 +59,7 @@ export class EveStretch3 extends EveEntity
 
   /** m_length (TriFloatPtr) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("TriFloat")
+  @type.model("TriFloat")
   length = null;
 
   /** m_dynamicBindings (PTr2DynamicBindingVector) [READ, PERSIST] */
@@ -80,17 +80,17 @@ export class EveStretch3 extends EveEntity
 
   /** m_destObject (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   destObject = null;
 
   /** m_sourceObject (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   sourceObject = null;
 
   /** m_stretchObject (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   stretchObject = null;
 
   /** m_startTime (Be::Time) [READ] */
@@ -100,12 +100,12 @@ export class EveStretch3 extends EveEntity
 
   /** m_audio (ITr2AudioPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2Audio")
+  @type.model("ITr2Audio")
   audio = null;
 
   /** m_moveObject (IEveSpaceObjectChildPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveSpaceObjectChild")
+  @type.model("IEveSpaceObjectChild")
   moveObject = null;
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
@@ -113,7 +113,7 @@ export class EveStretch3 extends EveEntity
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw EveEntity.notImplemented("EveStretch3", "SetControllerVariable", args);
+    throw new Error("EveStretch3.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartFiring (MAP_METHOD_AND_WRAP). */
@@ -121,7 +121,7 @@ export class EveStretch3 extends EveEntity
   @impl.notImplemented
   StartFiring(...args)
   {
-    throw EveEntity.notImplemented("EveStretch3", "StartFiring", args);
+    throw new Error("EveStretch3.StartFiring is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StopFiring (MAP_METHOD_AND_WRAP). */
@@ -129,7 +129,7 @@ export class EveStretch3 extends EveEntity
   @impl.notImplemented
   StopFiring(...args)
   {
-    throw EveEntity.notImplemented("EveStretch3", "StopFiring", args);
+    throw new Error("EveStretch3.StopFiring is not implemented in CarbonEngineJS.");
   }
 
 }

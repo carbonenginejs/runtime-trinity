@@ -19,7 +19,7 @@ export class TriStepToggleCubemap extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepToggleCubemap", "__init__", args);
+    throw new Error("TriStepToggleCubemap.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

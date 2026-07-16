@@ -42,7 +42,7 @@ export class EveEllipseSet extends EveChildTransform
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** Carbon method AddEllipse (MAP_METHOD_AND_WRAP). */
@@ -50,7 +50,7 @@ export class EveEllipseSet extends EveChildTransform
   @impl.notImplemented
   AddEllipse(...args)
   {
-    throw EveChildTransform.notImplemented("EveEllipseSet", "AddEllipse", args);
+    throw new Error("EveEllipseSet.AddEllipse is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
@@ -58,7 +58,7 @@ export class EveEllipseSet extends EveChildTransform
   @impl.notImplemented
   __init__(...args)
   {
-    throw EveChildTransform.notImplemented("EveEllipseSet", "__init__", args);
+    throw new Error("EveEllipseSet.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearEllipses (MAP_METHOD_AND_WRAP). */
@@ -66,7 +66,7 @@ export class EveEllipseSet extends EveChildTransform
   @impl.notImplemented
   ClearEllipses(...args)
   {
-    throw EveChildTransform.notImplemented("EveEllipseSet", "ClearEllipses", args);
+    throw new Error("EveEllipseSet.ClearEllipses is not implemented in CarbonEngineJS.");
   }
 
 }

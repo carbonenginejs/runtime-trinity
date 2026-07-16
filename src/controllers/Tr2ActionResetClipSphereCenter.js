@@ -98,4 +98,7 @@ export class Tr2ActionResetClipSphereCenter extends CjsModel
     const number = Number(value);
     return Number.isFinite(number) ? number | 0 : fallback;
   }
+
+  static ResetBehavior = ResetBehavior;
+
 }

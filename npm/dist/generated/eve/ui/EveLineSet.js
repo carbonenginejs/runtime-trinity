@@ -15,7 +15,7 @@ class EveLineSet extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveLineSet",
       family: "eve/ui"
-    })], [[[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLineColor"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLinePosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearLines"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SubmitChanges"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "translationCurve"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLineColor"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChangeLinePosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearLines"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveLine"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SubmitChanges"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -44,37 +44,37 @@ class EveLineSet extends CjsModel {
 
   /** Carbon method AddLine (MAP_METHOD_AND_WRAP). */
   AddLine(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "AddLine", args);
+    throw new Error("EveLineSet.AddLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineColor (MAP_METHOD_AND_WRAP). */
   ChangeLineColor(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLineColor", args);
+    throw new Error("EveLineSet.ChangeLineColor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLine (MAP_METHOD_AND_WRAP). */
   ChangeLine(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLine", args);
+    throw new Error("EveLineSet.ChangeLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLinePosition (MAP_METHOD_AND_WRAP). */
   ChangeLinePosition(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLinePosition", args);
+    throw new Error("EveLineSet.ChangeLinePosition is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearLines (MAP_METHOD_AND_WRAP). */
   ClearLines(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "ClearLines", args);
+    throw new Error("EveLineSet.ClearLines is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveLine (MAP_METHOD_AND_WRAP). */
   RemoveLine(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "RemoveLine", args);
+    throw new Error("EveLineSet.RemoveLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
   SubmitChanges(...args) {
-    throw CjsModel.notImplemented("EveLineSet", "SubmitChanges", args);
+    throw new Error("EveLineSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

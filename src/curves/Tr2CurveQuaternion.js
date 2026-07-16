@@ -319,4 +319,7 @@ export class Tr2CurveQuaternion extends CjsModel
     }
     return quat.slerp(out, k0.value, k1.value, (time - k0.time) / length);
   }
+
+  static Tr2CurveExtrapolation = Tr2CurveExtrapolation;
+
 }

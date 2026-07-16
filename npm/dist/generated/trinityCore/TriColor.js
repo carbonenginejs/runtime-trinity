@@ -34,42 +34,42 @@ class TriColor extends CjsModel {
 
   /** Carbon method __init__ -> Py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw CjsModel.notImplemented("TriColor", "__init__", args);
+    throw new Error("TriColor.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetRGB -> PySetRGB (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   SetRGB(...args) {
-    throw CjsModel.notImplemented("TriColor", "SetRGB", args);
+    throw new Error("TriColor.SetRGB is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetHSV -> PySetHSV (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   SetHSV(...args) {
-    throw CjsModel.notImplemented("TriColor", "SetHSV", args);
+    throw new Error("TriColor.SetHSV is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetVector -> PySetVector (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   SetVector(...args) {
-    throw CjsModel.notImplemented("TriColor", "SetVector", args);
+    throw new Error("TriColor.SetVector is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method FromInt -> PyFromInt (MAP_METHOD_AND_WRAP). */
   FromInt(...args) {
-    throw CjsModel.notImplemented("TriColor", "FromInt", args);
+    throw new Error("TriColor.FromInt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AsInt -> PyAsInt (MAP_METHOD_AND_WRAP). */
   AsInt(...args) {
-    throw CjsModel.notImplemented("TriColor", "AsInt", args);
+    throw new Error("TriColor.AsInt is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetHSV -> PyGetHSV (MAP_METHOD_AND_WRAP). */
   GetHSV(...args) {
-    throw CjsModel.notImplemented("TriColor", "GetHSV", args);
+    throw new Error("TriColor.GetHSV is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Scale (MAP_METHOD_AND_WRAP). */
   Scale(...args) {
-    throw CjsModel.notImplemented("TriColor", "Scale", args);
+    throw new Error("TriColor.Scale is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

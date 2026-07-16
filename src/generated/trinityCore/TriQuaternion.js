@@ -34,7 +34,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "__init__", args);
+    throw new Error("TriQuaternion.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetYawPitchRoll -> PyGetYawPitchRoll (MAP_METHOD_AND_WRAP). */
@@ -42,7 +42,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   GetYawPitchRoll(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "GetYawPitchRoll", args);
+    throw new Error("TriQuaternion.GetYawPitchRoll is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Identity -> PyIdentity (MAP_METHOD_AND_WRAP). */
@@ -50,7 +50,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   Identity(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "Identity", args);
+    throw new Error("TriQuaternion.Identity is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Multiply -> PyMultiply (MAP_METHOD_AND_WRAP). */
@@ -58,7 +58,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   Multiply(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "Multiply", args);
+    throw new Error("TriQuaternion.Multiply is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Normalize -> PyNormalize (MAP_METHOD_AND_WRAP). */
@@ -66,7 +66,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   Normalize(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "Normalize", args);
+    throw new Error("TriQuaternion.Normalize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Length -> PyLength (MAP_METHOD_AND_WRAP). */
@@ -74,7 +74,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   Length(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "Length", args);
+    throw new Error("TriQuaternion.Length is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Scale -> PyScale (MAP_METHOD_AND_WRAP). */
@@ -82,7 +82,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   Scale(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "Scale", args);
+    throw new Error("TriQuaternion.Scale is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetRotationAxis -> PySetRotationAxis (MAP_METHOD_AND_WRAP). */
@@ -90,7 +90,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   SetRotationAxis(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "SetRotationAxis", args);
+    throw new Error("TriQuaternion.SetRotationAxis is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotationAxis -> PyRotationAxis (MAP_METHOD_AND_WRAP). */
@@ -98,7 +98,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   RotationAxis(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "RotationAxis", args);
+    throw new Error("TriQuaternion.RotationAxis is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetYawPitchRoll (MAP_METHOD_AND_WRAP). */
@@ -106,7 +106,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   SetYawPitchRoll(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "SetYawPitchRoll", args);
+    throw new Error("TriQuaternion.SetYawPitchRoll is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetIdentity (MAP_METHOD_AND_WRAP). */
@@ -114,7 +114,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   SetIdentity(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "SetIdentity", args);
+    throw new Error("TriQuaternion.SetIdentity is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetXYZW (MAP_METHOD_AND_WRAP). */
@@ -122,7 +122,7 @@ export class TriQuaternion extends CjsModel
   @impl.notImplemented
   SetXYZW(...args)
   {
-    throw CjsModel.notImplemented("TriQuaternion", "SetXYZW", args);
+    throw new Error("TriQuaternion.SetXYZW is not implemented in CarbonEngineJS.");
   }
 
 }

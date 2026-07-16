@@ -15,7 +15,7 @@ class Tr2ParticleSystem extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ParticleSystem",
       family: "particle"
-    })], [[[io, io.persist, void 0, type.list("Tr2ParticleElementDeclaration")], 16, "elements"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("ITr2GenericParticleConstraint")], 16, "constraints"], [[io, io.persist, void 0, type.list("ITr2ParticleForce")], 16, "forces"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2GenericEmitter")], 16, "emitParticleOnDeathEmitter"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2GenericEmitter")], 16, "emitParticleDuringLifeEmitter"], [[io, io.persist, type, type.boolean], 16, "applyForce"], [[io, io.persist, type, type.boolean], 16, "applyAging"], [[io, io.persist, type, type.boolean], 16, "isGlobal"], [[io, io.persist, type, type.boolean], 16, "updateSimulation"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "requiresSorting"], [[io, io.read, type, type.vec3], 16, "aabbMax"], [[io, io.read, type, type.vec3], 16, "aabbMin"], [[io, io.read, type, type.uint32], 16, "peakAliveCount"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "useSimTimeRebase"], [[io, io.persistOnly, type, type.uint32], 16, "maxParticleCount"], [[io, io.read, type, type.uint32], 16, "aliveCount"], [[io, io.read, type, type.uint32], 16, "originalMaxParticles"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearParticles"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RebindConstraints"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SaveToCMF"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SaveToGranny"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateElementDeclaration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateSimulation"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.list("Tr2ParticleElementDeclaration")], 16, "elements"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("ITr2GenericParticleConstraint")], 16, "constraints"], [[io, io.persist, void 0, type.list("ITr2ParticleForce")], 16, "forces"], [[io, io.notify, io, io.persist, void 0, type.model("ITr2GenericEmitter")], 16, "emitParticleOnDeathEmitter"], [[io, io.notify, io, io.persist, void 0, type.model("ITr2GenericEmitter")], 16, "emitParticleDuringLifeEmitter"], [[io, io.persist, type, type.boolean], 16, "applyForce"], [[io, io.persist, type, type.boolean], 16, "applyAging"], [[io, io.persist, type, type.boolean], 16, "isGlobal"], [[io, io.persist, type, type.boolean], 16, "updateSimulation"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "requiresSorting"], [[io, io.read, type, type.vec3], 16, "aabbMax"], [[io, io.read, type, type.vec3], 16, "aabbMin"], [[io, io.read, type, type.uint32], 16, "peakAliveCount"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "useSimTimeRebase"], [[io, io.persistOnly, type, type.uint32], 16, "maxParticleCount"], [[io, io.read, type, type.uint32], 16, "aliveCount"], [[io, io.read, type, type.uint32], 16, "originalMaxParticles"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearParticles"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RebindConstraints"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SaveToCMF"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SaveToGranny"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateElementDeclaration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateSimulation"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -80,32 +80,32 @@ class Tr2ParticleSystem extends CjsModel {
 
   /** Carbon method ClearParticles (MAP_METHOD_AND_WRAP). */
   ClearParticles(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "ClearParticles", args);
+    throw new Error("Tr2ParticleSystem.ClearParticles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebindConstraints (MAP_METHOD_AND_WRAP). */
   RebindConstraints(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "RebindConstraints", args);
+    throw new Error("Tr2ParticleSystem.RebindConstraints is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SaveToCMF (MAP_METHOD_AND_WRAP). */
   SaveToCMF(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "SaveToCMF", args);
+    throw new Error("Tr2ParticleSystem.SaveToCMF is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SaveToGranny (MAP_METHOD_AND_WRAP). */
   SaveToGranny(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "SaveToGranny", args);
+    throw new Error("Tr2ParticleSystem.SaveToGranny is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateElementDeclaration (MAP_METHOD_AND_WRAP). */
   UpdateElementDeclaration(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "UpdateElementDeclaration", args);
+    throw new Error("Tr2ParticleSystem.UpdateElementDeclaration is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateSimulation -> UpdateSimulationScript (MAP_METHOD_AND_WRAP). */
   UpdateSimulation(...args) {
-    throw CjsModel.notImplemented("Tr2ParticleSystem", "UpdateSimulation", args);
+    throw new Error("Tr2ParticleSystem.UpdateSimulation is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

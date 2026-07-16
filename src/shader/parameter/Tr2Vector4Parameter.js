@@ -159,4 +159,11 @@ export class Tr2Vector4Parameter extends CjsShaderVectorParameter
     this.linearValue[2] = num.gammaToLinear(this.value[2]);
     this.linearValue[3] = this.value[3];
   }
+
+  /** JS convenience: raw values this parameter class claims for map-form inference. */
+  static isValue(value)
+  {
+    return CjsShaderVectorParameter.isNumberArrayValue(value, 4);
+  }
+
 }

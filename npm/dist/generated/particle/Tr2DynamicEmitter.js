@@ -14,7 +14,7 @@ class Tr2DynamicEmitter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2DynamicEmitter",
       family: "particle"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.int32], 16, "maxParticles"], [[io, io.persist, type, type.float32], 16, "rate"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2ParticleSystem")], 16, "particleSystem"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebind"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateSimulation"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.int32], 16, "maxParticles"], [[io, io.persist, type, type.float32], 16, "rate"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2ParticleSystem")], 16, "particleSystem"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebind"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateSimulation"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -40,12 +40,12 @@ class Tr2DynamicEmitter extends CjsModel {
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP). */
   Rebind(...args) {
-    throw CjsModel.notImplemented("Tr2DynamicEmitter", "Rebind", args);
+    throw new Error("Tr2DynamicEmitter.Rebind is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateSimulation (MAP_METHOD_AND_WRAP). */
   UpdateSimulation(...args) {
-    throw CjsModel.notImplemented("Tr2DynamicEmitter", "UpdateSimulation", args);
+    throw new Error("Tr2DynamicEmitter.UpdateSimulation is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

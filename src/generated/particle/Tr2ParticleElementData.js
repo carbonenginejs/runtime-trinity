@@ -30,4 +30,11 @@ export class Tr2ParticleElementData extends CjsModel
   @type.rawStruct("Tr2ParticleElementData")
   none = null;
 
+  static BufferType = Object.freeze({
+    Vertex: 0,
+    Index: 1,
+    Storage: 2,
+    Undefined: 3,
+  });
+
 }

@@ -63,7 +63,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   SetDefaultOptions(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetDefaultOptions", args);
+    throw new Error("Tr2DebugRenderer.SetDefaultOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetSelectedObjects (MAP_METHOD_AND_WRAP). */
@@ -71,7 +71,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   SetSelectedObjects(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetSelectedObjects", args);
+    throw new Error("Tr2DebugRenderer.SetSelectedObjects is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetOptions (MAP_METHOD_AND_WRAP). */
@@ -79,7 +79,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   SetOptions(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetOptions", args);
+    throw new Error("Tr2DebugRenderer.SetOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetColorForOption -> PyGetColorForOption (MAP_METHOD). */
@@ -87,7 +87,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   GetColorForOption(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetColorForOption", args);
+    throw new Error("Tr2DebugRenderer.GetColorForOption is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetOptions (MAP_METHOD_AND_WRAP). */
@@ -95,7 +95,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   GetOptions(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetOptions", args);
+    throw new Error("Tr2DebugRenderer.GetOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDefaultOptions (MAP_METHOD_AND_WRAP). */
@@ -103,7 +103,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   GetDefaultOptions(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetDefaultOptions", args);
+    throw new Error("Tr2DebugRenderer.GetDefaultOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetColorForOption (MAP_METHOD_AND_WRAP). */
@@ -111,7 +111,7 @@ export class Tr2DebugRenderer extends CjsModel
   @impl.notImplemented
   SetColorForOption(...args)
   {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetColorForOption", args);
+    throw new Error("Tr2DebugRenderer.SetColorForOption is not implemented in CarbonEngineJS.");
   }
 
 }

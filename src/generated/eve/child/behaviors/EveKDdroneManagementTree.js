@@ -78,4 +78,10 @@ export class EveKDdroneManagementTree extends CjsModel
   @type.objectRef("Agent")
   right = null;
 
+  static PlaneType = Object.freeze({
+    X: 0,
+    Y: 1,
+    Z: 2,
+  });
+
 }

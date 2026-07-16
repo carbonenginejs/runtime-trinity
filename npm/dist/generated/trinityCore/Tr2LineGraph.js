@@ -29,17 +29,17 @@ class Tr2LineGraph extends CjsModel {
 
   /** Carbon method AddMarker (MAP_METHOD_AND_WRAP). */
   AddMarker(...args) {
-    throw CjsModel.notImplemented("Tr2LineGraph", "AddMarker", args);
+    throw new Error("Tr2LineGraph.AddMarker is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetStatsHistory (MAP_METHOD_AND_WRAP). */
   GetStatsHistory(...args) {
-    throw CjsModel.notImplemented("Tr2LineGraph", "GetStatsHistory", args);
+    throw new Error("Tr2LineGraph.GetStatsHistory is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetSize (MAP_METHOD_AND_WRAP). */
   SetSize(...args) {
-    throw CjsModel.notImplemented("Tr2LineGraph", "SetSize", args);
+    throw new Error("Tr2LineGraph.SetSize is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

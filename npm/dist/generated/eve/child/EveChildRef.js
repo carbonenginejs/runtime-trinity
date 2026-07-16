@@ -37,22 +37,22 @@ class EveChildRef extends _EveChildTransform {
 
   /** Carbon method Reload (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   Reload(...args) {
-    throw _EveChildTransform.notImplemented("EveChildRef", "Reload", args);
+    throw new Error("EveChildRef.Reload is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   HandleControllerEvent(...args) {
-    throw _EveChildTransform.notImplemented("EveChildRef", "HandleControllerEvent", args);
+    throw new Error("EveChildRef.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw _EveChildTransform.notImplemented("EveChildRef", "SetControllerVariable", args);
+    throw new Error("EveChildRef.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers(...args) {
-    throw _EveChildTransform.notImplemented("EveChildRef", "StartControllers", args);
+    throw new Error("EveChildRef.StartControllers is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

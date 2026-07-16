@@ -36,7 +36,7 @@ test("TriRenderJob exposes the ordered Carbon graph contract", () =>
   assertEquals(Array.isArray(job.steps), true);
   assertEquals(CjsSchema.getField(TriRenderJob, "steps")?.type?.kind, "list");
   assertEquals(CjsSchema.getField(TriRenderJob, "steps")?.type?.itemType, "TriRenderStep");
-  assertEquals(CjsSchema.getClass("TriRenderJob"), TriRenderJob);
+  assertEquals(CjsSchema.GetConstructor("TriRenderJob"), TriRenderJob);
   assertEquals(TriRenderJob.RJ_DONE, TriRenderJob.Status.RJ_DONE);
   assertEquals(TriRenderStep.RS_IN_PROGRESS, TriRenderStep.Result.RS_IN_PROGRESS);
 });

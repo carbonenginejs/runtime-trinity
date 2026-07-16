@@ -21,46 +21,46 @@ class EveSwarm extends _EveShip {
     _init_extra_weightAlign(this);
   }
   /** m_behavior.m_weightFormation (float) [READWRITE, PERSIST] */
-  weightFormation = (_initProto(this), _init_weightFormation(this, 0));
+  weightFormation = (_initProto(this), _init_weightFormation(this, 1));
 
   /** m_behavior.m_weightCohesion (float) [READWRITE, PERSIST] */
-  weightCohesion = (_init_extra_weightFormation(this), _init_weightCohesion(this, 0));
+  weightCohesion = (_init_extra_weightFormation(this), _init_weightCohesion(this, 0.1));
 
   /** m_behavior.m_weightSeparation (float) [READWRITE, PERSIST] */
-  weightSeparation = (_init_extra_weightCohesion(this), _init_weightSeparation(this, 0));
+  weightSeparation = (_init_extra_weightCohesion(this), _init_weightSeparation(this, 0.1));
 
   /** m_behavior.m_weightWander (float) [READWRITE, PERSIST] */
-  weightWander = (_init_extra_weightSeparation(this), _init_weightWander(this, 0));
+  weightWander = (_init_extra_weightSeparation(this), _init_weightWander(this, 0.33));
 
   /** m_behavior.m_weightAnchor (float) [READWRITE, PERSIST] */
-  weightAnchor = (_init_extra_weightWander(this), _init_weightAnchor(this, 0));
+  weightAnchor = (_init_extra_weightWander(this), _init_weightAnchor(this, 0.5));
 
   /** m_behavior.m_anchorRadius0 (float) [READWRITE, PERSIST] */
-  anchorRadius0 = (_init_extra_weightAnchor(this), _init_anchorRadius(this, 0));
+  anchorRadius0 = (_init_extra_weightAnchor(this), _init_anchorRadius(this, 75));
 
   /** m_behavior.m_anchorRadius1 (float) [READWRITE, PERSIST] */
-  anchorRadius1 = (_init_extra_anchorRadius(this), _init_anchorRadius2(this, 0));
+  anchorRadius1 = (_init_extra_anchorRadius(this), _init_anchorRadius2(this, 250));
 
   /** m_behavior.m_weightDecelerate (float) [READWRITE, PERSIST] */
-  weightDeceleration = (_init_extra_anchorRadius2(this), _init_weightDeceleration(this, 0));
+  weightDeceleration = (_init_extra_anchorRadius2(this), _init_weightDeceleration(this, 0.1));
 
   /** m_behavior.m_maxDeceleration (float) [READWRITE, PERSIST] */
-  maxDeceleration = (_init_extra_weightDeceleration(this), _init_maxDeceleration(this, 0));
+  maxDeceleration = (_init_extra_weightDeceleration(this), _init_maxDeceleration(this, 200));
 
   /** m_behavior.m_separationDistance (float) [READWRITE, PERSIST] */
-  separationDistance = (_init_extra_maxDeceleration(this), _init_separationDistance(this, 0));
+  separationDistance = (_init_extra_maxDeceleration(this), _init_separationDistance(this, 250));
 
   /** m_behavior.m_formationDistance (float) [READWRITE, PERSIST] */
-  formationDistance = (_init_extra_separationDistance(this), _init_formationDistance(this, 0));
+  formationDistance = (_init_extra_separationDistance(this), _init_formationDistance(this, 50));
 
   /** m_behavior.m_wanderFluctuation (float) [READWRITE, PERSIST] */
-  wanderFluctuation = (_init_extra_formationDistance(this), _init_wanderFluctuation(this, 0));
+  wanderFluctuation = (_init_extra_formationDistance(this), _init_wanderFluctuation(this, 0.05));
 
   /** m_behavior.m_wanderDistance (float) [READWRITE, PERSIST] */
-  wanderDistance = (_init_extra_wanderFluctuation(this), _init_wanderDistance(this, 0));
+  wanderDistance = (_init_extra_wanderFluctuation(this), _init_wanderDistance(this, 100));
 
   /** m_behavior.m_wanderRadius (float) [READWRITE, PERSIST] */
-  wanderRadius = (_init_extra_wanderDistance(this), _init_wanderRadius(this, 0));
+  wanderRadius = (_init_extra_wanderDistance(this), _init_wanderRadius(this, 80));
 
   /** m_debugShowForces (bool) [READWRITE, PERSIST, NOTIFY] */
   debugShowForces = (_init_extra_wanderRadius(this), _init_debugShowForces(this, false));
@@ -72,61 +72,61 @@ class EveSwarm extends _EveShip {
   swarmingEnabled = (_init_extra_count(this), _init_swarmingEnabled(this, false));
 
   /** m_behavior.m_mass (float) [READWRITE, PERSIST] */
-  mass = (_init_extra_swarmingEnabled(this), _init_mass(this, 0));
+  mass = (_init_extra_swarmingEnabled(this), _init_mass(this, 1));
 
   /** m_behavior.m_speedMultiplier (float) [READWRITE, PERSIST] */
-  speedMultiplier = (_init_extra_mass(this), _init_speedMultiplier(this, 0));
+  speedMultiplier = (_init_extra_mass(this), _init_speedMultiplier(this, 1.1));
 
   /** m_behavior.m_speedMinimum (float) [READWRITE, PERSIST] */
-  speedMinimum = (_init_extra_speedMultiplier(this), _init_speedMinimum(this, 0));
+  speedMinimum = (_init_extra_speedMultiplier(this), _init_speedMinimum(this, 10));
 
   /** m_behavior.m_maxDistance0 (float) [READWRITE, PERSIST] */
-  maxDistance0 = (_init_extra_speedMinimum(this), _init_maxDistance(this, 0));
+  maxDistance0 = (_init_extra_speedMinimum(this), _init_maxDistance(this, 500));
 
   /** m_behavior.m_maxDistance1 (float) [READWRITE, PERSIST] */
-  maxDistance1 = (_init_extra_maxDistance(this), _init_maxDistance2(this, 0));
+  maxDistance1 = (_init_extra_maxDistance(this), _init_maxDistance2(this, 125));
 
   /** m_behavior.m_maxTime (float) [READWRITE, PERSIST] */
-  maxTime = (_init_extra_maxDistance2(this), _init_maxTime(this, 0));
+  maxTime = (_init_extra_maxDistance2(this), _init_maxTime(this, 0.2));
 
   /** m_behavior.m_agility (float) [READWRITE, PERSIST] */
-  agility = (_init_extra_maxTime(this), _init_agility(this, 0));
+  agility = (_init_extra_maxTime(this), _init_agility(this, 2));
 
   /** m_behavior.m_speed0 (float) [READWRITE, PERSIST] */
-  speed0 = (_init_extra_agility(this), _init_speed(this, 0));
+  speed0 = (_init_extra_agility(this), _init_speed(this, 700));
 
   /** m_behavior.m_speed1 (float) [READWRITE, PERSIST] */
-  speed1 = (_init_extra_speed(this), _init_speed2(this, 0));
+  speed1 = (_init_extra_speed(this), _init_speed2(this, 1000));
 
   /** m_behavior.m_timeMultiplier (float) [READWRITE] */
-  timeMultiplier = (_init_extra_speed2(this), _init_timeMultiplier(this, 0));
+  timeMultiplier = (_init_extra_speed2(this), _init_timeMultiplier(this, 1));
 
   /** m_behavior.m_weightAlign (float) [READWRITE, PERSIST] */
-  weightAlign = (_init_extra_timeMultiplier(this), _init_weightAlign(this, 0));
+  weightAlign = (_init_extra_timeMultiplier(this), _init_weightAlign(this, 50));
 
   /** Carbon method AddSwarmer (MAP_METHOD_AND_WRAP). */
   AddSwarmer(...args) {
-    throw _EveShip.notImplemented("EveSwarm", "AddSwarmer", args);
+    throw new Error("EveSwarm.AddSwarmer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveSwarmer (MAP_METHOD_AND_WRAP). */
   RemoveSwarmer(...args) {
-    throw _EveShip.notImplemented("EveSwarm", "RemoveSwarmer", args);
+    throw new Error("EveSwarm.RemoveSwarmer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickFiringOrigin (MAP_METHOD_AND_WRAP). */
   PickFiringOrigin(...args) {
-    throw _EveShip.notImplemented("EveSwarm", "PickFiringOrigin", args);
+    throw new Error("EveSwarm.PickFiringOrigin is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EnableSwarming (MAP_METHOD_AND_WRAP). */
   EnableSwarming(...args) {
-    throw _EveShip.notImplemented("EveSwarm", "EnableSwarming", args);
+    throw new Error("EveSwarm.EnableSwarming is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
   SetCount(...args) {
-    throw _EveShip.notImplemented("EveSwarm", "SetCount", args);
+    throw new Error("EveSwarm.SetCount is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -55,17 +55,17 @@ export class BackAndForth extends CjsModel
 
   /** m_fxBehavior (IBehavior*) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IBehavior")
+  @type.model("IBehavior")
   fxBehavior = null;
 
   /** m_target (EveSpaceObject2*) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveSpaceObject2")
+  @type.model("EveSpaceObject2")
   target = null;
 
   /** m_parent (EveSpaceObject2*) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveSpaceObject2")
+  @type.model("EveSpaceObject2")
   parent = null;
 
   /** m_seconds (float) [READWRITE] */
@@ -83,7 +83,13 @@ export class BackAndForth extends CjsModel
   @impl.notImplemented
   AddLocatorSet(...args)
   {
-    throw CjsModel.notImplemented("BackAndForth", "AddLocatorSet", args);
+    throw new Error("BackAndForth.AddLocatorSet is not implemented in CarbonEngineJS.");
   }
+
+  static LocatorType = Object.freeze({
+    LOCAL_LOCATORS: 0,
+    PARENT_LOCATORS: 1,
+    TARGET_LOCATORS: 2,
+  });
 
 }

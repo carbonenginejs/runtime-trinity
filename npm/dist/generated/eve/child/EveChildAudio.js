@@ -14,7 +14,7 @@ class EveChildAudio extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildAudio",
       family: "eve/child"
-    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.persist, void 0, type.objectRef("ITr2AudEmitter")], 16, "audioEmitter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetEmitterName"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.persist, void 0, type.model("ITr2AudEmitter")], 16, "audioEmitter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetEmitterName"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -31,12 +31,12 @@ class EveChildAudio extends _EveChildTransform {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
   __init__(...args) {
-    throw _EveChildTransform.notImplemented("EveChildAudio", "__init__", args);
+    throw new Error("EveChildAudio.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetEmitterName (MAP_METHOD_AND_WRAP). */
   SetEmitterName(...args) {
-    throw _EveChildTransform.notImplemented("EveChildAudio", "SetEmitterName", args);
+    throw new Error("EveChildAudio.SetEmitterName is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

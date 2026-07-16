@@ -19,7 +19,7 @@ export class EveUiObject extends EveSpaceObject2
   @impl.notImplemented
   SetVisibilityForArea(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveUiObject", "SetVisibilityForArea", args);
+    throw new Error("EveUiObject.SetVisibilityForArea is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetNameForPickingAreaID (MAP_METHOD_AND_WRAP). */
@@ -27,7 +27,7 @@ export class EveUiObject extends EveSpaceObject2
   @impl.notImplemented
   GetNameForPickingAreaID(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveUiObject", "GetNameForPickingAreaID", args);
+    throw new Error("EveUiObject.GetNameForPickingAreaID is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -36,7 +36,7 @@ export class EveChildBehaviorSystem extends EveChildTransform
   @impl.notImplemented
   GetVertexElementAddedThroughCode(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildBehaviorSystem", "GetVertexElementAddedThroughCode", args);
+    throw new Error("EveChildBehaviorSystem.GetVertexElementAddedThroughCode is not implemented in CarbonEngineJS.");
   }
 
 }

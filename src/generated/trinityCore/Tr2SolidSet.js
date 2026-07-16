@@ -26,7 +26,7 @@ export class Tr2SolidSet extends Tr2PrimitiveSet
   @impl.notImplemented
   AddTriangle(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "AddTriangle", args);
+    throw new Error("Tr2SolidSet.AddTriangle is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearTriangles (MAP_METHOD_AND_WRAP). */
@@ -34,7 +34,7 @@ export class Tr2SolidSet extends Tr2PrimitiveSet
   @impl.notImplemented
   ClearTriangles(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "ClearTriangles", args);
+    throw new Error("Tr2SolidSet.ClearTriangles is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
@@ -42,7 +42,7 @@ export class Tr2SolidSet extends Tr2PrimitiveSet
   @impl.notImplemented
   SubmitChanges(...args)
   {
-    throw Tr2PrimitiveSet.notImplemented("Tr2SolidSet", "SubmitChanges", args);
+    throw new Error("Tr2SolidSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
 
 }

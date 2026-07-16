@@ -14,7 +14,7 @@ class Tr2MaterialParameterStore extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2MaterialParameterStore",
       family: "trinityCore"
-    })], [[[io, io.read, void 0, type.objectRef("Tr2MaterialParameterStore")], 16, "parent"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.string], 16, "parentPath"], [[io, io.persist, void 0, type.objectRef("ITriEffectParameterDict")], 16, "parameters"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "FindParameter"]], 0, void 0, CjsModel));
+    })], [[[io, io.read, void 0, type.objectRef("Tr2MaterialParameterStore")], 16, "parent"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.string], 16, "parentPath"], [[io, io.persist, void 0, type.model("ITriEffectParameterDict")], 16, "parameters"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "FindParameter"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -34,7 +34,7 @@ class Tr2MaterialParameterStore extends CjsModel {
 
   /** Carbon method FindParameter (MAP_METHOD_AND_WRAP). */
   FindParameter(...args) {
-    throw CjsModel.notImplemented("Tr2MaterialParameterStore", "FindParameter", args);
+    throw new Error("Tr2MaterialParameterStore.FindParameter is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

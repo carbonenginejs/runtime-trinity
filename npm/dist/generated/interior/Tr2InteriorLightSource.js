@@ -16,7 +16,7 @@ class Tr2InteriorLightSource extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2InteriorLightSource",
       family: "interior"
-    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "coneDirection"], [[io, io.notify, io, io.persist, type, type.float32], 16, "coneAlphaInner"], [[io, io.notify, io, io.persist, type, type.float32], 16, "coneAlphaOuter"], [[io, io.persist, type, type.float32], 16, "specularIntensity"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "primaryLighting"], [[io, io.persist, type, type.float32], 16, "falloff"], [[io, io.persist, void 0, type.objectRef("Tr2KelvinColor")], 16, "kelvinColor"], [[io, io.notify, io, io.persist, type, type.float32], 16, "radius"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.color], 16, "color"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "useKelvinColor"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "IsSpotLight"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "coneDirection"], [[io, io.notify, io, io.persist, type, type.float32], 16, "coneAlphaInner"], [[io, io.notify, io, io.persist, type, type.float32], 16, "coneAlphaOuter"], [[io, io.persist, type, type.float32], 16, "specularIntensity"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "primaryLighting"], [[io, io.persist, type, type.float32], 16, "falloff"], [[io, io.persist, void 0, type.model("Tr2KelvinColor")], 16, "kelvinColor"], [[io, io.notify, io, io.persist, type, type.float32], 16, "radius"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.color], 16, "color"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "useKelvinColor"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "IsSpotLight"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -63,7 +63,7 @@ class Tr2InteriorLightSource extends CjsModel {
 
   /** Carbon method IsSpotLight (MAP_METHOD_AND_WRAP). */
   IsSpotLight(...args) {
-    throw CjsModel.notImplemented("Tr2InteriorLightSource", "IsSpotLight", args);
+    throw new Error("Tr2InteriorLightSource.IsSpotLight is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

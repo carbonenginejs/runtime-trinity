@@ -53,7 +53,7 @@ export class Tr2ImpostorManager extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("Tr2ImpostorManager", "__init__", args);
+    throw new Error("Tr2ImpostorManager.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

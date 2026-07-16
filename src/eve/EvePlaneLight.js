@@ -53,7 +53,7 @@ export class EvePlaneLight extends CjsModel
   static FromSOF(value)
   {
     const result = new EvePlaneLight();
-    result.lightData = LightData.fromValues(value?.lightData ?? {});
+    result.lightData = LightData.from(value?.lightData ?? {});
     result.saturation = Number(value?.saturation ?? 1);
     result.lightProfile = value?.lightProfile ?? null;
     result.fadeType = Number(value?.fadeType ?? EvePlaneLight.FT_NONE) | 0;

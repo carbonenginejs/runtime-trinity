@@ -14,7 +14,7 @@ class EveChildParticleSphere extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildParticleSphere",
       family: "eve/child"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2ParticleSystem")], 16, "particleSystem"], [[io, io.persist, void 0, type.objectRef("Tr2InstancedMesh")], 16, "mesh"], [[io, io.persist, type, type.boolean], 16, "useSpaceObjectData"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.read, type, type.float32], 16, "egoSpeed"], [[io, io.persist, type, type.float32], 16, "positionShiftDecreaseSpeed"], [[io, io.persist, type, type.float32], 16, "positionShiftIncreaseSpeed"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.float32], 16, "movementScale"], [[io, io.read, type, type.float32], 16, "positionShift"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "positionShiftMin"], [[io, io.persist, type, type.float32], 16, "positionShiftMax"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Refresh"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2ParticleSystem")], 16, "particleSystem"], [[io, io.persist, void 0, type.model("Tr2InstancedMesh")], 16, "mesh"], [[io, io.persist, type, type.boolean], 16, "useSpaceObjectData"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.read, type, type.float32], 16, "egoSpeed"], [[io, io.persist, type, type.float32], 16, "positionShiftDecreaseSpeed"], [[io, io.persist, type, type.float32], 16, "positionShiftIncreaseSpeed"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.float32], 16, "movementScale"], [[io, io.read, type, type.float32], 16, "positionShift"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "positionShiftMin"], [[io, io.persist, type, type.float32], 16, "positionShiftMax"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Refresh"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -67,7 +67,7 @@ class EveChildParticleSphere extends CjsModel {
 
   /** Carbon method Refresh (MAP_METHOD_AND_WRAP). */
   Refresh(...args) {
-    throw CjsModel.notImplemented("EveChildParticleSphere", "Refresh", args);
+    throw new Error("EveChildParticleSphere.Refresh is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

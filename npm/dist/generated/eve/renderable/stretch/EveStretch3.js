@@ -15,7 +15,7 @@ class EveStretch3 extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveStretch3",
       family: "eve/renderable/stretch"
-    })], [[[io, io.read, type, type.vec3], 16, "sourcePosition"], [[io, io.read, type, type.vec3], 16, "destinationPosition"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "source"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "dest"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("TriFloat")], 16, "moveProgression"], [[io, io.persist, void 0, type.objectRef("IStretchAudio")], 16, "stretchAudio"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.objectRef("TriFloat")], 16, "length"], [[io, io.persist, void 0, type.list("Tr2DynamicBinding")], 16, "dynamicBindings"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persistOnly, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "destObject"], [[io, io.persistOnly, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "sourceObject"], [[io, io.persistOnly, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "stretchObject"], [[io, io.read, type, type.float64], 16, "startTime"], [[io, io.persist, void 0, type.objectRef("ITr2Audio")], 16, "audio"], [[io, io.persistOnly, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "moveObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartFiring"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StopFiring"]], 0, void 0, _EveEntity));
+    })], [[[io, io.read, type, type.vec3], 16, "sourcePosition"], [[io, io.read, type, type.vec3], 16, "destinationPosition"], [[io, io.notify, io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "source"], [[io, io.notify, io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "dest"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("TriFloat")], 16, "moveProgression"], [[io, io.persist, void 0, type.model("IStretchAudio")], 16, "stretchAudio"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.model("TriFloat")], 16, "length"], [[io, io.persist, void 0, type.list("Tr2DynamicBinding")], 16, "dynamicBindings"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "destObject"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "sourceObject"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "stretchObject"], [[io, io.read, type, type.float64], 16, "startTime"], [[io, io.persist, void 0, type.model("ITr2Audio")], 16, "audio"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "moveObject"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartFiring"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StopFiring"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);
@@ -80,17 +80,17 @@ class EveStretch3 extends _EveEntity {
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw _EveEntity.notImplemented("EveStretch3", "SetControllerVariable", args);
+    throw new Error("EveStretch3.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartFiring (MAP_METHOD_AND_WRAP). */
   StartFiring(...args) {
-    throw _EveEntity.notImplemented("EveStretch3", "StartFiring", args);
+    throw new Error("EveStretch3.StartFiring is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StopFiring (MAP_METHOD_AND_WRAP). */
   StopFiring(...args) {
-    throw _EveEntity.notImplemented("EveStretch3", "StopFiring", args);
+    throw new Error("EveStretch3.StopFiring is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

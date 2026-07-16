@@ -13,7 +13,7 @@ export class EveFiringEffectElementContainer extends EveEntity
 
   /** m_element (IEveFiringEffectElementPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveFiringEffectElement")
+  @type.model("IEveFiringEffectElement")
   element = null;
 
   /** m_source.GetTranslation() (Matrix) [READWRITE] */

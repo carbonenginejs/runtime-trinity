@@ -31,32 +31,32 @@ class Tr2GStateParameter extends CjsModel {
 
   /** Carbon method GetName (MAP_METHOD_AND_WRAP). */
   GetName(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "GetName", args);
+    throw new Error("Tr2GStateParameter.GetName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetNodeName (MAP_METHOD_AND_WRAP). */
   GetNodeName(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "GetNodeName", args);
+    throw new Error("Tr2GStateParameter.GetNodeName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetValue (MAP_METHOD_AND_WRAP). */
   GetValue(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "GetValue", args);
+    throw new Error("Tr2GStateParameter.GetValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetName (MAP_METHOD_AND_WRAP). */
   SetName(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "SetName", args);
+    throw new Error("Tr2GStateParameter.SetName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetNodeName (MAP_METHOD_AND_WRAP). */
   SetNodeName(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "SetNodeName", args);
+    throw new Error("Tr2GStateParameter.SetNodeName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValue (MAP_METHOD_AND_WRAP). */
   SetValue(...args) {
-    throw CjsModel.notImplemented("Tr2GStateParameter", "SetValue", args);
+    throw new Error("Tr2GStateParameter.SetValue is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

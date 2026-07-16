@@ -28,12 +28,12 @@ class Tr2SBitWrapper extends CjsModel {
 
   /** Carbon method ToBuffer (MAP_METHOD_AND_WRAP). */
   ToBuffer(...args) {
-    throw CjsModel.notImplemented("Tr2SBitWrapper", "ToBuffer", args);
+    throw new Error("Tr2SBitWrapper.ToBuffer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ToBufferWithUnderline (MAP_METHOD_AND_WRAP). */
   ToBufferWithUnderline(...args) {
-    throw CjsModel.notImplemented("Tr2SBitWrapper", "ToBufferWithUnderline", args);
+    throw new Error("Tr2SBitWrapper.ToBufferWithUnderline is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

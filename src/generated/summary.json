@@ -1,8 +1,8 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 388,
-    "skipped": 239
+    "written": 385,
+    "skipped": 242
   },
   "enums": {
     "written": 18,
@@ -396,6 +396,11 @@
     },
     {
       "family": "eve/child",
+      "className": "EveChildInheritProperties",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child",
       "className": "EveChildInstancedMeshes",
       "reason": "hand-maintained source exists"
     },
@@ -442,6 +447,16 @@
     {
       "family": "eve/volume",
       "className": "EveEllipsoidVolume",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/haze",
+      "className": "EveHazeSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/haze",
+      "className": "EveHazeSetLight",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1264,8 +1279,8 @@
       "enumsFile": false
     },
     "eve/attachment/haze": {
-      "exports": 3,
-      "classes": 3,
+      "exports": 1,
+      "classes": 1,
       "enumsFile": false
     },
     "eve/attachment/spotlights": {
@@ -1284,8 +1299,8 @@
       "enumsFile": true
     },
     "eve/child": {
-      "exports": 32,
-      "classes": 27,
+      "exports": 31,
+      "classes": 26,
       "enumsFile": true
     },
     "eve/child/behaviors": {

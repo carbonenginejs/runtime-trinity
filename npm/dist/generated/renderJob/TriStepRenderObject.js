@@ -14,7 +14,7 @@ class TriStepRenderObject extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderObject",
       family: "renderJob"
-    })], [[[io, io.persist, void 0, type.objectRef("Tr2Material")], 16, "effectOverride"], [[io, io.persist, type, type.boolean], 16, "renderAdditive"], [[io, io.persist, type, type.boolean], 16, "renderDecal"], [[io, io.persist, type, type.boolean], 16, "renderOpaque"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.objectRef("ITr2Renderable")], 16, "renderable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.persist, void 0, type.model("Tr2Material")], 16, "effectOverride"], [[io, io.persist, type, type.boolean], 16, "renderAdditive"], [[io, io.persist, type, type.boolean], 16, "renderDecal"], [[io, io.persist, type, type.boolean], 16, "renderOpaque"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.model("ITr2Renderable")], 16, "renderable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -40,7 +40,7 @@ class TriStepRenderObject extends _TriRenderStep {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRenderObject", "__init__", args);
+    throw new Error("TriStepRenderObject.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

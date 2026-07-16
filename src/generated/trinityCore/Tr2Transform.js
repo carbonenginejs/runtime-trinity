@@ -60,7 +60,7 @@ export class Tr2Transform extends CjsModel
 
   /** m_mesh (Tr2MeshBasePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2MeshBase")
+  @type.model("Tr2MeshBase")
   mesh = null;
 
   /** m_curveSets (PTriCurveSetVector) [READ, PERSIST] */
@@ -87,5 +87,19 @@ export class Tr2Transform extends CjsModel
   @io.persist
   @type.float32
   sortValueMultiplier = 1;
+
+  static Tr2TransformModifier = Object.freeze({
+    TR2TM_NONE: 0,
+    TR2TM_BILLBOARD: 1,
+    TR2TM_TRANSLATE_WITH_CAMERA: 2,
+    TR2TM_LOOK_AT_CAMERA: 3,
+    TR2TM_SIMPLE_HALO: 4,
+    TR2TM_PRE_TRANSLATE_WITH_CAMERA: 5,
+    TR2TM_EVE_CAMERA_ROTATION_ALIGNED: 100,
+    TR2TM_EVE_BOOSTER: 101,
+    TR2TM_EVE_SIMPLE_HALO: 102,
+    TR2TM_EVE_CAMERA_ROTATION: 103,
+    TR2TM_FORCE_DWORD: 4294967295,
+  });
 
 }

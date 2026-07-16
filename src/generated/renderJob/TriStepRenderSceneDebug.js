@@ -19,7 +19,7 @@ export class TriStepRenderSceneDebug extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderSceneDebug", "__init__", args);
+    throw new Error("TriStepRenderSceneDebug.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

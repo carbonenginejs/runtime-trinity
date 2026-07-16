@@ -1,4 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
@@ -87,7 +88,7 @@ new class extends _identity {
       }
     }
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "minDistance") || CjsModel.hasModifiedProperty(properties, "maxDistance")) {
+      if (hasModifiedProperty(properties, "minDistance") || hasModifiedProperty(properties, "maxDistance")) {
         this.#updateDistanceCurve = true;
       }
       return true;

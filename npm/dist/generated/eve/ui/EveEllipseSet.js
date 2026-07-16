@@ -14,7 +14,7 @@ class EveEllipseSet extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveEllipseSet",
       family: "eve/ui"
-    })], [[[io, io.notify, io, io.persist, type, type.uint32], 16, "ribbonSegmentCount"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "enablePicking"], [[io, io.persist, type, type.float32], 16, "depthOffset"], [[io, io.persist, void 0, type.list("EveEllipseDefinition")], 16, "ellipses"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddEllipse"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearEllipses"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.notify, io, io.persist, type, type.uint32], 16, "ribbonSegmentCount"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "enablePicking"], [[io, io.persist, type, type.float32], 16, "depthOffset"], [[io, io.persist, void 0, type.list("EveEllipseDefinition")], 16, "ellipses"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddEllipse"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearEllipses"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -43,17 +43,17 @@ class EveEllipseSet extends _EveChildTransform {
 
   /** Carbon method AddEllipse (MAP_METHOD_AND_WRAP). */
   AddEllipse(...args) {
-    throw _EveChildTransform.notImplemented("EveEllipseSet", "AddEllipse", args);
+    throw new Error("EveEllipseSet.AddEllipse is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
   __init__(...args) {
-    throw _EveChildTransform.notImplemented("EveEllipseSet", "__init__", args);
+    throw new Error("EveEllipseSet.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearEllipses (MAP_METHOD_AND_WRAP). */
   ClearEllipses(...args) {
-    throw _EveChildTransform.notImplemented("EveEllipseSet", "ClearEllipses", args);
+    throw new Error("EveEllipseSet.ClearEllipses is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

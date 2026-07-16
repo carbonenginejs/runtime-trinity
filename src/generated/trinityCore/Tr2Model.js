@@ -24,7 +24,7 @@ export class Tr2Model extends CjsModel
   @impl.notImplemented
   GetBoundingBoxInLocalSpace(...args)
   {
-    throw CjsModel.notImplemented("Tr2Model", "GetBoundingBoxInLocalSpace", args);
+    throw new Error("Tr2Model.GetBoundingBoxInLocalSpace is not implemented in CarbonEngineJS.");
   }
 
 }

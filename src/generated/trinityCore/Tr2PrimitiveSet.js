@@ -50,13 +50,13 @@ export class Tr2PrimitiveSet extends CjsModel
   /** m_effect (Tr2EffectPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** m_pickEffect (Tr2EffectPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   pickEffect = null;
 
   /** m_name (std::string) [READWRITE, PERSIST] */
@@ -69,7 +69,7 @@ export class Tr2PrimitiveSet extends CjsModel
   @impl.notImplemented
   SetCurrentColor(...args)
   {
-    throw CjsModel.notImplemented("Tr2PrimitiveSet", "SetCurrentColor", args);
+    throw new Error("Tr2PrimitiveSet.SetCurrentColor is not implemented in CarbonEngineJS.");
   }
 
 }

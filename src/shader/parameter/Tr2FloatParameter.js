@@ -131,4 +131,11 @@ export class Tr2FloatParameter extends CjsShaderParameter
   {
     CjsShaderParameter.writeScalarDestination(out, this.GetValue());
   }
+
+  /** JS convenience: raw values this parameter class claims for map-form inference. */
+  static isValue(value)
+  {
+    return typeof value === "number";
+  }
+
 }

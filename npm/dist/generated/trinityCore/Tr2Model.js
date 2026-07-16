@@ -28,7 +28,7 @@ class Tr2Model extends CjsModel {
 
   /** Carbon method GetBoundingBoxInLocalSpace (MAP_METHOD_AND_WRAP). */
   GetBoundingBoxInLocalSpace(...args) {
-    throw CjsModel.notImplemented("Tr2Model", "GetBoundingBoxInLocalSpace", args);
+    throw new Error("Tr2Model.GetBoundingBoxInLocalSpace is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

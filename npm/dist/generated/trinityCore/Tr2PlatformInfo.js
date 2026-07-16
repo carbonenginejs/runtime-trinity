@@ -22,7 +22,7 @@ class Tr2PlatformInfo extends CjsModel {
   }
   /** Carbon method GetStaticCap (MAP_METHOD_AND_WRAP). */
   GetStaticCap(...args) {
-    throw CjsModel.notImplemented("Tr2PlatformInfo", "GetStaticCap", args);
+    throw new Error("Tr2PlatformInfo.GetStaticCap is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

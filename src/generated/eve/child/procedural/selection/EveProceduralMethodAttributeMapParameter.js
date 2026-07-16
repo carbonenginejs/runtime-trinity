@@ -12,7 +12,7 @@ export class EveProceduralMethodAttributeMapParameter extends CjsModel
   /** m_child (EveChildRefPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("EveChild")
+  @type.model("EveChild")
   child = null;
 
   /** m_name (BlueSharedString) [READWRITE, PERSIST] */

@@ -15,7 +15,7 @@ class TriStepClearUav extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepClearUav",
       family: "renderJob"
-    })], [[[io, io.persist, void 0, type.objectRef("ITr2GpuBuffer")], 16, "buffer"], [[io, io.persist, type, type.boolean], 16, "clearWithFloat"], [[io, io.persist, type, type.vec4], 16, "floatValue"], [[io, io.persist, type, type.uint32], 16, "bitValue0"], [[io, io.persist, type, type.uint32], 16, "bitValue1"], [[io, io.persist, type, type.uint32], 16, "bitValue2"], [[io, io.persist, type, type.uint32], 16, "bitValue3"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.persist, void 0, type.model("ITr2GpuBuffer")], 16, "buffer"], [[io, io.persist, type, type.boolean], 16, "clearWithFloat"], [[io, io.persist, type, type.vec4], 16, "floatValue"], [[io, io.persist, type, type.uint32], 16, "bitValue0"], [[io, io.persist, type, type.uint32], 16, "bitValue1"], [[io, io.persist, type, type.uint32], 16, "bitValue2"], [[io, io.persist, type, type.uint32], 16, "bitValue3"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -44,7 +44,7 @@ class TriStepClearUav extends _TriRenderStep {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepClearUav", "__init__", args);
+    throw new Error("TriStepClearUav.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -49,22 +49,22 @@ class Tr2GpuProfiler extends CjsModel {
 
   /** Carbon method IsReportReady -> IsDataReady (MAP_METHOD_AND_WRAP). */
   IsReportReady(...args) {
-    throw CjsModel.notImplemented("Tr2GpuProfiler", "IsReportReady", args);
+    throw new Error("Tr2GpuProfiler.IsReportReady is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearData (MAP_METHOD_AND_WRAP). */
   ClearData(...args) {
-    throw CjsModel.notImplemented("Tr2GpuProfiler", "ClearData", args);
+    throw new Error("Tr2GpuProfiler.ClearData is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Capture (MAP_METHOD_AND_WRAP). */
   Capture(...args) {
-    throw CjsModel.notImplemented("Tr2GpuProfiler", "Capture", args);
+    throw new Error("Tr2GpuProfiler.Capture is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetFrameReport (MAP_METHOD_AND_WRAP). */
   GetFrameReport(...args) {
-    throw CjsModel.notImplemented("Tr2GpuProfiler", "GetFrameReport", args);
+    throw new Error("Tr2GpuProfiler.GetFrameReport is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

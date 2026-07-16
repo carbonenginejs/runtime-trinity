@@ -1,4 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../../../utilities/hasModifiedProperty.js';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
@@ -31,7 +32,7 @@ class EveVirtualCameraBehaviourVector3Base extends CjsModel {
     this.name = String(name);
   }
   OnModified(value = null) {
-    if (!value || CjsModel.hasModifiedProperty(value, "name")) {
+    if (!value || hasModifiedProperty(value, "name")) {
       this.SetName(this.name);
     }
     return true;

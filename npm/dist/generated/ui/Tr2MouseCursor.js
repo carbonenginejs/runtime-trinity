@@ -34,17 +34,17 @@ class Tr2MouseCursor extends CjsModel {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw CjsModel.notImplemented("Tr2MouseCursor", "__init__", args);
+    throw new Error("Tr2MouseCursor.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Create (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   Create(...args) {
-    throw CjsModel.notImplemented("Tr2MouseCursor", "Create", args);
+    throw new Error("Tr2MouseCursor.Create is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method IsValid (MAP_METHOD_AND_WRAP). */
   IsValid(...args) {
-    throw CjsModel.notImplemented("Tr2MouseCursor", "IsValid", args);
+    throw new Error("Tr2MouseCursor.IsValid is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

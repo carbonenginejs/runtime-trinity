@@ -14,7 +14,7 @@ class Tr2GpuStructuredBuffer extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2GpuStructuredBuffer",
       family: "trinityCore"
-    })], [[[io, io.notify, io, io.persist, void 0, type.struct("CreationFlags")], 16, "creationFlags"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "count"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "stride"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DebugGetData"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.uint32], 16, "creationFlags"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "count"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "stride"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DebugGetData"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -31,12 +31,12 @@ class Tr2GpuStructuredBuffer extends CjsModel {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw CjsModel.notImplemented("Tr2GpuStructuredBuffer", "__init__", args);
+    throw new Error("Tr2GpuStructuredBuffer.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DebugGetData -> PyGetData (MAP_METHOD). */
   DebugGetData(...args) {
-    throw CjsModel.notImplemented("Tr2GpuStructuredBuffer", "DebugGetData", args);
+    throw new Error("Tr2GpuStructuredBuffer.DebugGetData is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

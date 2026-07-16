@@ -42,4 +42,12 @@ export class Tr2EffectConstant extends CjsModel
   @type.boolean
   isAutoregister = false;
 
+  static Type = Object.freeze({
+    FLOAT: 0,
+    INT: 1,
+    UINT: 2,
+    BOOL: 3,
+    OTHER: 4
+  });
+
 }

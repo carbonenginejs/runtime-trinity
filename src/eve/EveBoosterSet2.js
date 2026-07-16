@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2_Blue.cpp
+import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
@@ -234,7 +235,7 @@ export class EveBoosterSet2 extends EveEntity
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "staticTrailLength"))
+    if (hasModifiedProperty(properties, "staticTrailLength"))
     {
       EveBoosterSet2.#UpdateStaticTrailOffsets(this);
     }
@@ -537,7 +538,7 @@ export class EveBoosterSet2 extends EveEntity
   static #HasModifiedFlareProperty(properties)
   {
     return EveBoosterSet2.#flareProperties.some(property =>
-      CjsModel.hasModifiedProperty(properties, property));
+      hasModifiedProperty(properties, property));
   }
 
   static #AddFlare(owner, position, direction, distance, blinkRate, blinkPhase, minScale, maxScale, color, warpColor)

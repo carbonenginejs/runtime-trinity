@@ -81,4 +81,10 @@ export class LightData extends CjsModel
   @type.boolean
   isVolumetric = false;
 
+  static PerLightShadowSetting = Object.freeze({
+    DISABLED: 0,
+    ENABLED_ONLY_ON_HIGH_QUALITY: 1,
+    ALWAYS_ENABLED: 2,
+  });
+
 }

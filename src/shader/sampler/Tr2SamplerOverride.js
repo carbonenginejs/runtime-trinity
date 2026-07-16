@@ -3,6 +3,7 @@
 // Hand-maintained from Tr2Effect.cpp's Blue structure definition and defaults.
 import { schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { Tr2RenderContext } from "../../trinityCore/Tr2RenderContext.js";
 
 /** Tr2SamplerOverride (shader) - generated from schema shapeHash b3478476.... */
 @type.define({ className: "Tr2SamplerOverride", family: "shader" })
@@ -49,5 +50,9 @@ export class Tr2SamplerOverride extends CjsModel
   /** maxAnisotropy (uint32_t) */
   @type.uint32
   maxAnisotropy = 4;
+
+  static TextureAddressMode = Tr2RenderContext.TextureAddressMode;
+
+  static TextureFilter = Tr2RenderContext.TextureFilter;
 
 }

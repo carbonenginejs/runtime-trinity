@@ -46,122 +46,122 @@ class Tr2GrannyAnimation extends CjsModel {
 
   /** Carbon method PlayAnimationEx (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   PlayAnimationEx(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayAnimationEx", args);
+    throw new Error("Tr2GrannyAnimation.PlayAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayer (MAP_METHOD_AND_WRAP). */
   AddAnimationLayer(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayer", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayerAllBones (MAP_METHOD_AND_WRAP). */
   AddAnimationLayerAllBones(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayerAllBones", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayerAllBones is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAnimationLayerBone (MAP_METHOD_AND_WRAP). */
   AddAnimationLayerBone(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddAnimationLayerBone", args);
+    throw new Error("Tr2GrannyAnimation.AddAnimationLayerBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddSecondaryResPath (MAP_METHOD_AND_WRAP). */
   AddSecondaryResPath(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AddSecondaryResPath", args);
+    throw new Error("Tr2GrannyAnimation.AddSecondaryResPath is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AimBone (MAP_METHOD_AND_WRAP). */
   AimBone(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "AimBone", args);
+    throw new Error("Tr2GrannyAnimation.AimBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
   ChainAnimation(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ChainAnimation", args);
+    throw new Error("Tr2GrannyAnimation.ChainAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
   ChainAnimationEx(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ChainAnimationEx", args);
+    throw new Error("Tr2GrannyAnimation.ChainAnimationEx is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
   ClearAnimations(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ClearAnimations", args);
+    throw new Error("Tr2GrannyAnimation.ClearAnimations is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearAnimationLayers (MAP_METHOD_AND_WRAP). */
   ClearAnimationLayers(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "ClearAnimationLayers", args);
+    throw new Error("Tr2GrannyAnimation.ClearAnimationLayers is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DisableAimBone (MAP_METHOD_AND_WRAP). */
   DisableAimBone(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "DisableAimBone", args);
+    throw new Error("Tr2GrannyAnimation.DisableAimBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
   EndAnimation(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "EndAnimation", args);
+    throw new Error("Tr2GrannyAnimation.EndAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
   GetAdditiveBlendMode(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetAdditiveBlendMode", args);
+    throw new Error("Tr2GrannyAnimation.GetAdditiveBlendMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetLayerWeight (MAP_METHOD_AND_WRAP). */
   GetLayerWeight(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetLayerWeight", args);
+    throw new Error("Tr2GrannyAnimation.GetLayerWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetSecondaryAnimationName (MAP_METHOD_AND_WRAP). */
   GetSecondaryAnimationName(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetSecondaryAnimationName", args);
+    throw new Error("Tr2GrannyAnimation.GetSecondaryAnimationName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayAnimation -> PlayAnimationOnce (MAP_METHOD_AND_WRAP). */
   PlayAnimation(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayAnimation", args);
+    throw new Error("Tr2GrannyAnimation.PlayAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayLayerAnimation -> PlayLayerAnimationByName (MAP_METHOD_AND_WRAP). */
   PlayLayerAnimation(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "PlayLayerAnimation", args);
+    throw new Error("Tr2GrannyAnimation.PlayLayerAnimation is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveAnimationLayerBone (MAP_METHOD_AND_WRAP). */
   RemoveAnimationLayerBone(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "RemoveAnimationLayerBone", args);
+    throw new Error("Tr2GrannyAnimation.RemoveAnimationLayerBone is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAnimationNames (MAP_METHOD_AND_WRAP). */
   GetAnimationNames(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "GetAnimationNames", args);
+    throw new Error("Tr2GrannyAnimation.GetAnimationNames is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
   SetAdditiveBlendMode(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetAdditiveBlendMode", args);
+    throw new Error("Tr2GrannyAnimation.SetAdditiveBlendMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerControlParam (MAP_METHOD_AND_WRAP). */
   SetLayerControlParam(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerControlParam", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerControlParam is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerControlParamSkewRate (MAP_METHOD_AND_WRAP). */
   SetLayerControlParamSkewRate(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerControlParamSkewRate", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerControlParamSkewRate is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetLayerWeight (MAP_METHOD_AND_WRAP). */
   SetLayerWeight(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "SetLayerWeight", args);
+    throw new Error("Tr2GrannyAnimation.SetLayerWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TogglePauseAnimations (MAP_METHOD_AND_WRAP). */
   TogglePauseAnimations(...args) {
-    throw CjsModel.notImplemented("Tr2GrannyAnimation", "TogglePauseAnimations", args);
+    throw new Error("Tr2GrannyAnimation.TogglePauseAnimations is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

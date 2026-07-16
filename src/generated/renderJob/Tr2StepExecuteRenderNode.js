@@ -21,7 +21,7 @@ export class Tr2StepExecuteRenderNode extends TriRenderStep
 
   /** m_node (ITr2RenderNodePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2RenderNode")
+  @type.model("ITr2RenderNode")
   node = null;
 
 }

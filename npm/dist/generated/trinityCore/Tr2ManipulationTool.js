@@ -42,22 +42,22 @@ class Tr2ManipulationTool extends CjsModel {
 
   /** Carbon method SetMoveCallback (MAP_METHOD_AND_WRAP). */
   SetMoveCallback(...args) {
-    throw CjsModel.notImplemented("Tr2ManipulationTool", "SetMoveCallback", args);
+    throw new Error("Tr2ManipulationTool.SetMoveCallback is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SelectAxis (MAP_METHOD_AND_WRAP). */
   SelectAxis(...args) {
-    throw CjsModel.notImplemented("Tr2ManipulationTool", "SelectAxis", args);
+    throw new Error("Tr2ManipulationTool.SelectAxis is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Init (MAP_METHOD_AND_WRAP). */
   Init(...args) {
-    throw CjsModel.notImplemented("Tr2ManipulationTool", "Init", args);
+    throw new Error("Tr2ManipulationTool.Init is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Move -> PyMove (MAP_METHOD_AND_WRAP). */
   Move(...args) {
-    throw CjsModel.notImplemented("Tr2ManipulationTool", "Move", args);
+    throw new Error("Tr2ManipulationTool.Move is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

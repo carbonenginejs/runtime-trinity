@@ -20,7 +20,7 @@ export class TriView extends CjsModel
   @impl.notImplemented
   SetLookAtPosition(...args)
   {
-    throw CjsModel.notImplemented("TriView", "SetLookAtPosition", args);
+    throw new Error("TriView.SetLookAtPosition is not implemented in CarbonEngineJS.");
   }
 
 }

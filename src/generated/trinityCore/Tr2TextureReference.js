@@ -22,7 +22,7 @@ export class Tr2TextureReference extends CjsModel
   @impl.notImplemented
   Save(...args)
   {
-    throw CjsModel.notImplemented("Tr2TextureReference", "Save", args);
+    throw new Error("Tr2TextureReference.Save is not implemented in CarbonEngineJS.");
   }
 
 }

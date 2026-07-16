@@ -4,6 +4,7 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { carbon, impl, schema, type } from "@carbonenginejs/core-types/schema";
 import { LightData } from "../../generated/eve/lights/LightData.js";
+import { PerLightShadowSetting } from "../../generated/eve/lights/enums.js";
 
 
 @type.define({ className: "Tr2Light", family: "eve/lights" })
@@ -88,8 +89,8 @@ export class Tr2Light extends CjsModel
   SetLightData(lightData)
   {
     this.lightData = lightData instanceof LightData
-      ? LightData.fromValues(lightData)
-      : LightData.fromValues(lightData ?? {});
+      ? LightData.from(lightData)
+      : LightData.from(lightData ?? {});
   }
 
   @carbon.method
@@ -127,4 +128,9 @@ export class Tr2Light extends CjsModel
     // Light-profile resolution is supplied by the resource/runtime adapter.
     return true;
   }
+
+  static LIGHT_TYPE = Tr2Light.LightType;
+
+  static PerLightShadowSetting = PerLightShadowSetting;
+
 }

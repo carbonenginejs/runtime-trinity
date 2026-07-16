@@ -25,12 +25,12 @@ class Tr2TextureAtlasMan extends CjsModel {
 
   /** Carbon method AddAtlas -> AddAtlasWrap (MAP_METHOD_AND_WRAP). */
   AddAtlas(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlasMan", "AddAtlas", args);
+    throw new Error("Tr2TextureAtlasMan.AddAtlas is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveAtlas -> RemoveAtlasWrap (MAP_METHOD_AND_WRAP). */
   RemoveAtlas(...args) {
-    throw CjsModel.notImplemented("Tr2TextureAtlasMan", "RemoveAtlas", args);
+    throw new Error("Tr2TextureAtlasMan.RemoveAtlas is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

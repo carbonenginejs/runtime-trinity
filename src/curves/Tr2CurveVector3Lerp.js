@@ -141,4 +141,7 @@ export class Tr2CurveVector3Lerp extends CjsModel
     }
     return vec3.hermite(out, this.initialValue, this.#zeroTangent, this.#zeroTangent, this.#curveStartValue, ratio);
   }
+
+  static Tr2CurveVector3LerpKeyInterpolation = Tr2CurveVector3LerpKeyInterpolation;
+
 }

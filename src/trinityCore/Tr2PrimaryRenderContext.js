@@ -14,7 +14,7 @@ export class Tr2PrimaryRenderContext extends CjsModel
   @impl.notImplemented
   GetDefaultBackBuffer(...args)
   {
-    throw CjsModel.notImplemented("Tr2PrimaryRenderContext", "GetDefaultBackBuffer", args);
+    throw new Error("Tr2PrimaryRenderContext.GetDefaultBackBuffer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBackBufferFormat (MAP_METHOD_AND_WRAP). */
@@ -22,7 +22,7 @@ export class Tr2PrimaryRenderContext extends CjsModel
   @impl.notImplemented
   GetBackBufferFormat(...args)
   {
-    throw CjsModel.notImplemented("Tr2PrimaryRenderContext", "GetBackBufferFormat", args);
+    throw new Error("Tr2PrimaryRenderContext.GetBackBufferFormat is not implemented in CarbonEngineJS.");
   }
 
 }

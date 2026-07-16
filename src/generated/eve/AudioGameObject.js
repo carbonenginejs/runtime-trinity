@@ -18,12 +18,12 @@ export class AudioGameObject extends CjsModel
 
   /** m_ballPosition (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** m_ballRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   rotationCurve = null;
 
   /** m_externalParameters (PTr2ExternalParameterVector) [READ, PERSIST] */
@@ -62,7 +62,7 @@ export class AudioGameObject extends CjsModel
   @impl.notImplemented
   GetAudioEmitter(...args)
   {
-    throw CjsModel.notImplemented("AudioGameObject", "GetAudioEmitter", args);
+    throw new Error("AudioGameObject.GetAudioEmitter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP). */
@@ -70,7 +70,7 @@ export class AudioGameObject extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("AudioGameObject", "__init__", args);
+    throw new Error("AudioGameObject.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PlayAudioEvent (MAP_METHOD_AND_WRAP). */
@@ -78,7 +78,7 @@ export class AudioGameObject extends CjsModel
   @impl.notImplemented
   PlayAudioEvent(...args)
   {
-    throw CjsModel.notImplemented("AudioGameObject", "PlayAudioEvent", args);
+    throw new Error("AudioGameObject.PlayAudioEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetEmitterName (MAP_METHOD_AND_WRAP). */
@@ -86,7 +86,7 @@ export class AudioGameObject extends CjsModel
   @impl.notImplemented
   SetEmitterName(...args)
   {
-    throw CjsModel.notImplemented("AudioGameObject", "SetEmitterName", args);
+    throw new Error("AudioGameObject.SetEmitterName is not implemented in CarbonEngineJS.");
   }
 
 }

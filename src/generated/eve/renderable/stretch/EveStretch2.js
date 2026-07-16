@@ -16,32 +16,32 @@ export class EveStretch2 extends EveEntity
 
   /** m_loop (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   loop = null;
 
   /** m_start (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   start = null;
 
   /** m_end (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   end = null;
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** m_destinationEmitter (Tr2GpuSharedEmitterPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2GpuSharedEmitter")
+  @type.model("Tr2GpuSharedEmitter")
   destinationEmitter = null;
 
   /** m_sourceEmitter (Tr2GpuSharedEmitterPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2GpuSharedEmitter")
+  @type.model("Tr2GpuSharedEmitter")
   sourceEmitter = null;
 
   /** m_quadCount (uint32_t) [READWRITE, PERSIST, NOTIFY] */
@@ -52,22 +52,22 @@ export class EveStretch2 extends EveEntity
 
   /** m_destinationObserver (TriObserverLocalPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriObserverLocal")
+  @type.model("TriObserverLocal")
   destinationObserver = null;
 
   /** m_sourceObserver (TriObserverLocalPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriObserverLocal")
+  @type.model("TriObserverLocal")
   sourceObserver = null;
 
   /** m_destinationLight (Tr2PointLightPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2PointLight")
+  @type.model("Tr2PointLight")
   destinationLight = null;
 
   /** m_sourceLight (Tr2PointLightPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2PointLight")
+  @type.model("Tr2PointLight")
   sourceLight = null;
 
   /** m_boundingRadius (float) [READWRITE, PERSIST] */

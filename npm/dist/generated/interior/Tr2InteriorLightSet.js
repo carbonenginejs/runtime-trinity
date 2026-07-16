@@ -14,7 +14,7 @@ class Tr2InteriorLightSet extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2InteriorLightSet",
       family: "interior"
-    })], [[type.objectRef("ITr2InteriorLight"), 0, "lightSource"], [[type, type.unknown], 16, "lightDataValid"], [[type, type.unknown], 16, "lightData"], [type.rawStruct("std::list<InternalLightInstance>"), 0, "lightInstances"]], 0, void 0, CjsModel));
+    })], [[type.objectRef("ITr2InteriorLight"), 0, "lightSource"], [[type, type.boolean], 16, "lightDataValid"], [type.rawStruct("Tr2InteriorPerObjectLightData"), 0, "lightData"], [type.rawStruct("std::list<InternalLightInstance>"), 0, "lightInstances"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -24,7 +24,7 @@ class Tr2InteriorLightSet extends CjsModel {
   lightSource = _init_lightSource(this, null);
 
   /** lightDataValid (mutable bool) */
-  lightDataValid = (_init_extra_lightSource(this), _init_lightDataValid(this, null));
+  lightDataValid = (_init_extra_lightSource(this), _init_lightDataValid(this, false));
 
   /** lightData (mutable Tr2InteriorPerObjectLightData) */
   lightData = (_init_extra_lightDataValid(this), _init_lightData(this, null));

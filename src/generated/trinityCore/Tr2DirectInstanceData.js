@@ -25,7 +25,7 @@ export class Tr2DirectInstanceData extends CjsModel
   @impl.notImplemented
   SetBoundingBox(...args)
   {
-    throw CjsModel.notImplemented("Tr2DirectInstanceData", "SetBoundingBox", args);
+    throw new Error("Tr2DirectInstanceData.SetBoundingBox is not implemented in CarbonEngineJS.");
   }
 
 }

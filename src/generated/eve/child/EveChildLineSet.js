@@ -19,7 +19,7 @@ export class EveChildLineSet extends EveChildTransform
 
   /** m_lineSet (EveCurveLineSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveCurveLineSet")
+  @type.model("EveCurveLineSet")
   lineSet = null;
 
   /** m_name (BlueSharedString) [READWRITE, PERSIST] */
@@ -85,7 +85,7 @@ export class EveChildLineSet extends EveChildTransform
   /** m_mesh (Tr2MeshPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Mesh")
+  @type.model("Tr2Mesh")
   mesh = null;
 
   /** Carbon method GetVertexElementAddedThroughCode (MAP_METHOD_AND_WRAP). */
@@ -93,7 +93,13 @@ export class EveChildLineSet extends EveChildTransform
   @impl.notImplemented
   GetVertexElementAddedThroughCode(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildLineSet", "GetVertexElementAddedThroughCode", args);
+    throw new Error("EveChildLineSet.GetVertexElementAddedThroughCode is not implemented in CarbonEngineJS.");
   }
+
+  static lineSetType = Object.freeze({
+    OBJECT_RENDER: 0,
+    LINE_RENDER: 1,
+    BOTH: 2,
+  });
 
 }

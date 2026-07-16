@@ -14,7 +14,7 @@ class EveStarfield extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveStarfield",
       family: "eve/effect"
-    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "seed"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minFlashIntensity"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxDist"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minDist"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minFlashRate"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxFlashRate"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.notify, io, io.persist, type, type.int32], 16, "numStars"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "seed"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minFlashIntensity"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxDist"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minDist"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minFlashRate"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxFlashRate"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.notify, io, io.persist, type, type.int32], 16, "numStars"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

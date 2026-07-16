@@ -29,7 +29,7 @@ export class EveDistributionPlacementGeneratorVolume extends CjsModel
 
   /** m_volume (IEveVolumePtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("IEveVolume")
+  @type.model("IEveVolume")
   volume = null;
 
 }

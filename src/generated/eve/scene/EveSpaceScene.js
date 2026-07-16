@@ -71,7 +71,7 @@ export class EveSpaceScene extends CjsModel
 
   /** m_shLightingManager (Tr2ShLightingManagerPtr) [PERSISTONLY] */
   @io.persistOnly
-  @type.objectRef("Tr2ShLightingManager")
+  @type.model("Tr2ShLightingManager")
   shLightingManager = null;
 
   /** m_combinedPostProcessAttributes (Tr2PostProcessAttributesPtr) [READ] */
@@ -127,7 +127,7 @@ export class EveSpaceScene extends CjsModel
 
   /** m_backgroundEffect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   backgroundEffect = null;
 
   /** m_backgroundReflectionIntensity (float) [READWRITE, PERSIST] */
@@ -235,7 +235,7 @@ export class EveSpaceScene extends CjsModel
 
   /** m_starfield (EveStarfieldPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveStarfield")
+  @type.model("EveStarfield")
   starfield = null;
 
   /** m_planetScale (float) [READWRITE, PERSIST] */
@@ -287,17 +287,17 @@ export class EveSpaceScene extends CjsModel
 
   /** m_sunBall (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   sunBall = null;
 
   /** m_sceneDefaultPostProcess (Tr2PostProcess2Ptr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2PostProcess2")
+  @type.model("Tr2PostProcess2")
   postprocess = null;
 
   /** m_virtualCameraSystem (EveVirtualCameraSystemPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveVirtualCameraSystem")
+  @type.model("EveVirtualCameraSystem")
   virtualCameraSystem = null;
 
   /** m_warpTunnel (IEveSpaceObject2Ptr) [READWRITE] */
@@ -312,7 +312,7 @@ export class EveSpaceScene extends CjsModel
 
   /** m_cascadedShadowMap (Tr2ShadowMapPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2ShadowMap")
+  @type.model("Tr2ShadowMap")
   cascadedShadowMap = null;
 
   /** m_updateTime (Be::Time) [READ] */
@@ -345,7 +345,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   PickObject(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "PickObject", args);
+    throw new Error("EveSpaceScene.PickObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickAsyncObject (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -353,7 +353,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   PickAsyncObject(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "PickAsyncObject", args);
+    throw new Error("EveSpaceScene.PickAsyncObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickObjectAndAreaID -> PyPickObjectAndAreaID (MAP_METHOD). */
@@ -361,7 +361,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   PickObjectAndAreaID(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "PickObjectAndAreaID", args);
+    throw new Error("EveSpaceScene.PickObjectAndAreaID is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PickInfinity (MAP_METHOD_AND_WRAP). */
@@ -369,7 +369,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   PickInfinity(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "PickInfinity", args);
+    throw new Error("EveSpaceScene.PickInfinity is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ReregisterEntities (MAP_METHOD_AND_WRAP). */
@@ -377,7 +377,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   ReregisterEntities(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "ReregisterEntities", args);
+    throw new Error("EveSpaceScene.ReregisterEntities is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetPostProcessDebug (MAP_METHOD_AND_WRAP). */
@@ -385,7 +385,7 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   GetPostProcessDebug(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "GetPostProcessDebug", args);
+    throw new Error("EveSpaceScene.GetPostProcessDebug is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateScene -> UpdateSceneFromScript (MAP_METHOD_AND_WRAP). */
@@ -393,7 +393,25 @@ export class EveSpaceScene extends CjsModel
   @impl.notImplemented
   UpdateScene(...args)
   {
-    throw CjsModel.notImplemented("EveSpaceScene", "UpdateScene", args);
+    throw new Error("EveSpaceScene.UpdateScene is not implemented in CarbonEngineJS.");
   }
+
+  static EveVisualizeMethod = Object.freeze({
+    VM_NONE: 0,
+    VM_TEXCOORD0: 1,
+    VM_TEXCOORD1: 2,
+    VM_WHITE: 3,
+    VM_OVERDRAW: 4,
+    VW_WIREFRAME: 5,
+    VW_LIGHT_COUNT: 6,
+    VM_COUNT: 7,
+  });
+
+  static ShadowQuality = Object.freeze({
+    SHADOW_DISABLED: 0,
+    SHADOW_LOW: 1,
+    SHADOW_HIGH: 2,
+    SHADOW_RAYTRACED: 3,
+  });
 
 }

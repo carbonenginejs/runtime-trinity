@@ -37,7 +37,7 @@ class EveProceduralMethodCycling extends CjsModel {
 
   /** Carbon method restart -> SelectParameter (MAP_METHOD_AND_WRAP). */
   restart(...args) {
-    throw CjsModel.notImplemented("EveProceduralMethodCycling", "restart", args);
+    throw new Error("EveProceduralMethodCycling.restart is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

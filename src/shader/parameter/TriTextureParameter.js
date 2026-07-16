@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriTextureParameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriTextureParameter.cpp
+import { hasModifiedProperty } from "../../utilities/hasModifiedProperty.js";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { CjsShaderParameter } from "./CjsShaderParameter.js";
@@ -174,13 +175,13 @@ export class TriTextureParameter extends CjsShaderParameter
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "resourcePath"))
+    if (hasModifiedProperty(properties, "resourcePath"))
     {
       this.resource = null;
       this.#lowResResource = null;
       this.Initialize();
     }
-    if (CjsModel.hasModifiedProperty(properties, "name"))
+    if (hasModifiedProperty(properties, "name"))
     {
       this.RebuildEffectHandles(this.#cachedEffect);
     }
@@ -236,4 +237,11 @@ export class TriTextureParameter extends CjsShaderParameter
     const target = this.GetResource();
     target?.RequestResolution?.(lod);
   }
+
+  /** JS convenience: raw values this parameter class claims for map-form inference. */
+  static isValue(value)
+  {
+    return typeof value === "string";
+  }
+
 }

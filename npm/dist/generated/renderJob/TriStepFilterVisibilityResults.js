@@ -1,4 +1,4 @@
-import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 
@@ -6,43 +6,49 @@ let _initProto, _initClass, _init_eventFilter, _init_extra_eventFilter, _init_fi
 
 /** TriStepFilterVisibilityResults (renderJob) - generated from schema shapeHash cd9ebf7a.... */
 let _TriStepFilterVisibil;
-class TriStepFilterVisibilityResults extends _TriRenderStep {
-  static {
-    ({
-      e: [_init_eventFilter, _init_extra_eventFilter, _init_filterType, _init_extra_filterType, _init_inputResults, _init_extra_inputResults, _init_objects, _init_extra_objects, _init_outputResults, _init_extra_outputResults, _initProto],
-      c: [_TriStepFilterVisibil, _initClass]
-    } = _applyDecs2311(this, [type.define({
-      className: "TriStepFilterVisibilityResults",
-      family: "renderJob"
-    })], [[[io, io.persist, type, type.uint32], 16, "eventFilter"], [[io, io.persist, type, type.int32, void 0, schema.enum("FilterType")], 16, "filterType"], [[io, io.persist, void 0, type.objectRef("Tr2VisibilityResults")], 16, "inputResults"], [[io, io.persist, void 0, type.list("IRoot")], 16, "objects"], [[io, io.persist, void 0, type.objectRef("Tr2VisibilityResults")], 16, "outputResults"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+new class extends _identity {
+  static [class TriStepFilterVisibilityResults extends _TriRenderStep {
+    static {
+      ({
+        e: [_init_eventFilter, _init_extra_eventFilter, _init_filterType, _init_extra_filterType, _init_inputResults, _init_extra_inputResults, _init_objects, _init_extra_objects, _init_outputResults, _init_extra_outputResults, _initProto],
+        c: [_TriStepFilterVisibil, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "TriStepFilterVisibilityResults",
+        family: "renderJob"
+      })], [[[io, io.persist, type, type.uint32], 16, "eventFilter"], [[io, io.persist, type, type.int32, void 0, schema.enum("FilterType")], 16, "filterType"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "inputResults"], [[io, io.persist, void 0, type.list("IRoot")], 16, "objects"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "outputResults"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    }
+    constructor(...args) {
+      super(...args);
+      _init_extra_outputResults(this);
+    }
+    /** m_eventFilter (uint32_t) [READWRITE, PERSIST] */
+    eventFilter = (_initProto(this), _init_eventFilter(this, -1));
+
+    /** m_filterType (FilterType - enum FilterType) [READWRITE, PERSIST, ENUM] */
+    filterType = (_init_extra_eventFilter(this), _init_filterType(this, 1));
+
+    /** m_inputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
+    inputResults = (_init_extra_filterType(this), _init_inputResults(this, null));
+
+    /** m_objects (PIRootVector) [READ, PERSIST] */
+    objects = (_init_extra_inputResults(this), _init_objects(this, []));
+
+    /** m_outputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
+    outputResults = (_init_extra_objects(this), _init_outputResults(this, null));
+
+    /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
+    __init__(...args) {
+      throw new Error("TriStepFilterVisibilityResults.__init__ is not implemented in CarbonEngineJS.");
+    }
+  }];
+  FilterType = Object.freeze({
+    ONLY_OBJECTS_IN_LIST: 0,
+    EXCLUDE_OBJECTS_IN_LIST: 1
+  });
+  constructor() {
+    super(_TriStepFilterVisibil), _initClass();
   }
-  constructor(...args) {
-    super(...args);
-    _init_extra_outputResults(this);
-  }
-  /** m_eventFilter (uint32_t) [READWRITE, PERSIST] */
-  eventFilter = (_initProto(this), _init_eventFilter(this, -1));
-
-  /** m_filterType (FilterType - enum FilterType) [READWRITE, PERSIST, ENUM] */
-  filterType = (_init_extra_eventFilter(this), _init_filterType(this, 1));
-
-  /** m_inputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
-  inputResults = (_init_extra_filterType(this), _init_inputResults(this, null));
-
-  /** m_objects (PIRootVector) [READ, PERSIST] */
-  objects = (_init_extra_inputResults(this), _init_objects(this, []));
-
-  /** m_outputResults (Tr2VisibilityResultsPtr) [READWRITE, PERSIST] */
-  outputResults = (_init_extra_objects(this), _init_outputResults(this, null));
-
-  /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepFilterVisibilityResults", "__init__", args);
-  }
-  static {
-    _initClass();
-  }
-}
+}();
 
 export { _TriStepFilterVisibil as TriStepFilterVisibilityResults };
 //# sourceMappingURL=TriStepFilterVisibilityResults.js.map

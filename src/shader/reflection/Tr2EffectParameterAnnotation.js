@@ -34,4 +34,11 @@ export class Tr2EffectParameterAnnotation extends CjsModel
   @type.string
   stringValue = "";
 
+  static Type = Object.freeze({
+    BOOL: 0,
+    INT: 1,
+    FLOAT: 2,
+    STRING: 3
+  });
+
 }

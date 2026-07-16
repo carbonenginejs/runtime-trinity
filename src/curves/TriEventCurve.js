@@ -323,4 +323,7 @@ export class TriEventCurve extends CjsModel
     }
     return Array.isArray(args) ? args : [args];
   }
+
+  static TRIEXTRAPOLATION = TRIEXTRAPOLATION;
+
 }

@@ -28,12 +28,12 @@ class _className extends CjsModel {
 
   /** Carbon method Used (MAP_METHOD_AND_WRAP). */
   Used(...args) {
-    throw CjsModel.notImplemented("_className", "Used", args);
+    throw new Error("_className.Used is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValueToDefault -> \ SetValueToDefault (MAP_METHOD_AND_WRAP). */
   SetValueToDefault(...args) {
-    throw CjsModel.notImplemented("_className", "SetValueToDefault", args);
+    throw new Error("_className.SetValueToDefault is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

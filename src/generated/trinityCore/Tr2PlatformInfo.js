@@ -14,7 +14,7 @@ export class Tr2PlatformInfo extends CjsModel
   @impl.notImplemented
   GetStaticCap(...args)
   {
-    throw CjsModel.notImplemented("Tr2PlatformInfo", "GetStaticCap", args);
+    throw new Error("Tr2PlatformInfo.GetStaticCap is not implemented in CarbonEngineJS.");
   }
 
 }

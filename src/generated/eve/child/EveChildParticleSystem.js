@@ -44,7 +44,7 @@ export class EveChildParticleSystem extends EveChildTransform
 
   /** m_mesh (Tr2InstancedMeshPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2InstancedMesh")
+  @type.model("Tr2InstancedMesh")
   mesh = null;
 
   /** m_lodClampLow (uint32_t) [READWRITE, PERSIST] */
@@ -81,5 +81,12 @@ export class EveChildParticleSystem extends EveChildTransform
   @io.read
   @type.float32
   currentScreenSize = -1;
+
+  static ReflectionMode = Object.freeze({
+    REFLECT_HIGH: 0,
+    REFLECT_MEDIUM_AND_HIGH: 1,
+    REFLECT_LOW_MEDIUM_HIGH: 2,
+    REFLECT_NEVER: 3,
+  });
 
 }

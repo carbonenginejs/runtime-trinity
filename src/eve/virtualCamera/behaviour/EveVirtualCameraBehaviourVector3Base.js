@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraBehaviour.h
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraBehaviour.cpp
+import { hasModifiedProperty } from "../../../utilities/hasModifiedProperty.js";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
@@ -41,7 +42,7 @@ export class EveVirtualCameraBehaviourVector3Base extends CjsModel
   @impl.adapted
   OnModified(value = null)
   {
-    if (!value || CjsModel.hasModifiedProperty(value, "name"))
+    if (!value || hasModifiedProperty(value, "name"))
     {
       this.SetName(this.name);
     }

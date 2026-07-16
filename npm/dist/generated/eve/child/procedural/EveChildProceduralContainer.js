@@ -14,7 +14,7 @@ class EveChildProceduralContainer extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildProceduralContainer",
       family: "eve/child/procedural"
-    })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.objectRef("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -37,27 +37,27 @@ class EveChildProceduralContainer extends _EveChildTransform {
 
   /** Carbon method GetMethodVariableName (MAP_METHOD_AND_WRAP). */
   GetMethodVariableName(...args) {
-    throw _EveChildTransform.notImplemented("EveChildProceduralContainer", "GetMethodVariableName", args);
+    throw new Error("EveChildProceduralContainer.GetMethodVariableName is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   HandleControllerEvent(...args) {
-    throw _EveChildTransform.notImplemented("EveChildProceduralContainer", "HandleControllerEvent", args);
+    throw new Error("EveChildProceduralContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw _EveChildTransform.notImplemented("EveChildProceduralContainer", "SetControllerVariable", args);
+    throw new Error("EveChildProceduralContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetProceduralContainerVariable (MAP_METHOD_AND_WRAP). */
   SetProceduralContainerVariable(...args) {
-    throw _EveChildTransform.notImplemented("EveChildProceduralContainer", "SetProceduralContainerVariable", args);
+    throw new Error("EveChildProceduralContainer.SetProceduralContainerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers(...args) {
-    throw _EveChildTransform.notImplemented("EveChildProceduralContainer", "StartControllers", args);
+    throw new Error("EveChildProceduralContainer.StartControllers is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -15,7 +15,7 @@ class BehaviorGroup extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "BehaviorGroup",
       family: "eve/child/behaviors"
-    })], [[[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "maxVelocity"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMax"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMin"], [[io, io.read, type, type.float32], 16, "currentScreenSize"], [[io, io.persist, type, type.float32], 16, "renderThreshold"], [[io, io.readwrite, type, type.float32], 16, "debugIntensity"], [[io, io.readwrite, type, type.float32], 16, "debugLodLevel"], [[io, io.read, type, type.int32], 16, "actualCount"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.notify, io, io.persist, void 0, type.objectRef("BehaviorGroupBooster")], 16, "boosters"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.readwrite, type, type.boolean], 16, "debugMode"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.list("IBehavior")], 16, "behaviors"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateAgentTree"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCount"]], 0, void 0, _EveEntity));
+    })], [[[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "maxVelocity"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMax"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMin"], [[io, io.read, type, type.float32], 16, "currentScreenSize"], [[io, io.persist, type, type.float32], 16, "renderThreshold"], [[io, io.readwrite, type, type.float32], 16, "debugIntensity"], [[io, io.readwrite, type, type.float32], 16, "debugLodLevel"], [[io, io.read, type, type.int32], 16, "actualCount"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.notify, io, io.persist, void 0, type.model("BehaviorGroupBooster")], 16, "boosters"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.readwrite, type, type.boolean], 16, "debugMode"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.list("IBehavior")], 16, "behaviors"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateAgentTree"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCount"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);
@@ -80,22 +80,22 @@ class BehaviorGroup extends _EveEntity {
 
   /** Carbon method CreateAgentTree (MAP_METHOD_AND_WRAP). */
   CreateAgentTree(...args) {
-    throw _EveEntity.notImplemented("BehaviorGroup", "CreateAgentTree", args);
+    throw new Error("BehaviorGroup.CreateAgentTree is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAgent (MAP_METHOD_AND_WRAP). */
   AddAgent(...args) {
-    throw _EveEntity.notImplemented("BehaviorGroup", "AddAgent", args);
+    throw new Error("BehaviorGroup.AddAgent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveAgent (MAP_METHOD_AND_WRAP). */
   RemoveAgent(...args) {
-    throw _EveEntity.notImplemented("BehaviorGroup", "RemoveAgent", args);
+    throw new Error("BehaviorGroup.RemoveAgent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
   SetCount(...args) {
-    throw _EveEntity.notImplemented("BehaviorGroup", "SetCount", args);
+    throw new Error("BehaviorGroup.SetCount is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

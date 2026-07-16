@@ -11,6 +11,8 @@ export * from "./EveBannerSet.js";
 export * from "./EveBoosterSet2.js";
 export * from "./EveBoosterSet2Renderable.js";
 export * from "./EveImpactOverlay.js";
+export * from "./EveHazeSet.js";
+export * from "./EveHazeSetLight.js";
 export * from "./EveLineData.js";
 export * from "./EveLocator2.js";
 export * from "./EveLocatorSets.js";

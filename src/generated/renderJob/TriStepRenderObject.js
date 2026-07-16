@@ -11,7 +11,7 @@ export class TriStepRenderObject extends TriRenderStep
 
   /** m_effectOverride (Tr2MaterialPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Material")
+  @type.model("Tr2Material")
   effectOverride = null;
 
   /** m_typeEnabled[3] (bool) [READWRITE, PERSIST] */
@@ -36,7 +36,7 @@ export class TriStepRenderObject extends TriRenderStep
 
   /** m_renderable (ITr2RenderablePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2Renderable")
+  @type.model("ITr2Renderable")
   renderable = null;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -44,7 +44,7 @@ export class TriStepRenderObject extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderObject", "__init__", args);
+    throw new Error("TriStepRenderObject.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -27,7 +27,7 @@ export class Tr2StaticEmitter extends CjsModel
   /** m_particleSystem (Tr2ParticleSystemPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2ParticleSystem")
+  @type.model("Tr2ParticleSystem")
   particleSystem = null;
 
   /** m_geometryResourcePath (std::string) [READWRITE, NOTIFY, PERSIST] */
@@ -41,7 +41,7 @@ export class Tr2StaticEmitter extends CjsModel
   @impl.notImplemented
   Spawn(...args)
   {
-    throw CjsModel.notImplemented("Tr2StaticEmitter", "Spawn", args);
+    throw new Error("Tr2StaticEmitter.Spawn is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ForceSpawn -> DoSpawn (MAP_METHOD_AND_WRAP). */
@@ -49,7 +49,7 @@ export class Tr2StaticEmitter extends CjsModel
   @impl.notImplemented
   ForceSpawn(...args)
   {
-    throw CjsModel.notImplemented("Tr2StaticEmitter", "ForceSpawn", args);
+    throw new Error("Tr2StaticEmitter.ForceSpawn is not implemented in CarbonEngineJS.");
   }
 
 }

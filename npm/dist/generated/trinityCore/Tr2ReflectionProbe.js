@@ -61,7 +61,7 @@ new class extends _identity {
 
     /** Carbon method RunFilter (MAP_METHOD_AND_WRAP). */
     RunFilter(...args) {
-      throw CjsModel.notImplemented("Tr2ReflectionProbe", "RunFilter", args);
+      throw new Error("Tr2ReflectionProbe.RunFilter is not implemented in CarbonEngineJS.");
     }
   }];
   ReflectionProbeRenderFrequency = Object.freeze({

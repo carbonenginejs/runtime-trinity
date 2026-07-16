@@ -6,6 +6,9 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
+import { Origin } from "../../generated/eve/child/enums.js";
+import { ReflectionMode } from "../../generated/eve/enums.js";
+import { Tr2Lod } from "../EveLODHelper.js";
 
 
 @type.define({ className: "EveChildMesh", family: "eve/child" })
@@ -322,4 +325,11 @@ export class EveChildMesh extends EveChildTransform
   {
     return null;
   }
+
+  static Origin = Origin;
+
+  static ReflectionMode = ReflectionMode;
+
+  static Tr2Lod = Tr2Lod;
+
 }

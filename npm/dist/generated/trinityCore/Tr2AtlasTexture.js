@@ -49,17 +49,17 @@ class Tr2AtlasTexture extends CjsModel {
 
   /** Carbon method LockBufferAndMargin -> PyLockBufferAndMargin (MAP_METHOD). */
   LockBufferAndMargin(...args) {
-    throw CjsModel.notImplemented("Tr2AtlasTexture", "LockBufferAndMargin", args);
+    throw new Error("Tr2AtlasTexture.LockBufferAndMargin is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LockBuffer -> PyLockBuffer (MAP_METHOD). */
   LockBuffer(...args) {
-    throw CjsModel.notImplemented("Tr2AtlasTexture", "LockBuffer", args);
+    throw new Error("Tr2AtlasTexture.LockBuffer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnlockBuffer (MAP_METHOD_AND_WRAP). */
   UnlockBuffer(...args) {
-    throw CjsModel.notImplemented("Tr2AtlasTexture", "UnlockBuffer", args);
+    throw new Error("Tr2AtlasTexture.UnlockBuffer is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -49,57 +49,57 @@ class Tr2FontMeasurer extends CjsModel {
 
   /** Carbon method CancelLastText (MAP_METHOD_AND_WRAP). */
   CancelLastText(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "CancelLastText", args);
+    throw new Error("Tr2FontMeasurer.CancelLastText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CommitText (MAP_METHOD_AND_WRAP). */
   CommitText(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "CommitText", args);
+    throw new Error("Tr2FontMeasurer.CommitText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawToAtlasTexture (MAP_METHOD_AND_WRAP). */
   DrawToAtlasTexture(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "DrawToAtlasTexture", args);
+    throw new Error("Tr2FontMeasurer.DrawToAtlasTexture is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawToHostBitmap (MAP_METHOD_AND_WRAP). */
   DrawToHostBitmap(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "DrawToHostBitmap", args);
+    throw new Error("Tr2FontMeasurer.DrawToHostBitmap is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DrawToTexture (MAP_METHOD_AND_WRAP). */
   DrawToTexture(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "DrawToTexture", args);
+    throw new Error("Tr2FontMeasurer.DrawToTexture is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HasCommittedText (MAP_METHOD_AND_WRAP). */
   HasCommittedText(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "HasCommittedText", args);
+    throw new Error("Tr2FontMeasurer.HasCommittedText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HasUncommittedText (MAP_METHOD_AND_WRAP). */
   HasUncommittedText(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "HasUncommittedText", args);
+    throw new Error("Tr2FontMeasurer.HasUncommittedText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetIndexAtPos (MAP_METHOD_AND_WRAP). */
   GetIndexAtPos(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "GetIndexAtPos", args);
+    throw new Error("Tr2FontMeasurer.GetIndexAtPos is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddText (MAP_METHOD_AND_WRAP). */
   AddText(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "AddText", args);
+    throw new Error("Tr2FontMeasurer.AddText is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Reset (MAP_METHOD_AND_WRAP). */
   Reset(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "Reset", args);
+    throw new Error("Tr2FontMeasurer.Reset is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetWidthAtIndex (MAP_METHOD_AND_WRAP). */
   GetWidthAtIndex(...args) {
-    throw CjsModel.notImplemented("Tr2FontMeasurer", "GetWidthAtIndex", args);
+    throw new Error("Tr2FontMeasurer.GetWidthAtIndex is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -15,7 +15,7 @@ class TriValueBinding extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "TriValueBinding",
       family: "trinityCore"
-    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "destinationAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceAttribute"], [[io, io.persistOnly, void 0, type.objectRef("IRoot")], 16, "destinationObject"], [[io, io.readwrite, type, type.boolean], 16, "isEnabled"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persistOnly, void 0, type.objectRef("IRoot")], 16, "sourceObject"], [[io, io.persist, type, type.vec4], 16, "offset"], [[io, io.notify, io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "copyValueCallable"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.read, type, type.boolean], 16, "isWeak"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "destinationAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceAttribute"], [[io, io.persistOnly, void 0, type.model("IRoot")], 16, "destinationObject"], [[io, io.readwrite, type, type.boolean], 16, "isEnabled"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persistOnly, void 0, type.model("IRoot")], 16, "sourceObject"], [[io, io.persist, type, type.vec4], 16, "offset"], [[io, io.notify, io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "copyValueCallable"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.read, type, type.boolean], 16, "isWeak"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

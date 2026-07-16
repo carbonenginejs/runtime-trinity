@@ -29,7 +29,7 @@ class Tr2BoundingLineSet extends _Tr2LineSet {
 
   /** Carbon method UpdateBounds (MAP_METHOD_AND_WRAP). */
   UpdateBounds(...args) {
-    throw _Tr2LineSet.notImplemented("Tr2BoundingLineSet", "UpdateBounds", args);
+    throw new Error("Tr2BoundingLineSet.UpdateBounds is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

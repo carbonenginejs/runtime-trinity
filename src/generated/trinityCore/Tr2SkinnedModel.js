@@ -37,7 +37,7 @@ export class Tr2SkinnedModel extends Tr2Model
   @impl.notImplemented
   ResetAnimationBindings(...args)
   {
-    throw Tr2Model.notImplemented("Tr2SkinnedModel", "ResetAnimationBindings", args);
+    throw new Error("Tr2SkinnedModel.ResetAnimationBindings is not implemented in CarbonEngineJS.");
   }
 
 }

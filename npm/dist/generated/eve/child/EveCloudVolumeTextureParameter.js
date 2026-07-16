@@ -14,7 +14,7 @@ class EveCloudVolumeTextureParameter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveCloudVolumeTextureParameter",
       family: "eve/child"
-    })], [[[io, io.persist, void 0, type.objectRef("EveCloudEditableVolume")], 16, "volume"], [[io, io.read, type, type.boolean], 16, "isUsedByEffect"], [[io, io.persist, type, type.string], 16, "name"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("EveCloudEditableVolume")], 16, "volume"], [[io, io.read, type, type.boolean], 16, "isUsedByEffect"], [[io, io.persist, type, type.string], 16, "name"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

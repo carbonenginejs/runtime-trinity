@@ -14,7 +14,7 @@ class Tr2StepExecuteRenderNode extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2StepExecuteRenderNode",
       family: "renderJob"
-    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2RenderTarget")], 16, "destinationTarget"], [[io, io.readwrite, type, type.boolean], 16, "clearTargetOnFailure"], [[io, io.persist, void 0, type.objectRef("ITr2RenderNode")], 16, "node"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2RenderTarget")], 16, "destinationTarget"], [[io, io.readwrite, type, type.boolean], 16, "clearTargetOnFailure"], [[io, io.persist, void 0, type.model("ITr2RenderNode")], 16, "node"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);

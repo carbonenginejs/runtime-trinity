@@ -1,4 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
@@ -49,8 +50,8 @@ class EveSphereVolume extends CjsModel {
     this.#callbacks.delete(callbackId);
   }
   OnModified(value = null) {
-    const innerChanged = CjsModel.hasModifiedProperty(value, "innerRadius");
-    const outerChanged = CjsModel.hasModifiedProperty(value, "radius");
+    const innerChanged = hasModifiedProperty(value, "innerRadius");
+    const outerChanged = hasModifiedProperty(value, "radius");
     if (innerChanged && !outerChanged && this.innerRadius > this.radius) {
       this.radius = this.innerRadius;
     }

@@ -50,7 +50,7 @@ export class EveChildEffectPropagator extends EveChildContainer
   /** m_effect (EveChildInstanceContainerPtr) [PERSISTONLY, NOTIFY] */
   @io.notify
   @io.persistOnly
-  @type.objectRef("EveChildInstanceContainer")
+  @type.model("EveChildInstanceContainer")
   effect = null;
 
   /** m_stopToClearDelay (float) [READWRITE, PERSIST] */
@@ -83,12 +83,12 @@ export class EveChildEffectPropagator extends EveChildContainer
 
   /** m_localLocators (EveLocatorSetsPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveLocatorSets")
+  @type.model("EveLocatorSets")
   localLocators = null;
 
   /** m_triggerSphereRadiusCurve (Tr2CurveScalarPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2CurveScalar")
+  @type.model("Tr2CurveScalar")
   triggerSphereRadiusCurve = null;
 
   /** m_triggerSphereScalarMulti (float) [READ] */
@@ -157,7 +157,19 @@ export class EveChildEffectPropagator extends EveChildContainer
   @impl.notImplemented
   Stop(...args)
   {
-    throw EveChildContainer.notImplemented("EveChildEffectPropagator", "Stop", args);
+    throw new Error("EveChildEffectPropagator.Stop is not implemented in CarbonEngineJS.");
   }
+
+  static PropagationType = Object.freeze({
+    LOCAL_LOCATORS: 0,
+    LOCATOR_SET_BY_REF: 1,
+    RANDOM_SPREAD: 2,
+  });
+
+  static TriggerType = Object.freeze({
+    TRIGGER_SPHERE_CURVE: 0,
+    INTERVAL_TRIGGERS: 1,
+    INSTANT_PERMANENT: 2,
+  });
 
 }

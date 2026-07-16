@@ -14,7 +14,7 @@ class EveChildBulletStorm extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildBulletStorm",
       family: "eve/child"
-    })], [[[io, io.notify, io, io.read, void 0, type.list("IEveSpaceObject2")], 16, "targetObjects"], [[io, io.read, type, type.uint32], 16, "objectCount"], [[io, io.read, type, type.float32], 16, "clipSphere"], [[io, io.read, type, type.float32], 16, "sourceRadius"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("EveSpaceObject2")], 16, "sourceObject"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiplier"], [[io, io.notify, io, io.persist, type, type.float32], 16, "speed"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceLocatorSet"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "range"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CanChangeState"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartEffect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StopEffect"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.read, void 0, type.list("IEveSpaceObject2")], 16, "targetObjects"], [[io, io.read, type, type.uint32], 16, "objectCount"], [[io, io.read, type, type.float32], 16, "clipSphere"], [[io, io.read, type, type.float32], 16, "sourceRadius"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("EveSpaceObject2")], 16, "sourceObject"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiplier"], [[io, io.notify, io, io.persist, type, type.float32], 16, "speed"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceLocatorSet"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "range"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CanChangeState"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartEffect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StopEffect"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -58,22 +58,22 @@ class EveChildBulletStorm extends CjsModel {
 
   /** Carbon method CanChangeState (MAP_METHOD_AND_WRAP). */
   CanChangeState(...args) {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "CanChangeState", args);
+    throw new Error("EveChildBulletStorm.CanChangeState is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Rebuild (MAP_METHOD_AND_WRAP). */
   Rebuild(...args) {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "Rebuild", args);
+    throw new Error("EveChildBulletStorm.Rebuild is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartEffect (MAP_METHOD_AND_WRAP). */
   StartEffect(...args) {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "StartEffect", args);
+    throw new Error("EveChildBulletStorm.StartEffect is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StopEffect (MAP_METHOD_AND_WRAP). */
   StopEffect(...args) {
-    throw CjsModel.notImplemented("EveChildBulletStorm", "StopEffect", args);
+    throw new Error("EveChildBulletStorm.StopEffect is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

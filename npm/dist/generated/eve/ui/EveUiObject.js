@@ -25,12 +25,12 @@ class EveUiObject extends _EveSpaceObject {
 
   /** Carbon method SetVisibilityForArea (MAP_METHOD_AND_WRAP). */
   SetVisibilityForArea(...args) {
-    throw _EveSpaceObject.notImplemented("EveUiObject", "SetVisibilityForArea", args);
+    throw new Error("EveUiObject.SetVisibilityForArea is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetNameForPickingAreaID (MAP_METHOD_AND_WRAP). */
   GetNameForPickingAreaID(...args) {
-    throw _EveSpaceObject.notImplemented("EveUiObject", "GetNameForPickingAreaID", args);
+    throw new Error("EveUiObject.GetNameForPickingAreaID is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

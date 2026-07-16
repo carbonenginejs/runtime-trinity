@@ -21,4 +21,31 @@ export class WodBakingScene extends CjsModel
   @type.objectRef("Tr2SkinnedObject")
   Avatar = null;
 
+  static VisualizeMethod = Object.freeze({
+    VM_NONE: 0,
+    VM_WHITE: 1,
+    VM_OBJECT_NORMAL: 2,
+    VM_TANGENT: 3,
+    VM_BITANGENT: 4,
+    VM_TEXCOORD0: 5,
+    VM_TEXCOORD1: 6,
+    VM_TEXELDENSITY0: 7,
+    VM_NORMALMAP: 8,
+    VM_DIFFUSEMAP: 9,
+    VM_SPECULARMAP: 10,
+    VM_OVERDRAW: 11,
+    VM_EN_ONLY: 12,
+    VM_DEPTH: 13,
+    VM_ALL_LIGHTING: 14,
+    VM_LIGHT_PRE_PASS_NORMALS: 15,
+    VM_LIGHT_PRE_PASS_DEPTH: 16,
+    VM_LIGHT_PRE_PASS_WORLD_POSITION: 17,
+    VM_LIGHT_PRE_PASS_LIGHTING: 18,
+    VM_LIGHT_PRE_PASS_LIGHT_OVERDRAW: 19,
+    VM_LIGHT_PRE_PASS_DIFFUSE_LIGHTING: 20,
+    VM_LIGHT_PRE_PASS_SPECULAR_LIGHTING: 21,
+    VM_OCCLUSION: 22,
+    VM_COUNT: 23,
+  });
+
 }

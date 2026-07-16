@@ -126,17 +126,17 @@ export class EveCamera extends CjsModel
 
   /** m_noiseCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriScalarFunction")
+  @type.model("ITriScalarFunction")
   noiseCurve = null;
 
   /** m_noiseScaleCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriScalarFunction")
+  @type.model("ITriScalarFunction")
   noiseScaleCurve = null;
 
   /** m_noiseDampCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriScalarFunction")
+  @type.model("ITriScalarFunction")
   noiseDampCurve = null;
 
   /** m_maxSpeed (float) [READWRITE, PERSIST] */
@@ -151,7 +151,7 @@ export class EveCamera extends CjsModel
 
   /** m_zoomCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriScalarFunction")
+  @type.model("ITriScalarFunction")
   zoomCurve = null;
 
   /** m_translationFromParent.z (Vector3) [READWRITE, PERSIST] */
@@ -219,7 +219,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   Dolly(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "Dolly", args);
+    throw new Error("EveCamera.Dolly is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method OrbitParent (MAP_METHOD_AND_WRAP). */
@@ -227,7 +227,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   OrbitParent(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "OrbitParent", args);
+    throw new Error("EveCamera.OrbitParent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotateOnOrbit (MAP_METHOD_AND_WRAP). */
@@ -235,7 +235,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   RotateOnOrbit(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "RotateOnOrbit", args);
+    throw new Error("EveCamera.RotateOnOrbit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Zoom (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -243,7 +243,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   Zoom(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "Zoom", args);
+    throw new Error("EveCamera.Zoom is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetStartTime (MAP_METHOD_AND_WRAP). */
@@ -251,7 +251,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   ResetStartTime(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "ResetStartTime", args);
+    throw new Error("EveCamera.ResetStartTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetOrbit (MAP_METHOD_AND_WRAP). */
@@ -259,7 +259,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   SetOrbit(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "SetOrbit", args);
+    throw new Error("EveCamera.SetOrbit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetRotationOnOrbit (MAP_METHOD_AND_WRAP). */
@@ -267,7 +267,7 @@ export class EveCamera extends CjsModel
   @impl.notImplemented
   SetRotationOnOrbit(...args)
   {
-    throw CjsModel.notImplemented("EveCamera", "SetRotationOnOrbit", args);
+    throw new Error("EveCamera.SetRotationOnOrbit is not implemented in CarbonEngineJS.");
   }
 
 }

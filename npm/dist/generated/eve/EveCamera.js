@@ -16,7 +16,7 @@ class EveCamera extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveCamera",
       family: "eve"
-    })], [[[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "errorHandler"], [[io, io.persist, type, type.float32], 16, "noiseScale"], [[io, io.readwrite, void 0, type.objectRef("IBluePlacementObserver")], 16, "audio2Listener"], [[io, io.persist, type, type.boolean], 16, "noise"], [[io, io.readwrite, type, type.float32], 16, "centerOffset"], [[io, io.persist, type, type.float32], 16, "pitch"], [[io, io.persist, type, type.float32], 16, "yaw"], [[io, io.readwrite, type, type.vec3], 16, "extraTranslation"], [[io, io.persist, type, type.float32], 16, "idleSpeed"], [[io, io.persist, type, type.float32], 16, "noiseDamp"], [[io, io.persist, type, type.vec3], 16, "pos"], [[io, io.persist, type, type.vec3], 16, "intr"], [[io, io.read, type, type.vec3], 16, "viewVec"], [[io, io.read, type, type.vec3], 16, "rightVec"], [[io, io.read, type, type.vec3], 16, "upVec"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationAroundParent"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "interest"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationOfInterest"], [[io, io.persist, type, type.float32], 16, "fieldOfView"], [[io, io.persist, type, type.float32], 16, "frontClip"], [[io, io.persist, type, type.float32], 16, "backClip"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.persist, void 0, type.objectRef("ITriScalarFunction")], 16, "noiseCurve"], [[io, io.persist, void 0, type.objectRef("ITriScalarFunction")], 16, "noiseScaleCurve"], [[io, io.persist, void 0, type.objectRef("ITriScalarFunction")], 16, "noiseDampCurve"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.objectRef("ITriScalarFunction")], 16, "zoomCurve"], [[io, io.persist, type, type.vec3], 16, "translationFromParent"], [[io, io.persist, type, type.float32], 16, "minPitch"], [[io, io.persist, type, type.float32], 16, "maxPitch"], [[io, io.persist, type, type.float32], 16, "minYaw"], [[io, io.persist, type, type.float32], 16, "maxYaw"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "parent"], [[io, io.persist, type, type.float32], 16, "idleScale"], [[io, io.persist, type, type.vec3], 16, "alignment"], [[io, io.readwrite, type, type.boolean], 16, "useExtraTranslation"], [[io, io.readwrite, void 0, type.objectRef("TriProjection")], 16, "projectionMatrix"], [[io, io.read, void 0, type.objectRef("TriView")], 16, "viewMatrix"], [[io, io.persist, type, type.boolean], 16, "idleMove"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Dolly"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "OrbitParent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RotateOnOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Zoom"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetStartTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetRotationOnOrbit"]], 0, void 0, CjsModel));
+    })], [[[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "errorHandler"], [[io, io.persist, type, type.float32], 16, "noiseScale"], [[io, io.readwrite, void 0, type.objectRef("IBluePlacementObserver")], 16, "audio2Listener"], [[io, io.persist, type, type.boolean], 16, "noise"], [[io, io.readwrite, type, type.float32], 16, "centerOffset"], [[io, io.persist, type, type.float32], 16, "pitch"], [[io, io.persist, type, type.float32], 16, "yaw"], [[io, io.readwrite, type, type.vec3], 16, "extraTranslation"], [[io, io.persist, type, type.float32], 16, "idleSpeed"], [[io, io.persist, type, type.float32], 16, "noiseDamp"], [[io, io.persist, type, type.vec3], 16, "pos"], [[io, io.persist, type, type.vec3], 16, "intr"], [[io, io.read, type, type.vec3], 16, "viewVec"], [[io, io.read, type, type.vec3], 16, "rightVec"], [[io, io.read, type, type.vec3], 16, "upVec"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationAroundParent"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "interest"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationOfInterest"], [[io, io.persist, type, type.float32], 16, "fieldOfView"], [[io, io.persist, type, type.float32], 16, "frontClip"], [[io, io.persist, type, type.float32], 16, "backClip"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseScaleCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseDampCurve"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "zoomCurve"], [[io, io.persist, type, type.vec3], 16, "translationFromParent"], [[io, io.persist, type, type.float32], 16, "minPitch"], [[io, io.persist, type, type.float32], 16, "maxPitch"], [[io, io.persist, type, type.float32], 16, "minYaw"], [[io, io.persist, type, type.float32], 16, "maxYaw"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "parent"], [[io, io.persist, type, type.float32], 16, "idleScale"], [[io, io.persist, type, type.vec3], 16, "alignment"], [[io, io.readwrite, type, type.boolean], 16, "useExtraTranslation"], [[io, io.readwrite, void 0, type.objectRef("TriProjection")], 16, "projectionMatrix"], [[io, io.read, void 0, type.objectRef("TriView")], 16, "viewMatrix"], [[io, io.persist, type, type.boolean], 16, "idleMove"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Dolly"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "OrbitParent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RotateOnOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Zoom"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetStartTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetRotationOnOrbit"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -144,37 +144,37 @@ class EveCamera extends CjsModel {
 
   /** Carbon method Dolly (MAP_METHOD_AND_WRAP). */
   Dolly(...args) {
-    throw CjsModel.notImplemented("EveCamera", "Dolly", args);
+    throw new Error("EveCamera.Dolly is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method OrbitParent (MAP_METHOD_AND_WRAP). */
   OrbitParent(...args) {
-    throw CjsModel.notImplemented("EveCamera", "OrbitParent", args);
+    throw new Error("EveCamera.OrbitParent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RotateOnOrbit (MAP_METHOD_AND_WRAP). */
   RotateOnOrbit(...args) {
-    throw CjsModel.notImplemented("EveCamera", "RotateOnOrbit", args);
+    throw new Error("EveCamera.RotateOnOrbit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Zoom (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   Zoom(...args) {
-    throw CjsModel.notImplemented("EveCamera", "Zoom", args);
+    throw new Error("EveCamera.Zoom is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetStartTime (MAP_METHOD_AND_WRAP). */
   ResetStartTime(...args) {
-    throw CjsModel.notImplemented("EveCamera", "ResetStartTime", args);
+    throw new Error("EveCamera.ResetStartTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetOrbit (MAP_METHOD_AND_WRAP). */
   SetOrbit(...args) {
-    throw CjsModel.notImplemented("EveCamera", "SetOrbit", args);
+    throw new Error("EveCamera.SetOrbit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetRotationOnOrbit (MAP_METHOD_AND_WRAP). */
   SetRotationOnOrbit(...args) {
-    throw CjsModel.notImplemented("EveCamera", "SetRotationOnOrbit", args);
+    throw new Error("EveCamera.SetRotationOnOrbit is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

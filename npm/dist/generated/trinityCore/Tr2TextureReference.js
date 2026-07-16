@@ -28,7 +28,7 @@ class Tr2TextureReference extends CjsModel {
 
   /** Carbon method Save (MAP_METHOD_AND_WRAP). */
   Save(...args) {
-    throw CjsModel.notImplemented("Tr2TextureReference", "Save", args);
+    throw new Error("Tr2TextureReference.Save is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

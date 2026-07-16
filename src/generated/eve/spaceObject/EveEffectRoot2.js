@@ -102,7 +102,7 @@ export class EveEffectRoot2 extends EveEntity
 
   /** m_ballRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   rotationCurve = null;
 
   /** m_secondaryLightingSphereRadiusLocal (float) [READWRITE, PERSIST] */
@@ -117,17 +117,17 @@ export class EveEffectRoot2 extends EveEntity
 
   /** m_modelTranslation (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   modelTranslationCurve = null;
 
   /** m_modelRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   modelRotationCurve = null;
 
   /** m_ballPosition (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** Carbon method FreezeHighDetailMesh (MAP_METHOD_AND_WRAP). */
@@ -135,7 +135,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   FreezeHighDetailMesh(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "FreezeHighDetailMesh", args);
+    throw new Error("EveEffectRoot2.FreezeHighDetailMesh is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
@@ -143,7 +143,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   HandleControllerEvent(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "HandleControllerEvent", args);
+    throw new Error("EveEffectRoot2.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Start (MAP_METHOD_AND_WRAP). */
@@ -151,7 +151,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   Start(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "Start", args);
+    throw new Error("EveEffectRoot2.Start is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
@@ -159,7 +159,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   GetBoundingSphereRadius(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "GetBoundingSphereRadius", args);
+    throw new Error("EveEffectRoot2.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
@@ -167,7 +167,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "SetControllerVariable", args);
+    throw new Error("EveEffectRoot2.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetProceduralContainerVariable (MAP_METHOD_AND_WRAP). */
@@ -175,7 +175,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   SetProceduralContainerVariable(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "SetProceduralContainerVariable", args);
+    throw new Error("EveEffectRoot2.SetProceduralContainerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
@@ -183,7 +183,7 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   StartControllers(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "StartControllers", args);
+    throw new Error("EveEffectRoot2.StartControllers is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Stop (MAP_METHOD_AND_WRAP). */
@@ -191,7 +191,16 @@ export class EveEffectRoot2 extends EveEntity
   @impl.notImplemented
   Stop(...args)
   {
-    throw EveEntity.notImplemented("EveEffectRoot2", "Stop", args);
+    throw new Error("EveEffectRoot2.Stop is not implemented in CarbonEngineJS.");
   }
+
+  static Tr2Lod = Object.freeze({
+    TR2_LOD_UNSPECIFIED: -1,
+    TR2_LOD_LOW: 0,
+    TR2_LOD_MEDIUM: 1,
+    TR2_LOD_HIGH: 2,
+    TR2_LOD_ULTRA: 3,
+    TR2_LOD_COUNT: 4,
+  });
 
 }

@@ -6,7 +6,6 @@ export * from "./EveChildCloud2.js";
 export * from "./EveChildEffectPropagator.js";
 export * from "./EveChildExplosion.js";
 export * from "./EveChildFogVolume.js";
-export * from "./EveChildInheritProperties.js";
 export * from "./EveChildInstanceContainer.js";
 export * from "./EveChildInstanceMeshRenderer.js";
 export * from "./EveChildInstanceTransform.js";

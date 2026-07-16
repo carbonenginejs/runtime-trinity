@@ -30,4 +30,11 @@ export class Tr2ShLightingManager extends CjsModel
   @type.float32
   secondaryIntensity = 1;
 
+  static Quality = Object.freeze({
+    LOW: 0,
+    MEDIUM: 1,
+    HIGH: 2,
+    COUNT: 3,
+  });
+
 }

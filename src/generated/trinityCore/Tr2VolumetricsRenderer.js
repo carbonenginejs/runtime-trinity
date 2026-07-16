@@ -115,4 +115,11 @@ export class Tr2VolumetricsRenderer extends CjsModel
   @type.float32
   scaleFactor = 0.7;
 
+  static Tr2VolumerticQuality = Object.freeze({
+    Low: 0,
+    Medium: 1,
+    High: 2,
+    Ultra: 3,
+  });
+
 }

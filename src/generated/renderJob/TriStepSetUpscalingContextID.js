@@ -19,7 +19,7 @@ export class TriStepSetUpscalingContextID extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepSetUpscalingContextID", "__init__", args);
+    throw new Error("TriStepSetUpscalingContextID.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

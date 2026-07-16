@@ -35,7 +35,25 @@ export class Tr2RenderNodeEffect extends CjsModel
   @impl.notImplemented
   AddSource(...args)
   {
-    throw CjsModel.notImplemented("Tr2RenderNodeEffect", "AddSource", args);
+    throw new Error("Tr2RenderNodeEffect.AddSource is not implemented in CarbonEngineJS.");
   }
+
+  static RenderingMode = Object.freeze({
+    RM_ANY: 0,
+    RM_OPAQUE: 1,
+    RM_DECAL: 2,
+    RM_DECAL_NO_DEPTH: 3,
+    RM_ALPHA: 4,
+    RM_ALPHA_ADDITIVE: 5,
+    RM_DEPTH_ONLY: 6,
+    RM_PICKING: 7,
+    RM_FULLSCREEN: 8,
+    RM_SPRITE2D: 9,
+    RM_CULL: 10,
+    RM_LIGHT: 11,
+    RM_ERASE: 12,
+    RM_PREPASS_COLOR: 13,
+    RM_COUNT: 14,
+  });
 
 }

@@ -33,12 +33,12 @@ new class extends _identity {
 
     /** Carbon method __init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
     __init__(...args) {
-      throw CjsModel.notImplemented("Tr2GpuBuffer", "__init__", args);
+      throw new Error("Tr2GpuBuffer.__init__ is not implemented in CarbonEngineJS.");
     }
 
     /** Carbon method DebugGetData -> PyGetData (MAP_METHOD). */
     DebugGetData(...args) {
-      throw CjsModel.notImplemented("Tr2GpuBuffer", "DebugGetData", args);
+      throw new Error("Tr2GpuBuffer.DebugGetData is not implemented in CarbonEngineJS.");
     }
   }];
   CreationFlags = Object.freeze({

@@ -37,7 +37,7 @@ export class Tr2DynamicEmitter extends CjsModel
   /** m_particleSystem (Tr2ParticleSystemPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2ParticleSystem")
+  @type.model("Tr2ParticleSystem")
   particleSystem = null;
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP). */
@@ -45,7 +45,7 @@ export class Tr2DynamicEmitter extends CjsModel
   @impl.notImplemented
   Rebind(...args)
   {
-    throw CjsModel.notImplemented("Tr2DynamicEmitter", "Rebind", args);
+    throw new Error("Tr2DynamicEmitter.Rebind is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UpdateSimulation (MAP_METHOD_AND_WRAP). */
@@ -53,7 +53,7 @@ export class Tr2DynamicEmitter extends CjsModel
   @impl.notImplemented
   UpdateSimulation(...args)
   {
-    throw CjsModel.notImplemented("Tr2DynamicEmitter", "UpdateSimulation", args);
+    throw new Error("Tr2DynamicEmitter.UpdateSimulation is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -16,7 +16,7 @@ class EveFiringEffectElementContainer extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveFiringEffectElementContainer",
       family: "eve/renderable/stretch"
-    })], [[[io, io.persistOnly, void 0, type.objectRef("IEveFiringEffectElement")], 16, "element"], [[io, io.readwrite, type, type.mat4], 16, "source"], [[io, io.persist, type, type.mat4], 16, "sourceTransform"], [[io, io.persist, type, type.vec3], 16, "destination"], [[io, io.persist, type, type.boolean], 16, "useSourceTransform"], [[io, io.persist, type, type.boolean], 16, "displayDestination"], [[io, io.persist, type, type.boolean], 16, "displaySource"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "destinationScale"]], 0, void 0, _EveEntity));
+    })], [[[io, io.persistOnly, void 0, type.model("IEveFiringEffectElement")], 16, "element"], [[io, io.readwrite, type, type.mat4], 16, "source"], [[io, io.persist, type, type.mat4], 16, "sourceTransform"], [[io, io.persist, type, type.vec3], 16, "destination"], [[io, io.persist, type, type.boolean], 16, "useSourceTransform"], [[io, io.persist, type, type.boolean], 16, "displayDestination"], [[io, io.persist, type, type.boolean], 16, "displaySource"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "destinationScale"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);

@@ -15,7 +15,7 @@ class EveTacticalOverlayTrackObject extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveTacticalOverlayTrackObject",
       family: "eve/ui"
-    })], [[[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.persist, type, type.boolean], 16, "isAggressive"], [[io, io.persist, type, type.boolean], 16, "showVelocity"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.model("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.persist, type, type.boolean], 16, "isAggressive"], [[io, io.persist, type, type.boolean], 16, "showVelocity"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

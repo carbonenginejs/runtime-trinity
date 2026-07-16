@@ -176,6 +176,7 @@ new class extends _identity {
       ...detail
     });
   }
+  TriRenderJobStatus = _TriRenderJob.Status;
   constructor() {
     super(_TriRenderJob), _initClass();
   }

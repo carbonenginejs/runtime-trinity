@@ -17,7 +17,7 @@ export class EveLensflare extends CjsModel
 
   /** m_mesh (Tr2MeshPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Mesh")
+  @type.model("Tr2Mesh")
   mesh = null;
 
   /** m_name (std::string) [READWRITE, PERSIST] */
@@ -105,7 +105,7 @@ export class EveLensflare extends CjsModel
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw CjsModel.notImplemented("EveLensflare", "SetControllerVariable", args);
+    throw new Error("EveLensflare.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
@@ -113,7 +113,7 @@ export class EveLensflare extends CjsModel
   @impl.notImplemented
   StartControllers(...args)
   {
-    throw CjsModel.notImplemented("EveLensflare", "StartControllers", args);
+    throw new Error("EveLensflare.StartControllers is not implemented in CarbonEngineJS.");
   }
 
 }

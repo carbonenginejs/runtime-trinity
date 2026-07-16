@@ -29,42 +29,42 @@ class TriLineSet extends CjsModel {
 
   /** Carbon method Add (MAP_METHOD_AND_WRAP). */
   Add(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "Add", args);
+    throw new Error("TriLineSet.Add is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddBox (MAP_METHOD_AND_WRAP). */
   AddBox(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "AddBox", args);
+    throw new Error("TriLineSet.AddBox is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddLines (MAP_METHOD_AND_WRAP). */
   AddLines(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "AddLines", args);
+    throw new Error("TriLineSet.AddLines is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddSphere (MAP_METHOD_AND_WRAP). */
   AddSphere(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "AddSphere", args);
+    throw new Error("TriLineSet.AddSphere is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Clear (MAP_METHOD_AND_WRAP). */
   Clear(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "Clear", args);
+    throw new Error("TriLineSet.Clear is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Render -> RenderFromScript (MAP_METHOD_AND_WRAP). */
   Render(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "Render", args);
+    throw new Error("TriLineSet.Render is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCurrentColor (MAP_METHOD_AND_WRAP). */
   SetCurrentColor(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "SetCurrentColor", args);
+    throw new Error("TriLineSet.SetCurrentColor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetDefaultColor (MAP_METHOD_AND_WRAP). */
   SetDefaultColor(...args) {
-    throw CjsModel.notImplemented("TriLineSet", "SetDefaultColor", args);
+    throw new Error("TriLineSet.SetDefaultColor is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

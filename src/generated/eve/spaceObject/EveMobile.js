@@ -25,7 +25,7 @@ export class EveMobile extends EveSpaceObject2
   @impl.notImplemented
   GetTurretLocatorIndex(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveMobile", "GetTurretLocatorIndex", args);
+    throw new Error("EveMobile.GetTurretLocatorIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebuildTurretPositions (MAP_METHOD_AND_WRAP). */
@@ -33,7 +33,7 @@ export class EveMobile extends EveSpaceObject2
   @impl.notImplemented
   RebuildTurretPositions(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveMobile", "RebuildTurretPositions", args);
+    throw new Error("EveMobile.RebuildTurretPositions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTurretLocatorCount (MAP_METHOD_AND_WRAP). */
@@ -41,7 +41,7 @@ export class EveMobile extends EveSpaceObject2
   @impl.notImplemented
   GetTurretLocatorCount(...args)
   {
-    throw EveSpaceObject2.notImplemented("EveMobile", "GetTurretLocatorCount", args);
+    throw new Error("EveMobile.GetTurretLocatorCount is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -25,7 +25,7 @@ class TriStepSetDebugRenderer extends _TriRenderStep {
 
   /** Carbon method __init__ -> SetDebugRenderer (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepSetDebugRenderer", "__init__", args);
+    throw new Error("TriStepSetDebugRenderer.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

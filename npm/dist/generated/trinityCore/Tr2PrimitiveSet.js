@@ -16,7 +16,7 @@ class Tr2PrimitiveSet extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2PrimitiveSet",
       family: "trinityCore"
-    })], [[[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.readwrite, void 0, type.objectRef("PyObject")], 16, "_userData"], [[io, io.persist, type, type.boolean], 16, "viewOriented"], [[io, io.persist, type, type.boolean], 16, "scaleByDistanceToView"], [[io, io.notify, io, io.persist, type, type.color], 16, "color"], [[io, io.read, type, type.float32], 16, "scale"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "pickEffect"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCurrentColor"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.readwrite, void 0, type.objectRef("PyObject")], 16, "_userData"], [[io, io.persist, type, type.boolean], 16, "viewOriented"], [[io, io.persist, type, type.boolean], 16, "scaleByDistanceToView"], [[io, io.notify, io, io.persist, type, type.color], 16, "color"], [[io, io.read, type, type.float32], 16, "scale"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "pickEffect"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCurrentColor"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -54,7 +54,7 @@ class Tr2PrimitiveSet extends CjsModel {
 
   /** Carbon method SetCurrentColor (MAP_METHOD_AND_WRAP). */
   SetCurrentColor(...args) {
-    throw CjsModel.notImplemented("Tr2PrimitiveSet", "SetCurrentColor", args);
+    throw new Error("Tr2PrimitiveSet.SetCurrentColor is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

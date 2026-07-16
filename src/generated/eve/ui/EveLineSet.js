@@ -22,13 +22,13 @@ export class EveLineSet extends CjsModel
 
   /** m_ballRotation (ITriQuaternionFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriQuaternionFunction")
+  @type.model("ITriQuaternionFunction")
   rotationCurve = null;
 
   /** m_effect (Tr2EffectPtr) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** m_display (bool) [READWRITE, PERSIST] */
@@ -43,7 +43,7 @@ export class EveLineSet extends CjsModel
 
   /** m_ballPosition (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   translationCurve = null;
 
   /** Carbon method AddLine (MAP_METHOD_AND_WRAP). */
@@ -51,7 +51,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   AddLine(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "AddLine", args);
+    throw new Error("EveLineSet.AddLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLineColor (MAP_METHOD_AND_WRAP). */
@@ -59,7 +59,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLineColor(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLineColor", args);
+    throw new Error("EveLineSet.ChangeLineColor is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLine (MAP_METHOD_AND_WRAP). */
@@ -67,7 +67,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLine(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLine", args);
+    throw new Error("EveLineSet.ChangeLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ChangeLinePosition (MAP_METHOD_AND_WRAP). */
@@ -75,7 +75,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   ChangeLinePosition(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "ChangeLinePosition", args);
+    throw new Error("EveLineSet.ChangeLinePosition is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearLines (MAP_METHOD_AND_WRAP). */
@@ -83,7 +83,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   ClearLines(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "ClearLines", args);
+    throw new Error("EveLineSet.ClearLines is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveLine (MAP_METHOD_AND_WRAP). */
@@ -91,7 +91,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   RemoveLine(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "RemoveLine", args);
+    throw new Error("EveLineSet.RemoveLine is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
@@ -99,7 +99,7 @@ export class EveLineSet extends CjsModel
   @impl.notImplemented
   SubmitChanges(...args)
   {
-    throw CjsModel.notImplemented("EveLineSet", "SubmitChanges", args);
+    throw new Error("EveLineSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
 
 }

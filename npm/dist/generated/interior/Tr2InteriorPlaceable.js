@@ -54,22 +54,22 @@ class Tr2InteriorPlaceable extends CjsModel {
 
   /** Carbon method GetBoundingBoxInLocalSpace (MAP_METHOD_AND_WRAP). */
   GetBoundingBoxInLocalSpace(...args) {
-    throw CjsModel.notImplemented("Tr2InteriorPlaceable", "GetBoundingBoxInLocalSpace", args);
+    throw new Error("Tr2InteriorPlaceable.GetBoundingBoxInLocalSpace is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoundingBoxInWorldSpace (MAP_METHOD_AND_WRAP). */
   GetBoundingBoxInWorldSpace(...args) {
-    throw CjsModel.notImplemented("Tr2InteriorPlaceable", "GetBoundingBoxInWorldSpace", args);
+    throw new Error("Tr2InteriorPlaceable.GetBoundingBoxInWorldSpace is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method BoundingBoxOverride (MAP_METHOD_AND_WRAP). */
   BoundingBoxOverride(...args) {
-    throw CjsModel.notImplemented("Tr2InteriorPlaceable", "BoundingBoxOverride", args);
+    throw new Error("Tr2InteriorPlaceable.BoundingBoxOverride is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method BoundingBoxReset (MAP_METHOD_AND_WRAP). */
   BoundingBoxReset(...args) {
-    throw CjsModel.notImplemented("Tr2InteriorPlaceable", "BoundingBoxReset", args);
+    throw new Error("Tr2InteriorPlaceable.BoundingBoxReset is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

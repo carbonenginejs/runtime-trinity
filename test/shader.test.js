@@ -65,12 +65,12 @@ test("promoted shader parameters expose source-backed Carbon metadata", () =>
   {
     new ctor();
   }
-  assertEquals(CjsSchema.getClass("Tr2FloatParameter"), Tr2FloatParameter);
-  assertEquals(CjsSchema.getClass("Tr2RuntimeTextureParameter"), Tr2RuntimeTextureParameter);
-  assertEquals(CjsSchema.getClass("TriTextureParameter"), TriTextureParameter);
-  assertEquals(CjsSchema.getClass("TriVector4"), TriVector4);
-  assertEquals(CjsSchema.getClass("TriFloatArrayParameter"), TriFloatArrayParameter);
-  assertEquals(CjsSchema.getClass("CjsShaderParameter"), null);
+  assertEquals(CjsSchema.GetConstructor("Tr2FloatParameter"), Tr2FloatParameter);
+  assertEquals(CjsSchema.GetConstructor("Tr2RuntimeTextureParameter"), Tr2RuntimeTextureParameter);
+  assertEquals(CjsSchema.GetConstructor("TriTextureParameter"), TriTextureParameter);
+  assertEquals(CjsSchema.GetConstructor("TriVector4"), TriVector4);
+  assertEquals(CjsSchema.GetConstructor("TriFloatArrayParameter"), TriFloatArrayParameter);
+  assertEquals(CjsSchema.GetConstructor("CjsShaderParameter"), null);
   assertEquals(CjsSchema.getField(Tr2FloatParameter, "value")?.type.kind, "float32");
   assertEquals(CjsSchema.getField(Tr2Vector4Parameter, "value")?.type.kind, "vec4");
   assertEquals(CjsSchema.getField(Tr2Matrix4Parameter, "value")?.type.kind, "mat4");
@@ -698,3 +698,134 @@ function assertCarbonMethod(ctor, methodName, status)
   assertEquals(method?.carbon?.method, true, `${ctor.name}.${methodName} should be decorated as a Carbon method`);
   assertEquals(method?.impl?.status, status, `${ctor.name}.${methodName} should be marked ${status}`);
 }
+
+test("effect collections accept unique-name value maps with class-claimed inference", () =>
+{
+  const effect = new Tr2Effect();
+  const changed = effect.SetValues({
+    effectFilePath: "res:/fx/ship.fx",
+    parameters: {
+      Gloss: 0.5,
+      UvOffset: [1, 2],
+      Tint: [1, 2, 3],
+      DiffuseColor: [0, 0, 0, 1],
+      WorldMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      PaintMaskMap: "res:/paint.dds"
+    },
+    textures: {
+      AlbedoMap: "res:/albedo.dds"
+    },
+    constParameters: {
+      Scalar: 2,
+      AuthoredColor: [1, 2, 3, 4]
+    },
+    samplerOverrides: {
+      AlbedoMapSampler: { addressU: 4, addressV: 4 }
+    }
+  });
+
+  assert(changed instanceof Set);
+  assert(changed.has("parameters"));
+  assert(changed.has("resources"));
+  assert(changed.has("constParameters"));
+  assert(changed.has("samplerOverrides"));
+  assertEquals(effect.effectFilePath, "res:/fx/ship.fx");
+
+  assert(Array.isArray(effect.parameters), "parameters must stay a Carbon list");
+  assertEquals(effect.parameters.length, 5);
+  const byName = name => effect.parameters.find(parameter => parameter.name === name);
+  assert(byName("Gloss") instanceof Tr2FloatParameter);
+  assertEquals(byName("Gloss").value, 0.5);
+  assert(byName("UvOffset") instanceof Tr2Vector2Parameter);
+  assert(byName("Tint") instanceof Tr2Vector3Parameter);
+  assert(byName("DiffuseColor") instanceof Tr2Vector4Parameter);
+  assert(byName("WorldMatrix") instanceof Tr2Matrix4Parameter);
+
+  assertEquals(effect.resources.length, 2);
+  const paint = effect.resources.find(resource => resource.name === "PaintMaskMap");
+  const albedo = effect.resources.find(resource => resource.name === "AlbedoMap");
+  assert(paint instanceof TriTextureParameter);
+  assertEquals(paint.resourcePath, "res:/paint.dds");
+  assertEquals(albedo.resourcePath, "res:/albedo.dds");
+
+  assertEquals(effect.constParameters.length, 2);
+  const scalar = effect.constParameters.find(parameter => parameter.name === "Scalar");
+  assertEquals(scalar.value[0], 2);
+  assertEquals(scalar.value[3], 2, "numbers splat to vec4 like Carbon AddParameterFloat");
+
+  assertEquals(effect.samplerOverrides.length, 1);
+  assertEquals(effect.samplerOverrides[0].name, "AlbedoMapSampler");
+  assertEquals(effect.samplerOverrides[0].addressU, 4);
+  assertEquals(effect.samplerOverrides[0].addressW, 1, "unset override fields keep Carbon defaults");
+
+  // unique names update in place instead of duplicating
+  effect.SetParameters({ Gloss: 0.75, DiffuseColor: [1, 1, 1, 1] });
+  assertEquals(effect.parameters.length, 5);
+  assertEquals(byName("Gloss").value, 0.75);
+  assertEquals(byName("DiffuseColor").value[0], 1);
+  effect.SetTextures({ AlbedoMap: "res:/albedo2.dds" });
+  assertEquals(effect.resources.length, 2);
+  assertEquals(albedo.resourcePath, "res:/albedo2.dds");
+  effect.SetConstParameters({ Scalar: 3 });
+  assertEquals(effect.constParameters.length, 2);
+  assertEquals(scalar.value[1], 3);
+  effect.SetSamplerOverrides({ AlbedoMapSampler: { addressU: 2 } });
+  assertEquals(effect.samplerOverrides.length, 1);
+  assertEquals(effect.samplerOverrides[0].addressU, 2);
+
+  // null removes by name across the routed collections
+  effect.SetParameters({ Gloss: null, PaintMaskMap: null });
+  assertEquals(effect.parameters.length, 4);
+  assertEquals(effect.resources.length, 1);
+  effect.SetSamplerOverrides({ AlbedoMapSampler: null });
+  assertEquals(effect.samplerOverrides.length, 0);
+
+  // a value shape change replaces the parameter class in place
+  effect.SetParameters({ UvOffset: [1, 2, 3, 4] });
+  assert(byName("UvOffset") instanceof Tr2Vector4Parameter);
+  assertEquals(effect.parameters.length, 4);
+
+  // explicit descriptors force a class; unknown shapes throw instead of corrupting
+  effect.SetParameters({ Forced: { type: "Tr2Vector4Parameter", value: [9, 8, 7, 6] } });
+  assert(byName("Forced") instanceof Tr2Vector4Parameter);
+  let threw = false;
+  try
+  {
+    effect.SetParameters({ Bad: [1, 2, 3, 4, 5] });
+  }
+  catch (error)
+  {
+    threw = error instanceof TypeError;
+  }
+  assert(threw, "uninferrable values must throw");
+  assert(Array.isArray(effect.parameters), "failed input must not corrupt the list");
+
+  // canonical array input still flows through the inherited model path
+  const kept = effect.parameters.slice();
+  effect.SetValues({ parameters: kept });
+  assertEquals(effect.parameters.length, kept.length);
+  assert(effect.parameters[0] === kept[0]);
+});
+
+test("GetValues keyed lists round-trip the effect collections as unique-name objects", () =>
+{
+  const effect = new Tr2Effect();
+  effect.SetValues({
+    parameters: { DiffuseColor: [0, 0, 0, 1] },
+    textures: { AlbedoMap: "res:/albedo.dds" },
+    samplerOverrides: { AlbedoMapSampler: { addressU: 4 } }
+  });
+
+  const keyed = effect.GetValues({ keyedLists: true });
+  assert(!Array.isArray(keyed.parameters));
+  assert("DiffuseColor" in keyed.parameters);
+  assertEquals(keyed.parameters.DiffuseColor.name, undefined, "keyed items drop the redundant name");
+  assertEquals(keyed.resources.AlbedoMap.resourcePath, "res:/albedo.dds");
+  assertEquals(keyed.samplerOverrides.AlbedoMapSampler.addressU, 4);
+
+  const clone = new Tr2Effect();
+  clone.SetValues({ samplerOverrides: keyed.samplerOverrides });
+  assertEquals(clone.samplerOverrides.length, 1);
+  assertEquals(clone.samplerOverrides[0].name, "AlbedoMapSampler");
+  assertEquals(clone.samplerOverrides[0].addressU, 4);
+});

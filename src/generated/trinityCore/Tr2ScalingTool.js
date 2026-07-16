@@ -20,7 +20,7 @@ export class Tr2ScalingTool extends Tr2ManipulationTool
   @impl.notImplemented
   ResetPrimitives(...args)
   {
-    throw Tr2ManipulationTool.notImplemented("Tr2ScalingTool", "ResetPrimitives", args);
+    throw new Error("Tr2ScalingTool.ResetPrimitives is not implemented in CarbonEngineJS.");
   }
 
 }

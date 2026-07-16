@@ -21,7 +21,7 @@ export class EveMeshOverlayEffect extends CjsModel
 
   /** m_curveSet (TriCurveSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("TriCurveSet")
+  @type.model("TriCurveSet")
   curveSet = null;
 
   /** m_additiveEffects (PTr2EffectVector) [READ, PERSIST] */

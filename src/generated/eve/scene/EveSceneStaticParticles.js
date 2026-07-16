@@ -54,7 +54,7 @@ export class EveSceneStaticParticles extends CjsModel
   @impl.notImplemented
   AddCluster(...args)
   {
-    throw CjsModel.notImplemented("EveSceneStaticParticles", "AddCluster", args);
+    throw new Error("EveSceneStaticParticles.AddCluster is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Rebuild (MAP_METHOD_AND_WRAP). */
@@ -62,7 +62,7 @@ export class EveSceneStaticParticles extends CjsModel
   @impl.notImplemented
   Rebuild(...args)
   {
-    throw CjsModel.notImplemented("EveSceneStaticParticles", "Rebuild", args);
+    throw new Error("EveSceneStaticParticles.Rebuild is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearClusters (MAP_METHOD_AND_WRAP). */
@@ -70,7 +70,7 @@ export class EveSceneStaticParticles extends CjsModel
   @impl.notImplemented
   ClearClusters(...args)
   {
-    throw CjsModel.notImplemented("EveSceneStaticParticles", "ClearClusters", args);
+    throw new Error("EveSceneStaticParticles.ClearClusters is not implemented in CarbonEngineJS.");
   }
 
 }

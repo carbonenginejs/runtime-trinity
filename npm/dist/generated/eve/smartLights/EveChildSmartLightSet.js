@@ -14,7 +14,7 @@ class EveChildSmartLightSet extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildSmartLightSet",
       family: "eve/smartLights"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.objectRef("IEveDistributionMethod")], 16, "distribution"], [[io, io.persist, void 0, type.list("IEveSmartLightGroup")], 16, "lightGroups"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveDistributionMethod")], 16, "distribution"], [[io, io.persist, void 0, type.list("IEveSmartLightGroup")], 16, "lightGroups"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);

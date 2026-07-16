@@ -49,12 +49,12 @@ class EveCloudEditableVolume extends CjsModel {
 
   /** Carbon method Rasterize (MAP_METHOD_AND_WRAP). */
   Rasterize(...args) {
-    throw CjsModel.notImplemented("EveCloudEditableVolume", "Rasterize", args);
+    throw new Error("EveCloudEditableVolume.Rasterize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method OnVolumeModified (MAP_METHOD_AND_WRAP). */
   OnVolumeModified(...args) {
-    throw CjsModel.notImplemented("EveCloudEditableVolume", "OnVolumeModified", args);
+    throw new Error("EveCloudEditableVolume.OnVolumeModified is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

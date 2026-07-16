@@ -50,12 +50,12 @@ export class EveChildCloud extends CjsModel
 
   /** m_effect (Tr2MaterialPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Material")
+  @type.model("Tr2Material")
   effect = null;
 
   /** m_volume (EveCloudEditableVolumePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveCloudEditableVolume")
+  @type.model("EveCloudEditableVolume")
   volume = null;
 
   /** m_cellScreenSize (float) [READWRITE, PERSIST] */

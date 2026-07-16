@@ -12,7 +12,7 @@ export class TriStepClearUav extends TriRenderStep
 
   /** m_buffer (ITr2GpuBufferPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2GpuBuffer")
+  @type.model("ITr2GpuBuffer")
   buffer = null;
 
   /** m_clearWithFloat (bool) [READWRITE, PERSIST] */
@@ -50,7 +50,7 @@ export class TriStepClearUav extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepClearUav", "__init__", args);
+    throw new Error("TriStepClearUav.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

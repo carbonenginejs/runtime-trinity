@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraBehaviour.h
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraBehaviour.cpp
+import { hasModifiedProperty } from "../../../utilities/hasModifiedProperty.js";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 
@@ -37,7 +38,7 @@ export class EveVirtualCameraBehaviourFloatBase extends CjsModel
   @impl.adapted
   OnModified(value = null)
   {
-    if (!value || CjsModel.hasModifiedProperty(value, "name"))
+    if (!value || hasModifiedProperty(value, "name"))
     {
       this.SetName(this.name);
     }

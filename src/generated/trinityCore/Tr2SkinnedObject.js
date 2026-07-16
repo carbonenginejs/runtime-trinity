@@ -39,13 +39,13 @@ export class Tr2SkinnedObject extends CjsModel
 
   /** m_transform (PTriMatrix) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("TriMatrix")
+  @type.model("TriMatrix")
   transform = null;
 
   /** m_visualModel (Tr2SkinnedModelPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2SkinnedModel")
+  @type.model("Tr2SkinnedModel")
   visualModel = null;
 
   /** m_name (std::string) [READWRITE, PERSIST] */
@@ -55,12 +55,12 @@ export class Tr2SkinnedObject extends CjsModel
 
   /** m_animationUpdater (ITr2AnimationUpdaterPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2AnimationUpdater")
+  @type.model("ITr2AnimationUpdater")
   animationUpdater = null;
 
   /** m_worldTransformUpdater (ITr2WorldTransformUpdaterPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2WorldTransformUpdater")
+  @type.model("ITr2WorldTransformUpdater")
   worldTransformUpdater = null;
 
   /** m_lod.m_highDetailProxy (Tr2SkinnedObjectLod) [READWRITE, PERSIST, NOTIFY] */
@@ -117,7 +117,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   GetBoundingBoxInLocalSpace(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBoundingBoxInLocalSpace", args);
+    throw new Error("Tr2SkinnedObject.GetBoundingBoxInLocalSpace is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetAnimationBindings (MAP_METHOD_AND_WRAP). */
@@ -125,7 +125,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   ResetAnimationBindings(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "ResetAnimationBindings", args);
+    throw new Error("Tr2SkinnedObject.ResetAnimationBindings is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetSkeletonTag (MAP_METHOD_AND_WRAP). */
@@ -133,7 +133,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   GetSkeletonTag(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetSkeletonTag", args);
+    throw new Error("Tr2SkinnedObject.GetSkeletonTag is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBoneIndex (MAP_METHOD_AND_WRAP). */
@@ -141,7 +141,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   GetBoneIndex(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBoneIndex", args);
+    throw new Error("Tr2SkinnedObject.GetBoneIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetBonePosition (MAP_METHOD_AND_WRAP). */
@@ -149,7 +149,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   GetBonePosition(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "GetBonePosition", args);
+    throw new Error("Tr2SkinnedObject.GetBonePosition is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method PrintAllBones (MAP_METHOD_AND_WRAP). */
@@ -157,7 +157,7 @@ export class Tr2SkinnedObject extends CjsModel
   @impl.notImplemented
   PrintAllBones(...args)
   {
-    throw CjsModel.notImplemented("Tr2SkinnedObject", "PrintAllBones", args);
+    throw new Error("Tr2SkinnedObject.PrintAllBones is not implemented in CarbonEngineJS.");
   }
 
 }

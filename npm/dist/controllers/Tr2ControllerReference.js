@@ -1,4 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { UnlinkReason } from './enums.js';
@@ -52,7 +53,7 @@ new class extends _identity {
      * Handles path changes. JS runtime does not own resource loading yet.
      */
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "path")) {
+      if (hasModifiedProperty(properties, "path")) {
         this.controller = null;
         this.ResolveController();
       }

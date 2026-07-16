@@ -31,37 +31,37 @@ class Tr2FontManager extends CjsModel {
 
   /** Carbon method ClearBuffer -> PyClearBuffer (MAP_METHOD). */
   ClearBuffer(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "ClearBuffer", args);
+    throw new Error("Tr2FontManager.ClearBuffer is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ClearCachedGlyphs (MAP_METHOD_AND_WRAP). */
   ClearCachedGlyphs(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "ClearCachedGlyphs", args);
+    throw new Error("Tr2FontManager.ClearCachedGlyphs is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LookupGlyphIndex -> LookupFaceIDAndGlyphIndex (MAP_METHOD_AND_WRAP). */
   LookupGlyphIndex(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "LookupGlyphIndex", args);
+    throw new Error("Tr2FontManager.LookupGlyphIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LookupKerningXP -> PyLookupKerningXP (MAP_METHOD_AND_WRAP). */
   LookupKerningXP(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "LookupKerningXP", args);
+    throw new Error("Tr2FontManager.LookupKerningXP is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LookupMetrics -> LookupMetricsFromScript (MAP_METHOD_AND_WRAP). */
   LookupMetrics(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "LookupMetrics", args);
+    throw new Error("Tr2FontManager.LookupMetrics is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method LookupSBit (MAP_METHOD_AND_WRAP). */
   LookupSBit(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "LookupSBit", args);
+    throw new Error("Tr2FontManager.LookupSBit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method TrimGlyphCache (MAP_METHOD_AND_WRAP). */
   TrimGlyphCache(...args) {
-    throw CjsModel.notImplemented("Tr2FontManager", "TrimGlyphCache", args);
+    throw new Error("Tr2FontManager.TrimGlyphCache is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

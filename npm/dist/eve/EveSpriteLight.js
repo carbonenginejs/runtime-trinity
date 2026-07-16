@@ -30,7 +30,7 @@ class EveSpriteLight extends CjsModel {
   lightProfilePath = (_init_extra_boneMatrix(this), "");
   static FromSOF(value) {
     const result = new _EveSpriteLight();
-    result.lightData = _LightData.fromValues(value?.lightData ?? {});
+    result.lightData = _LightData.from(value?.lightData ?? {});
     result.blinkPhase = Number(value?.blinkPhase ?? 0);
     result.blinkRate = Number(value?.blinkRate ?? 0);
     result.minScale = Number(value?.minScale ?? 0);

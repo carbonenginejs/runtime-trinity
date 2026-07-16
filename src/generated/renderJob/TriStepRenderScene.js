@@ -11,7 +11,7 @@ export class TriStepRenderScene extends TriRenderStep
 
   /** m_scene (ITr2ScenePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2Scene")
+  @type.model("ITr2Scene")
   scene = null;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -19,7 +19,7 @@ export class TriStepRenderScene extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderScene", "__init__", args);
+    throw new Error("TriStepRenderScene.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

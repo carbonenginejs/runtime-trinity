@@ -31,7 +31,7 @@ export class EveChildCloud2 extends EveEntity
 
   /** m_animation (Tr2TextureAnimationPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2TextureAnimation")
+  @type.model("Tr2TextureAnimation")
   animation = null;
 
   /** m_shadowMapDS (Tr2DepthStencilPtr) [READWRITE, NOTIFY] */
@@ -78,13 +78,13 @@ export class EveChildCloud2 extends EveEntity
   /** m_reflectionEffect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   reflectionEffect = null;
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** m_noiseTextureSize (uint32_t) [READWRITE, PERSIST] */
@@ -142,5 +142,19 @@ export class EveChildCloud2 extends EveEntity
   @io.persist
   @type.boolean
   display = false;
+
+  static ReflectionMode = Object.freeze({
+    REFLECT_HIGH: 0,
+    REFLECT_MEDIUM_AND_HIGH: 1,
+    REFLECT_LOW_MEDIUM_HIGH: 2,
+    REFLECT_NEVER: 3,
+  });
+
+  static Tr2VolumerticQuality = Object.freeze({
+    Low: 0,
+    Medium: 1,
+    High: 2,
+    Ultra: 3,
+  });
 
 }

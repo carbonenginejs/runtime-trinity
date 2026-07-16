@@ -21,7 +21,7 @@ export class EveLineContainer extends CjsModel
 
   /** m_lineSet (EveCurveLineSetPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveCurveLineSet")
+  @type.model("EveCurveLineSet")
   lineSet = null;
 
   /** m_display (bool) [READWRITE] */

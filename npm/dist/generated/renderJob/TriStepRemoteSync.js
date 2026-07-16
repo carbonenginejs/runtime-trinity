@@ -34,7 +34,7 @@ class TriStepRemoteSync extends _TriRenderStep {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw _TriRenderStep.notImplemented("TriStepRemoteSync", "__init__", args);
+    throw new Error("TriStepRemoteSync.__init__ is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

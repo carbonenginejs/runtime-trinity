@@ -6,6 +6,7 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
+import { Origin } from "../../generated/eve/child/enums.js";
 
 
 @type.define({ className: "EveChildContainer", family: "eve/child" })
@@ -390,4 +391,7 @@ export class EveChildContainer extends EveChildTransform
     SHADER_MED: 2,
     SHADER_LOW: 0
   });
+
+  static Origin = Origin;
+
 }

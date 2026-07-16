@@ -42,7 +42,7 @@ export class EveChildSocket extends EveChildTransform
   @impl.notImplemented
   HandleControllerEvent(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildSocket", "HandleControllerEvent", args);
+    throw new Error("EveChildSocket.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Rebind -> BindParameters (MAP_METHOD_AND_WRAP). */
@@ -50,7 +50,7 @@ export class EveChildSocket extends EveChildTransform
   @impl.notImplemented
   Rebind(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildSocket", "Rebind", args);
+    throw new Error("EveChildSocket.Rebind is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Reload (MAP_METHOD_AND_WRAP). */
@@ -58,7 +58,7 @@ export class EveChildSocket extends EveChildTransform
   @impl.notImplemented
   Reload(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildSocket", "Reload", args);
+    throw new Error("EveChildSocket.Reload is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
@@ -66,7 +66,7 @@ export class EveChildSocket extends EveChildTransform
   @impl.notImplemented
   SetControllerVariable(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildSocket", "SetControllerVariable", args);
+    throw new Error("EveChildSocket.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
@@ -74,7 +74,7 @@ export class EveChildSocket extends EveChildTransform
   @impl.notImplemented
   StartControllers(...args)
   {
-    throw EveChildTransform.notImplemented("EveChildSocket", "StartControllers", args);
+    throw new Error("EveChildSocket.StartControllers is not implemented in CarbonEngineJS.");
   }
 
 }

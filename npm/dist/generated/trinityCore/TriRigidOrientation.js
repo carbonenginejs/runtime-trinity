@@ -41,7 +41,7 @@ class TriRigidOrientation extends CjsModel {
 
   /** Carbon method Sort (MAP_METHOD_AND_WRAP). */
   Sort(...args) {
-    throw CjsModel.notImplemented("TriRigidOrientation", "Sort", args);
+    throw new Error("TriRigidOrientation.Sort is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

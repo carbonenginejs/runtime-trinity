@@ -57,7 +57,7 @@ class SpawnDrones extends CjsModel {
 
   /** Carbon method gridToggleReset -> GridToggleReset (MAP_METHOD_AND_WRAP). */
   gridToggleReset(...args) {
-    throw CjsModel.notImplemented("SpawnDrones", "gridToggleReset", args);
+    throw new Error("SpawnDrones.gridToggleReset is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

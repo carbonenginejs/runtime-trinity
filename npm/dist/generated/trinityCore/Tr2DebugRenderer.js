@@ -59,37 +59,37 @@ class Tr2DebugRenderer extends CjsModel {
 
   /** Carbon method SetDefaultOptions (MAP_METHOD_AND_WRAP). */
   SetDefaultOptions(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetDefaultOptions", args);
+    throw new Error("Tr2DebugRenderer.SetDefaultOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetSelectedObjects (MAP_METHOD_AND_WRAP). */
   SetSelectedObjects(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetSelectedObjects", args);
+    throw new Error("Tr2DebugRenderer.SetSelectedObjects is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetOptions (MAP_METHOD_AND_WRAP). */
   SetOptions(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetOptions", args);
+    throw new Error("Tr2DebugRenderer.SetOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetColorForOption -> PyGetColorForOption (MAP_METHOD). */
   GetColorForOption(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetColorForOption", args);
+    throw new Error("Tr2DebugRenderer.GetColorForOption is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetOptions (MAP_METHOD_AND_WRAP). */
   GetOptions(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetOptions", args);
+    throw new Error("Tr2DebugRenderer.GetOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDefaultOptions (MAP_METHOD_AND_WRAP). */
   GetDefaultOptions(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "GetDefaultOptions", args);
+    throw new Error("Tr2DebugRenderer.GetDefaultOptions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetColorForOption (MAP_METHOD_AND_WRAP). */
   SetColorForOption(...args) {
-    throw CjsModel.notImplemented("Tr2DebugRenderer", "SetColorForOption", args);
+    throw new Error("Tr2DebugRenderer.SetColorForOption is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

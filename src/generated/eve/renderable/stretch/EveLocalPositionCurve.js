@@ -33,12 +33,12 @@ export class EveLocalPositionCurve extends CjsModel
 
   /** m_parentPositionCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   parentPositionCurve = null;
 
   /** m_alignPositionCurve (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   alignPositionCurve = null;
 
   /** m_value (Vector3) [READWRITE, PERSIST] */
@@ -91,7 +91,20 @@ export class EveLocalPositionCurve extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("EveLocalPositionCurve", "__init__", args);
+    throw new Error("EveLocalPositionCurve.__init__ is not implemented in CarbonEngineJS.");
   }
+
+  static LocalPositionBehavior = Object.freeze({
+    POS_NONE: 0,
+    POS_NEAREST_BOUNDING_POINT: 1,
+    POS_CENTER_BOUNDING_POINT: 2,
+    POS_TARGET_DMG_LOCATOR: 3,
+    POS_TARGET_DMG_LOCATOR_IMPACT: 4,
+    POS_OFFSET_POSITION: 5,
+    POS_OFFSET_PLANE_ROTATION: 6,
+    POS_NEAREST_FIRING_LOCATOR: 7,
+    POS_ACTIVE_TURRET: 8,
+    POS_COUNT: 9,
+  });
 
 }

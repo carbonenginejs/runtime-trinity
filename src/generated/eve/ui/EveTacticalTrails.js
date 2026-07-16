@@ -21,7 +21,7 @@ export class EveTacticalTrails extends CjsModel
 
   /** m_trailEffect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   trailEffect = null;
 
   /** m_fadeOutTime (float) [READWRITE, PERSIST] */
@@ -34,7 +34,7 @@ export class EveTacticalTrails extends CjsModel
   @impl.notImplemented
   RegisterObject(...args)
   {
-    throw CjsModel.notImplemented("EveTacticalTrails", "RegisterObject", args);
+    throw new Error("EveTacticalTrails.RegisterObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method UnregisterObject (MAP_METHOD_AND_WRAP). */
@@ -42,7 +42,7 @@ export class EveTacticalTrails extends CjsModel
   @impl.notImplemented
   UnregisterObject(...args)
   {
-    throw CjsModel.notImplemented("EveTacticalTrails", "UnregisterObject", args);
+    throw new Error("EveTacticalTrails.UnregisterObject is not implemented in CarbonEngineJS.");
   }
 
 }

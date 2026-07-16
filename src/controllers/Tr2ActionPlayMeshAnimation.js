@@ -235,4 +235,11 @@ export class Tr2ActionPlayMeshAnimation extends CjsModel
     }
     return null;
   }
+
+  static DestinationType = DestinationType;
+
+  static PlayAction = PlayAction;
+
+  static StopAction = StopAction;
+
 }

@@ -40,7 +40,7 @@ export class EveSpriteLight extends CjsModel
   static FromSOF(value)
   {
     const result = new EveSpriteLight();
-    result.lightData = LightData.fromValues(value?.lightData ?? {});
+    result.lightData = LightData.from(value?.lightData ?? {});
     result.blinkPhase = Number(value?.blinkPhase ?? 0);
     result.blinkRate = Number(value?.blinkRate ?? 0);
     result.minScale = Number(value?.minScale ?? 0);

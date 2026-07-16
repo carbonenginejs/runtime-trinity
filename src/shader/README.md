@@ -37,7 +37,8 @@ scene/object graph.
 
 runtime-resource should own loaded resource payloads and resource lifetime:
 `Tr2EffectRes`, `TriTextureRes`, `TriGeometryRes`, image/texture/geometry/effect
-DTOs, async loading, cache state, path resolution, and notify-target integration.
+payloads, async loading, cache state, path resolution, and notify-target
+integration.
 
 Engine packages should own backend realization and binding: WebGL/WebGPU shader
 modules, pipelines, bind groups/resource sets, texture and buffer realization,

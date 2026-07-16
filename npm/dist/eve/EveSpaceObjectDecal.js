@@ -1,9 +1,11 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { TriBatchType } from '../generated/trinityCore/enums.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_batchType, _init_extra_batchType, _init_position, _init_extra_position, _init_minScreenSize, _init_extra_minScreenSize, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_parentBoneIndex, _init_extra_parentBoneIndex, _init_decalEffect, _init_extra_decalEffect, _init_display, _init_extra_display;
 let _EveSpaceObjectDecal;
@@ -44,7 +46,7 @@ new class extends _identity {
       return this.#updateDecalMatrix();
     }
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "position") || CjsModel.hasModifiedProperty(properties, "rotation") || CjsModel.hasModifiedProperty(properties, "scaling")) {
+      if (hasModifiedProperty(properties, "position") || hasModifiedProperty(properties, "rotation") || hasModifiedProperty(properties, "scaling")) {
         this.#updateDecalMatrix();
       }
       return true;
@@ -138,6 +140,7 @@ new class extends _identity {
   #zero = vec3.create();
   #one = vec3.fromValues(1, 1, 1);
   #identityRotation = quat.create();
+  TriBatchType = TriBatchType;
   constructor() {
     super(_EveSpaceObjectDecal), _initClass();
   }

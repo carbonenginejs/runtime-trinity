@@ -37,27 +37,27 @@ class EveChildSocket extends _EveChildTransform {
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   HandleControllerEvent(...args) {
-    throw _EveChildTransform.notImplemented("EveChildSocket", "HandleControllerEvent", args);
+    throw new Error("EveChildSocket.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Rebind -> BindParameters (MAP_METHOD_AND_WRAP). */
   Rebind(...args) {
-    throw _EveChildTransform.notImplemented("EveChildSocket", "Rebind", args);
+    throw new Error("EveChildSocket.Rebind is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Reload (MAP_METHOD_AND_WRAP). */
   Reload(...args) {
-    throw _EveChildTransform.notImplemented("EveChildSocket", "Reload", args);
+    throw new Error("EveChildSocket.Reload is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw _EveChildTransform.notImplemented("EveChildSocket", "SetControllerVariable", args);
+    throw new Error("EveChildSocket.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers(...args) {
-    throw _EveChildTransform.notImplemented("EveChildSocket", "StartControllers", args);
+    throw new Error("EveChildSocket.StartControllers is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

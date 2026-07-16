@@ -32,7 +32,7 @@ export class Tr2SwapChain extends CjsModel
   @impl.notImplemented
   CreateForWindow(...args)
   {
-    throw CjsModel.notImplemented("Tr2SwapChain", "CreateForWindow", args);
+    throw new Error("Tr2SwapChain.CreateForWindow is not implemented in CarbonEngineJS.");
   }
 
 }

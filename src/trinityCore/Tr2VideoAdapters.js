@@ -21,7 +21,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   Refresh(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "Refresh", args);
+    throw new Error("Tr2VideoAdapters.Refresh is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetCurrentDisplayMode (MAP_METHOD_AND_WRAP). */
@@ -29,7 +29,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetCurrentDisplayMode(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetCurrentDisplayMode", args);
+    throw new Error("Tr2VideoAdapters.GetCurrentDisplayMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDisplayMode (MAP_METHOD_AND_WRAP). */
@@ -37,7 +37,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetDisplayMode(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetDisplayMode", args);
+    throw new Error("Tr2VideoAdapters.GetDisplayMode is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SupportsBackBufferFormat (MAP_METHOD_AND_WRAP). */
@@ -45,7 +45,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   SupportsBackBufferFormat(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "SupportsBackBufferFormat", args);
+    throw new Error("Tr2VideoAdapters.SupportsBackBufferFormat is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SupportsRenderTargetFormat (MAP_METHOD_AND_WRAP). */
@@ -53,7 +53,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   SupportsRenderTargetFormat(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "SupportsRenderTargetFormat", args);
+    throw new Error("Tr2VideoAdapters.SupportsRenderTargetFormat is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetMaxTextureSize (MAP_METHOD_AND_WRAP). */
@@ -61,7 +61,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetMaxTextureSize(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetMaxTextureSize", args);
+    throw new Error("Tr2VideoAdapters.GetMaxTextureSize is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetDisplayModeCount (MAP_METHOD_AND_WRAP). */
@@ -69,7 +69,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetDisplayModeCount(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetDisplayModeCount", args);
+    throw new Error("Tr2VideoAdapters.GetDisplayModeCount is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAdapterCount (MAP_METHOD_AND_WRAP). */
@@ -77,7 +77,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetAdapterCount(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetAdapterCount", args);
+    throw new Error("Tr2VideoAdapters.GetAdapterCount is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetAdapterInfo (MAP_METHOD_AND_WRAP). */
@@ -85,7 +85,7 @@ export class Tr2VideoAdapters extends CjsModel
   @impl.notImplemented
   GetAdapterInfo(...args)
   {
-    throw CjsModel.notImplemented("Tr2VideoAdapters", "GetAdapterInfo", args);
+    throw new Error("Tr2VideoAdapters.GetAdapterInfo is not implemented in CarbonEngineJS.");
   }
 
 }

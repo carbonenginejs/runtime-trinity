@@ -45,7 +45,7 @@ export class Tr2Sprite2dTransform extends Tr2Sprite2dContainerBase
   @impl.notImplemented
   TransformPoint(...args)
   {
-    throw Tr2Sprite2dContainerBase.notImplemented("Tr2Sprite2dTransform", "TransformPoint", args);
+    throw new Error("Tr2Sprite2dTransform.TransformPoint is not implemented in CarbonEngineJS.");
   }
 
 }

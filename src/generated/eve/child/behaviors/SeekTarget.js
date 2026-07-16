@@ -37,7 +37,7 @@ export class SeekTarget extends CjsModel
 
   /** m_target (EveSpaceObject2*) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("EveSpaceObject2")
+  @type.model("EveSpaceObject2")
   target = null;
 
   /** m_firstSpawnAtRandomPlaces (bool) [READWRITE, PERSIST] */
@@ -67,7 +67,7 @@ export class SeekTarget extends CjsModel
 
   /** m_locatorSet (EveLocatorSetsPtr) [READ, PERSIST] */
   @io.persist
-  @type.objectRef("EveLocatorSets")
+  @type.model("EveLocatorSets")
   locatorSet = null;
 
   /** m_exit (bool) [READWRITE] */
@@ -90,7 +90,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   AddLocatorSet(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "AddLocatorSet", args);
+    throw new Error("SeekTarget.AddLocatorSet is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTarget (MAP_METHOD_AND_WRAP). */
@@ -98,7 +98,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SetTarget(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SetTarget", args);
+    throw new Error("SeekTarget.SetTarget is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method ResetBehavior (MAP_METHOD_AND_WRAP). */
@@ -106,7 +106,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   ResetBehavior(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "ResetBehavior", args);
+    throw new Error("SeekTarget.ResetBehavior is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetBehaviorWeight (MAP_METHOD_AND_WRAP). */
@@ -114,7 +114,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SetBehaviorWeight(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SetBehaviorWeight", args);
+    throw new Error("SeekTarget.SetBehaviorWeight is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetExit (MAP_METHOD_AND_WRAP). */
@@ -122,7 +122,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SetExit(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SetExit", args);
+    throw new Error("SeekTarget.SetExit is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetTotalRepairTime (MAP_METHOD_AND_WRAP). */
@@ -130,7 +130,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SetTotalRepairTime(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SetTotalRepairTime", args);
+    throw new Error("SeekTarget.SetTotalRepairTime is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetupShipRepair (MAP_METHOD_AND_WRAP). */
@@ -138,7 +138,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SetupShipRepair(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SetupShipRepair", args);
+    throw new Error("SeekTarget.SetupShipRepair is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SplitBoundingBox (MAP_METHOD_AND_WRAP). */
@@ -146,7 +146,7 @@ export class SeekTarget extends CjsModel
   @impl.notImplemented
   SplitBoundingBox(...args)
   {
-    throw CjsModel.notImplemented("SeekTarget", "SplitBoundingBox", args);
+    throw new Error("SeekTarget.SplitBoundingBox is not implemented in CarbonEngineJS.");
   }
 
 }

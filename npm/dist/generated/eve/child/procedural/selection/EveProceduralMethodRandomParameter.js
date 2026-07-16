@@ -14,7 +14,7 @@ class EveProceduralMethodRandomParameter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveProceduralMethodRandomParameter",
       family: "eve/child/procedural/selection"
-    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("EveChild")], 16, "child"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.int32], 16, "weighting"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, void 0, type.model("EveChild")], 16, "child"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.int32], 16, "weighting"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

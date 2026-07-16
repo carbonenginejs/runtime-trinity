@@ -39,7 +39,7 @@ export class Tr2GpuBuffer extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("Tr2GpuBuffer", "__init__", args);
+    throw new Error("Tr2GpuBuffer.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method DebugGetData -> PyGetData (MAP_METHOD). */
@@ -47,7 +47,7 @@ export class Tr2GpuBuffer extends CjsModel
   @impl.notImplemented
   DebugGetData(...args)
   {
-    throw CjsModel.notImplemented("Tr2GpuBuffer", "DebugGetData", args);
+    throw new Error("Tr2GpuBuffer.DebugGetData is not implemented in CarbonEngineJS.");
   }
 
 }

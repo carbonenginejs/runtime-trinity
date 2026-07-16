@@ -11,12 +11,12 @@ export class Tr2RenderNodeSprite2dScene extends CjsModel
 
   /** m_scene (Tr2Sprite2dScenePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Sprite2dScene")
+  @type.model("Tr2Sprite2dScene")
   scene = null;
 
   /** m_background (ITr2RenderNodePtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITr2RenderNode")
+  @type.model("ITr2RenderNode")
   background = null;
 
 }

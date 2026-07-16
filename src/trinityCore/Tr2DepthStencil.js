@@ -52,7 +52,7 @@ export class Tr2DepthStencil extends CjsModel
   @impl.notImplemented
   __init__(...args)
   {
-    throw CjsModel.notImplemented("Tr2DepthStencil", "__init__", args);
+    throw new Error("Tr2DepthStencil.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Create (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
@@ -60,7 +60,7 @@ export class Tr2DepthStencil extends CjsModel
   @impl.notImplemented
   Create(...args)
   {
-    throw CjsModel.notImplemented("Tr2DepthStencil", "Create", args);
+    throw new Error("Tr2DepthStencil.Create is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HasALObject (MAP_METHOD_AND_WRAP). */
@@ -68,7 +68,7 @@ export class Tr2DepthStencil extends CjsModel
   @impl.notImplemented
   HasALObject(...args)
   {
-    throw CjsModel.notImplemented("Tr2DepthStencil", "HasALObject", args);
+    throw new Error("Tr2DepthStencil.HasALObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method sharedHandle -> GetSharedHandle (MAP_METHOD_AND_WRAP). */
@@ -76,7 +76,7 @@ export class Tr2DepthStencil extends CjsModel
   @impl.notImplemented
   sharedHandle(...args)
   {
-    throw CjsModel.notImplemented("Tr2DepthStencil", "sharedHandle", args);
+    throw new Error("Tr2DepthStencil.sharedHandle is not implemented in CarbonEngineJS.");
   }
 
 }

@@ -1,8 +1,9 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
 import { EveBoosterSet2Renderable as _EveBoosterSet2Render } from './EveBoosterSet2Renderable.js';
@@ -143,7 +144,7 @@ new class extends _identity {
       return true;
     }
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "staticTrailLength")) {
+      if (hasModifiedProperty(properties, "staticTrailLength")) {
         _EveBoosterSet.#UpdateStaticTrailOffsets(this);
       }
       if (this.glows && _EveBoosterSet.#HasModifiedFlareProperty(properties)) {
@@ -320,7 +321,7 @@ new class extends _identity {
     _EveBoosterSet.#AddFlare(owner, position, direction, 3.01, seed, 1 + seed, scale * owner.haloScaleX, scale * owner.haloScaleY, owner.haloColor, owner.warpHaloColor);
   }
   #HasModifiedFlareProperty(properties) {
-    return _EveBoosterSet.#flareProperties.some(property => CjsModel.hasModifiedProperty(properties, property));
+    return _EveBoosterSet.#flareProperties.some(property => hasModifiedProperty(properties, property));
   }
   #AddFlare(owner, position, direction, distance, blinkRate, blinkPhase, minScale, maxScale, color, warpColor) {
     const spritePosition = vec3.scaleAndAdd(vec3.create(), position, direction, -distance);

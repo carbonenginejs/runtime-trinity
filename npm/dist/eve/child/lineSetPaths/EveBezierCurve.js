@@ -1,10 +1,11 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
+import { hasModifiedProperty } from '../../../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { sph3 } from '@carbonenginejs/core-math/sph3';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveChildTransform as _EveChildTransform } from '../EveChildTransform.js';
 
@@ -50,13 +51,13 @@ new class extends _identity {
       return true;
     }
     OnModified(properties = null) {
-      if (CjsModel.hasModifiedProperty(properties, "completeness")) {
+      if (hasModifiedProperty(properties, "completeness")) {
         this.completeness = Math.min(2, Math.max(0, this.completeness));
       }
-      if (CjsModel.hasModifiedProperty(properties, "segments")) {
+      if (hasModifiedProperty(properties, "segments")) {
         this.segments = Math.min(128, Math.max(1, this.segments));
       }
-      if (CjsModel.hasModifiedProperty(properties, "segmentOffset")) {
+      if (hasModifiedProperty(properties, "segmentOffset")) {
         this.segmentOffset = Math.min(1, Math.max(0, this.segmentOffset));
       }
       this.#regeneratePoints = true;

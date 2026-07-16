@@ -68,13 +68,13 @@ export class BehaviorGroup extends EveEntity
   /** m_booster (BehaviorGroupBoosterPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("BehaviorGroupBooster")
+  @type.model("BehaviorGroupBooster")
   boosters = null;
 
   /** m_mesh (Tr2MeshPtr) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
-  @type.objectRef("Tr2Mesh")
+  @type.model("Tr2Mesh")
   mesh = null;
 
   /** m_behaviorGroupName (BlueSharedString) [READWRITE, PERSIST] */
@@ -112,7 +112,7 @@ export class BehaviorGroup extends EveEntity
   @impl.notImplemented
   CreateAgentTree(...args)
   {
-    throw EveEntity.notImplemented("BehaviorGroup", "CreateAgentTree", args);
+    throw new Error("BehaviorGroup.CreateAgentTree is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method AddAgent (MAP_METHOD_AND_WRAP). */
@@ -120,7 +120,7 @@ export class BehaviorGroup extends EveEntity
   @impl.notImplemented
   AddAgent(...args)
   {
-    throw EveEntity.notImplemented("BehaviorGroup", "AddAgent", args);
+    throw new Error("BehaviorGroup.AddAgent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RemoveAgent (MAP_METHOD_AND_WRAP). */
@@ -128,7 +128,7 @@ export class BehaviorGroup extends EveEntity
   @impl.notImplemented
   RemoveAgent(...args)
   {
-    throw EveEntity.notImplemented("BehaviorGroup", "RemoveAgent", args);
+    throw new Error("BehaviorGroup.RemoveAgent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
@@ -136,7 +136,7 @@ export class BehaviorGroup extends EveEntity
   @impl.notImplemented
   SetCount(...args)
   {
-    throw EveEntity.notImplemented("BehaviorGroup", "SetCount", args);
+    throw new Error("BehaviorGroup.SetCount is not implemented in CarbonEngineJS.");
   }
 
 }

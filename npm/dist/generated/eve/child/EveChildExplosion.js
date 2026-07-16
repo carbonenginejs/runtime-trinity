@@ -15,7 +15,7 @@ class EveChildExplosion extends _EveChildContainer {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildExplosion",
       family: "eve/child"
-    })], [[[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Play"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Stop"]], 0, void 0, _EveChildContainer));
+    })], [[[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Play"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Stop"]], 0, void 0, _EveChildContainer));
   }
   constructor(...args) {
     super(...args);
@@ -83,22 +83,22 @@ class EveChildExplosion extends _EveChildContainer {
 
   /** Carbon method SetLocalExplosionTransforms (MAP_METHOD_AND_WRAP). */
   SetLocalExplosionTransforms(...args) {
-    throw _EveChildContainer.notImplemented("EveChildExplosion", "SetLocalExplosionTransforms", args);
+    throw new Error("EveChildExplosion.SetLocalExplosionTransforms is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetGlobalExplosionOffset (MAP_METHOD_AND_WRAP). */
   SetGlobalExplosionOffset(...args) {
-    throw _EveChildContainer.notImplemented("EveChildExplosion", "SetGlobalExplosionOffset", args);
+    throw new Error("EveChildExplosion.SetGlobalExplosionOffset is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Play (MAP_METHOD_AND_WRAP). */
   Play(...args) {
-    throw _EveChildContainer.notImplemented("EveChildExplosion", "Play", args);
+    throw new Error("EveChildExplosion.Play is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Stop (MAP_METHOD_AND_WRAP). */
   Stop(...args) {
-    throw _EveChildContainer.notImplemented("EveChildExplosion", "Stop", args);
+    throw new Error("EveChildExplosion.Stop is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

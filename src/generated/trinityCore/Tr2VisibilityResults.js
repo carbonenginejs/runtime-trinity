@@ -18,7 +18,7 @@ export class Tr2VisibilityResults extends CjsModel
   @impl.notImplemented
   Clear(...args)
   {
-    throw CjsModel.notImplemented("Tr2VisibilityResults", "Clear", args);
+    throw new Error("Tr2VisibilityResults.Clear is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetNumVisibilityEvents (MAP_METHOD_AND_WRAP). */
@@ -26,7 +26,7 @@ export class Tr2VisibilityResults extends CjsModel
   @impl.notImplemented
   GetNumVisibilityEvents(...args)
   {
-    throw CjsModel.notImplemented("Tr2VisibilityResults", "GetNumVisibilityEvents", args);
+    throw new Error("Tr2VisibilityResults.GetNumVisibilityEvents is not implemented in CarbonEngineJS.");
   }
 
 }

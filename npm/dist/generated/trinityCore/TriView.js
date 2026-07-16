@@ -26,7 +26,7 @@ class TriView extends CjsModel {
 
   /** Carbon method SetLookAtPosition (MAP_METHOD_AND_WRAP). */
   SetLookAtPosition(...args) {
-    throw CjsModel.notImplemented("TriView", "SetLookAtPosition", args);
+    throw new Error("TriView.SetLookAtPosition is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

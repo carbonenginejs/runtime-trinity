@@ -14,7 +14,7 @@ class Tr2ExternalParameter extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ExternalParameter",
       family: "trinityCore"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.objectRef("IRoot")], 16, "destinationObject"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationAttribute"], [[io, io.read, type, type.boolean], 16, "valid"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetValue"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetValue"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.model("IRoot")], 16, "destinationObject"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationAttribute"], [[io, io.read, type, type.boolean], 16, "valid"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetValue"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetValue"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -34,12 +34,12 @@ class Tr2ExternalParameter extends CjsModel {
 
   /** Carbon method GetValue (MAP_METHOD_AND_WRAP). */
   GetValue(...args) {
-    throw CjsModel.notImplemented("Tr2ExternalParameter", "GetValue", args);
+    throw new Error("Tr2ExternalParameter.GetValue is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetValue (MAP_METHOD_AND_WRAP). */
   SetValue(...args) {
-    throw CjsModel.notImplemented("Tr2ExternalParameter", "SetValue", args);
+    throw new Error("Tr2ExternalParameter.SetValue is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

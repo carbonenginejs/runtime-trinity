@@ -29,7 +29,7 @@ export class EveChildInstanceMeshRenderer extends EveChildMesh
 
   /** m_distribution (IEveDistributionMethodPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("IEveDistributionMethod")
+  @type.model("IEveDistributionMethod")
   distribution = null;
 
   /** m_staticOffsetScale (Vector3) [READWRITE, PERSIST] */
@@ -42,7 +42,13 @@ export class EveChildInstanceMeshRenderer extends EveChildMesh
   @impl.notImplemented
   RefreshStaticGeometry(...args)
   {
-    throw EveChildMesh.notImplemented("EveChildInstanceMeshRenderer", "RefreshStaticGeometry", args);
+    throw new Error("EveChildInstanceMeshRenderer.RefreshStaticGeometry is not implemented in CarbonEngineJS.");
   }
+
+  static RotationalConstraints = Object.freeze({
+    NONE: 0,
+    BILLBOARD: 1,
+    BILLBOARD_WITH_Z_LOCKED: 2,
+  });
 
 }

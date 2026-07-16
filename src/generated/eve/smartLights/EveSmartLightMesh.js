@@ -19,7 +19,7 @@ export class EveSmartLightMesh extends EveChildInstanceMeshRenderer
   @impl.notImplemented
   RefreshStaticGeometry(...args)
   {
-    throw EveChildInstanceMeshRenderer.notImplemented("EveSmartLightMesh", "RefreshStaticGeometry", args);
+    throw new Error("EveSmartLightMesh.RefreshStaticGeometry is not implemented in CarbonEngineJS.");
   }
 
 }

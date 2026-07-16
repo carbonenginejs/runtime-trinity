@@ -128,4 +128,11 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   {
     CjsShaderVectorParameter.writeVectorDestination(out, this.GetValue(), 16);
   }
+
+  /** JS convenience: raw values this parameter class claims for map-form inference. */
+  static isValue(value)
+  {
+    return CjsShaderVectorParameter.isNumberArrayValue(value, 16);
+  }
+
 }

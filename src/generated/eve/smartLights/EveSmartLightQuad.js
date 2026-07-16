@@ -17,12 +17,12 @@ export class EveSmartLightQuad extends EveChildTransform
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
-  /** m_brightness (Float_16) [READWRITE, PERSIST] */
+  /** m_brightness (float) [READWRITE, PERSIST] */
   @io.persist
-  @type.struct("Float_16")
+  @type.float32
   brightness = 1;
 
   /** m_display (bool) [READWRITE, PERSIST] */

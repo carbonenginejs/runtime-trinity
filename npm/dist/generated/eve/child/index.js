@@ -6,7 +6,6 @@ export { EveChildCloud2 } from './EveChildCloud2.js';
 export { EveChildEffectPropagator } from './EveChildEffectPropagator.js';
 export { EveChildExplosion } from './EveChildExplosion.js';
 export { EveChildFogVolume } from './EveChildFogVolume.js';
-export { EveChildInheritProperties } from './EveChildInheritProperties.js';
 export { EveChildInstanceContainer } from './EveChildInstanceContainer.js';
 export { EveChildInstanceMeshRenderer } from './EveChildInstanceMeshRenderer.js';
 export { EveChildInstanceTransform } from './EveChildInstanceTransform.js';

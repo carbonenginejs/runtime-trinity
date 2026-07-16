@@ -40,27 +40,27 @@ class EveMultiEffect extends CjsModel {
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   Rebind(...args) {
-    throw CjsModel.notImplemented("EveMultiEffect", "Rebind", args);
+    throw new Error("EveMultiEffect.Rebind is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   HandleControllerEvent(...args) {
-    throw CjsModel.notImplemented("EveMultiEffect", "HandleControllerEvent", args);
+    throw new Error("EveMultiEffect.HandleControllerEvent is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(...args) {
-    throw CjsModel.notImplemented("EveMultiEffect", "SetControllerVariable", args);
+    throw new Error("EveMultiEffect.SetControllerVariable is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method SetParameter (MAP_METHOD_AND_WRAP). */
   SetParameter(...args) {
-    throw CjsModel.notImplemented("EveMultiEffect", "SetParameter", args);
+    throw new Error("EveMultiEffect.SetParameter is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers(...args) {
-    throw CjsModel.notImplemented("EveMultiEffect", "StartControllers", args);
+    throw new Error("EveMultiEffect.StartControllers is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -50,7 +50,7 @@ export class TriStepRenderTexture extends TriRenderStep
   @impl.notImplemented
   __init__(...args)
   {
-    throw TriRenderStep.notImplemented("TriStepRenderTexture", "__init__", args);
+    throw new Error("TriStepRenderTexture.__init__ is not implemented in CarbonEngineJS.");
   }
 
 }

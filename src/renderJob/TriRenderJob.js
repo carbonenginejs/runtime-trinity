@@ -209,4 +209,7 @@ export class TriRenderJob extends CjsModel
   {
     executor?.AddDiagnostic?.({ type, ...detail });
   }
+
+  static TriRenderJobStatus = TriRenderJob.Status;
+
 }

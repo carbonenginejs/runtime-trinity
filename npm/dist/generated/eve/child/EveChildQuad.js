@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type } from '@carbonenginejs/core-types/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
 
 let _initClass, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_minScreenSize, _init_extra_minScreenSize, _init_brightness, _init_extra_brightness, _init_color, _init_extra_color, _init_viewRotation, _init_extra_viewRotation, _init_currentScreenSize, _init_extra_currentScreenSize, _init_display, _init_extra_display, _init_editMode, _init_extra_editMode;
 
@@ -14,7 +15,7 @@ class EveChildQuad extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildQuad",
       family: "eve/child"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, void 0, type.struct("Float_16")], 16, "brightness"], [[io, io.persist, void 0, type.struct("Float_16")], 16, "color"], [[io, io.persist, type, type.float32], 16, "viewRotation"], [[io, io.read, type, type.unknown], 16, "currentScreenSize"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.readwrite, type, type.boolean], 16, "editMode"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, type, type.float32], 16, "brightness"], [[io, io.persist, type, type.color], 16, "color"], [[io, io.persist, type, type.float32], 16, "viewRotation"], [[io, io.read, type, type.float32], 16, "currentScreenSize"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.readwrite, type, type.boolean], 16, "editMode"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -29,11 +30,11 @@ class EveChildQuad extends _EveChildTransform {
   /** m_minScreenSize (float) [READWRITE, PERSIST] */
   minScreenSize = (_init_extra_effect(this), _init_minScreenSize(this, 0));
 
-  /** m_brightness (Float_16) [READWRITE, PERSIST] */
+  /** m_brightness (float) [READWRITE, PERSIST] */
   brightness = (_init_extra_minScreenSize(this), _init_brightness(this, 1));
 
-  /** m_color (Float_16) [READWRITE, PERSIST] */
-  color = (_init_extra_brightness(this), _init_color(this, [1, 1, 1, 1]));
+  /** m_color (Color) [READWRITE, PERSIST] */
+  color = (_init_extra_brightness(this), _init_color(this, vec4.fromValues(1, 1, 1, 1)));
 
   /** m_viewRotation (float) [READWRITE, PERSIST] */
   viewRotation = (_init_extra_color(this), _init_viewRotation(this, 0));

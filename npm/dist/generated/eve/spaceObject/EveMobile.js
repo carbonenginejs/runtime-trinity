@@ -28,17 +28,17 @@ class EveMobile extends _EveSpaceObject {
 
   /** Carbon method GetTurretLocatorIndex (MAP_METHOD_AND_WRAP). */
   GetTurretLocatorIndex(...args) {
-    throw _EveSpaceObject.notImplemented("EveMobile", "GetTurretLocatorIndex", args);
+    throw new Error("EveMobile.GetTurretLocatorIndex is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method RebuildTurretPositions (MAP_METHOD_AND_WRAP). */
   RebuildTurretPositions(...args) {
-    throw _EveSpaceObject.notImplemented("EveMobile", "RebuildTurretPositions", args);
+    throw new Error("EveMobile.RebuildTurretPositions is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GetTurretLocatorCount (MAP_METHOD_AND_WRAP). */
   GetTurretLocatorCount(...args) {
-    throw _EveSpaceObject.notImplemented("EveMobile", "GetTurretLocatorCount", args);
+    throw new Error("EveMobile.GetTurretLocatorCount is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

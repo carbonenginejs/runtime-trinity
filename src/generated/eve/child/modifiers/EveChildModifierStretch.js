@@ -11,7 +11,7 @@ export class EveChildModifierStretch extends CjsModel
 
   /** m_dest (ITriVectorFunctionPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("ITriVectorFunction")
+  @type.model("ITriVectorFunction")
   dest = null;
 
 }

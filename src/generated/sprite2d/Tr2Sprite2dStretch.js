@@ -57,4 +57,10 @@ export class Tr2Sprite2dStretch extends Tr2TexturedSpriteObject
   @type.float32
   saturation = 1;
 
+  static Tr2StretchScaleBehavior = Object.freeze({
+    S2D_SSC_ALIGN_BOTTOMRIGHT: 0,
+    S2D_SSC_ALIGN_TOPLEFT: 1,
+    S2D_SSC_SCALE: 2,
+  });
+
 }

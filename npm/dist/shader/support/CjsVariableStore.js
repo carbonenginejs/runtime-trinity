@@ -1,10 +1,7 @@
-import { CjsModel } from '@carbonenginejs/core-types/model';
-
-class CjsVariableStore extends CjsModel {
+class CjsVariableStore {
   static #global = null;
   #variables = new Map();
   constructor(values = null) {
-    super();
     if (values) {
       this.SetValues(values);
     }
@@ -96,12 +93,11 @@ class CjsVariableStore extends CjsModel {
     return CjsVariableStore.#global;
   }
 }
-class CjsStoredVariable extends CjsModel {
+class CjsStoredVariable {
   name = "";
   value = undefined;
   type = "value";
   constructor(name = "", value = undefined, type = null) {
-    super();
     this.name = String(name);
     this.value = value;
     this.type = type ?? CjsStoredVariable.inferType(value);

@@ -45,7 +45,7 @@ export class TriRigidOrientation extends CjsModel
   @impl.notImplemented
   Sort(...args)
   {
-    throw CjsModel.notImplemented("TriRigidOrientation", "Sort", args);
+    throw new Error("TriRigidOrientation.Sort is not implemented in CarbonEngineJS.");
   }
 
 }

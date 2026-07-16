@@ -25,7 +25,7 @@ class EveSmartLightMesh extends _EveChildInstanceMesh {
 
   /** Carbon method RefreshStaticGeometry (MAP_METHOD_AND_WRAP). */
   RefreshStaticGeometry(...args) {
-    throw _EveChildInstanceMesh.notImplemented("EveSmartLightMesh", "RefreshStaticGeometry", args);
+    throw new Error("EveSmartLightMesh.RefreshStaticGeometry is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

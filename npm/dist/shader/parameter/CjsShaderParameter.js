@@ -87,6 +87,14 @@ class CjsShaderParameter extends CjsModel {
   static isWritableNumberArray(value, length) {
     return !!value && typeof value === "object" && "length" in value && Number(value.length) >= length;
   }
+  static isNumberArrayValue(value, length) {
+    if (!value || typeof value !== "object" || Number(value.length) !== length) return false;
+    if (!Array.isArray(value) && !ArrayBuffer.isView(value)) return false;
+    for (let index = 0; index < length; index++) {
+      if (typeof value[index] !== "number") return false;
+    }
+    return true;
+  }
 }
 class CjsShaderVectorParameter extends CjsShaderParameter {
   static isVectorDestination(value, length) {

@@ -1,6 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveBezierCurve.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveBezierCurve.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveBezierCurve_Blue.cpp
+import { hasModifiedProperty } from "../../../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { sph3 } from "@carbonenginejs/core-math/sph3";
@@ -128,15 +129,15 @@ export class EveBezierCurve extends EveChildTransform
   @impl.adapted
   OnModified(properties = null)
   {
-    if (CjsModel.hasModifiedProperty(properties, "completeness"))
+    if (hasModifiedProperty(properties, "completeness"))
     {
       this.completeness = Math.min(2, Math.max(0, this.completeness));
     }
-    if (CjsModel.hasModifiedProperty(properties, "segments"))
+    if (hasModifiedProperty(properties, "segments"))
     {
       this.segments = Math.min(128, Math.max(1, this.segments));
     }
-    if (CjsModel.hasModifiedProperty(properties, "segmentOffset"))
+    if (hasModifiedProperty(properties, "segmentOffset"))
     {
       this.segmentOffset = Math.min(1, Math.max(0, this.segmentOffset));
     }

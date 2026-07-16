@@ -14,7 +14,7 @@ class EveMeshOverlayEffect extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveMeshOverlayEffect",
       family: "eve/overlays"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.objectRef("TriCurveSet")], 16, "curveSet"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "additiveEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "decalEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "distortionEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "opaqueEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "transparentEffects"], [[io, io.readwrite, type, type.boolean], 16, "update"], [[io, io.readwrite, type, type.boolean], 16, "display"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.model("TriCurveSet")], 16, "curveSet"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "additiveEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "decalEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "distortionEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "opaqueEffects"], [[io, io.persist, void 0, type.list("Tr2Effect")], 16, "transparentEffects"], [[io, io.readwrite, type, type.boolean], 16, "update"], [[io, io.readwrite, type, type.boolean], 16, "display"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

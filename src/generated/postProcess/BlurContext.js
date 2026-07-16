@@ -29,4 +29,28 @@ export class BlurContext extends CjsModel
   @schema.enum("BlurType")
   type = 0;
 
+  static BlurChannel = Object.freeze({
+    BC_r: 0,
+    BC_g: 1,
+    BC_b: 2,
+    BC_a: 3,
+    BC_rgba: 4,
+  });
+
+  static BlurFinalize = Object.freeze({
+    BF_None: 0,
+    BF_MaxOfAllChannels: 1,
+  });
+
+  static BlurProcess = Object.freeze({
+    BP_None: 0,
+    BP_Minimum: 1,
+    BP_Maximum: 2,
+  });
+
+  static BlurType = Object.freeze({
+    BT_Big: 0,
+    BT_Small: 1,
+  });
+
 }

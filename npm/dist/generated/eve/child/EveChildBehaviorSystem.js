@@ -34,7 +34,7 @@ class EveChildBehaviorSystem extends _EveChildTransform {
 
   /** Carbon method GetVertexElementAddedThroughCode (MAP_METHOD_AND_WRAP). */
   GetVertexElementAddedThroughCode(...args) {
-    throw _EveChildTransform.notImplemented("EveChildBehaviorSystem", "GetVertexElementAddedThroughCode", args);
+    throw new Error("EveChildBehaviorSystem.GetVertexElementAddedThroughCode is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

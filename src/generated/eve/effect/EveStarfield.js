@@ -52,7 +52,7 @@ export class EveStarfield extends CjsModel
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
   @io.persist
-  @type.objectRef("Tr2Effect")
+  @type.model("Tr2Effect")
   effect = null;
 
   /** m_starCount (int32_t) [READWRITE, NOTIFY, PERSIST] */

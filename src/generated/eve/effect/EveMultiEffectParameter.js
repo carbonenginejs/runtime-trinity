@@ -26,4 +26,11 @@ export class EveMultiEffectParameter extends CjsModel
   @type.objectRef("IRoot")
   object = null;
 
+  static ParameterType = Object.freeze({
+    TYPE_EVESPACEOBJECT: 0,
+    TYPE_EVEEFFECTROOT: 1,
+    TYPE_ANYTHING: 2,
+    TYPE_UNDEFINED: 3,
+  });
+
 }

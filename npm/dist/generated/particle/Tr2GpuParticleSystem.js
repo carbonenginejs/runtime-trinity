@@ -14,7 +14,7 @@ class Tr2GpuParticleSystem extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2GpuParticleSystem",
       family: "particle"
-    })], [[[io, io.readwrite, type, type.boolean], 16, "enableEmit"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.readwrite, type, type.boolean], 16, "enableSort"], [[io, io.readwrite, type, type.boolean], 16, "enableUpdate"], [[io, io.readwrite, type, type.boolean], 16, "updateVisibleCount"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "maxParticles"], [[io, io.read, type, type.uint32], 16, "visibleCount"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "clear"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "emit"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "sortInner"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "sortStep"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "sort"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "render"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "update"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "setDrawParameters"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "setSortParameters"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Clear"]], 0, void 0, CjsModel));
+    })], [[[io, io.readwrite, type, type.boolean], 16, "enableEmit"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.readwrite, type, type.boolean], 16, "enableSort"], [[io, io.readwrite, type, type.boolean], 16, "enableUpdate"], [[io, io.readwrite, type, type.boolean], 16, "updateVisibleCount"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "maxParticles"], [[io, io.read, type, type.uint32], 16, "visibleCount"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "clear"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "emit"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "sortInner"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "sortStep"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "sort"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "render"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "update"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "setDrawParameters"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "setSortParameters"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Clear"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -70,7 +70,7 @@ class Tr2GpuParticleSystem extends CjsModel {
 
   /** Carbon method Clear (MAP_METHOD_AND_WRAP). */
   Clear(...args) {
-    throw CjsModel.notImplemented("Tr2GpuParticleSystem", "Clear", args);
+    throw new Error("Tr2GpuParticleSystem.Clear is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

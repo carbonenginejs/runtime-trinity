@@ -35,37 +35,37 @@ class Tr2RenderTarget extends CjsModel {
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   __init__(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "__init__", args);
+    throw new Error("Tr2RenderTarget.__init__ is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Create (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   Create(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "Create", args);
+    throw new Error("Tr2RenderTarget.Create is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method CreateArray -> Create (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   CreateArray(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "CreateArray", args);
+    throw new Error("Tr2RenderTarget.CreateArray is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method GenerateMipMaps (MAP_METHOD_AND_WRAP). */
   GenerateMipMaps(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "GenerateMipMaps", args);
+    throw new Error("Tr2RenderTarget.GenerateMipMaps is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method Resolve (MAP_METHOD_AND_WRAP). */
   Resolve(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "Resolve", args);
+    throw new Error("Tr2RenderTarget.Resolve is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method HasALObject (MAP_METHOD_AND_WRAP). */
   HasALObject(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "HasALObject", args);
+    throw new Error("Tr2RenderTarget.HasALObject is not implemented in CarbonEngineJS.");
   }
 
   /** Carbon method sharedHandle -> GetSharedHandle (MAP_METHOD_AND_WRAP). */
   sharedHandle(...args) {
-    throw CjsModel.notImplemented("Tr2RenderTarget", "sharedHandle", args);
+    throw new Error("Tr2RenderTarget.sharedHandle is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

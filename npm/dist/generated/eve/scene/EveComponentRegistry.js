@@ -14,7 +14,7 @@ class EveComponentRegistry extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveComponentRegistry",
       family: "eve/scene"
-    })], [[type.rawStruct("mutable std::shared_mutex"), 0, "componentCollectionLoopGuard"], [type.list("EveEntity"), 0, "registeredEntities"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetComponentInfo"]], 0, void 0, CjsModel));
+    })], [[type.rawStruct("std::shared_mutex"), 0, "componentCollectionLoopGuard"], [type.list("EveEntity"), 0, "registeredEntities"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetComponentInfo"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -28,7 +28,7 @@ class EveComponentRegistry extends CjsModel {
 
   /** Carbon method GetComponentInfo (MAP_METHOD_AND_WRAP). */
   GetComponentInfo(...args) {
-    throw CjsModel.notImplemented("EveComponentRegistry", "GetComponentInfo", args);
+    throw new Error("EveComponentRegistry.GetComponentInfo is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

@@ -3,6 +3,7 @@ import { CjsModel } from '@carbonenginejs/core-types/model';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { LightData as _LightData } from '../../generated/eve/lights/LightData.js';
+import { PerLightShadowSetting } from '../../generated/eve/lights/enums.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_startTime, _init_extra_startTime, _init_isDynamic, _init_extra_isDynamic, _init_brightnessMultiplier, _init_extra_brightnessMultiplier, _init_boneTransform, _init_extra_boneTransform, _init_lightProfile, _init_extra_lightProfile, _init_lightProfilePath, _init_extra_lightProfilePath, _init_lightData, _init_extra_lightData, _init_type, _init_extra_type;
 let _Tr2Light;
@@ -56,7 +57,7 @@ new class extends _identity {
     lightData = (_init_extra_lightProfilePath(this), _init_lightData(this, new _LightData()));
     type = (_init_extra_lightData(this), _init_type(this, _Tr2Light.UNDEFINED_LIGHT));
     SetLightData(lightData) {
-      this.lightData = lightData instanceof _LightData ? _LightData.fromValues(lightData) : _LightData.fromValues(lightData ?? {});
+      this.lightData = lightData instanceof _LightData ? _LightData.from(lightData) : _LightData.from(lightData ?? {});
     }
     SetBrightnessMultiplier(multiplier) {
       this.brightnessMultiplier = Number(multiplier);
@@ -85,6 +86,8 @@ new class extends _identity {
   POINT_LIGHT = 1;
   SPOT_LIGHT = 2;
   COUNT = 3;
+  LIGHT_TYPE = _Tr2Light.LightType;
+  PerLightShadowSetting = PerLightShadowSetting;
   constructor() {
     super(_Tr2Light), _initClass();
   }

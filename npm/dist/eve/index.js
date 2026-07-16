@@ -11,6 +11,8 @@ export { EveBannerSet } from './EveBannerSet.js';
 export { EveBoosterSet2 } from './EveBoosterSet2.js';
 export { EveBoosterSet2Renderable } from './EveBoosterSet2Renderable.js';
 export { EveImpactOverlay } from './EveImpactOverlay.js';
+export { EveHazeSet } from './EveHazeSet.js';
+export { EveHazeSetLight } from './EveHazeSetLight.js';
 export { EveLineData } from './EveLineData.js';
 export { EveLocator2 } from './EveLocator2.js';
 export { EveLocatorSets } from './EveLocatorSets.js';
@@ -65,6 +67,7 @@ export { EveVirtualCameraTransitionBase } from './virtualCamera/transition/EveVi
 export { EveVirtualCameraTransitionCut } from './virtualCamera/transition/EveVirtualCameraTransitionCut.js';
 export { EveVirtualCameraTransitionLerp } from './virtualCamera/transition/EveVirtualCameraTransitionLerp.js';
 export { EveChildContainer } from './child/EveChildContainer.js';
+export { EveChildInheritProperties } from './child/EveChildInheritProperties.js';
 export { EveChildInstancedMeshes } from './child/EveChildInstancedMeshes.js';
 export { EveChildMesh } from './child/EveChildMesh.js';
 export { EveChildTransform } from './child/EveChildTransform.js';
@@ -80,4 +83,5 @@ export { EveBoxVolume } from './volume/EveBoxVolume.js';
 export { EveEllipsoidVolume } from './volume/EveEllipsoidVolume.js';
 export { EveSphereVolume } from './volume/EveSphereVolume.js';
 export { EveSpaceObject2 } from './spaceObject/EveSpaceObject2.js';
+export { EveStation2 } from './spaceObject/EveStation2.js';
 //# sourceMappingURL=index.js.map

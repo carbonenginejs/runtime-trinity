@@ -5,6 +5,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { Tr2ScalarFader } from "../curves/Tr2ScalarFader.js";
+import { ImpactConfiguration } from "../generated/include/enums.js";
 
 
 @type.define({ className: "EveImpactOverlay", family: "eve/overlays/impact" })
@@ -223,4 +224,7 @@ export class EveImpactOverlay extends CjsModel
       default: return null;
     }
   }
+
+  static ImpactConfiguration = ImpactConfiguration;
+
 }
