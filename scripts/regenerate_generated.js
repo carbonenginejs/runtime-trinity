@@ -10,7 +10,15 @@ const workspaceRoot = path.resolve(root, "..");
 const schemaRoot = path.join(workspaceRoot, "format-carbon", "src", "schema");
 const runtimeSrc = path.join(root, "src");
 const outRoot = path.join(runtimeSrc, "generated");
-const RESOURCE_OWNED_CLASSES = new Set(["TriTextureRes", "TriGeometryRes", "Tr2EffectRes", "TriEffectRes", "Tr2ImageRes"]);
+const RESOURCE_OWNED_CLASSES = new Set(["TriTextureRes", "TriGeometryRes", "Tr2EffectRes", "TriEffectRes", "Tr2ImageRes", "WodPlaceableRes"]);
+
+// Character/interior domain owned by runtime-character (src/trinity there):
+// whole schema families plus named trinityCore classes. See
+// runtime-character/src/trinity/README.md for the ownership brief. Resource
+// classes win over these (e.g. WodPlaceableRes is wod-family but a *Res
+// resource, owned by runtime-resource) - the skip checks run in that order.
+const CHARACTER_OWNED_FAMILIES = new Set(["interior", "wod"]);
+const CHARACTER_OWNED_CLASSES = new Set(["Tr2Model", "Tr2SkinnedModel", "Tr2SkinnedObject"]);
 
 // Global vocabularies owned by runtime-const: generated classes import and
 // alias them as statics instead of inlining, keeping one source of truth.
@@ -172,6 +180,10 @@ function isResourceOwnedClass(className)
 function isResourceOwnedDoc(doc, schemaFamily)
 {
   return schemaFamily === "resources" || RESOURCE_OWNED_CLASSES.has(classNameFor(doc, ""));
+}
+function isCharacterOwnedDoc(doc, schemaFamily)
+{
+  return CHARACTER_OWNED_FAMILIES.has(schemaFamily) || CHARACTER_OWNED_CLASSES.has(classNameFor(doc, ""));
 }
 function resolveSourceRef(doc, value)
 {
@@ -719,6 +731,16 @@ for (const file of docs)
       className,
       schema: relativePosix(schemaRoot, file),
       reason: isSofOwnedDoc(rawDoc) ? "owned by runtime-sof" : "owned by runtime-resource"
+    });
+    continue;
+  }
+  if (isCharacterOwnedDoc(rawDoc, schemaFamily))
+  {
+    generationSummary.skipped.push({
+      family,
+      className,
+      schema: relativePosix(schemaRoot, file),
+      reason: "owned by runtime-character"
     });
     continue;
   }

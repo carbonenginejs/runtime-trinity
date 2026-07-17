@@ -5,10 +5,12 @@
 // per-frame context carries two runtime-only composition references -
 // renderContext (Tr2RenderContext) and device (TriDevice) - that do not exist
 // in the Carbon schema and would be dropped on every regeneration. The schema
-// scan of EveUpdateContext.h also emitted assignment-statement artifacts
-// (time / manager / ps) and left every scalar as @type.unknown; both are fixed
-// here. regenerate_generated.js skips this class automatically once a
-// hand-maintained source with the same name exists (see handSymbols).
+// scan of EveUpdateContext.h also emitted assignment-statement and local-variable
+// artifacts (time / manager / ps / deltaT / originNow / originDelta - deltaT is
+// computed on demand in Carbon, and the origin temporaries are UpdateOrigin
+// locals) and left every scalar as @type.unknown; both are fixed here.
+// regenerate_generated.js skips this class automatically once a hand-maintained
+// source with the same name exists (see handSymbols).
 //
 // Field types verified against Carbon EveUpdateContext.h. Per the engine field
 // rules: only reference fields (objectRef) default to null; scalars default to
@@ -29,10 +31,6 @@ export class EveUpdateContext extends CjsModel
   /** m_lastTime (Be::Time) */
   @type.float64
   lastTime = 0;
-
-  /** m_deltaT (float) */
-  @type.float32
-  deltaT = 0;
 
   /** m_visibilityThreshold (float) */
   @type.float32
@@ -82,9 +80,11 @@ export class EveUpdateContext extends CjsModel
   @type.objectRef("TriFrustum")
   frustum = null;
 
-  /** m_origin (Vector3d) - double-precision world origin for camera-relative rebasing. */
+  /** m_origin (Vector3d) - double-precision world origin for camera-relative
+   * rebasing. Carbon initializes it to UNINITIALIZED_ORIGIN (Infinity sentinel)
+   * so the first UpdateOrigin produces no shift. */
   @type.rawStruct("Vector3d")
-  origin = new Float64Array(3);
+  origin = new Float64Array(3).fill(Infinity);
 
   /** m_originShift (Vector3) */
   @type.vec3
@@ -93,14 +93,6 @@ export class EveUpdateContext extends CjsModel
   /** m_originShiftRemainder (Vector3d) */
   @type.rawStruct("Vector3d")
   originShiftRemainder = new Float64Array(3);
-
-  /** originNow (Vector3d) - this frame's raw origin before shifting. */
-  @type.rawStruct("Vector3d")
-  originNow = new Float64Array(3);
-
-  /** originDelta (Vector3d) = originNow - m_origin + m_originShiftRemainder. */
-  @type.rawStruct("Vector3d")
-  originDelta = new Float64Array(3);
 
   // --- Runtime composition (NOT in the Carbon schema) ---------------------
   // Carbon's modifiers read view state from Tr2Renderer statics; we thread it
@@ -127,13 +119,94 @@ export class EveUpdateContext extends CjsModel
   }
 
   /**
-   * Seconds elapsed since the previous frame (Carbon EveUpdateContext::GetDeltaT).
+   * Shifts the current time into lastTime and stores the new frame time
+   * (Carbon EveUpdateContext::SetTime).
+   * @param {Number} time
+   */
+  @carbon.method
+  @impl.implemented
+  SetTime(time)
+  {
+    this.lastTime = this.currentTime;
+    this.currentTime = time;
+  }
+
+  /**
+   * Seconds elapsed since the previous frame, computed on demand as Carbon does
+   * (EveUpdateContext::GetDeltaT): 0 until a second SetTime has run.
    * @returns {Number}
    */
   @carbon.method
   @impl.implemented
   GetDeltaT()
   {
-    return this.deltaT;
+    return this.lastTime !== 0 ? this.currentTime - this.lastTime : 0;
   }
+
+  /**
+   * Tracks the world origin from the ballpark's reference point and computes the
+   * per-frame origin shift (Carbon EveUpdateContext::UpdateOrigin): the
+   * double-precision delta is split into a float32 shift plus a double residual
+   * carried into the next frame; no shift is produced on the first stamped frame
+   * (origin still at the Infinity sentinel). The ballpark is duck-typed; per our
+   * out-last convention its reference-point read is
+   * GetReferencePoint(time, outVector3d) (Carbon passes the out pointer first).
+   * @param {Object|null} ballpark
+   */
+  @carbon.method
+  @impl.adapted
+  UpdateOrigin(ballpark)
+  {
+    this.ballpark = ballpark ?? null;
+
+    if (!ballpark?.GetReferencePoint)
+    {
+      return;
+    }
+
+    const originNow = EveUpdateContext.#originScratch;
+    ballpark.GetReferencePoint(this.currentTime, originNow);
+
+    if (this.origin[0] !== Infinity)
+    {
+      // originDelta = originNow - m_origin + m_originShiftRemainder (double),
+      // then split into float32 (originShift, negated) + double residual.
+      for (let axis = 0; axis < 3; axis++)
+      {
+        const delta = originNow[axis] - this.origin[axis] + this.originShiftRemainder[axis];
+        const deltaF = Math.fround(delta);
+        this.originShiftRemainder[axis] = delta - deltaF;
+        this.originShift[axis] = -deltaF;
+      }
+    }
+    this.origin.set(originNow);
+  }
+
+  /**
+   * World origin, or (0,0,0) while still uninitialized (Carbon
+   * EveUpdateContext::GetOrigin).
+   * @returns {Float64Array}
+   */
+  @carbon.method
+  @impl.adapted
+  GetOrigin()
+  {
+    return this.origin[0] !== Infinity ? this.origin : EveUpdateContext.#zeroOrigin;
+  }
+
+  /**
+   * Float32 origin shift for the current frame (Carbon
+   * EveUpdateContext::GetOriginShift).
+   * @returns {Float32Array}
+   */
+  @carbon.method
+  @impl.implemented
+  GetOriginShift()
+  {
+    return this.originShift;
+  }
+
+  static #originScratch = new Float64Array(3);
+
+  static #zeroOrigin = new Float64Array(3);
 }

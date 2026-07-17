@@ -4,7 +4,6 @@ export * from "./EveInstancedMeshManager.js";
 export * from "./EvePendingPickingReadback.js";
 export * from "./EvePickingContext.js";
 export * from "./EveSceneStaticParticles.js";
-export * from "./EveSpaceScene.js";
 export * from "./EveSpaceSceneRenderDriver.js";
 export * from "./Tr2OcclusionBuffer.js";
 export * from "./TriShadowFrustum.js";

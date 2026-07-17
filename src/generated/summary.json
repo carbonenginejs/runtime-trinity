@@ -1,11 +1,11 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 385,
-    "skipped": 242
+    "written": 367,
+    "skipped": 244
   },
   "enums": {
-    "written": 18,
+    "written": 17,
     "skippedEntries": 7
   },
   "skipped": [
@@ -535,6 +535,11 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "eve/scene",
+      "className": "EveSpaceScene",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "eve/perObjectData",
       "className": "EveSpherePinPerObjectData",
       "reason": "hand-maintained source exists"
@@ -582,6 +587,11 @@
     {
       "family": "eve/attachment/boosters",
       "className": "EveTrailsSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve",
+      "className": "EveUpdateContext",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1264,8 +1274,8 @@
       "enumsFile": false
     },
     "eve": {
-      "exports": 19,
-      "classes": 4,
+      "exports": 18,
+      "classes": 3,
       "enumsFile": true
     },
     "eve/attachment": {
@@ -1389,8 +1399,8 @@
       "enumsFile": true
     },
     "eve/scene": {
-      "exports": 11,
-      "classes": 11,
+      "exports": 10,
+      "classes": 10,
       "enumsFile": false
     },
     "eve/smartLights": {
@@ -1433,11 +1443,6 @@
       "classes": 13,
       "enumsFile": true
     },
-    "interior": {
-      "exports": 12,
-      "classes": 11,
-      "enumsFile": true
-    },
     "particle": {
       "exports": 20,
       "classes": 20,
@@ -1474,8 +1479,8 @@
       "enumsFile": false
     },
     "trinityCore": {
-      "exports": 81,
-      "classes": 80,
+      "exports": 78,
+      "classes": 77,
       "enumsFile": true
     },
     "ui": {
@@ -1487,11 +1492,6 @@
       "exports": 8,
       "classes": 8,
       "enumsFile": false
-    },
-    "wod": {
-      "exports": 2,
-      "classes": 2,
-      "enumsFile": false
     }
   },
   "generation": {
@@ -1499,8 +1499,8 @@
     "outRoot": "src/generated",
     "scannedDocs": 1247,
     "relevantDocs": 893,
-    "generated": 627,
-    "fallback": 123,
+    "generated": 611,
+    "fallback": 122,
     "skippedSof": 97,
     "errors": 0,
     "nonAsciiOutputs": 0,
@@ -1815,8 +1815,8 @@
       },
       "interior": {
         "docs": 12,
-        "generated": 11,
-        "fallback": 1,
+        "generated": 0,
+        "fallback": 0,
         "skippedSof": 0,
         "errors": 0
       },
@@ -1885,7 +1885,7 @@
       },
       "trinityCore": {
         "docs": 107,
-        "generated": 100,
+        "generated": 97,
         "fallback": 7,
         "skippedSof": 0,
         "errors": 0
@@ -1906,7 +1906,7 @@
       },
       "wod": {
         "docs": 2,
-        "generated": 2,
+        "generated": 0,
         "fallback": 0,
         "skippedSof": 0,
         "errors": 0
@@ -2463,12 +2463,6 @@
         "family": "include",
         "className": "Tr2Curve",
         "schema": "include/Tr2Curve.json",
-        "reason": "schema carries no field or method detail (interface/no-detail class)"
-      },
-      {
-        "family": "interior",
-        "className": "ITr2InteriorDynamic",
-        "schema": "interior/ITr2InteriorDynamic.json",
         "reason": "schema carries no field or method detail (interface/no-detail class)"
       },
       {
@@ -3266,6 +3260,78 @@
         "reason": "canonical runtime family is trinityCore"
       },
       {
+        "family": "interior",
+        "className": "ITr2InteriorDynamic",
+        "schema": "interior/ITr2InteriorDynamic.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorLightSet",
+        "schema": "interior/Tr2InteriorLightSet.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorLightSource",
+        "schema": "interior/Tr2InteriorLightSource.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorPerLightPSData",
+        "schema": "interior/Tr2InteriorPerLightPSData.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorPerObjectLightData",
+        "schema": "interior/Tr2InteriorPerObjectLightData.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorPerObjectPSData",
+        "schema": "interior/Tr2InteriorPerObjectPSData.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorPerObjectVSData",
+        "schema": "interior/Tr2InteriorPerObjectVSData.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorPlaceable",
+        "schema": "interior/Tr2InteriorPlaceable.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2InteriorScene",
+        "schema": "interior/Tr2InteriorScene.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2IntKeyGenerator",
+        "schema": "interior/Tr2IntKeyGenerator.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2IntSkinnedObject",
+        "schema": "interior/Tr2IntSkinnedObject.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "interior",
+        "className": "Tr2PerObjectParticleVSData",
+        "schema": "interior/Tr2PerObjectParticleVSData.json",
+        "reason": "owned by runtime-character"
+      },
+      {
         "family": "resources",
         "className": "AudioGeometryResData",
         "schema": "resources/AudioGeometryResData.json",
@@ -3509,6 +3575,36 @@
         "family": "resources",
         "className": "TriTextureRes",
         "schema": "resources/TriTextureRes.json",
+        "reason": "owned by runtime-resource"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2Model",
+        "schema": "trinityCore/Tr2Model.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2SkinnedModel",
+        "schema": "trinityCore/Tr2SkinnedModel.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2SkinnedObject",
+        "schema": "trinityCore/Tr2SkinnedObject.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "wod",
+        "className": "WodBakingScene",
+        "schema": "wod/WodBakingScene.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "wod",
+        "className": "WodPlaceableRes",
+        "schema": "wod/WodPlaceableRes.json",
         "reason": "owned by runtime-resource"
       }
     ],

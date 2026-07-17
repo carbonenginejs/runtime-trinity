@@ -50,5 +50,6 @@ export * from "./EveDistanceField.js";
 export * from "./virtualCamera/index.js";
 export * from "./child/index.js";
 export * from "./lights/index.js";
+export * from "./scene/index.js";
 export * from "./volume/index.js";
 export * from "./spaceObject/index.js";

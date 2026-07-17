@@ -212,7 +212,6 @@ test("EveUpdateContext has value-typed defaults with only reference fields null"
 
   // Scalars default to 0 / false, not null or undefined.
   assert.equal(context.currentTime, 0);
-  assert.equal(context.deltaT, 0);
   assert.equal(context.visibilityThreshold, 0);
   assert.equal(context.lodFactor, 0);
   assert.equal(context.invLodFactor, 0);
@@ -232,11 +231,14 @@ test("EveUpdateContext has value-typed defaults with only reference fields null"
   assert.equal(context.manager, undefined);
   assert.equal(context.ps, undefined);
 
-  // Time accessors.
-  context.currentTime = 12.5;
-  context.deltaT = 0.25;
+  // Time accessors: SetTime shifts current into last; deltaT is computed on
+  // demand and stays 0 until a second frame is stamped (Carbon semantics).
+  context.SetTime(12.5);
   assert.equal(context.GetTime(), 12.5);
-  assert.equal(context.GetDeltaT(), 0.25);
+  assert.equal(context.GetDeltaT(), 0);
+  context.SetTime(12.75);
+  assert.equal(context.GetTime(), 12.75);
+  assert.ok(Math.abs(context.GetDeltaT() - 0.25) < 1e-9);
 
   // No field is left as @type.unknown.
   assert.equal(CjsSchema.getField(EveUpdateContext, "visibilityThreshold")?.type.kind, "float32");

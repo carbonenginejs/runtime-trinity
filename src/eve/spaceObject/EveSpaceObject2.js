@@ -10,7 +10,7 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
-import { Tr2Lod } from "../EveLODHelper.js";
+import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 
 @type.define({ className: "EveSpaceObject2", family: "eve/spaceObject" })
 export class EveSpaceObject2 extends EveEntity
@@ -327,6 +327,10 @@ export class EveSpaceObject2 extends EveEntity
 
   #lastUpdateTransformTime = null;
 
+  // Carbon m_lastCurveUpdateTime: stamped by the sync-side LOD gate; the async
+  // side updates curve sets only when it matches the frame time.
+  #lastCurveUpdateTime = 0;
+
   get meshLod()
   {
     return this.mesh;
@@ -570,6 +574,20 @@ export class EveSpaceObject2 extends EveEntity
       observer?.Update?.(observerTransform);
     }
 
+    // LOD-gated curve/overlay stamp (Carbon EveSpaceObject2::UpdateSyncronous:
+    // ShouldUpdate(m_lodLevelWithChildren, time - m_lastCurveUpdateTime) -
+    // adapted to lodLevel, m_lodLevelWithChildren is unported). Overlay effects
+    // receive the context time as BOTH clocks, as Carbon does; the async pass
+    // updates curve sets only on frames stamped here.
+    if (EveLODHelper.ShouldUpdate(this.lodLevel, time - this.#lastCurveUpdateTime))
+    {
+      this.#lastCurveUpdateTime = time;
+      for (const overlay of this.overlayEffects)
+      {
+        overlay?.Update?.(time, time);
+      }
+    }
+
     if (this.effectChildren.length)
     {
       const params = new EveChildUpdateParams();
@@ -604,6 +622,19 @@ export class EveSpaceObject2 extends EveEntity
     for (const controller of this.controllers)
     {
       controller?.Update?.(frequency);
+    }
+
+    // Object-level curve sets update only on frames the sync-side LOD gate
+    // stamped, receiving the context time as BOTH realTime and simTime
+    // (Carbon EveSpaceObject2::UpdateAsyncronous: if (m_lastCurveUpdateTime ==
+    // time) (*it)->Update(time, time)).
+    const time = EveSpaceObject2.#GetContextValue(updateContext, "GetTime", "currentTime", "time");
+    if (this.#lastCurveUpdateTime === time)
+    {
+      for (const curveSet of this.curveSets)
+      {
+        curveSet?.Update?.(time, time);
+      }
     }
 
     for (const child of this.children)
