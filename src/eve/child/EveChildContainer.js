@@ -5,7 +5,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { EveChildTransform } from "./EveChildTransform.js";
+import { EveChildTransform, applyTransformModifiers } from "./EveChildTransform.js";
 import { Origin } from "../../generated/eve/child/enums.js";
 
 
@@ -380,6 +380,47 @@ export class EveChildContainer extends EveChildTransform
       this.curveSets.length === 0 &&
       this.transformModifiers.length === 0 &&
       this.observers.length === 0;
+  }
+
+  /**
+   * Per-frame async update: rebuild the world transform from the parent, tick
+   * this container's controllers, then fold the transform modifiers over the
+   * world transform. Ports EveChildContainer::DoUpdateAsyncronous (Carbon);
+   * @impl.adapted because the task-group dispatch wrapper and the Granny
+   * bone-list override are not modelled yet (see note below).
+   * @param {Object} updateContext - frame context (EveUpdateContext), threaded to modifiers
+   * @param {EveChildUpdateParams} params - localToWorldTransform + boneCount/bones
+   * @returns {Float32Array} worldTransform
+   */
+  @carbon.method
+  @carbon.contextual(["camera"])
+  @impl.adapted
+  UpdateAsyncronous(updateContext, params)
+  {
+    const parentTransform = params?.localToWorldTransform;
+
+    if (parentTransform && parentTransform.length === 16)
+    {
+      this.UpdateTransform(parentTransform);
+    }
+
+    const frequency = params?.controllerUpdateFrequency ?? 0.5;
+    for (const controller of this.controllers)
+    {
+      controller?.Update?.(frequency);
+    }
+
+    // Carbon's DoUpdateAsyncronous overrides boneCount/bones from this
+    // container's own animation controller here (Tr2GrannyAnimationUtils::
+    // GetBoneList) before folding modifiers. Deferred until the Granny bone-list
+    // API and the bone-consuming EveChildModifierAttachToBone are ported; no
+    // currently-ported modifier reads bones.
+    return applyTransformModifiers(
+      this,
+      updateContext,
+      params?.boneCount ?? 0,
+      params?.bones ?? null
+    );
   }
 
   static DisplayQualityModifier = Object.freeze({

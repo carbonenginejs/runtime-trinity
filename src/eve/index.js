@@ -35,6 +35,7 @@ export * from "./EveSpriteSet.js";
 export * from "./EveSpherePinPerObjectData.js";
 export * from "./EveThrottleable.js";
 export * from "./EveTrailsSet.js";
+export * from "./EveUpdateContext.js";
 export * from "./FollowASplineData.js";
 export * from "./FormationData.js";
 export * from "./InertiaData.js";

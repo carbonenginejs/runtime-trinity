@@ -5,7 +5,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { EveChildTransform } from "./EveChildTransform.js";
+import { EveChildTransform, applyTransformModifiers } from "./EveChildTransform.js";
 import { Origin } from "../../generated/eve/child/enums.js";
 import { ReflectionMode } from "../../generated/eve/enums.js";
 import { Tr2Lod } from "../EveLODHelper.js";
@@ -324,6 +324,36 @@ export class EveChildMesh extends EveChildTransform
   GetSofSourceLocator()
   {
     return null;
+  }
+
+  /**
+   * Per-frame async update: rebuild the world transform from the parent, then
+   * fold the transform modifiers over it. Ports the transform+modifier core of
+   * EveChildMesh::UpdateAsyncronous (Carbon); the bone/morph offset advance and
+   * per-object-data invalidation Carbon also does here are not modelled in this
+   * runtime, hence @impl.adapted.
+   * @param {Object} updateContext - frame context (EveUpdateContext), threaded to modifiers
+   * @param {EveChildUpdateParams} params - localToWorldTransform + boneCount/bones
+   * @returns {Float32Array} worldTransform
+   */
+  @carbon.method
+  @carbon.contextual(["camera"])
+  @impl.adapted
+  UpdateAsyncronous(updateContext, params)
+  {
+    const parentTransform = params?.localToWorldTransform;
+
+    if (parentTransform && parentTransform.length === 16)
+    {
+      this.UpdateTransform(parentTransform);
+    }
+
+    return applyTransformModifiers(
+      this,
+      updateContext,
+      params?.boneCount ?? 0,
+      params?.bones ?? null
+    );
   }
 
   static Origin = Origin;

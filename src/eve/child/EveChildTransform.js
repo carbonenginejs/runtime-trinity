@@ -128,3 +128,53 @@ export class EveChildTransform extends CjsModel
     return quat.normalize(out, out);
   }
 }
+
+// Module ping-pong scratch for the modifier fold (assume-dirty, never pooled;
+// child updates run sequentially so it is non-reentrant).
+const modifierFoldScratch = mat4.create();
+
+/**
+ * Folds a child's transform modifiers over its worldTransform in order, each
+ * modifier's output feeding the next. Carbon inlines this loop inside each
+ * EveChildMesh/Container/ParticleSystem UpdateAsyncronous
+ * (`m_worldTransform = (*it)->ApplyTransform(m_worldTransform, boneCount, bones)`);
+ * this is a JS-only helper (zero-alloc ping-pong between worldTransform and a
+ * module scratch buffer so no modifier reads and writes the same matrix), kept a
+ * free function rather than a method so it stays off the Carbon method surface.
+ * The frame context is threaded through to camera-dependent modifiers.
+ * @param {EveChildTransform} child - owns transformModifiers + worldTransform
+ * @param {Object} context - frame context (EveUpdateContext)
+ * @param {Number} boneCount
+ * @param {Float32Array|null} bones
+ * @returns {Float32Array} child.worldTransform
+ */
+export function applyTransformModifiers(child, context, boneCount, bones)
+{
+  const modifiers = child.transformModifiers;
+
+  if (!modifiers || modifiers.length === 0)
+  {
+    return child.worldTransform;
+  }
+
+  let source = child.worldTransform;
+  let target = modifierFoldScratch;
+
+  for (const modifier of modifiers)
+  {
+    if (!modifier?.ApplyTransform)
+    {
+      continue;
+    }
+    modifier.ApplyTransform(context, source, boneCount, bones, target);
+    const swap = source;
+    source = target;
+    target = swap;
+  }
+
+  if (source !== child.worldTransform)
+  {
+    mat4.copy(child.worldTransform, source);
+  }
+  return child.worldTransform;
+}

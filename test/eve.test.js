@@ -1017,13 +1017,13 @@ test("EveVirtualCameraSystem owns Carbon camera selection and transitions", () =
 test("EveChildModifierSRT pre-multiplies Carbon scale, rotation, and translation", () =>
 {
   const modifier = new EveChildModifierSRT();
-  assertMat4(modifier.ApplyTransform(mat4.create()), mat4.create());
+  assertMat4(modifier.ApplyTransform(null, mat4.create(), 0, null, mat4.create()), mat4.create());
   modifier.scaling = vec3.fromValues(2, 2, 2);
   modifier.translation = vec3.fromValues(3, 4, 5);
   modifier.rotation = quat.setAxisAngle(quat.create(), vec3.fromValues(0, 0, 1), Math.PI / 2);
   const source = mat4.fromTranslation(mat4.create(), vec3.fromValues(1, 0, 0));
   const out = mat4.create();
-  assertEquals(modifier.ApplyTransform(source, 0, null, out), out);
+  assertEquals(modifier.ApplyTransform(null, source, 0, null, out), out);
   assertAlmostEquals(out[12], 3);
   assertAlmostEquals(out[13], 6);
   assertAlmostEquals(out[14], 5);

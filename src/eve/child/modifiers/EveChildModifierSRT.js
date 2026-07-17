@@ -25,11 +25,30 @@ export class EveChildModifierSRT extends CjsModel
   @type.vec3
   translation = vec3.create();
 
+  static #scratch = mat4.create();
+
+  /**
+   * Pre-multiplies this modifier's scale/rotation/translation onto the incoming
+   * transform (Carbon EveChildModifierSRT::ApplyTransform:
+   * TransformationMatrix(s,r,t) * transform). Context-first for a uniform
+   * modifier apply loop; SRT is not camera-dependent, so context is unused.
+   * @param {Object} _context - unused (SRT is not a contextual modifier)
+   * @param {Float32Array} transform - source (read only)
+   * @param {Number} [_boneCount] - Carbon signature parity, unused
+   * @param {Float32Array} [_bones] - Carbon signature parity, unused
+   * @param {Float32Array} out - caller-owned; receives the result
+   * @returns {Float32Array} out
+   */
   @carbon.method
   @impl.adapted
-  ApplyTransform(transform, _boneCount = 0, _bones = null, out = mat4.create())
+  ApplyTransform(_context, transform, _boneCount = 0, _bones = null, out)
   {
-    const local = mat4.fromRotationTranslationScale(mat4.create(), this.rotation, this.translation, this.scaling);
+    const local = mat4.fromRotationTranslationScale(
+      EveChildModifierSRT.#scratch,
+      this.rotation,
+      this.translation,
+      this.scaling
+    );
     return mat4.multiply(out, local, transform);
   }
 }

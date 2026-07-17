@@ -3,6 +3,8 @@
 // Hand-maintained from Carbon source; backend-private parallel state is omitted.
 import { type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
+import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
 
 /** Tr2RenderContext (trinityCore) - generated from schema shapeHash 73e2a4e7.... */
 @type.define({ className: "Tr2RenderContext", family: "trinityCore" })
@@ -27,6 +29,19 @@ export class Tr2RenderContext extends CjsModel
   #view = null;
 
   #projection = null;
+
+  // Carbon-faithful cached view state (Tr2Renderer::SetViewTransform): the raw
+  // column-major view matrix, its inverse (computed once per view change, read
+  // many times per frame by camera-dependent modifiers), and the view/eye
+  // position taken from the inverse-view translation row. Allocated once and
+  // copied into - never reallocated per read (allocation rules E/F).
+  #viewTransform = mat4.create();
+
+  #inverseViewTransform = mat4.create();
+
+  #viewPosition = vec3.create();
+
+  #hasViewMatrix = false;
 
   static TextureFilter = Object.freeze({
     TF_NONE: 0,
@@ -208,6 +223,7 @@ export class Tr2RenderContext extends CjsModel
   SetView(view, camera = null, simTime = 0)
   {
     this.#view = { view: view ?? null, camera: camera ?? null, simTime };
+    this.#ApplyViewMatrix(view);
     this.#intents.push({ type: "set-view", ...this.#view });
     return true;
   }
@@ -215,13 +231,68 @@ export class Tr2RenderContext extends CjsModel
   SetViewTransform(transform, source = null)
   {
     this.#view = { transform: transform ?? null, source: source ?? null };
+    this.#ApplyViewMatrix(transform);
     this.#intents.push({ type: "set-view-transform", ...this.#view });
     return true;
+  }
+
+  // Mirrors Tr2Renderer::SetViewTransform: cache the view matrix, compute its
+  // inverse once, and derive the view position from the inverse-view
+  // translation row (Carbon reads _41.._43 -> column-major indices [12,13,14]).
+  #ApplyViewMatrix(matrix)
+  {
+    if (!matrix || matrix.length !== 16)
+    {
+      return;
+    }
+
+    mat4.copy(this.#viewTransform, matrix);
+
+    if (!mat4.invert(this.#inverseViewTransform, this.#viewTransform))
+    {
+      mat4.identity(this.#inverseViewTransform);
+    }
+
+    vec3.set(
+      this.#viewPosition,
+      this.#inverseViewTransform[12],
+      this.#inverseViewTransform[13],
+      this.#inverseViewTransform[14]
+    );
+    this.#hasViewMatrix = true;
   }
 
   GetView()
   {
     return this.#view ? { ...this.#view } : null;
+  }
+
+  // Raw column-major view matrix (Tr2Renderer::GetViewTransform). Live buffer -
+  // callers read, never mutate.
+  GetViewTransform()
+  {
+    return this.#viewTransform;
+  }
+
+  // Inverse of the view matrix (Tr2Renderer::GetInverseViewTransform), cached on
+  // the last view change. Live buffer - callers read, never mutate.
+  GetInverseViewTransform()
+  {
+    return this.#inverseViewTransform;
+  }
+
+  // World-space view/eye position (Tr2Renderer::GetViewPosition): the
+  // inverse-view translation. Live buffer - callers read, never mutate.
+  GetViewPosition()
+  {
+    return this.#viewPosition;
+  }
+
+  // Whether a view matrix has been set (camera-dependent modifiers fall back to
+  // an unchanged transform when it has not).
+  HasViewMatrix()
+  {
+    return this.#hasViewMatrix;
   }
 
   SetProjection(projection)

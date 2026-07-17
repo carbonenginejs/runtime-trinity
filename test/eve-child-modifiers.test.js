@@ -1,0 +1,360 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { quat } from "@carbonenginejs/core-math/quat";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import {
+  EveChildContainer,
+  EveChildMesh,
+  EveChildModifierBillboard2D,
+  EveChildModifierBooster,
+  EveChildModifierCameraOrientedRotationConstrained,
+  EveChildModifierHalo,
+  EveChildModifierHaloInverted,
+  EveChildModifierSRT,
+  EveChildUpdateParams,
+  EveSpaceObject2,
+  EveUpdateContext,
+  Tr2RenderContext
+} from "../npm/dist/index.js";
+
+
+const EPSILON = 1e-4;
+
+/**
+ * Builds a frame context whose render context places the camera at the given
+ * world position with identity view orientation (view = translate(-cameraPos)).
+ * @param {number[]} cameraPosition
+ * @returns {EveUpdateContext}
+ */
+function contextAtCamera(cameraPosition)
+{
+  const view = mat4.fromTranslation(mat4.create(), [
+    -cameraPosition[0],
+    -cameraPosition[1],
+    -cameraPosition[2]
+  ]);
+  const renderContext = new Tr2RenderContext();
+  renderContext.SetViewTransform(view);
+
+  const context = new EveUpdateContext();
+  context.renderContext = renderContext;
+  return context;
+}
+
+/**
+ * @param {number} actual
+ * @param {number} expected
+ * @param {string} message
+ */
+function assertClose(actual, expected, message)
+{
+  assert.ok(
+    Math.abs(actual - expected) <= EPSILON,
+    `${message}: expected ${expected}, got ${actual}`
+  );
+}
+
+/**
+ * @param {Float32Array} actual
+ * @param {number[]} expected
+ * @param {string} message
+ */
+function assertMatrixClose(actual, expected, message)
+{
+  for (let index = 0; index < 16; index++)
+  {
+    assertClose(actual[index], expected[index], `${message}[${index}]`);
+  }
+}
+
+test("Tr2RenderContext derives view position and inverse from the view matrix", () =>
+{
+  const context = new Tr2RenderContext();
+  assert.equal(context.HasViewMatrix(), false);
+  assert.deepEqual(Array.from(context.GetViewPosition()), [0, 0, 0]);
+
+  const view = mat4.fromTranslation(mat4.create(), [0, 0, -10]);
+  context.SetViewTransform(view);
+
+  assert.equal(context.HasViewMatrix(), true);
+  assertMatrixClose(context.GetViewTransform(), Array.from(view), "viewTransform");
+  assert.deepEqual(Array.from(context.GetViewPosition()), [0, 0, 10]);
+  // Inverse-view translation row is the camera position.
+  const inverse = context.GetInverseViewTransform();
+  assertClose(inverse[12], 0, "inverse tx");
+  assertClose(inverse[13], 0, "inverse ty");
+  assertClose(inverse[14], 10, "inverse tz");
+});
+
+test("EveChildModifierBillboard2D copies inverse-view rotation scaled by parent axes", () =>
+{
+  const modifier = new EveChildModifierBillboard2D();
+  const context = contextAtCamera([0, 0, 10]);
+  const out = mat4.create();
+
+  // Identity transform + identity view orientation -> identity result.
+  modifier.ApplyTransform(context, mat4.create(), 0, null, out);
+  assertMatrixClose(out, Array.from(mat4.create()), "billboard identity");
+
+  // Parent scale is preserved per axis.
+  const scaled = mat4.fromScaling(mat4.create(), [2, 3, 4]);
+  modifier.ApplyTransform(context, scaled, 0, null, out);
+  assertClose(out[0], 2, "billboard scaleX");
+  assertClose(out[5], 3, "billboard scaleY");
+  assertClose(out[10], 4, "billboard scaleZ");
+});
+
+test("EveChildModifierHalo fades with the squared facing dot", () =>
+{
+  const modifier = new EveChildModifierHalo();
+  const out = mat4.create();
+
+  // Child Z axis points straight at the camera -> facing 1 -> identity.
+  modifier.ApplyTransform(contextAtCamera([0, 0, 10]), mat4.create(), 0, null, out);
+  assertMatrixClose(out, Array.from(mat4.create()), "halo facing");
+
+  // Camera perpendicular to child Z -> facing 0 -> basis collapses to zero.
+  modifier.ApplyTransform(contextAtCamera([10, 0, 0]), mat4.create(), 0, null, out);
+  for (const index of [0, 1, 2, 4, 5, 6, 8, 9, 10])
+  {
+    assertClose(out[index], 0, `halo perpendicular basis[${index}]`);
+  }
+  assertClose(out[15], 1, "halo perpendicular w");
+});
+
+test("EveChildModifierHaloInverted scales up as the child Z turns away", () =>
+{
+  const modifier = new EveChildModifierHaloInverted();
+  const out = mat4.create();
+
+  // Camera behind the child Z axis -> scale 1, result is the alignment basis.
+  modifier.ApplyTransform(contextAtCamera([0, 0, -10]), mat4.create(), 0, null, out);
+  assertClose(out[0], 1, "haloInverted alignMat[0]");
+  assertClose(out[5], -1, "haloInverted alignMat[5]");
+  assertClose(out[10], -1, "haloInverted alignMat[10]");
+
+  // Camera in front of the child Z axis -> scale 0 -> zero basis.
+  modifier.ApplyTransform(contextAtCamera([0, 0, 10]), mat4.create(), 0, null, out);
+  assertClose(out[0], 0, "haloInverted collapsed[0]");
+  assertClose(out[5], 0, "haloInverted collapsed[5]");
+  assertClose(out[10], 0, "haloInverted collapsed[10]");
+});
+
+test("EveChildModifierBooster keeps a constant apparent radius", () =>
+{
+  const modifier = new EveChildModifierBooster();
+  const context = contextAtCamera([0, 0, 10]);
+  const out = mat4.create();
+
+  modifier.ApplyTransform(context, mat4.create(), 0, null, out);
+
+  const distCenter = 10;
+  const radius = 0.5;
+  const B = Math.sqrt(distCenter * distCenter - radius * radius);
+  const scale = B / distCenter;
+  const trans = -(radius * radius) / (distCenter * scale);
+
+  assertClose(out[0], scale, "booster scaleX");
+  assertClose(out[5], scale, "booster scaleY");
+  assertClose(out[10], scale, "booster scaleZ");
+  assertClose(out[14], trans, "booster tz");
+});
+
+test("EveChildModifierCameraOrientedRotationConstrained yaws toward the camera", () =>
+{
+  const modifier = new EveChildModifierCameraOrientedRotationConstrained();
+  const out = mat4.create();
+
+  // Camera on +X, child identity -> yaw 90deg about world up so child Z -> +X.
+  modifier.ApplyTransform(contextAtCamera([10, 0, 0]), mat4.create(), 0, null, out);
+
+  // Child local +Z (column 2) now points along world +X toward the camera.
+  const forward = vec3.fromValues(out[8], out[9], out[10]);
+  assertClose(forward[0], 1, "cameraOriented forward.x");
+  assertClose(forward[1], 0, "cameraOriented forward.y");
+  assertClose(forward[2], 0, "cameraOriented forward.z");
+  // World up column is unchanged.
+  assertClose(out[5], 1, "cameraOriented up preserved");
+});
+
+test("camera-dependent modifiers copy the transform through when no render context is set", () =>
+{
+  const source = mat4.fromRotationTranslationScale(
+    mat4.create(),
+    [0, 0, 0, 1],
+    [3, 4, 5],
+    [1, 1, 1]
+  );
+  const emptyContext = new EveUpdateContext();
+
+  const modifiers = [
+    new EveChildModifierBillboard2D(),
+    new EveChildModifierBooster(),
+    new EveChildModifierCameraOrientedRotationConstrained(),
+    new EveChildModifierHalo(),
+    new EveChildModifierHaloInverted()
+  ];
+
+  for (const modifier of modifiers)
+  {
+    const out = mat4.create();
+    const result = modifier.ApplyTransform(emptyContext, source, 0, null, out);
+    assert.equal(result, out, `${modifier.constructor.name} returns out`);
+    assertMatrixClose(out, Array.from(source), `${modifier.constructor.name} passthrough`);
+  }
+});
+
+test("EveUpdateContext has value-typed defaults with only reference fields null", () =>
+{
+  const context = new EveUpdateContext();
+
+  // Scalars default to 0 / false, not null or undefined.
+  assert.equal(context.currentTime, 0);
+  assert.equal(context.deltaT, 0);
+  assert.equal(context.visibilityThreshold, 0);
+  assert.equal(context.lodFactor, 0);
+  assert.equal(context.invLodFactor, 0);
+  assert.equal(context.raytracingEnabled, false);
+
+  // Reference fields default to null.
+  assert.equal(context.dataTextureManager, null);
+  assert.equal(context.gpuParticleSystem, null);
+  assert.equal(context.ballpark, null);
+  assert.equal(context.taskGroup, null);
+  assert.equal(context.frustum, null);
+  assert.equal(context.renderContext, null);
+  assert.equal(context.device, null);
+
+  // Scanner-artifact duplicates are gone.
+  assert.equal(context.time, undefined);
+  assert.equal(context.manager, undefined);
+  assert.equal(context.ps, undefined);
+
+  // Time accessors.
+  context.currentTime = 12.5;
+  context.deltaT = 0.25;
+  assert.equal(context.GetTime(), 12.5);
+  assert.equal(context.GetDeltaT(), 0.25);
+
+  // No field is left as @type.unknown.
+  assert.equal(CjsSchema.getField(EveUpdateContext, "visibilityThreshold")?.type.kind, "float32");
+  assert.equal(CjsSchema.getField(EveUpdateContext, "renderContext")?.type.kind, "objectRef");
+});
+
+test("EveChildMesh.UpdateAsyncronous folds transform modifiers in order over the world transform", () =>
+{
+  const mesh = new EveChildMesh();
+  const first = new EveChildModifierSRT();
+  first.translation = vec3.fromValues(1, 0, 0);
+  const second = new EveChildModifierSRT();
+  second.rotation = quat.setAxisAngle(quat.create(), vec3.fromValues(0, 0, 1), Math.PI / 2);
+  mesh.AddTransformModifier(first);
+  mesh.AddTransformModifier(second);
+
+  const params = new EveChildUpdateParams();
+  mesh.UpdateAsyncronous(null, params);
+
+  // Manually fold the same modifiers over the seed world transform (identity).
+  const expected = mat4.create();
+  const tmp = mat4.create();
+  first.ApplyTransform(null, expected, 0, null, tmp);
+  mat4.copy(expected, tmp);
+  second.ApplyTransform(null, expected, 0, null, tmp);
+  mat4.copy(expected, tmp);
+
+  assertMatrixClose(mesh.worldTransform, Array.from(expected), "mesh modifier fold");
+});
+
+test("EveChildMesh.UpdateAsyncronous threads the frame context to camera modifiers", () =>
+{
+  const mesh = new EveChildMesh();
+  mesh.AddTransformModifier(new EveChildModifierCameraOrientedRotationConstrained());
+
+  const params = new EveChildUpdateParams();
+  mesh.UpdateAsyncronous(contextAtCamera([10, 0, 0]), params);
+
+  // With the context threaded, the child yaws so its local +Z faces the camera
+  // on +X (out[8..10] = [1,0,0]). Without threading it would stay identity
+  // (out[8..10] = [0,0,1]) - so this asserts the context actually reached the modifier.
+  assertClose(mesh.worldTransform[8], 1, "threaded camera forward.x");
+  assertClose(mesh.worldTransform[10], 0, "threaded camera forward.z");
+});
+
+test("EveChildContainer.UpdateAsyncronous ticks controllers and folds modifiers", () =>
+{
+  const container = new EveChildContainer();
+
+  let updatedFrequency = null;
+  container.controllers.push({ Update(frequency) { updatedFrequency = frequency; } });
+
+  const modifier = new EveChildModifierSRT();
+  modifier.translation = vec3.fromValues(0, 5, 0);
+  container.AddTransformModifier(modifier);
+
+  const params = new EveChildUpdateParams();
+  params.controllerUpdateFrequency = 0.25;
+  container.UpdateAsyncronous(null, params);
+
+  assert.equal(updatedFrequency, 0.25, "controller ticked with the params frequency");
+  assertClose(container.worldTransform[13], 5, "container modifier applied (ty)");
+});
+
+test("EveSpaceObject2.UpdateAsyncronous drives an effect child's camera modifier end to end", () =>
+{
+  // Plays the host role: build the scene object, give it an effect-child mesh
+  // with a camera modifier, stamp a render context onto the frame context, and
+  // drive the async update - the same path a real frame driver would run.
+  const object = new EveSpaceObject2();
+  object.update = true;
+  object.display = true;
+
+  const mesh = new EveChildMesh();
+  mesh.AddTransformModifier(new EveChildModifierCameraOrientedRotationConstrained());
+  object.effectChildren.push(mesh);
+
+  const context = contextAtCamera([10, 0, 0]);
+  object.UpdateAsyncronous(context);
+
+  // The child mesh yawed to face the camera on +X (local +Z -> world +X),
+  // proving context.renderContext threaded all the way from the scene object
+  // through EveChildMesh.UpdateAsyncronous into the modifier.
+  assertClose(mesh.worldTransform[8], 1, "end-to-end camera forward.x");
+  assertClose(mesh.worldTransform[10], 0, "end-to-end camera forward.z");
+});
+
+test("EveSpaceObject2.UpdateAsyncronous leaves an effect child unmodified when no render context is stamped", () =>
+{
+  const object = new EveSpaceObject2();
+  object.update = true;
+  object.display = true;
+
+  const mesh = new EveChildMesh();
+  mesh.AddTransformModifier(new EveChildModifierCameraOrientedRotationConstrained());
+  object.effectChildren.push(mesh);
+
+  // Frame context without a renderContext (e.g. a pass that has not set the view).
+  object.UpdateAsyncronous(new EveUpdateContext());
+
+  // Modifier falls back to the unmodified world transform (identity here).
+  assertMatrixClose(mesh.worldTransform, Array.from(mat4.create()), "no-context passthrough");
+});
+
+test("camera-dependent modifiers carry the carbon.contextual camera marker", () =>
+{
+  for (const Modifier of [
+    EveChildModifierBillboard2D,
+    EveChildModifierBooster,
+    EveChildModifierCameraOrientedRotationConstrained,
+    EveChildModifierHalo,
+    EveChildModifierHaloInverted
+  ])
+  {
+    const method = CjsSchema.getMethod(Modifier, "ApplyTransform");
+    assert.equal(method.carbon.method, true, `${Modifier.name} carbon.method`);
+    assert.equal(method.carbon.contextual, true, `${Modifier.name} contextual`);
+    assert.deepEqual(Array.from(method.carbon.contextTiers), ["camera"], `${Modifier.name} tiers`);
+    assert.equal(method.impl.status, "implemented", `${Modifier.name} status`);
+  }
+});

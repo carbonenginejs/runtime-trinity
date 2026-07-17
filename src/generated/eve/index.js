@@ -1,7 +1,6 @@
 export * from "./AudioGameObject.js";
 export * from "./EveCamera.js";
 export * from "./EveEntity.js";
-export * from "./EveUpdateContext.js";
 export * from "./attachment/index.js";
 export * from "./child/index.js";
 export * from "./distribution/index.js";
