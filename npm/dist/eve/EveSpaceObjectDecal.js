@@ -7,18 +7,18 @@ import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { TriBatchType } from '../generated/trinityCore/enums.js';
 
-let _initProto, _initClass, _init_name, _init_extra_name, _init_batchType, _init_extra_batchType, _init_position, _init_extra_position, _init_minScreenSize, _init_extra_minScreenSize, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_parentBoneIndex, _init_extra_parentBoneIndex, _init_decalEffect, _init_extra_decalEffect, _init_display, _init_extra_display;
+let _initProto, _initClass, _init_name, _init_extra_name, _init_batchType, _init_extra_batchType, _init_position, _init_extra_position, _init_minScreenSize, _init_extra_minScreenSize, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_parentBoneIndex, _init_extra_parentBoneIndex, _init_decalEffect, _init_extra_decalEffect, _init_display, _init_extra_display, _init_staticIndexBuffers, _init_extra_staticIndexBuffers;
 let _EveSpaceObjectDecal;
 new class extends _identity {
   static [class EveSpaceObjectDecal extends CjsModel {
     static {
       ({
-        e: [_init_name, _init_extra_name, _init_batchType, _init_extra_batchType, _init_position, _init_extra_position, _init_minScreenSize, _init_extra_minScreenSize, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_parentBoneIndex, _init_extra_parentBoneIndex, _init_decalEffect, _init_extra_decalEffect, _init_display, _init_extra_display, _initProto],
+        e: [_init_name, _init_extra_name, _init_batchType, _init_extra_batchType, _init_position, _init_extra_position, _init_minScreenSize, _init_extra_minScreenSize, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_parentBoneIndex, _init_extra_parentBoneIndex, _init_decalEffect, _init_extra_decalEffect, _init_display, _init_extra_display, _init_staticIndexBuffers, _init_extra_staticIndexBuffers, _initProto],
         c: [_EveSpaceObjectDecal, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "EveSpaceObjectDecal",
         family: "eve/attachment/decal"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.int32, void 0, schema.enum("TriBatchType")], 16, "batchType"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.int32], 16, "parentBoneIndex"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "decalEffect"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyFrom"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetRotation"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetRotation"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetScaling"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDecalMatrix"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetInverseDecalMatrix"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetScaling"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoneIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetIndices"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetStaticIndexBuffers"], [[carbon, carbon.method, impl, impl.adapted], 18, "HasStaticIndexBuffers"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDecalPrimitiveCounts"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMinScreenSize"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBatchType"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPriority"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.int32, void 0, schema.enum("TriBatchType")], 16, "batchType"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.int32], 16, "parentBoneIndex"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "decalEffect"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.array("unknown")], 16, "staticIndexBuffers"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyFrom"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetRotation"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetRotation"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetScaling"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDecalMatrix"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetInverseDecalMatrix"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetScaling"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoneIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetIndices"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetStaticIndexBuffers"], [[carbon, carbon.method, impl, impl.adapted], 18, "HasStaticIndexBuffers"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDecalPrimitiveCounts"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMinScreenSize"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBatchType"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPriority"]], 0, void 0, CjsModel));
     }
     constructor() {
       super();
@@ -35,9 +35,12 @@ new class extends _identity {
     parentBoneIndex = (_init_extra_scaling(this), _init_parentBoneIndex(this, -1));
     decalEffect = (_init_extra_parentBoneIndex(this), _init_decalEffect(this, null));
     display = (_init_extra_decalEffect(this), _init_display(this, true));
-    #decalMatrix = (_init_extra_display(this), mat4.create());
+
+    // SOF-authored per-LOD triangle indices; persisted so the values
+    // interchange reproduces Carbon's hidden decal geometry selection.
+    staticIndexBuffers = (_init_extra_display(this), _init_staticIndexBuffers(this, []));
+    #decalMatrix = (_init_extra_staticIndexBuffers(this), mat4.create());
     #inverseDecalMatrix = mat4.create();
-    #staticIndexBuffers = [];
     #priority = 0;
     get hasStaticIndexBuffers() {
       return this.HasStaticIndexBuffers();
@@ -99,17 +102,17 @@ new class extends _identity {
       return true;
     }
     SetIndices(indices) {
-      this.#staticIndexBuffers = Array.from(indices || [], lod => Array.from(lod || [], value => Number(value) >>> 0));
+      this.staticIndexBuffers = Array.from(indices || [], lod => Array.from(lod || [], value => Number(value) >>> 0));
       return true;
     }
     GetStaticIndexBuffers() {
-      return this.#staticIndexBuffers.map(lod => lod.slice());
+      return this.staticIndexBuffers.map(lod => lod.slice());
     }
     HasStaticIndexBuffers() {
-      return this.#staticIndexBuffers.some(lod => lod.length > 0);
+      return this.staticIndexBuffers.some(lod => lod.length > 0);
     }
     GetDecalPrimitiveCounts() {
-      return this.#staticIndexBuffers.map(lod => Math.trunc(lod.length / 3));
+      return this.staticIndexBuffers.map(lod => Math.trunc(lod.length / 3));
     }
     SetMinScreenSize(value) {
       this.minScreenSize = Number(value) || 0;

@@ -41,10 +41,23 @@ export class EvePlaneSet extends EveEntity
   @type.list("EvePlaneLight")
   lights = [];
 
-  #imageMapParameter = null;
-  #layerMap1Parameter = null;
-  #layerMap2Parameter = null;
-  #maskMapParameter = null;
+  // SOF-authored shared texture parameters; persisted so the values
+  // interchange reproduces Carbon's hidden plane-set bindings.
+  @io.persist
+  @type.objectRef("TriTextureParameter")
+  imageMapParameter = null;
+
+  @io.persist
+  @type.objectRef("TriTextureParameter")
+  layerMap1Parameter = null;
+
+  @io.persist
+  @type.objectRef("TriTextureParameter")
+  layerMap2Parameter = null;
+
+  @io.persist
+  @type.objectRef("TriTextureParameter")
+  maskMapParameter = null;
   #rebuildRevision = 0;
 
   @carbon.method
@@ -114,28 +127,28 @@ export class EvePlaneSet extends EveEntity
   @impl.adapted
   SetImageMapParameter(parameter)
   {
-    this.#imageMapParameter = parameter ?? null;
+    this.imageMapParameter = parameter ?? null;
   }
 
   @carbon.method
   @impl.adapted
   SetLayerMap1Parameter(parameter)
   {
-    this.#layerMap1Parameter = parameter ?? null;
+    this.layerMap1Parameter = parameter ?? null;
   }
 
   @carbon.method
   @impl.adapted
   SetLayerMap2Parameter(parameter)
   {
-    this.#layerMap2Parameter = parameter ?? null;
+    this.layerMap2Parameter = parameter ?? null;
   }
 
   @carbon.method
   @impl.adapted
   SetMaskMapParameter(parameter)
   {
-    this.#maskMapParameter = parameter ?? null;
+    this.maskMapParameter = parameter ?? null;
   }
 
   @carbon.method

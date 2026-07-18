@@ -61,11 +61,15 @@ export class EveSpaceObjectDecal extends CjsModel
   @type.boolean
   display = true;
 
+  // SOF-authored per-LOD triangle indices; persisted so the values
+  // interchange reproduces Carbon's hidden decal geometry selection.
+  @io.persist
+  @type.array("unknown")
+  staticIndexBuffers = [];
+
   #decalMatrix = mat4.create();
 
   #inverseDecalMatrix = mat4.create();
-
-  #staticIndexBuffers = [];
 
   #priority = 0;
 
@@ -191,7 +195,7 @@ export class EveSpaceObjectDecal extends CjsModel
   @impl.adapted
   SetIndices(indices)
   {
-    this.#staticIndexBuffers = Array.from(indices || [], lod => Array.from(lod || [], value => Number(value) >>> 0));
+    this.staticIndexBuffers = Array.from(indices || [], lod => Array.from(lod || [], value => Number(value) >>> 0));
     return true;
   }
 
@@ -199,21 +203,21 @@ export class EveSpaceObjectDecal extends CjsModel
   @impl.adapted
   GetStaticIndexBuffers()
   {
-    return this.#staticIndexBuffers.map(lod => lod.slice());
+    return this.staticIndexBuffers.map(lod => lod.slice());
   }
 
   @carbon.method
   @impl.adapted
   HasStaticIndexBuffers()
   {
-    return this.#staticIndexBuffers.some(lod => lod.length > 0);
+    return this.staticIndexBuffers.some(lod => lod.length > 0);
   }
 
   @carbon.method
   @impl.adapted
   GetDecalPrimitiveCounts()
   {
-    return this.#staticIndexBuffers.map(lod => Math.trunc(lod.length / 3));
+    return this.staticIndexBuffers.map(lod => Math.trunc(lod.length / 3));
   }
 
   @carbon.method

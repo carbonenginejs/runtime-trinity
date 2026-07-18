@@ -352,6 +352,25 @@ export class EveSpaceObject2 extends EveEntity
         controller?.Link?.(this);
       }
     }
+    // Authored inherit properties propagate as part of the lifecycle so a
+    // field-populated graph (values import, document hydration) matches the
+    // SetInheritProperties authoring path.
+    if (this.inheritProperties)
+    {
+      this.#PropagateInheritProperties();
+    }
+    // Carbon derives the impact overlay's damage locator count from the
+    // "damage" locator set at build time; deriving it here keeps it out of
+    // the authored values while reproducing the same live state.
+    if (this.impactOverlay)
+    {
+      let damageLocatorCount = 0;
+      for (const set of this.locatorSets)
+      {
+        if (set?.HasName?.("damage")) damageLocatorCount += set.locators.length;
+      }
+      this.impactOverlay.SetDamageLocatorCount(damageLocatorCount);
+    }
     return true;
   }
 
@@ -399,6 +418,11 @@ export class EveSpaceObject2 extends EveEntity
       this.inheritProperties = new EveChildInheritProperties();
     }
     this.inheritProperties.SetProperties(colorSet);
+    this.#PropagateInheritProperties();
+  }
+
+  #PropagateInheritProperties()
+  {
     const properties = this.inheritProperties.GetProperties();
     for (const child of this.effectChildren)
     {

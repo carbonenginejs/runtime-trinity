@@ -117,12 +117,32 @@ export class EveChildMesh extends EveChildTransform
   @type.boolean
   updateAnimation = true;
 
-  @io.read
+  // SOF-authored placement/instance values; persisted so the values
+  // interchange reproduces Carbon's hidden child placement state.
+  @io.persist
   @type.int32
   @schema.enum("Origin")
   origin = 0;
 
+  @io.persist
+  @type.array("mat4")
   instanceTransforms = [];
+
+  @io.persist
+  @type.string
+  sofDna = "";
+
+  @io.persist
+  @type.string
+  sofParentHullName = "";
+
+  @io.persist
+  @type.string
+  sofLocatorSetName = "";
+
+  @io.persist
+  @type.string
+  sofLocatorIndex = "";
 
   @carbon.method
   @impl.adapted

@@ -116,9 +116,11 @@ export class EveImpactOverlay extends CjsModel
   @type.objectRef("Tr2GpuUniqueEmitter")
   hullImpactEmitter = null;
 
-  #armorImpactLifeTime = 10;
-
+  // Derived at lifecycle time from the owner's "damage" locator set; not an
+  // authored value, so it never enters the values interchange.
   #damageLocatorCount = 0;
+
+  #armorImpactLifeTime = 10;
 
   #dataTextureOffset = -1;
 

@@ -39,7 +39,12 @@ export class EveBannerSet extends EveEntity
   @type.list("EveBannerLight")
   lights = [];
 
-  #primaryTextureParameter = null;
+  // SOF-authored primary banner texture parameter; persisted so the values
+  // interchange reproduces Carbon's hidden banner binding.
+  @io.persist
+  @type.objectRef("TriTextureParameter")
+  primaryTextureParameter = null;
+
   #rebuildRevision = 0;
 
   @carbon.method
@@ -109,7 +114,7 @@ export class EveBannerSet extends EveEntity
   @impl.adapted
   SetPrimaryTextureParameter(parameter)
   {
-    this.#primaryTextureParameter = parameter ?? null;
+    this.primaryTextureParameter = parameter ?? null;
   }
 
   @carbon.method

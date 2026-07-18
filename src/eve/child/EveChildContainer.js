@@ -112,14 +112,20 @@ export class EveChildContainer extends EveChildTransform
   @type.boolean
   useStaticScale = false;
 
-  @io.read
+  // SOF-authored placement values; persisted so the values interchange
+  // reproduces Carbon's hidden container placement state.
+  @io.persist
   @type.objectRef("ITr2GrannyAnimationOwner")
   animationOwner = null;
 
-  @io.read
+  @io.persist
   @type.int32
   @schema.enum("Origin")
   origin = 0;
+
+  @io.persist
+  @type.boolean
+  isPlacementRoot = false;
 
   #controllerVariables = new Map();
 
@@ -353,6 +359,13 @@ export class EveChildContainer extends EveChildTransform
   SetAnimationOwner(animationOwner)
   {
     this.animationOwner = animationOwner ?? null;
+  }
+
+  @carbon.method
+  @impl.implemented
+  SetIsPlacementRoot(isPlacementRoot)
+  {
+    this.isPlacementRoot = !!isPlacementRoot;
   }
 
   @carbon.method

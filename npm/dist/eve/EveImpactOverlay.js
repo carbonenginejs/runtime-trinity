@@ -44,8 +44,11 @@ new class extends _identity {
     hullDamageFlickerCurve = (_init_extra_hullRepairing(this), _init_hullDamageFlickerCurve(this, null));
     hullDamageFactor = (_init_extra_hullDamageFlickerCurve(this), _init_hullDamageFactor(this, 0));
     hullImpactEmitter = (_init_extra_hullDamageFactor(this), _init_hullImpactEmitter(this, null));
-    #armorImpactLifeTime = (_init_extra_hullImpactEmitter(this), 10);
-    #damageLocatorCount = 0;
+
+    // Derived at lifecycle time from the owner's "damage" locator set; not an
+    // authored value, so it never enters the values interchange.
+    #damageLocatorCount = (_init_extra_hullImpactEmitter(this), 0);
+    #armorImpactLifeTime = 10;
     #dataTextureOffset = -1;
     #lastDamageState = vec3.fromValues(1, 1, 1);
     Initialize() {
