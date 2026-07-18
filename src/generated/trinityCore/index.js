@@ -56,7 +56,6 @@ export * from "./Tr2TextureReference.js";
 export * from "./Tr2Transform.js";
 export * from "./Tr2TransientTextureReference.js";
 export * from "./Tr2TranslationTool.js";
-export * from "./Tr2VariableStore.js";
 export * from "./Tr2VectorFunctionModifier.js";
 export * from "./Tr2VideoAdapter.js";
 export * from "./Tr2VideoDriver.js";

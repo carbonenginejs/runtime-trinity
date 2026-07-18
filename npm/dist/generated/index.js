@@ -347,7 +347,6 @@ export { Tr2TextureReference } from './trinityCore/Tr2TextureReference.js';
 export { Tr2Transform } from './trinityCore/Tr2Transform.js';
 export { Tr2TransientTextureReference } from './trinityCore/Tr2TransientTextureReference.js';
 export { Tr2TranslationTool } from './trinityCore/Tr2TranslationTool.js';
-export { Tr2VariableStore } from './trinityCore/Tr2VariableStore.js';
 export { Tr2VectorFunctionModifier } from './trinityCore/Tr2VectorFunctionModifier.js';
 export { Tr2VideoAdapter } from './trinityCore/Tr2VideoAdapter.js';
 export { Tr2VideoDriver } from './trinityCore/Tr2VideoDriver.js';

@@ -1,8 +1,8 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 365,
-    "skipped": 244
+    "written": 364,
+    "skipped": 245
   },
   "enums": {
     "written": 17,
@@ -1186,6 +1186,11 @@
     },
     {
       "family": "trinityCore",
+      "className": "Tr2VariableStore",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
       "className": "Tr2VideoAdapters",
       "reason": "hand-maintained source exists"
     },
@@ -1474,8 +1479,8 @@
       "enumsFile": true
     },
     "trinityCore": {
-      "exports": 78,
-      "classes": 77,
+      "exports": 77,
+      "classes": 76,
       "enumsFile": true
     },
     "ui": {

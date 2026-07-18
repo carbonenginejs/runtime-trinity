@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriViewport } from "../npm/dist/trinityCore/index.js";
+import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriVariable, TriViewport } from "../npm/dist/trinityCore/index.js";
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
 import { TermType, TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
 
@@ -545,4 +545,66 @@ test("Tr2ExpressionTermInfo factories preserve Carbon term types and isolate arg
   assertEquals(stringFn.GetArguments().join(","), "name");
   assertEquals(CjsSchema.getField(Tr2ExpressionTermInfo, "type")?.type.kind, "int32");
   assertEquals(CjsSchema.getMethod(Tr2ExpressionTermInfo, "GetArguments")?.impl?.status, "implemented");
+});
+
+test("Tr2VariableStore forms a global-rooted graph with Carbon lookup rules", () =>
+{
+  const globalStore = Tr2VariableStore.GlobalStore();
+  assertEquals(Tr2VariableStore.GlobalStore(), globalStore);
+  assertEquals(globalStore.GetParentVariableStore(), null);
+  // The global store refuses a parent, as Carbon enforces.
+  globalStore.SetParentVariableStore(new Tr2VariableStore());
+  assertEquals(globalStore.GetParentVariableStore(), null);
+
+  const store = new Tr2VariableStore();
+  assertEquals(store.GetParentVariableStore(), globalStore);
+
+  // Registration derives the script-bridge content type and stores values.
+  const speed = store.RegisterVariable("vsTestSpeed", 0.5);
+  assertEquals(speed instanceof TriVariable, true);
+  assertEquals(speed.GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT);
+  assertEquals(speed.GetValue(), 0.5);
+  assertEquals(store.RegisterVariable("vsTestCount", 3).GetType(), TriVariable.ContentType.TRIVARIABLE_INT);
+  assertEquals(store.RegisterVariable("vsTestColor", [1, 0, 0, 1]).GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT4);
+  assertEquals(store.RegisterVariable("vsTestMatrix", mat4.create()).GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT4X4);
+
+  // Same-name same-type registration reuses the variable; a reserved
+  // variable adopts the incoming type; a hard conflict returns null.
+  assertEquals(store.RegisterVariable("vsTestSpeed", 0.75), speed);
+  assertEquals(speed.GetValue(), 0.75);
+  const reserved = store.RegisterVariable("vsTestReserved");
+  assertEquals(reserved.GetType(), TriVariable.ContentType.TRIVARIABLE_INVALID);
+  assertEquals(store.RegisterVariable("vsTestReserved", [1, 2]), reserved);
+  assertEquals(reserved.GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT2);
+  assertEquals(store.RegisterVariable("vsTestSpeed", [1, 2, 3]), null);
+
+  // Find walks the parent chain without creating; Get reserves on miss in
+  // the queried store.
+  globalStore.RegisterVariable("vsTestGlobal", 7.5);
+  assertEquals(store.FindVariable("vsTestGlobal"), globalStore.FindLocalVariable("vsTestGlobal"));
+  assertEquals(store.FindLocalVariable("vsTestGlobal"), null);
+  assertEquals(store.FindVariable("vsTestMissing"), null);
+  const gotten = store.GetVariable("vsTestMissing");
+  assertEquals(gotten.GetType(), TriVariable.ContentType.TRIVARIABLE_INVALID);
+  assertEquals(store.FindLocalVariable("vsTestMissing"), gotten);
+  const local = store.GetLocalVariable("vsTestGlobal");
+  assertEquals(local === globalStore.FindLocalVariable("vsTestGlobal"), false);
+  assertEquals(store.FindLocalVariable("vsTestGlobal"), local);
+
+  assertEquals(store.GetLocalNames().includes("vsTestSpeed"), true);
+  assertEquals(store.GetLocalNames().includes("vsTestGlobal"), true);
+
+  // Unregister walks up to the first owner; the removed variable is
+  // invalidated so stale references stop binding.
+  const child = new Tr2VariableStore();
+  child.SetParentVariableStore(store);
+  child.UnregisterVariable("vsTestSpeed");
+  assertEquals(store.FindLocalVariable("vsTestSpeed"), null);
+  assertEquals(speed.GetType(), TriVariable.ContentType.TRIVARIABLE_INVALID);
+  assertEquals(speed.GetValue(), null);
+  assertEquals(child.UnregisterLocalVariable("vsTestGlobal"), false);
+
+  globalStore.UnregisterLocalVariable("vsTestGlobal");
+  assertEquals(CjsSchema.GetConstructor("Tr2VariableStore"), Tr2VariableStore);
+  assertEquals(CjsSchema.GetConstructor("TriVariable"), TriVariable);
 });
