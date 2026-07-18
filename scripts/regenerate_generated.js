@@ -50,6 +50,7 @@ const ENUM_IMPORT_MAP = {
   Tr2WindowShowState: { import: "Tr2WindowShowState", from: RENDER_CONTEXT },
   Tr2ImeState_MacOS: { import: "Tr2ImeState_MacOS", from: RENDER_CONTEXT },
   TRIOPERATOR: { import: "TriOperator", from: CONST_GRAPHICS },
+  TRIEXTRAPOLATION: { import: "TriExtrapolation", from: CONST_GRAPHICS },
   TRITRANSFORMBASE: { import: "TriTransformBase", from: CONST_GRAPHICS }
 };
 const RUNTIME_FAMILY_OVERRIDES = new Map([
