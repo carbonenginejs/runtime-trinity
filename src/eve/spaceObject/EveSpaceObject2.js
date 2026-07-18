@@ -331,6 +331,22 @@ export class EveSpaceObject2 extends EveEntity
   // side updates curve sets only when it matches the frame time.
   #lastCurveUpdateTime = 0;
 
+  // Carbon m_dynamicBoundingSphere: disabled while w is -1; a future animation
+  // updater port publishes skinned bounds here.
+  #dynamicBoundingSphere = vec4.fromValues(0, 0, 0, -1);
+
+  // Carbon m_localAabbMin/Max: cached so GetLocalBoundingBox can answer before
+  // LOD selection assigns a mesh (at worst it lags one frame).
+  #localAabbMin = vec3.create();
+
+  #localAabbMax = vec3.create();
+
+  // Carbon m_allowLodSelection: cleared by FreezeHighDetailMesh.
+  #allowLodSelection = true;
+
+  // Carbon m_impostorMode: the impostor system that raises it is unported.
+  #impostorMode = false;
+
   get meshLod()
   {
     return this.mesh;
@@ -760,156 +776,306 @@ export class EveSpaceObject2 extends EveEntity
     }
   }
 
-  /** Carbon method PlayAnimationEx (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
+  /**
+   * Plays an animation with explicit loop, start, and speed settings
+   * (Carbon PlayAnimationEx, MAP_METHOD_AND_WRAP_OPTIONAL_ARGS).
+   */
   @carbon.method
-  @impl.notImplemented
-  PlayAnimationEx(...args)
+  @impl.adapted
+  PlayAnimationEx(animName, loopCount, start, speed, clearWhenDone = true)
   {
-    throw new Error("EveSpaceObject2.PlayAnimationEx is not implemented in CarbonEngineJS.");
+    this.#PlayAnimation(animName, true, loopCount, start, speed, clearWhenDone);
   }
 
-  /** Carbon method CalculateSkinnedBoundingBoxFromTransform (MAP_METHOD_AND_WRAP). */
+  /**
+   * Calculates the skinned bounding box under a transform (CMF path: the
+   * local box corners transformed with perspective divide). The granny path
+   * is unported. Returns an inverted-empty { min, max } box when dynamic
+   * bounds are disabled, as Carbon's BoundingBoxInitialize does.
+   */
   @carbon.method
-  @impl.notImplemented
-  CalculateSkinnedBoundingBoxFromTransform(...args)
+  @impl.adapted
+  CalculateSkinnedBoundingBoxFromTransform(transform)
   {
-    throw new Error("EveSpaceObject2.CalculateSkinnedBoundingBoxFromTransform is not implemented in CarbonEngineJS.");
+    const min = vec3.fromValues(Infinity, Infinity, Infinity);
+    const max = vec3.fromValues(-Infinity, -Infinity, -Infinity);
+    if (this.dynamicBoundingSphereEnabled && this.mesh?.GetGeometryResource?.()?.IsUsingCMF?.())
+    {
+      const { min: localMin, max: localMax } = this.GetLocalBoundingBox();
+      const corner = vec3.create();
+      for (let index = 0; index < 8; index++)
+      {
+        vec3.set(
+          corner,
+          index & 1 ? localMax[0] : localMin[0],
+          index & 2 ? localMax[1] : localMin[1],
+          index & 4 ? localMax[2] : localMin[2]
+        );
+        vec3.transformMat4(corner, corner, transform);
+        vec3.min(min, min, corner);
+        vec3.max(max, max, corner);
+      }
+    }
+    return { min, max };
   }
 
-  /** Carbon method CalculateSkinnedBoundingSphere (MAP_METHOD_AND_WRAP). */
+  /**
+   * Calculates the skinned bounding sphere (CMF path: the current bounding
+   * sphere; granny path unported). Returns (0,0,0,-1) when dynamic bounds
+   * are disabled.
+   */
   @carbon.method
-  @impl.notImplemented
-  CalculateSkinnedBoundingSphere(...args)
+  @impl.adapted
+  CalculateSkinnedBoundingSphere(out = vec4.create())
   {
-    throw new Error("EveSpaceObject2.CalculateSkinnedBoundingSphere is not implemented in CarbonEngineJS.");
+    if (this.dynamicBoundingSphereEnabled && this.mesh?.GetGeometryResource?.()?.IsUsingCMF?.())
+    {
+      const center = this.GetBoundingSphereCenter();
+      return vec4.set(out, center[0], center[1], center[2], this.GetBoundingSphereRadius());
+    }
+    return vec4.set(out, 0, 0, 0, -1);
   }
 
-  /** Carbon method ClearImpactDamage (MAP_METHOD_AND_WRAP). */
+  /**
+   * Clears all impact and damage effects on the impact overlay.
+   */
   @carbon.method
-  @impl.notImplemented
-  ClearImpactDamage(...args)
+  @impl.implemented
+  ClearImpactDamage()
   {
-    throw new Error("EveSpaceObject2.ClearImpactDamage is not implemented in CarbonEngineJS.");
+    this.impactOverlay?.Clear?.();
   }
 
-  /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
+  /**
+   * Clears all animations on the animation updater.
+   */
   @carbon.method
-  @impl.notImplemented
-  ClearAnimations(...args)
+  @impl.implemented
+  ClearAnimations()
   {
-    throw new Error("EveSpaceObject2.ClearAnimations is not implemented in CarbonEngineJS.");
+    this.animationUpdater?.ClearAnimations?.();
   }
 
-  /** Carbon method CreateImpactFromPosition (MAP_METHOD_AND_WRAP). */
+  /**
+   * Creates an impact facing a position on the closest facing damage locator.
+   */
   @carbon.method
-  @impl.notImplemented
-  CreateImpactFromPosition(...args)
+  @impl.implemented
+  CreateImpactFromPosition(position, direction, lifeTime, size)
   {
-    throw new Error("EveSpaceObject2.CreateImpactFromPosition is not implemented in CarbonEngineJS.");
+    const closestDamageLocator = this.#GetClosestLocatorIndex(position, EveSpaceObject2.#damageLocatorSetName);
+    return this.CreateImpact(closestDamageLocator, direction, lifeTime, size);
   }
 
-  /** Carbon method CreateImpact (MAP_METHOD_AND_WRAP). */
+  /**
+   * Creates an impact effect on a damage locator through the impact overlay.
+   */
   @carbon.method
-  @impl.notImplemented
-  CreateImpact(...args)
+  @impl.adapted
+  CreateImpact(damageLocatorIndex, direction, lifeTime, size)
   {
-    throw new Error("EveSpaceObject2.CreateImpact is not implemented in CarbonEngineJS.");
+    if (this.impactOverlay)
+    {
+      return this.impactOverlay.CreateImpact?.(damageLocatorIndex, direction, lifeTime, size, 1, this.lodLevel, this) ?? -1;
+    }
+    return -1;
   }
 
-  /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
+  /**
+   * Ends the current animation on the animation updater.
+   */
   @carbon.method
-  @impl.notImplemented
-  EndAnimation(...args)
+  @impl.implemented
+  EndAnimation()
   {
-    throw new Error("EveSpaceObject2.EndAnimation is not implemented in CarbonEngineJS.");
+    this.animationUpdater?.EndAnimation?.();
   }
 
-  /** Carbon method FreezeHighDetailMesh (MAP_METHOD_AND_WRAP). */
+  /**
+   * Freezes LOD selection at the current mesh and marks decal geometry
+   * frozen.
+   */
   @carbon.method
-  @impl.notImplemented
-  FreezeHighDetailMesh(...args)
+  @impl.implemented
+  FreezeHighDetailMesh()
   {
-    throw new Error("EveSpaceObject2.FreezeHighDetailMesh is not implemented in CarbonEngineJS.");
+    this.#allowLodSelection = false;
+    for (const decal of this.decals)
+    {
+      decal?.SetHighDetailDecalState?.(true);
+    }
   }
 
-  /** Carbon method GetDamageLocatorCount (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the number of damage locators on this object.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetDamageLocatorCount(...args)
+  @impl.implemented
+  GetDamageLocatorCount()
   {
-    throw new Error("EveSpaceObject2.GetDamageLocatorCount is not implemented in CarbonEngineJS.");
+    return this.GetLocatorCount(EveSpaceObject2.#damageLocatorSetName);
   }
 
-  /** Carbon method GetLocatorCount (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the number of locators in a named locator set.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetLocatorCount(...args)
+  @impl.implemented
+  GetLocatorCount(locatorSetName)
   {
-    throw new Error("EveSpaceObject2.GetLocatorCount is not implemented in CarbonEngineJS.");
+    return this.#GetLocatorsForSet(locatorSetName)?.length ?? 0;
   }
 
-  /** Carbon method GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the closest locator in a set to a world position, ignoring locator
+   * facing. Returns -1 when the set is missing or empty.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetCloseLocatorIndex(...args)
+  @impl.implemented
+  GetCloseLocatorIndex(position, locatorSetName)
   {
-    throw new Error("EveSpaceObject2.GetCloseLocatorIndex is not implemented in CarbonEngineJS.");
+    const locators = this.#GetLocatorsForSet(locatorSetName);
+    if (!locators)
+    {
+      return -1;
+    }
+    const posInObjectSpace = vec3.transformMat4(vec3.create(), position, this.inverseWorldTransform);
+    const locatorPosition = vec3.create();
+    const locatorDirection = vec3.create();
+    let closestLength = Infinity;
+    let closestIndex = -1;
+    for (let index = 0; index < locators.length; index++)
+    {
+      this.#GetLocatorInObjectSpace(locatorPosition, locatorDirection, locators[index]);
+      const distance = vec3.squaredDistance(locatorPosition, posInObjectSpace);
+      if (distance < closestLength)
+      {
+        closestIndex = index;
+        closestLength = distance;
+      }
+    }
+    return closestIndex;
   }
 
-  /** Carbon method GetGoodLocatorIndex -> GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
+  /**
+   * Carbon's script surface maps GetGoodLocatorIndex to GetCloseLocatorIndex
+   * (EveSpaceObject2_Blue.cpp); the internal randomized fit heuristic is not
+   * script-exposed.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetGoodLocatorIndex(...args)
+  @impl.adapted
+  GetGoodLocatorIndex(position, locatorSetName)
   {
-    throw new Error("EveSpaceObject2.GetGoodLocatorIndex is not implemented in CarbonEngineJS.");
+    return this.GetCloseLocatorIndex(position, locatorSetName);
   }
 
-  /** Carbon method GetDamageLocatorDirection -> GetDamageLocatorDirectionLocal (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the local direction of an indexed damage locator, (0,0,0) for
+   * indices out of range (Carbon script GetDamageLocatorDirection maps to
+   * GetDamageLocatorDirectionLocal).
+   */
   @carbon.method
-  @impl.notImplemented
-  GetDamageLocatorDirection(...args)
+  @impl.adapted
+  GetDamageLocatorDirection(index, out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetDamageLocatorDirection is not implemented in CarbonEngineJS.");
+    const locators = this.#GetLocatorsForSet(EveSpaceObject2.#damageLocatorSetName);
+    if (!locators || !(index >= 0 && index < locators.length))
+    {
+      return vec3.set(out, 0, 0, 0);
+    }
+    const position = vec3.create();
+    this.#GetLocatorInObjectSpace(position, out, locators[index]);
+    return out;
   }
 
-  /** Carbon method GetDamageLocator (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the local position of an indexed damage locator, (0,0,0) for
+   * indices out of range.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetDamageLocator(...args)
+  @impl.implemented
+  GetDamageLocator(index, out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetDamageLocator is not implemented in CarbonEngineJS.");
+    const locators = this.#GetLocatorsForSet(EveSpaceObject2.#damageLocatorSetName);
+    if (!locators || !(index >= 0 && index < locators.length))
+    {
+      return vec3.set(out, 0, 0, 0);
+    }
+    const direction = vec3.create();
+    this.#GetLocatorInObjectSpace(out, direction, locators[index]);
+    return out;
   }
 
-  /** Carbon method GetTransformedDamageLocator (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the world-space position of an indexed damage locator, (0,0,0) for
+   * indices out of range.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetTransformedDamageLocator(...args)
+  @impl.implemented
+  GetTransformedDamageLocator(index, out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetTransformedDamageLocator is not implemented in CarbonEngineJS.");
+    this.GetDamageLocator(index, out);
+    return vec3.transformMat4(out, out, this.worldTransform);
   }
 
-  /** Carbon method IsImpostor (MAP_METHOD_AND_WRAP). */
+  /**
+   * Checks whether this object is in impostor mode. The impostor system that
+   * raises the flag is unported, so this reports the default until then.
+   */
   @carbon.method
-  @impl.notImplemented
-  IsImpostor(...args)
+  @impl.adapted
+  IsImpostor()
   {
-    throw new Error("EveSpaceObject2.IsImpostor is not implemented in CarbonEngineJS.");
+    return this.#impostorMode;
   }
 
-  /** Carbon method GetLocatorPositionFromSet (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets a locator position from a named set. Out-of-range or missing-set
+   * queries return the world translation in world space and (0,0,0) in
+   * object space, as Carbon does.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetLocatorPositionFromSet(...args)
+  @impl.implemented
+  GetLocatorPositionFromSet(index, inWorldSpace, locatorSetName, out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetLocatorPositionFromSet is not implemented in CarbonEngineJS.");
+    const locators = this.#GetLocatorsForSet(locatorSetName);
+    if (index < 0 || !locators || index >= locators.length)
+    {
+      if (inWorldSpace)
+      {
+        return vec3.set(out, this.worldTransform[12], this.worldTransform[13], this.worldTransform[14]);
+      }
+      return vec3.set(out, 0, 0, 0);
+    }
+    const direction = vec3.create();
+    this.#GetLocatorInObjectSpace(out, direction, locators[index]);
+    if (inWorldSpace)
+    {
+      vec3.transformMat4(out, out, this.worldTransform);
+    }
+    return out;
   }
 
-  /** Carbon method GetLocatorRotationFromSet (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets a locator direction from a named set. Out-of-range or missing-set
+   * queries return (0,1,0), as Carbon does.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetLocatorRotationFromSet(...args)
+  @impl.implemented
+  GetLocatorRotationFromSet(index, inWorldSpace, locatorSetName, out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetLocatorRotationFromSet is not implemented in CarbonEngineJS.");
+    const locators = this.#GetLocatorsForSet(locatorSetName);
+    if (index < 0 || !locators || index >= locators.length)
+    {
+      return vec3.set(out, 0, 1, 0);
+    }
+    const position = vec3.create();
+    this.#GetLocatorInObjectSpace(position, out, locators[index]);
+    if (inWorldSpace)
+    {
+      EveSpaceObject2.#TransformNormal(out, out, this.worldTransform);
+    }
+    return out;
   }
 
   @carbon.method
@@ -931,36 +1097,70 @@ export class EveSpaceObject2 extends EveEntity
     }
   }
 
-  /** Carbon method PlayAnimation -> PlayAnimationOnce (MAP_METHOD_AND_WRAP). */
+  /**
+   * Plays an animation once, replacing the current one
+   * (Carbon script PlayAnimation maps to PlayAnimationOnce).
+   */
   @carbon.method
-  @impl.notImplemented
-  PlayAnimation(...args)
+  @impl.adapted
+  PlayAnimation(animName)
   {
-    throw new Error("EveSpaceObject2.PlayAnimation is not implemented in CarbonEngineJS.");
+    this.#PlayAnimation(animName, true, 1, 0, 1, true);
   }
 
-  /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
+  /**
+   * Chains an animation once after the current one (Carbon ChainAnimation).
+   */
   @carbon.method
-  @impl.notImplemented
-  ChainAnimation(...args)
+  @impl.implemented
+  ChainAnimation(animName)
   {
-    throw new Error("EveSpaceObject2.ChainAnimation is not implemented in CarbonEngineJS.");
+    this.#PlayAnimation(animName, false, 1, 0, 1, true);
   }
 
-  /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
+  /**
+   * Chains an animation with explicit loop, start, and speed settings
+   * (Carbon ChainAnimationEx).
+   */
   @carbon.method
-  @impl.notImplemented
-  ChainAnimationEx(...args)
+  @impl.implemented
+  ChainAnimationEx(animName, loopCount, start, speed)
   {
-    throw new Error("EveSpaceObject2.ChainAnimationEx is not implemented in CarbonEngineJS.");
+    this.#PlayAnimation(animName, false, loopCount, start, speed, true);
   }
 
-  /** Carbon method RebuildBoundingSphereInformation (MAP_METHOD_AND_WRAP). */
-  @carbon.method
-  @impl.notImplemented
-  RebuildBoundingSphereInformation(...args)
+  // Carbon EveSpaceObject2::PlayAnimation: every playback wrapper funnels
+  // into the animation updater, which owns playback state; a missing updater
+  // is a Carbon-faithful no-op.
+  #PlayAnimation(animName, replace, loopCount, delay, speed, clearWhenDone)
   {
-    throw new Error("EveSpaceObject2.RebuildBoundingSphereInformation is not implemented in CarbonEngineJS.");
+    this.animationUpdater?.PlayAnimation?.(String(animName ?? ""), replace, loopCount, delay, speed, clearWhenDone);
+  }
+
+  /**
+   * Recalculates the authored bounding sphere from the mesh geometry
+   * resource. Fails when no mesh or ready geometry resource is attached.
+   */
+  @carbon.method
+  @impl.adapted
+  RebuildBoundingSphereInformation()
+  {
+    const mesh = this.mesh;
+    if (!mesh)
+    {
+      return false;
+    }
+    const geometryRes = mesh.GetGeometryResource?.();
+    if (!geometryRes || !geometryRes.IsGood?.())
+    {
+      return false;
+    }
+    geometryRes.RecalculateBoundingSphere?.();
+    const sphere = vec4.create();
+    geometryRes.GetBoundingSphere?.(mesh.GetMeshIndex?.() ?? 0, sphere);
+    vec3.set(this.boundingSphereCenter, sphere[0], sphere[1], sphere[2]);
+    this.boundingSphereRadius = sphere[3];
+    return true;
   }
 
   @carbon.method
@@ -978,44 +1178,124 @@ export class EveSpaceObject2 extends EveEntity
     throw new Error("EveSpaceObject2.GetLastUsedMeshLod is not implemented in CarbonEngineJS.");
   }
 
-  /** Carbon method GetLocatorTransform -> GetEveLocatorTransform (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets an authored locator transform (ELT_TRANSFORM) or an animated joint
+   * world transform (ELT_JOINT). Returns null for unknown indices where
+   * Carbon dereferences unchecked, and for joint queries until an animation
+   * updater publishes world transforms.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetLocatorTransform(...args)
+  @impl.adapted
+  GetLocatorTransform(locatorType, locatorIndex)
   {
-    throw new Error("EveSpaceObject2.GetLocatorTransform is not implemented in CarbonEngineJS.");
+    switch (locatorType)
+    {
+      case EveSpaceObject2.LocatorType.ELT_TRANSFORM:
+        return this.locators[locatorIndex]?.GetTransform() ?? null;
+      case EveSpaceObject2.LocatorType.ELT_JOINT:
+      {
+        const worldTransforms = this.animationUpdater?.GetWorldTransforms?.();
+        if (!worldTransforms?.length || locatorIndex >= worldTransforms.length)
+        {
+          return null;
+        }
+        return worldTransforms[locatorIndex];
+      }
+    }
+    return null;
   }
 
-  /** Carbon method GetLocalBoundingBox -> GetLocalBoundingBoxFromScript (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the local axis-aligned bounding box: dynamic skinned bounds when
+   * enabled, else the mesh box, else the cached box (at worst it lags one
+   * frame). With out arguments it fills them and returns true; without, it
+   * returns { min, max }.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetLocalBoundingBox(...args)
+  @impl.adapted
+  GetLocalBoundingBox(minBounds, maxBounds)
   {
-    throw new Error("EveSpaceObject2.GetLocalBoundingBox is not implemented in CarbonEngineJS.");
+    const min = vec3.create();
+    const max = vec3.create();
+    const updater = this.animationUpdater;
+    if (this.dynamicBoundingSphereEnabled && updater?.IsInitialized?.())
+    {
+      const sphere = vec4.create();
+      updater.GetDynamicBounds?.(sphere, min, max);
+      vec3.copy(this.#localAabbMin, min);
+      vec3.copy(this.#localAabbMax, max);
+    }
+    else if (this.mesh?.GetBoundingBox?.(min, max))
+    {
+      vec3.copy(this.#localAabbMin, min);
+      vec3.copy(this.#localAabbMax, max);
+    }
+    else
+    {
+      vec3.copy(min, this.#localAabbMin);
+      vec3.copy(max, this.#localAabbMax);
+    }
+    if (minBounds && maxBounds)
+    {
+      vec3.copy(minBounds, min);
+      vec3.copy(maxBounds, max);
+      return true;
+    }
+    return { min, max };
   }
 
-  /** Carbon method GetBoundingSphereCenter (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the bounding sphere center, preferring the dynamic skinned sphere
+   * when one is published.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetBoundingSphereCenter(...args)
+  @impl.implemented
+  GetBoundingSphereCenter(out = vec3.create())
   {
-    throw new Error("EveSpaceObject2.GetBoundingSphereCenter is not implemented in CarbonEngineJS.");
+    if (this.#dynamicBoundingSphere[3] !== -1)
+    {
+      return vec3.set(out, this.#dynamicBoundingSphere[0], this.#dynamicBoundingSphere[1], this.#dynamicBoundingSphere[2]);
+    }
+    return vec3.copy(out, this.boundingSphereCenter);
   }
 
-  /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the model-scaled bounding sphere radius, preferring the dynamic
+   * skinned sphere when one is published.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetBoundingSphereRadius(...args)
+  @impl.implemented
+  GetBoundingSphereRadius()
   {
-    throw new Error("EveSpaceObject2.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
+    if (this.#dynamicBoundingSphere[3] !== -1)
+    {
+      return this.modelScale * this.#dynamicBoundingSphere[3];
+    }
+    return this.modelScale * this.boundingSphereRadius;
   }
 
-  /** Carbon method GetBoneCount (MAP_METHOD_AND_WRAP). */
+  /**
+   * Gets the number of mesh-bound bones. Carbon dereferences the animation
+   * updater unchecked; CarbonEngineJS reports 0 when none is attached.
+   */
   @carbon.method
-  @impl.notImplemented
-  GetBoneCount(...args)
+  @impl.adapted
+  GetBoneCount()
   {
-    throw new Error("EveSpaceObject2.GetBoneCount is not implemented in CarbonEngineJS.");
+    const updater = this.animationUpdater;
+    if (!updater)
+    {
+      return 0;
+    }
+    if (updater.IsUsingCMF?.())
+    {
+      if (!updater.HasMeshBinding?.())
+      {
+        return 0;
+      }
+      return updater.GetSkeletonBoneIndices?.().length ?? 0;
+    }
+    return updater.GetMeshBindingBoneCount?.() ?? 0;
   }
 
   @carbon.method
@@ -1028,12 +1308,14 @@ export class EveSpaceObject2 extends EveEntity
     this.SetControllerVariable("HullDamage", hull);
   }
 
-  /** Carbon method SetImpactAnimation (MAP_METHOD_AND_WRAP). */
+  /**
+   * Toggles a named impact-overlay animation (boosters, hardeners, ...).
+   */
   @carbon.method
-  @impl.notImplemented
-  SetImpactAnimation(...args)
+  @impl.implemented
+  SetImpactAnimation(name, enable, duration)
   {
-    throw new Error("EveSpaceObject2.SetImpactAnimation is not implemented in CarbonEngineJS.");
+    this.impactOverlay?.ToggleEffect?.(name, enable, duration);
   }
 
   @carbon.method
@@ -1085,12 +1367,163 @@ export class EveSpaceObject2 extends EveEntity
     }
   }
 
-  /** Carbon method TransformLocators -> PyTransformLocators (MAP_METHOD). */
+  /**
+   * Applies bone and model transforms to locator records and returns the
+   * transformed { position, rotation, boneIndex } records (Carbon script
+   * TransformLocators maps to PyTransformLocators).
+   */
   @carbon.method
-  @impl.notImplemented
-  TransformLocators(...args)
+  @impl.adapted
+  TransformLocators(locators = [])
   {
-    throw new Error("EveSpaceObject2.TransformLocators is not implemented in CarbonEngineJS.");
+    const result = [];
+    for (const locator of locators ?? [])
+    {
+      const position = vec3.clone(locator.position ?? EveSpaceObject2.#zero);
+      const rotation = quat.clone(locator.direction ?? locator.rotation ?? EveSpaceObject2.#identityRotation);
+      const boneIndex = Number(locator.boneIndex ?? 0);
+      this.#TransformLocator(position, rotation, boneIndex);
+      if (this.modelTranslationCurve || this.modelRotationCurve)
+      {
+        this.#ApplyModelTransform(position, rotation);
+      }
+      result.push({ position, rotation, boneIndex });
+    }
+    return result;
+  }
+
+  // Carbon Blue TransformLocator: bone-attached records pick up the mesh
+  // bone matrix; without bone data the authored values pass through.
+  #TransformLocator(position, rotation, boneIndex)
+  {
+    const updater = this.animationUpdater;
+    if (boneIndex <= 0 || !updater?.IsInitialized?.())
+    {
+      return;
+    }
+    const bone = EveSpaceObject2.#GetBoneMatrix(updater, boneIndex);
+    if (!bone)
+    {
+      return;
+    }
+    vec3.transformMat4(position, position, bone);
+    const boneRotation = mat4.getRotation(quat.create(), bone);
+    quat.multiply(rotation, boneRotation, rotation);
+  }
+
+  // Carbon Blue ApplyModelTransform samples both curves at the Be::Time()
+  // origin (pure GetValueAt, no playback advance): translation adds, model
+  // rotation rotates the position and pre-multiplies.
+  #ApplyModelTransform(position, rotation)
+  {
+    if (this.modelTranslationCurve)
+    {
+      const translation = vec3.create();
+      this.modelTranslationCurve.GetValueAt?.(0, translation);
+      vec3.add(position, position, translation);
+    }
+    if (this.modelRotationCurve)
+    {
+      const modelRotation = quat.create();
+      this.modelRotationCurve.GetValueAt?.(0, modelRotation);
+      vec3.transformQuat(position, position, modelRotation);
+      quat.multiply(rotation, modelRotation, rotation);
+    }
+  }
+
+  // Carbon GetLocatorsForSet: first set matching the name wins.
+  #GetLocatorsForSet(locatorSetName)
+  {
+    const target = String(locatorSetName ?? "");
+    for (const set of this.locatorSets)
+    {
+      if (set?.HasName?.(target))
+      {
+        return set.GetLocators();
+      }
+    }
+    return null;
+  }
+
+  // Carbon GetLocatorInObjectSpace: the direction is +Y rotated by the
+  // authored quaternion; bone-attached locators additionally apply the mesh
+  // bone matrix. Carbon leaves the outputs untouched (caller-uninitialized)
+  // when bone data is missing; CarbonEngineJS keeps the unskinned values.
+  #GetLocatorInObjectSpace(outPosition, outDirection, locator)
+  {
+    vec3.transformQuat(outDirection, EveSpaceObject2.#unitY, locator.direction);
+    vec3.copy(outPosition, locator.position);
+    const updater = this.animationUpdater;
+    if (locator.boneIndex > 0 && updater?.IsInitialized?.())
+    {
+      const boneCount = Number(updater.GetMeshBoneCount?.() ?? 0);
+      if (locator.boneIndex < boneCount)
+      {
+        const bone = EveSpaceObject2.#GetBoneMatrix(updater, locator.boneIndex);
+        if (bone)
+        {
+          vec3.transformMat4(outPosition, locator.position, bone);
+          EveSpaceObject2.#TransformNormal(outDirection, outDirection, bone);
+        }
+      }
+    }
+  }
+
+  // Carbon GetClosestLocatorIndex: facing-gated closest search; 0 when the
+  // set is missing, -1 when no locator faces the position.
+  #GetClosestLocatorIndex(position, locatorSetName)
+  {
+    const locators = this.#GetLocatorsForSet(locatorSetName);
+    if (!locators)
+    {
+      return 0;
+    }
+    const posInObjectSpace = vec3.transformMat4(vec3.create(), position, this.inverseWorldTransform);
+    const locatorPosition = vec3.create();
+    const locatorDirection = vec3.create();
+    let closestLength = Infinity;
+    let closestIndex = -1;
+    for (let index = 0; index < locators.length; index++)
+    {
+      this.#GetLocatorInObjectSpace(locatorPosition, locatorDirection, locators[index]);
+      if (!EveSpaceObject2.#IsLocatorFacingPosition(locatorDirection, posInObjectSpace))
+      {
+        continue;
+      }
+      const distance = vec3.squaredDistance(locatorPosition, posInObjectSpace);
+      if (distance < closestLength)
+      {
+        closestIndex = index;
+        closestLength = distance;
+      }
+    }
+    return closestIndex;
+  }
+
+  static #IsLocatorFacingPosition(locatorDirection, posInObjectSpace)
+  {
+    const moved = vec3.subtract(vec3.create(), posInObjectSpace, locatorDirection);
+    return vec3.squaredLength(moved) < vec3.squaredLength(posInObjectSpace);
+  }
+
+  static #TransformNormal(out, direction, matrix)
+  {
+    const x = direction[0];
+    const y = direction[1];
+    const z = direction[2];
+    out[0] = matrix[0] * x + matrix[4] * y + matrix[8] * z;
+    out[1] = matrix[1] * x + matrix[5] * y + matrix[9] * z;
+    out[2] = matrix[2] * x + matrix[6] * y + matrix[10] * z;
+    return out;
+  }
+
+  // Mesh bone matrices come from the (unported) animation updater; only
+  // mat4-shaped entries are usable.
+  static #GetBoneMatrix(updater, boneIndex)
+  {
+    const bones = updater.GetMeshBoneMatrixList?.();
+    const bone = bones?.[boneIndex];
+    return bone && bone.length >= 16 ? bone : null;
   }
 
   static #ApplyControllerVariables(target, variables, methodName)
@@ -1155,10 +1588,21 @@ export class EveSpaceObject2 extends EveEntity
 
   static #zero = Object.freeze([0, 0, 0]);
 
+  static #unitY = Object.freeze([0, 1, 0]);
+
   static #identityRotation = Object.freeze([0, 0, 0, 1]);
+
+  static #damageLocatorSetName = "damage";
 
   static ReflectionMode = ReflectionMode;
 
   static Tr2Lod = Tr2Lod;
+
+  /** Carbon EveSpaceObject2::LocatorType. */
+  static LocatorType = Object.freeze({
+    ELT_TRANSFORM: 0,
+    ELT_JOINT: 1,
+    ELT_COUNT: 2
+  });
 
 }

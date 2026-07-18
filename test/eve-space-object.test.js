@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { EveEntity, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
+import { EveEntity, EveLocatorSets, EveLocator2, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
 import { EveChildInheritProperties } from "../npm/dist/eve/child/EveChildInheritProperties.js";
 
 
@@ -463,4 +463,306 @@ test("maintained EveSpaceObject2, inherit properties, and TriObserverLocal repla
     "TriObserverLocal"
   ]);
   assert.equal(skipped.every(entry => entry.reason === "hand-maintained source exists"), true);
+});
+
+function makeLocatorSet(name, records)
+{
+  const set = new EveLocatorSets();
+  set.SetName(name);
+  set.Append(records);
+  return set;
+}
+
+test("EveSpaceObject2 answers Carbon locator set queries in object and world space", () =>
+{
+  const object = new EveSpaceObject2();
+  object.locatorSets.push(makeLocatorSet("damage", [
+    { position: [1, 0, 0], direction: [0, 0, 0, 1], boneIndex: 0 },
+    { position: [0, 0, 5], direction: [0.7071067811865476, 0, 0, 0.7071067811865476], boneIndex: 0 }
+  ]));
+  object.locatorSets.push(makeLocatorSet("attach", [
+    { position: [0, 9, 0], direction: [0, 0, 0, 1], boneIndex: 0 }
+  ]));
+
+  assert.equal(object.GetDamageLocatorCount(), 2);
+  assert.equal(object.GetLocatorCount("damage"), 2);
+  assert.equal(object.GetLocatorCount("attach"), 1);
+  assert.equal(object.GetLocatorCount("missing"), 0);
+
+  assertVecNear(object.GetDamageLocator(0), [1, 0, 0]);
+  assertVecNear(object.GetDamageLocator(1), [0, 0, 5]);
+  assertVecNear(object.GetDamageLocator(7), [0, 0, 0]);
+  // Direction is +Y rotated by the authored quaternion: identity keeps +Y,
+  // the second rotates +Y onto +Z (90 degrees around +X).
+  assertVecNear(object.GetDamageLocatorDirection(0), [0, 1, 0]);
+  assertVecNear(object.GetDamageLocatorDirection(1), [0, 0, 1]);
+  assertVecNear(object.GetDamageLocatorDirection(-1), [0, 0, 0]);
+
+  mat4.fromTranslation(object.worldTransform, [10, 20, 30]);
+  mat4.invert(object.inverseWorldTransform, object.worldTransform);
+  assertVecNear(object.GetTransformedDamageLocator(0), [11, 20, 30]);
+
+  assertVecNear(object.GetLocatorPositionFromSet(1, false, "damage"), [0, 0, 5]);
+  assertVecNear(object.GetLocatorPositionFromSet(1, true, "damage"), [10, 20, 35]);
+  assertVecNear(object.GetLocatorPositionFromSet(-1, true, "damage"), [10, 20, 30]);
+  assertVecNear(object.GetLocatorPositionFromSet(9, false, "damage"), [0, 0, 0]);
+  assertVecNear(object.GetLocatorRotationFromSet(0, false, "damage"), [0, 1, 0]);
+  assertVecNear(object.GetLocatorRotationFromSet(1, false, "damage"), [0, 0, 1]);
+  assertVecNear(object.GetLocatorRotationFromSet(-1, true, "damage"), [0, 1, 0]);
+
+  // Close locator ignores facing; index 1 sits nearest the queried point.
+  assert.equal(object.GetCloseLocatorIndex([10, 20, 34], "damage"), 1);
+  assert.equal(object.GetCloseLocatorIndex([11.5, 20, 30], "damage"), 0);
+  assert.equal(object.GetCloseLocatorIndex([0, 0, 0], "missing"), -1);
+  // The script surface maps GetGoodLocatorIndex onto the same query.
+  assert.equal(object.GetGoodLocatorIndex([10, 20, 34], "damage"), 1);
+});
+
+test("EveSpaceObject2 locator transforms come from authored locators and joints", () =>
+{
+  const object = new EveSpaceObject2();
+  const locator = new EveLocator2();
+  locator.SetName("locator_attach_a01");
+  mat4.fromTranslation(locator.transform, [4, 5, 6]);
+  object.locators.push(locator);
+
+  const transform = object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_TRANSFORM, 0);
+  assertVecNear(Array.from(transform).slice(12, 15), [4, 5, 6]);
+  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_TRANSFORM, 3), null);
+  // Joint transforms require an animation updater with published world poses.
+  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 0), null);
+  object.animationUpdater = {
+    GetWorldTransforms()
+    {
+      return [mat4.fromTranslation(mat4.create(), [7, 8, 9])];
+    }
+  };
+  const joint = object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 0);
+  assertVecNear(Array.from(joint).slice(12, 15), [7, 8, 9]);
+  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 1), null);
+});
+
+test("EveSpaceObject2 bounds follow Carbon dynamic-sphere and cached-box rules", () =>
+{
+  const object = new EveSpaceObject2();
+  object.modelScale = 2;
+  object.boundingSphereCenter.set([1, 2, 3]);
+  object.boundingSphereRadius = 5;
+  assertVecNear(object.GetBoundingSphereCenter(), [1, 2, 3]);
+  assert.equal(object.GetBoundingSphereRadius(), 10);
+
+  // Without a mesh the local box answers from the (initially empty) cache.
+  const empty = object.GetLocalBoundingBox();
+  assertVecNear(empty.min, [0, 0, 0]);
+  assertVecNear(empty.max, [0, 0, 0]);
+
+  object.mesh = {
+    GetBoundingBox(min, max)
+    {
+      min.set([-1, -2, -3]);
+      max.set([4, 5, 6]);
+      return true;
+    }
+  };
+  const minBounds = new Float32Array(3);
+  const maxBounds = new Float32Array(3);
+  assert.equal(object.GetLocalBoundingBox(minBounds, maxBounds), true);
+  assertVecNear(minBounds, [-1, -2, -3]);
+  assertVecNear(maxBounds, [4, 5, 6]);
+  // The cached copy answers again once the mesh disappears (lags one frame).
+  object.mesh = null;
+  const cached = object.GetLocalBoundingBox();
+  assertVecNear(cached.min, [-1, -2, -3]);
+  assertVecNear(cached.max, [4, 5, 6]);
+
+  // Skinned bounds report disabled markers until dynamic bounds are enabled.
+  assertVecNear(object.CalculateSkinnedBoundingSphere(), [0, 0, 0, -1]);
+  const box = object.CalculateSkinnedBoundingBoxFromTransform(mat4.create());
+  assert.equal(box.min[0], Infinity);
+  assert.equal(box.max[0], -Infinity);
+
+  object.mesh = {
+    GetGeometryResource()
+    {
+      return {
+        IsUsingCMF()
+        {
+          return true;
+        }
+      };
+    },
+    GetBoundingBox(min, max)
+    {
+      min.set([-1, -1, -1]);
+      max.set([1, 1, 1]);
+      return true;
+    }
+  };
+  object.dynamicBoundingSphereEnabled = true;
+  assertVecNear(object.CalculateSkinnedBoundingSphere(), [1, 2, 3, 10]);
+  const shifted = object.CalculateSkinnedBoundingBoxFromTransform(mat4.fromTranslation(mat4.create(), [10, 0, 0]));
+  assertVecNear(shifted.min, [9, -1, -1]);
+  assertVecNear(shifted.max, [11, 1, 1]);
+});
+
+test("EveSpaceObject2 rebuilds the authored bounding sphere from ready geometry", () =>
+{
+  const object = new EveSpaceObject2();
+  assert.equal(object.RebuildBoundingSphereInformation(), false);
+  const calls = [];
+  object.mesh = {
+    GetMeshIndex()
+    {
+      return 2;
+    },
+    GetGeometryResource()
+    {
+      return {
+        IsGood()
+        {
+          return true;
+        },
+        RecalculateBoundingSphere()
+        {
+          calls.push("recalculate");
+        },
+        GetBoundingSphere(meshIndex, out)
+        {
+          calls.push(`sphere:${meshIndex}`);
+          out.set([7, 8, 9, 11]);
+        }
+      };
+    }
+  };
+  assert.equal(object.RebuildBoundingSphereInformation(), true);
+  assert.deepEqual(calls, ["recalculate", "sphere:2"]);
+  assertVecNear(object.boundingSphereCenter, [7, 8, 9]);
+  assert.equal(object.boundingSphereRadius, 11);
+});
+
+test("EveSpaceObject2 delegates animation playback with Carbon wrapper constants", () =>
+{
+  const object = new EveSpaceObject2();
+  // No updater: every playback call is a Carbon-faithful no-op.
+  object.PlayAnimation("gate");
+  object.EndAnimation();
+  object.ClearAnimations();
+
+  const calls = [];
+  object.animationUpdater = {
+    PlayAnimation(...args)
+    {
+      calls.push(["play", ...args]);
+    },
+    EndAnimation()
+    {
+      calls.push(["end"]);
+    },
+    ClearAnimations()
+    {
+      calls.push(["clear"]);
+    }
+  };
+  object.PlayAnimation("open");
+  object.PlayAnimationEx("spool", 3, 0.5, 2);
+  object.PlayAnimationEx("spool", 3, 0.5, 2, false);
+  object.ChainAnimation("close");
+  object.ChainAnimationEx("wind", 2, 0.25, 0.5);
+  object.EndAnimation();
+  object.ClearAnimations();
+  assert.deepEqual(calls, [
+    ["play", "open", true, 1, 0, 1, true],
+    ["play", "spool", true, 3, 0.5, 2, true],
+    ["play", "spool", true, 3, 0.5, 2, false],
+    ["play", "close", false, 1, 0, 1, true],
+    ["play", "wind", false, 2, 0.25, 0.5, true],
+    ["end"],
+    ["clear"]
+  ]);
+});
+
+test("EveSpaceObject2 routes impact effects through the impact overlay", () =>
+{
+  const object = new EveSpaceObject2();
+  assert.equal(object.CreateImpact(0, [0, 0, 1], 2, 3), -1);
+  object.ClearImpactDamage();
+  object.SetImpactAnimation("boosters", true, 1);
+  assert.equal(object.IsImpostor(), false);
+
+  object.locatorSets.push(makeLocatorSet("damage", [
+    { position: [0, 0, -5], direction: [1, 0, 0, 0], boneIndex: 0 },
+    { position: [0, 0, 5], direction: [0.7071067811865476, 0, 0, 0.7071067811865476], boneIndex: 0 }
+  ]));
+  const calls = [];
+  object.impactOverlay = {
+    CreateImpact(...args)
+    {
+      calls.push(["impact", ...args]);
+      return 42;
+    },
+    Clear()
+    {
+      calls.push(["clear"]);
+    },
+    ToggleEffect(name, on, duration)
+    {
+      calls.push(["toggle", name, on, duration]);
+    }
+  };
+  assert.equal(object.CreateImpact(1, [0, 0, 1], 2, 3), 42);
+  // The position sits in front of locator 1 (which faces +Z); the facing
+  // gate picks it.
+  assert.equal(object.CreateImpactFromPosition([0, 0, 8], [0, 0, -1], 2, 3), 42);
+  object.ClearImpactDamage();
+  object.SetImpactAnimation("hardener", false, 0.5);
+  assert.deepEqual(calls, [
+    ["impact", 1, [0, 0, 1], 2, 3, 1, -1, object],
+    ["impact", 1, [0, 0, -1], 2, 3, 1, -1, object],
+    ["clear"],
+    ["toggle", "hardener", false, 0.5]
+  ]);
+});
+
+test("EveSpaceObject2 transforms locator records and freezes high detail meshes", () =>
+{
+  const object = new EveSpaceObject2();
+  const authored = [
+    { position: [1, 0, 0], direction: [0, 0, 0, 1], boneIndex: 0 },
+    { position: [0, 2, 0], direction: [0, 0, 0, 1], boneIndex: 0 }
+  ];
+  const passthrough = object.TransformLocators(authored);
+  assert.equal(passthrough.length, 2);
+  assertVecNear(passthrough[0].position, [1, 0, 0]);
+  assertVecNear(passthrough[1].position, [0, 2, 0]);
+  assertVecNear(passthrough[0].rotation, [0, 0, 0, 1]);
+  assert.equal(passthrough[0].boneIndex, 0);
+
+  // Model transform: translation adds, then rotation spins position and
+  // pre-multiplies the record rotation (sampled at the time origin).
+  object.modelTranslationCurve = {
+    GetValueAt(_time, out)
+    {
+      out.set([0, 0, 3]);
+    }
+  };
+  object.modelRotationCurve = {
+    GetValueAt(_time, out)
+    {
+      // 90 degrees around +Y: +Z maps onto +X.
+      out.set([0, 0.7071067811865476, 0, 0.7071067811865476]);
+    }
+  };
+  const moved = object.TransformLocators([{ position: [1, 0, 0], direction: [0, 0, 0, 1], boneIndex: 0 }]);
+  assertVecNear(moved[0].position, [3, 0, -1], 1e-6);
+  assertVecNear(moved[0].rotation, [0, 0.7071067811865476, 0, 0.7071067811865476], 1e-6);
+
+  const decalStates = [];
+  object.decals.push({
+    SetHighDetailDecalState(state)
+    {
+      decalStates.push(state);
+    }
+  });
+  object.FreezeHighDetailMesh();
+  assert.deepEqual(decalStates, [true]);
 });

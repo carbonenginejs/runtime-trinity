@@ -21,7 +21,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveSpaceObject2",
         family: "eve/spaceObject"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "TransformLocators"]], 0, void 0, _EveEntity));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.adapted], 18, "TransformLocators"]], 0, void 0, _EveEntity));
     }
     /** m_reflectionMode (EntityComponents::ReflectionMode - enum ReflectionMode) [READWRITE, PERSIST, NOTIFY, ENUM] */
     reflectionMode = (_initProto(this), _init_reflectionMode(this, 3));
@@ -193,6 +193,21 @@ new class extends _identity {
     // Carbon m_lastCurveUpdateTime: stamped by the sync-side LOD gate; the async
     // side updates curve sets only when it matches the frame time.
     #lastCurveUpdateTime = 0;
+
+    // Carbon m_dynamicBoundingSphere: disabled while w is -1; a future animation
+    // updater port publishes skinned bounds here.
+    #dynamicBoundingSphere = vec4.fromValues(0, 0, 0, -1);
+
+    // Carbon m_localAabbMin/Max: cached so GetLocalBoundingBox can answer before
+    // LOD selection assigns a mesh (at worst it lags one frame).
+    #localAabbMin = vec3.create();
+    #localAabbMax = vec3.create();
+
+    // Carbon m_allowLodSelection: cleared by FreezeHighDetailMesh.
+    #allowLodSelection = true;
+
+    // Carbon m_impostorMode: the impostor system that raises it is unported.
+    #impostorMode = false;
     get meshLod() {
       return this.mesh;
     }
@@ -458,99 +473,235 @@ new class extends _identity {
       }
     }
 
-    /** Carbon method PlayAnimationEx (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-    PlayAnimationEx(...args) {
-      throw new Error("EveSpaceObject2.PlayAnimationEx is not implemented in CarbonEngineJS.");
+    /**
+     * Plays an animation with explicit loop, start, and speed settings
+     * (Carbon PlayAnimationEx, MAP_METHOD_AND_WRAP_OPTIONAL_ARGS).
+     */
+    PlayAnimationEx(animName, loopCount, start, speed, clearWhenDone = true) {
+      this.#PlayAnimation(animName, true, loopCount, start, speed, clearWhenDone);
     }
 
-    /** Carbon method CalculateSkinnedBoundingBoxFromTransform (MAP_METHOD_AND_WRAP). */
-    CalculateSkinnedBoundingBoxFromTransform(...args) {
-      throw new Error("EveSpaceObject2.CalculateSkinnedBoundingBoxFromTransform is not implemented in CarbonEngineJS.");
+    /**
+     * Calculates the skinned bounding box under a transform (CMF path: the
+     * local box corners transformed with perspective divide). The granny path
+     * is unported. Returns an inverted-empty { min, max } box when dynamic
+     * bounds are disabled, as Carbon's BoundingBoxInitialize does.
+     */
+    CalculateSkinnedBoundingBoxFromTransform(transform) {
+      const min = vec3.fromValues(Infinity, Infinity, Infinity);
+      const max = vec3.fromValues(-Infinity, -Infinity, -Infinity);
+      if (this.dynamicBoundingSphereEnabled && this.mesh?.GetGeometryResource?.()?.IsUsingCMF?.()) {
+        const {
+          min: localMin,
+          max: localMax
+        } = this.GetLocalBoundingBox();
+        const corner = vec3.create();
+        for (let index = 0; index < 8; index++) {
+          vec3.set(corner, index & 1 ? localMax[0] : localMin[0], index & 2 ? localMax[1] : localMin[1], index & 4 ? localMax[2] : localMin[2]);
+          vec3.transformMat4(corner, corner, transform);
+          vec3.min(min, min, corner);
+          vec3.max(max, max, corner);
+        }
+      }
+      return {
+        min,
+        max
+      };
     }
 
-    /** Carbon method CalculateSkinnedBoundingSphere (MAP_METHOD_AND_WRAP). */
-    CalculateSkinnedBoundingSphere(...args) {
-      throw new Error("EveSpaceObject2.CalculateSkinnedBoundingSphere is not implemented in CarbonEngineJS.");
+    /**
+     * Calculates the skinned bounding sphere (CMF path: the current bounding
+     * sphere; granny path unported). Returns (0,0,0,-1) when dynamic bounds
+     * are disabled.
+     */
+    CalculateSkinnedBoundingSphere(out = vec4.create()) {
+      if (this.dynamicBoundingSphereEnabled && this.mesh?.GetGeometryResource?.()?.IsUsingCMF?.()) {
+        const center = this.GetBoundingSphereCenter();
+        return vec4.set(out, center[0], center[1], center[2], this.GetBoundingSphereRadius());
+      }
+      return vec4.set(out, 0, 0, 0, -1);
     }
 
-    /** Carbon method ClearImpactDamage (MAP_METHOD_AND_WRAP). */
-    ClearImpactDamage(...args) {
-      throw new Error("EveSpaceObject2.ClearImpactDamage is not implemented in CarbonEngineJS.");
+    /**
+     * Clears all impact and damage effects on the impact overlay.
+     */
+    ClearImpactDamage() {
+      this.impactOverlay?.Clear?.();
     }
 
-    /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
-    ClearAnimations(...args) {
-      throw new Error("EveSpaceObject2.ClearAnimations is not implemented in CarbonEngineJS.");
+    /**
+     * Clears all animations on the animation updater.
+     */
+    ClearAnimations() {
+      this.animationUpdater?.ClearAnimations?.();
     }
 
-    /** Carbon method CreateImpactFromPosition (MAP_METHOD_AND_WRAP). */
-    CreateImpactFromPosition(...args) {
-      throw new Error("EveSpaceObject2.CreateImpactFromPosition is not implemented in CarbonEngineJS.");
+    /**
+     * Creates an impact facing a position on the closest facing damage locator.
+     */
+    CreateImpactFromPosition(position, direction, lifeTime, size) {
+      const closestDamageLocator = this.#GetClosestLocatorIndex(position, _EveSpaceObject.#damageLocatorSetName);
+      return this.CreateImpact(closestDamageLocator, direction, lifeTime, size);
     }
 
-    /** Carbon method CreateImpact (MAP_METHOD_AND_WRAP). */
-    CreateImpact(...args) {
-      throw new Error("EveSpaceObject2.CreateImpact is not implemented in CarbonEngineJS.");
+    /**
+     * Creates an impact effect on a damage locator through the impact overlay.
+     */
+    CreateImpact(damageLocatorIndex, direction, lifeTime, size) {
+      if (this.impactOverlay) {
+        return this.impactOverlay.CreateImpact?.(damageLocatorIndex, direction, lifeTime, size, 1, this.lodLevel, this) ?? -1;
+      }
+      return -1;
     }
 
-    /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
-    EndAnimation(...args) {
-      throw new Error("EveSpaceObject2.EndAnimation is not implemented in CarbonEngineJS.");
+    /**
+     * Ends the current animation on the animation updater.
+     */
+    EndAnimation() {
+      this.animationUpdater?.EndAnimation?.();
     }
 
-    /** Carbon method FreezeHighDetailMesh (MAP_METHOD_AND_WRAP). */
-    FreezeHighDetailMesh(...args) {
-      throw new Error("EveSpaceObject2.FreezeHighDetailMesh is not implemented in CarbonEngineJS.");
+    /**
+     * Freezes LOD selection at the current mesh and marks decal geometry
+     * frozen.
+     */
+    FreezeHighDetailMesh() {
+      this.#allowLodSelection = false;
+      for (const decal of this.decals) {
+        decal?.SetHighDetailDecalState?.(true);
+      }
     }
 
-    /** Carbon method GetDamageLocatorCount (MAP_METHOD_AND_WRAP). */
-    GetDamageLocatorCount(...args) {
-      throw new Error("EveSpaceObject2.GetDamageLocatorCount is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the number of damage locators on this object.
+     */
+    GetDamageLocatorCount() {
+      return this.GetLocatorCount(_EveSpaceObject.#damageLocatorSetName);
     }
 
-    /** Carbon method GetLocatorCount (MAP_METHOD_AND_WRAP). */
-    GetLocatorCount(...args) {
-      throw new Error("EveSpaceObject2.GetLocatorCount is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the number of locators in a named locator set.
+     */
+    GetLocatorCount(locatorSetName) {
+      return this.#GetLocatorsForSet(locatorSetName)?.length ?? 0;
     }
 
-    /** Carbon method GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
-    GetCloseLocatorIndex(...args) {
-      throw new Error("EveSpaceObject2.GetCloseLocatorIndex is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the closest locator in a set to a world position, ignoring locator
+     * facing. Returns -1 when the set is missing or empty.
+     */
+    GetCloseLocatorIndex(position, locatorSetName) {
+      const locators = this.#GetLocatorsForSet(locatorSetName);
+      if (!locators) {
+        return -1;
+      }
+      const posInObjectSpace = vec3.transformMat4(vec3.create(), position, this.inverseWorldTransform);
+      const locatorPosition = vec3.create();
+      const locatorDirection = vec3.create();
+      let closestLength = Infinity;
+      let closestIndex = -1;
+      for (let index = 0; index < locators.length; index++) {
+        this.#GetLocatorInObjectSpace(locatorPosition, locatorDirection, locators[index]);
+        const distance = vec3.squaredDistance(locatorPosition, posInObjectSpace);
+        if (distance < closestLength) {
+          closestIndex = index;
+          closestLength = distance;
+        }
+      }
+      return closestIndex;
     }
 
-    /** Carbon method GetGoodLocatorIndex -> GetCloseLocatorIndex (MAP_METHOD_AND_WRAP). */
-    GetGoodLocatorIndex(...args) {
-      throw new Error("EveSpaceObject2.GetGoodLocatorIndex is not implemented in CarbonEngineJS.");
+    /**
+     * Carbon's script surface maps GetGoodLocatorIndex to GetCloseLocatorIndex
+     * (EveSpaceObject2_Blue.cpp); the internal randomized fit heuristic is not
+     * script-exposed.
+     */
+    GetGoodLocatorIndex(position, locatorSetName) {
+      return this.GetCloseLocatorIndex(position, locatorSetName);
     }
 
-    /** Carbon method GetDamageLocatorDirection -> GetDamageLocatorDirectionLocal (MAP_METHOD_AND_WRAP). */
-    GetDamageLocatorDirection(...args) {
-      throw new Error("EveSpaceObject2.GetDamageLocatorDirection is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the local direction of an indexed damage locator, (0,0,0) for
+     * indices out of range (Carbon script GetDamageLocatorDirection maps to
+     * GetDamageLocatorDirectionLocal).
+     */
+    GetDamageLocatorDirection(index, out = vec3.create()) {
+      const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
+      if (!locators || !(index >= 0 && index < locators.length)) {
+        return vec3.set(out, 0, 0, 0);
+      }
+      const position = vec3.create();
+      this.#GetLocatorInObjectSpace(position, out, locators[index]);
+      return out;
     }
 
-    /** Carbon method GetDamageLocator (MAP_METHOD_AND_WRAP). */
-    GetDamageLocator(...args) {
-      throw new Error("EveSpaceObject2.GetDamageLocator is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the local position of an indexed damage locator, (0,0,0) for
+     * indices out of range.
+     */
+    GetDamageLocator(index, out = vec3.create()) {
+      const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
+      if (!locators || !(index >= 0 && index < locators.length)) {
+        return vec3.set(out, 0, 0, 0);
+      }
+      const direction = vec3.create();
+      this.#GetLocatorInObjectSpace(out, direction, locators[index]);
+      return out;
     }
 
-    /** Carbon method GetTransformedDamageLocator (MAP_METHOD_AND_WRAP). */
-    GetTransformedDamageLocator(...args) {
-      throw new Error("EveSpaceObject2.GetTransformedDamageLocator is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the world-space position of an indexed damage locator, (0,0,0) for
+     * indices out of range.
+     */
+    GetTransformedDamageLocator(index, out = vec3.create()) {
+      this.GetDamageLocator(index, out);
+      return vec3.transformMat4(out, out, this.worldTransform);
     }
 
-    /** Carbon method IsImpostor (MAP_METHOD_AND_WRAP). */
-    IsImpostor(...args) {
-      throw new Error("EveSpaceObject2.IsImpostor is not implemented in CarbonEngineJS.");
+    /**
+     * Checks whether this object is in impostor mode. The impostor system that
+     * raises the flag is unported, so this reports the default until then.
+     */
+    IsImpostor() {
+      return this.#impostorMode;
     }
 
-    /** Carbon method GetLocatorPositionFromSet (MAP_METHOD_AND_WRAP). */
-    GetLocatorPositionFromSet(...args) {
-      throw new Error("EveSpaceObject2.GetLocatorPositionFromSet is not implemented in CarbonEngineJS.");
+    /**
+     * Gets a locator position from a named set. Out-of-range or missing-set
+     * queries return the world translation in world space and (0,0,0) in
+     * object space, as Carbon does.
+     */
+    GetLocatorPositionFromSet(index, inWorldSpace, locatorSetName, out = vec3.create()) {
+      const locators = this.#GetLocatorsForSet(locatorSetName);
+      if (index < 0 || !locators || index >= locators.length) {
+        if (inWorldSpace) {
+          return vec3.set(out, this.worldTransform[12], this.worldTransform[13], this.worldTransform[14]);
+        }
+        return vec3.set(out, 0, 0, 0);
+      }
+      const direction = vec3.create();
+      this.#GetLocatorInObjectSpace(out, direction, locators[index]);
+      if (inWorldSpace) {
+        vec3.transformMat4(out, out, this.worldTransform);
+      }
+      return out;
     }
 
-    /** Carbon method GetLocatorRotationFromSet (MAP_METHOD_AND_WRAP). */
-    GetLocatorRotationFromSet(...args) {
-      throw new Error("EveSpaceObject2.GetLocatorRotationFromSet is not implemented in CarbonEngineJS.");
+    /**
+     * Gets a locator direction from a named set. Out-of-range or missing-set
+     * queries return (0,1,0), as Carbon does.
+     */
+    GetLocatorRotationFromSet(index, inWorldSpace, locatorSetName, out = vec3.create()) {
+      const locators = this.#GetLocatorsForSet(locatorSetName);
+      if (index < 0 || !locators || index >= locators.length) {
+        return vec3.set(out, 0, 1, 0);
+      }
+      const position = vec3.create();
+      this.#GetLocatorInObjectSpace(position, out, locators[index]);
+      if (inWorldSpace) {
+        _EveSpaceObject.#TransformNormal(out, out, this.worldTransform);
+      }
+      return out;
     }
     HandleControllerEvent(name) {
       const eventName = String(name ?? "");
@@ -565,24 +716,55 @@ new class extends _identity {
       }
     }
 
-    /** Carbon method PlayAnimation -> PlayAnimationOnce (MAP_METHOD_AND_WRAP). */
-    PlayAnimation(...args) {
-      throw new Error("EveSpaceObject2.PlayAnimation is not implemented in CarbonEngineJS.");
+    /**
+     * Plays an animation once, replacing the current one
+     * (Carbon script PlayAnimation maps to PlayAnimationOnce).
+     */
+    PlayAnimation(animName) {
+      this.#PlayAnimation(animName, true, 1, 0, 1, true);
     }
 
-    /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
-    ChainAnimation(...args) {
-      throw new Error("EveSpaceObject2.ChainAnimation is not implemented in CarbonEngineJS.");
+    /**
+     * Chains an animation once after the current one (Carbon ChainAnimation).
+     */
+    ChainAnimation(animName) {
+      this.#PlayAnimation(animName, false, 1, 0, 1, true);
     }
 
-    /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
-    ChainAnimationEx(...args) {
-      throw new Error("EveSpaceObject2.ChainAnimationEx is not implemented in CarbonEngineJS.");
+    /**
+     * Chains an animation with explicit loop, start, and speed settings
+     * (Carbon ChainAnimationEx).
+     */
+    ChainAnimationEx(animName, loopCount, start, speed) {
+      this.#PlayAnimation(animName, false, loopCount, start, speed, true);
     }
 
-    /** Carbon method RebuildBoundingSphereInformation (MAP_METHOD_AND_WRAP). */
-    RebuildBoundingSphereInformation(...args) {
-      throw new Error("EveSpaceObject2.RebuildBoundingSphereInformation is not implemented in CarbonEngineJS.");
+    // Carbon EveSpaceObject2::PlayAnimation: every playback wrapper funnels
+    // into the animation updater, which owns playback state; a missing updater
+    // is a Carbon-faithful no-op.
+    #PlayAnimation(animName, replace, loopCount, delay, speed, clearWhenDone) {
+      this.animationUpdater?.PlayAnimation?.(String(animName ?? ""), replace, loopCount, delay, speed, clearWhenDone);
+    }
+
+    /**
+     * Recalculates the authored bounding sphere from the mesh geometry
+     * resource. Fails when no mesh or ready geometry resource is attached.
+     */
+    RebuildBoundingSphereInformation() {
+      const mesh = this.mesh;
+      if (!mesh) {
+        return false;
+      }
+      const geometryRes = mesh.GetGeometryResource?.();
+      if (!geometryRes || !geometryRes.IsGood?.()) {
+        return false;
+      }
+      geometryRes.RecalculateBoundingSphere?.();
+      const sphere = vec4.create();
+      geometryRes.GetBoundingSphere?.(mesh.GetMeshIndex?.() ?? 0, sphere);
+      vec3.set(this.boundingSphereCenter, sphere[0], sphere[1], sphere[2]);
+      this.boundingSphereRadius = sphere[3];
+      return true;
     }
     GetControllerVariables() {
       return Object.fromEntries(this.#controllerVariables);
@@ -593,29 +775,99 @@ new class extends _identity {
       throw new Error("EveSpaceObject2.GetLastUsedMeshLod is not implemented in CarbonEngineJS.");
     }
 
-    /** Carbon method GetLocatorTransform -> GetEveLocatorTransform (MAP_METHOD_AND_WRAP). */
-    GetLocatorTransform(...args) {
-      throw new Error("EveSpaceObject2.GetLocatorTransform is not implemented in CarbonEngineJS.");
+    /**
+     * Gets an authored locator transform (ELT_TRANSFORM) or an animated joint
+     * world transform (ELT_JOINT). Returns null for unknown indices where
+     * Carbon dereferences unchecked, and for joint queries until an animation
+     * updater publishes world transforms.
+     */
+    GetLocatorTransform(locatorType, locatorIndex) {
+      switch (locatorType) {
+        case _EveSpaceObject.LocatorType.ELT_TRANSFORM:
+          return this.locators[locatorIndex]?.GetTransform() ?? null;
+        case _EveSpaceObject.LocatorType.ELT_JOINT:
+          {
+            const worldTransforms = this.animationUpdater?.GetWorldTransforms?.();
+            if (!worldTransforms?.length || locatorIndex >= worldTransforms.length) {
+              return null;
+            }
+            return worldTransforms[locatorIndex];
+          }
+      }
+      return null;
     }
 
-    /** Carbon method GetLocalBoundingBox -> GetLocalBoundingBoxFromScript (MAP_METHOD_AND_WRAP). */
-    GetLocalBoundingBox(...args) {
-      throw new Error("EveSpaceObject2.GetLocalBoundingBox is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the local axis-aligned bounding box: dynamic skinned bounds when
+     * enabled, else the mesh box, else the cached box (at worst it lags one
+     * frame). With out arguments it fills them and returns true; without, it
+     * returns { min, max }.
+     */
+    GetLocalBoundingBox(minBounds, maxBounds) {
+      const min = vec3.create();
+      const max = vec3.create();
+      const updater = this.animationUpdater;
+      if (this.dynamicBoundingSphereEnabled && updater?.IsInitialized?.()) {
+        const sphere = vec4.create();
+        updater.GetDynamicBounds?.(sphere, min, max);
+        vec3.copy(this.#localAabbMin, min);
+        vec3.copy(this.#localAabbMax, max);
+      } else if (this.mesh?.GetBoundingBox?.(min, max)) {
+        vec3.copy(this.#localAabbMin, min);
+        vec3.copy(this.#localAabbMax, max);
+      } else {
+        vec3.copy(min, this.#localAabbMin);
+        vec3.copy(max, this.#localAabbMax);
+      }
+      if (minBounds && maxBounds) {
+        vec3.copy(minBounds, min);
+        vec3.copy(maxBounds, max);
+        return true;
+      }
+      return {
+        min,
+        max
+      };
     }
 
-    /** Carbon method GetBoundingSphereCenter (MAP_METHOD_AND_WRAP). */
-    GetBoundingSphereCenter(...args) {
-      throw new Error("EveSpaceObject2.GetBoundingSphereCenter is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the bounding sphere center, preferring the dynamic skinned sphere
+     * when one is published.
+     */
+    GetBoundingSphereCenter(out = vec3.create()) {
+      if (this.#dynamicBoundingSphere[3] !== -1) {
+        return vec3.set(out, this.#dynamicBoundingSphere[0], this.#dynamicBoundingSphere[1], this.#dynamicBoundingSphere[2]);
+      }
+      return vec3.copy(out, this.boundingSphereCenter);
     }
 
-    /** Carbon method GetBoundingSphereRadius (MAP_METHOD_AND_WRAP). */
-    GetBoundingSphereRadius(...args) {
-      throw new Error("EveSpaceObject2.GetBoundingSphereRadius is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the model-scaled bounding sphere radius, preferring the dynamic
+     * skinned sphere when one is published.
+     */
+    GetBoundingSphereRadius() {
+      if (this.#dynamicBoundingSphere[3] !== -1) {
+        return this.modelScale * this.#dynamicBoundingSphere[3];
+      }
+      return this.modelScale * this.boundingSphereRadius;
     }
 
-    /** Carbon method GetBoneCount (MAP_METHOD_AND_WRAP). */
-    GetBoneCount(...args) {
-      throw new Error("EveSpaceObject2.GetBoneCount is not implemented in CarbonEngineJS.");
+    /**
+     * Gets the number of mesh-bound bones. Carbon dereferences the animation
+     * updater unchecked; CarbonEngineJS reports 0 when none is attached.
+     */
+    GetBoneCount() {
+      const updater = this.animationUpdater;
+      if (!updater) {
+        return 0;
+      }
+      if (updater.IsUsingCMF?.()) {
+        if (!updater.HasMeshBinding?.()) {
+          return 0;
+        }
+        return updater.GetSkeletonBoneIndices?.().length ?? 0;
+      }
+      return updater.GetMeshBindingBoneCount?.() ?? 0;
     }
     SetImpactDamageState(shield, armor, hull, doCreateArmorImpacts = true) {
       this.impactOverlay?.SetDamageState?.(shield, armor, hull, doCreateArmorImpacts);
@@ -624,9 +876,11 @@ new class extends _identity {
       this.SetControllerVariable("HullDamage", hull);
     }
 
-    /** Carbon method SetImpactAnimation (MAP_METHOD_AND_WRAP). */
-    SetImpactAnimation(...args) {
-      throw new Error("EveSpaceObject2.SetImpactAnimation is not implemented in CarbonEngineJS.");
+    /**
+     * Toggles a named impact-overlay animation (boosters, hardeners, ...).
+     */
+    SetImpactAnimation(name, enable, duration) {
+      this.impactOverlay?.ToggleEffect?.(name, enable, duration);
     }
     SetControllerVariable(name, value) {
       const key = String(name ?? "");
@@ -659,11 +913,143 @@ new class extends _identity {
       }
     }
 
-    /** Carbon method TransformLocators -> PyTransformLocators (MAP_METHOD). */
-    TransformLocators(...args) {
-      throw new Error("EveSpaceObject2.TransformLocators is not implemented in CarbonEngineJS.");
+    /**
+     * Applies bone and model transforms to locator records and returns the
+     * transformed { position, rotation, boneIndex } records (Carbon script
+     * TransformLocators maps to PyTransformLocators).
+     */
+    TransformLocators(locators = []) {
+      const result = [];
+      for (const locator of locators ?? []) {
+        const position = vec3.clone(locator.position ?? _EveSpaceObject.#zero);
+        const rotation = quat.clone(locator.direction ?? locator.rotation ?? _EveSpaceObject.#identityRotation);
+        const boneIndex = Number(locator.boneIndex ?? 0);
+        this.#TransformLocator(position, rotation, boneIndex);
+        if (this.modelTranslationCurve || this.modelRotationCurve) {
+          this.#ApplyModelTransform(position, rotation);
+        }
+        result.push({
+          position,
+          rotation,
+          boneIndex
+        });
+      }
+      return result;
     }
+
+    // Carbon Blue TransformLocator: bone-attached records pick up the mesh
+    // bone matrix; without bone data the authored values pass through.
+    #TransformLocator(position, rotation, boneIndex) {
+      const updater = this.animationUpdater;
+      if (boneIndex <= 0 || !updater?.IsInitialized?.()) {
+        return;
+      }
+      const bone = _EveSpaceObject.#GetBoneMatrix(updater, boneIndex);
+      if (!bone) {
+        return;
+      }
+      vec3.transformMat4(position, position, bone);
+      const boneRotation = mat4.getRotation(quat.create(), bone);
+      quat.multiply(rotation, boneRotation, rotation);
+    }
+
+    // Carbon Blue ApplyModelTransform samples both curves at the Be::Time()
+    // origin (pure GetValueAt, no playback advance): translation adds, model
+    // rotation rotates the position and pre-multiplies.
+    #ApplyModelTransform(position, rotation) {
+      if (this.modelTranslationCurve) {
+        const translation = vec3.create();
+        this.modelTranslationCurve.GetValueAt?.(0, translation);
+        vec3.add(position, position, translation);
+      }
+      if (this.modelRotationCurve) {
+        const modelRotation = quat.create();
+        this.modelRotationCurve.GetValueAt?.(0, modelRotation);
+        vec3.transformQuat(position, position, modelRotation);
+        quat.multiply(rotation, modelRotation, rotation);
+      }
+    }
+
+    // Carbon GetLocatorsForSet: first set matching the name wins.
+    #GetLocatorsForSet(locatorSetName) {
+      const target = String(locatorSetName ?? "");
+      for (const set of this.locatorSets) {
+        if (set?.HasName?.(target)) {
+          return set.GetLocators();
+        }
+      }
+      return null;
+    }
+
+    // Carbon GetLocatorInObjectSpace: the direction is +Y rotated by the
+    // authored quaternion; bone-attached locators additionally apply the mesh
+    // bone matrix. Carbon leaves the outputs untouched (caller-uninitialized)
+    // when bone data is missing; CarbonEngineJS keeps the unskinned values.
+    #GetLocatorInObjectSpace(outPosition, outDirection, locator) {
+      vec3.transformQuat(outDirection, _EveSpaceObject.#unitY, locator.direction);
+      vec3.copy(outPosition, locator.position);
+      const updater = this.animationUpdater;
+      if (locator.boneIndex > 0 && updater?.IsInitialized?.()) {
+        const boneCount = Number(updater.GetMeshBoneCount?.() ?? 0);
+        if (locator.boneIndex < boneCount) {
+          const bone = _EveSpaceObject.#GetBoneMatrix(updater, locator.boneIndex);
+          if (bone) {
+            vec3.transformMat4(outPosition, locator.position, bone);
+            _EveSpaceObject.#TransformNormal(outDirection, outDirection, bone);
+          }
+        }
+      }
+    }
+
+    // Carbon GetClosestLocatorIndex: facing-gated closest search; 0 when the
+    // set is missing, -1 when no locator faces the position.
+    #GetClosestLocatorIndex(position, locatorSetName) {
+      const locators = this.#GetLocatorsForSet(locatorSetName);
+      if (!locators) {
+        return 0;
+      }
+      const posInObjectSpace = vec3.transformMat4(vec3.create(), position, this.inverseWorldTransform);
+      const locatorPosition = vec3.create();
+      const locatorDirection = vec3.create();
+      let closestLength = Infinity;
+      let closestIndex = -1;
+      for (let index = 0; index < locators.length; index++) {
+        this.#GetLocatorInObjectSpace(locatorPosition, locatorDirection, locators[index]);
+        if (!_EveSpaceObject.#IsLocatorFacingPosition(locatorDirection, posInObjectSpace)) {
+          continue;
+        }
+        const distance = vec3.squaredDistance(locatorPosition, posInObjectSpace);
+        if (distance < closestLength) {
+          closestIndex = index;
+          closestLength = distance;
+        }
+      }
+      return closestIndex;
+    }
+
+    // Mesh bone matrices come from the (unported) animation updater; only
+    // mat4-shaped entries are usable.
+
+    /** Carbon EveSpaceObject2::LocatorType. */
   }];
+  #IsLocatorFacingPosition(locatorDirection, posInObjectSpace) {
+    const moved = vec3.subtract(vec3.create(), posInObjectSpace, locatorDirection);
+    return vec3.squaredLength(moved) < vec3.squaredLength(posInObjectSpace);
+  }
+  #TransformNormal(out, direction, matrix) {
+    const x = direction[0];
+    const y = direction[1];
+    const z = direction[2];
+    out[0] = matrix[0] * x + matrix[4] * y + matrix[8] * z;
+    out[1] = matrix[1] * x + matrix[5] * y + matrix[9] * z;
+    out[2] = matrix[2] * x + matrix[6] * y + matrix[10] * z;
+    return out;
+  }
+  #GetBoneMatrix(updater, boneIndex) {
+    const bones = updater.GetMeshBoneMatrixList?.();
+    const bone = bones?.[boneIndex];
+    return bone && bone.length >= 16 ? bone : null;
+  }
   #ApplyControllerVariables(target, variables, methodName) {
     const setter = target?.[methodName];
     if (typeof setter !== "function") {
@@ -706,9 +1092,16 @@ new class extends _identity {
     return 0;
   }
   #zero = Object.freeze([0, 0, 0]);
+  #unitY = Object.freeze([0, 1, 0]);
   #identityRotation = Object.freeze([0, 0, 0, 1]);
+  #damageLocatorSetName = "damage";
   ReflectionMode = ReflectionMode;
   Tr2Lod = Tr2Lod;
+  LocatorType = Object.freeze({
+    ELT_TRANSFORM: 0,
+    ELT_JOINT: 1,
+    ELT_COUNT: 2
+  });
   constructor() {
     super(_EveSpaceObject), _initClass();
   }
