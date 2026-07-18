@@ -3,7 +3,7 @@
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/core-types/schema";
 
 
 @type.define({ className: "EveBannerItem", family: "eve/attachment/banners" })
@@ -27,6 +27,9 @@ export class EveBannerItem extends CjsModel
   @type.float32
   angleY = 0;
 
-  // Private Carbon structure metadata; deliberately absent from schema/wire.
+  // Carbon keeps this as private structure metadata, but SOF-authored banner
+  // identity is part of the editable description in CarbonEngineJS.
+  @io.persist
+  @type.int32
   reference = 0;
 }

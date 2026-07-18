@@ -54,7 +54,9 @@ export class EvePlaneSetItem extends CjsModel
   @type.vec3
   position = vec3.create();
 
-  // Carbon uses this SOF-authored value while packing physical plane vertices,
-  // but does not expose it through Blue serialization.
+  // Carbon omits this SOF-authored value from Blue serialization, but it is
+  // part of the editable plane description and must survive values exchange.
+  @io.persist
+  @type.vec4
   blinkData = vec4.fromValues(1, 0, 1, 0);
 }

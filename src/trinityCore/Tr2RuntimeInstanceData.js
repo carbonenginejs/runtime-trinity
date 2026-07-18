@@ -4,6 +4,7 @@
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 
 
 @type.define({ className: "Tr2RuntimeInstanceData", family: "trinityCore" })
@@ -17,27 +18,37 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @type.objectRef("Tr2ParticleSystem")
   particleSystem = null;
 
+  @io.notify
+  @io.persist
+  @type.array("unknown")
+  layout = [];
+
+  @io.notify
+  @io.persist
+  @type.array("unknown")
+  rows = [];
+
+  @io.persist
+  @type.boolean
+  explicitBoundingBox = false;
+
   @io.read
   @type.uint32
   count = 0;
 
-  @io.read
+  @io.persist
   @type.vec3
   aabbMin = vec3.create();
 
-  @io.read
+  @io.persist
   @type.vec3
   aabbMax = vec3.create();
 
   #layout = Object.freeze([]);
 
-  #rows = [];
-
   #data = null;
 
   #stride = 0;
-
-  #explicitBoundingBox = false;
 
   #dirty = false;
 
@@ -55,23 +66,32 @@ export class Tr2RuntimeInstanceData extends CjsModel
 
   @carbon.method
   @impl.adapted
+  Initialize()
+  {
+    this.#rebuildCpuData();
+    this.UpdateData();
+    return true;
+  }
+
+  @carbon.method
+  @impl.adapted
+  OnModified(properties = null)
+  {
+    if (
+      hasModifiedProperty(properties, "layout") ||
+      hasModifiedProperty(properties, "rows")
+    )
+    {
+      this.#rebuildCpuData();
+    }
+    return true;
+  }
+
+  @carbon.method
+  @impl.adapted
   SetElementLayout(layout)
   {
-    if (!Array.isArray(layout))
-    {
-      throw new TypeError("Element layout must be an array");
-    }
-
-    let offset = 0;
-    const normalized = layout.map((value, index) =>
-    {
-      const descriptor = Tr2RuntimeInstanceData.#normalizeElement(value, index, offset);
-      offset += descriptor.byteSize;
-      return Object.freeze(descriptor);
-    });
-
-    this.#layout = Object.freeze(normalized);
-    this.#stride = offset;
+    this.#setElementLayout(layout);
     this.DestroyData();
   }
 
@@ -79,27 +99,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @impl.adapted
   SetData(rows)
   {
-    if (!this.#layout.length)
-    {
-      throw new Error("SetElementLayout must be called before SetData");
-    }
-    if (!Array.isArray(rows))
-    {
-      throw new TypeError("Instance data must be an array");
-    }
-
-    const normalizedRows = rows.map((row, index) => this.#normalizeRow(row, index));
-    const data = normalizedRows.length ? new ArrayBuffer(this.#stride * normalizedRows.length) : null;
-    const view = data ? new DataView(data) : null;
-    for (let index = 0; index < normalizedRows.length; index++)
-    {
-      this.#writeRow(view, index, normalizedRows[index]);
-    }
-
-    this.#rows = normalizedRows;
-    this.#data = data;
-    this.count = normalizedRows.length;
-    this.#dirty = true;
+    this.#setData(rows);
   }
 
   @carbon.method
@@ -107,7 +107,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
   GetItem(index)
   {
     this.#assertItemIndex(index);
-    return this.#rows[index].map(Tr2RuntimeInstanceData.#cloneValue);
+    return this.rows[index].map(Tr2RuntimeInstanceData.#cloneValue);
   }
 
   @carbon.method
@@ -116,7 +116,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
   {
     this.#assertItemIndex(index);
     const normalized = this.#normalizeRow(row, index);
-    this.#rows[index] = normalized;
+    this.rows[index] = normalized;
     this.#writeRow(new DataView(this.#data), index, normalized);
     this.#dirty = true;
   }
@@ -127,7 +127,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
   {
     this.#assertItemIndex(index);
     this.#assertElementIndex(elementIndex);
-    return Tr2RuntimeInstanceData.#cloneValue(this.#rows[index][elementIndex]);
+    return Tr2RuntimeInstanceData.#cloneValue(this.rows[index][elementIndex]);
   }
 
   @carbon.method
@@ -141,7 +141,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
       value,
       `Instance ${index} element ${elementIndex}`
     );
-    this.#rows[index][elementIndex] = normalized;
+    this.rows[index][elementIndex] = normalized;
     this.#writeElement(new DataView(this.#data), index, elementIndex, normalized);
     this.#dirty = true;
   }
@@ -163,7 +163,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @impl.adapted
   UpdateBoundingBox()
   {
-    if (this.#explicitBoundingBox)
+    if (this.explicitBoundingBox)
     {
       return false;
     }
@@ -180,7 +180,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
 
     vec3.set(this.aabbMin, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
     vec3.set(this.aabbMax, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
-    for (const row of this.#rows)
+    for (const row of this.rows)
     {
       const position = row[positionIndex];
       for (let axis = 0; axis < 3; axis++)
@@ -205,7 +205,7 @@ export class Tr2RuntimeInstanceData extends CjsModel
     }
     vec3.copy(this.aabbMin, min);
     vec3.copy(this.aabbMax, max);
-    this.#explicitBoundingBox = true;
+    this.explicitBoundingBox = true;
   }
 
   @carbon.method
@@ -263,9 +263,136 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @impl.adapted
   DestroyData()
   {
-    this.#rows = [];
+    this.rows = [];
     this.#data = null;
     this.count = 0;
+    this.#dirty = true;
+  }
+
+  /**
+   * Builds Carbon's common current/previous-transform instance stream without
+   * creating renderer or GPU resources.
+   *
+   * @param {Array<object|ArrayLike<number>>} instances
+   * @returns {number} Maximum instance scale.
+   */
+  SetTransformInstances(instances)
+  {
+    if (!Array.isArray(instances))
+    {
+      throw new TypeError("Transform instances must be an array");
+    }
+
+    const rows = [];
+    const min = vec3.fromValues(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+    const max = vec3.fromValues(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+    let maxScale = 0;
+    for (let index = 0; index < instances.length; index++)
+    {
+      const value = instances[index];
+      const transform = Array.isArray(value) || ArrayBuffer.isView(value)
+        ? value
+        : value?.transform;
+      const previousTransform = value?.previousTransform ?? transform;
+      if (!transform || transform.length !== 16)
+      {
+        throw new TypeError(`Transform instance ${index} must contain 16 transform values`);
+      }
+      if (!previousTransform || previousTransform.length !== 16)
+      {
+        throw new TypeError(`Transform instance ${index} must contain 16 previous-transform values`);
+      }
+
+      const currentRows = Tr2RuntimeInstanceData.#packTransform(transform);
+      const previousRows = Tr2RuntimeInstanceData.#packTransform(previousTransform);
+      rows.push([
+        ...currentRows,
+        ...previousRows,
+        Number(value?.boneIndex ?? 0) | 0
+      ]);
+
+      for (let axis = 0; axis < 3; axis++)
+      {
+        min[axis] = Math.min(min[axis], Number(transform[12 + axis]) || 0);
+        max[axis] = Math.max(max[axis], Number(transform[12 + axis]) || 0);
+      }
+      for (const row of currentRows)
+      {
+        maxScale = Math.max(maxScale, Math.hypot(row[0], row[1], row[2]));
+      }
+    }
+
+    this.SetElementLayout(Tr2RuntimeInstanceData.TransformLayout);
+    this.SetData(rows);
+    this.SetBoundingBox(
+      instances.length ? min : Tr2RuntimeInstanceData.#zero,
+      instances.length ? max : Tr2RuntimeInstanceData.#zero
+    );
+    this.UpdateData();
+    return maxScale;
+  }
+
+  #rebuildCpuData()
+  {
+    const rows = this.rows;
+    this.#setElementLayout(this.layout);
+    if (!this.#layout.length)
+    {
+      if (rows.length)
+      {
+        throw new Error("SetElementLayout must be called before SetData");
+      }
+      this.rows = [];
+      this.#data = null;
+      this.count = 0;
+      this.#dirty = true;
+      return;
+    }
+    this.#setData(rows);
+  }
+
+  #setElementLayout(layout)
+  {
+    if (!Array.isArray(layout))
+    {
+      throw new TypeError("Element layout must be an array");
+    }
+
+    let offset = 0;
+    const normalized = layout.map((value, index) =>
+    {
+      const descriptor = Tr2RuntimeInstanceData.#normalizeElement(value, index, offset);
+      offset += descriptor.byteSize;
+      return Object.freeze(descriptor);
+    });
+
+    this.layout = normalized.map(Tr2RuntimeInstanceData.#describeElement);
+    this.#layout = Object.freeze(normalized);
+    this.#stride = offset;
+  }
+
+  #setData(rows)
+  {
+    if (!this.#layout.length)
+    {
+      throw new Error("SetElementLayout must be called before SetData");
+    }
+    if (!Array.isArray(rows))
+    {
+      throw new TypeError("Instance data must be an array");
+    }
+
+    const normalizedRows = rows.map((row, index) => this.#normalizeRow(row, index));
+    const data = normalizedRows.length ? new ArrayBuffer(this.#stride * normalizedRows.length) : null;
+    const view = data ? new DataView(data) : null;
+    for (let index = 0; index < normalizedRows.length; index++)
+    {
+      this.#writeRow(view, index, normalizedRows[index]);
+    }
+
+    this.rows = normalizedRows;
+    this.#data = data;
+    this.count = normalizedRows.length;
     this.#dirty = true;
   }
 
@@ -372,6 +499,25 @@ export class Tr2RuntimeInstanceData extends CjsModel
       offset,
       name: String(legacy ? `element${index}` : value.name ?? `element${index}`)
     };
+  }
+
+  static #describeElement(value)
+  {
+    return Object.freeze({
+      usage: value.usage,
+      usageIndex: value.usageIndex,
+      type: value.type,
+      name: value.name
+    });
+  }
+
+  static #packTransform(value)
+  {
+    return [
+      [Number(value[0]), Number(value[4]), Number(value[8]), Number(value[12])],
+      [Number(value[1]), Number(value[5]), Number(value[9]), Number(value[13])],
+      [Number(value[2]), Number(value[6]), Number(value[10]), Number(value[14])]
+    ];
   }
 
   static #particleUsageToVertexUsage(value)
@@ -489,6 +635,18 @@ export class Tr2RuntimeInstanceData extends CjsModel
   {
     return Array.isArray(value) ? value.slice() : value;
   }
+
+  static TransformLayout = Object.freeze([
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 0, type: "FLOAT32_4", name: "transform0" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 1, type: "FLOAT32_4", name: "transform1" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 2, type: "FLOAT32_4", name: "transform2" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 3, type: "FLOAT32_4", name: "lastTransform0" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 4, type: "FLOAT32_4", name: "lastTransform1" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 5, type: "FLOAT32_4", name: "lastTransform2" }),
+    Object.freeze({ usage: "TEXCOORD", usageIndex: 6, type: "BYTE_4", name: "boneIndex" })
+  ]);
+
+  static #zero = vec3.create();
 
   static UsageCode = Object.freeze({
     POSITION: 0,

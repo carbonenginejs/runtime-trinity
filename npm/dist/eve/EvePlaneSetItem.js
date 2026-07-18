@@ -5,17 +5,21 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { io, type } from '@carbonenginejs/core-types/schema';
 
-let _initClass, _init_color, _init_extra_color, _init_layer1Transform, _init_extra_layer1Transform, _init_layer2Transform, _init_extra_layer2Transform, _init_layer1Scroll, _init_extra_layer1Scroll, _init_layer2Scroll, _init_extra_layer2Scroll, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_maskAtlasID, _init_extra_maskAtlasID, _init_boneIndex, _init_extra_boneIndex, _init_position, _init_extra_position;
+let _initClass, _init_color, _init_extra_color, _init_layer1Transform, _init_extra_layer1Transform, _init_layer2Transform, _init_extra_layer2Transform, _init_layer1Scroll, _init_extra_layer1Scroll, _init_layer2Scroll, _init_extra_layer2Scroll, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_maskAtlasID, _init_extra_maskAtlasID, _init_boneIndex, _init_extra_boneIndex, _init_position, _init_extra_position, _init_blinkData, _init_extra_blinkData;
 let _EvePlaneSetItem;
 class EvePlaneSetItem extends CjsModel {
   static {
     ({
-      e: [_init_color, _init_extra_color, _init_layer1Transform, _init_extra_layer1Transform, _init_layer2Transform, _init_extra_layer2Transform, _init_layer1Scroll, _init_extra_layer1Scroll, _init_layer2Scroll, _init_extra_layer2Scroll, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_maskAtlasID, _init_extra_maskAtlasID, _init_boneIndex, _init_extra_boneIndex, _init_position, _init_extra_position],
+      e: [_init_color, _init_extra_color, _init_layer1Transform, _init_extra_layer1Transform, _init_layer2Transform, _init_extra_layer2Transform, _init_layer1Scroll, _init_extra_layer1Scroll, _init_layer2Scroll, _init_extra_layer2Scroll, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_maskAtlasID, _init_extra_maskAtlasID, _init_boneIndex, _init_extra_boneIndex, _init_position, _init_extra_position, _init_blinkData, _init_extra_blinkData],
       c: [_EvePlaneSetItem, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "EvePlaneSetItem",
       family: "eve/attachment/planes"
-    })], [[[io, io.persist, type, type.color], 16, "color"], [[io, io.persist, type, type.vec4], 16, "layer1Transform"], [[io, io.persist, type, type.vec4], 16, "layer2Transform"], [[io, io.persist, type, type.vec4], 16, "layer1Scroll"], [[io, io.persist, type, type.vec4], 16, "layer2Scroll"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.uint32], 16, "maskAtlasID"], [[io, io.persist, type, type.int32], 16, "boneIndex"], [[io, io.persist, type, type.vec3], 16, "position"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.color], 16, "color"], [[io, io.persist, type, type.vec4], 16, "layer1Transform"], [[io, io.persist, type, type.vec4], 16, "layer2Transform"], [[io, io.persist, type, type.vec4], 16, "layer1Scroll"], [[io, io.persist, type, type.vec4], 16, "layer2Scroll"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.uint32], 16, "maskAtlasID"], [[io, io.persist, type, type.int32], 16, "boneIndex"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.vec4], 16, "blinkData"]], 0, void 0, CjsModel));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_blinkData(this);
   }
   color = _init_color(this, vec4.fromValues(1, 1, 1, 1));
   layer1Transform = (_init_extra_color(this), _init_layer1Transform(this, vec4.fromValues(1, 1, 0, 0)));
@@ -29,9 +33,9 @@ class EvePlaneSetItem extends CjsModel {
   boneIndex = (_init_extra_maskAtlasID(this), _init_boneIndex(this, 0));
   position = (_init_extra_boneIndex(this), _init_position(this, vec3.create()));
 
-  // Carbon uses this SOF-authored value while packing physical plane vertices,
-  // but does not expose it through Blue serialization.
-  blinkData = (_init_extra_position(this), vec4.fromValues(1, 0, 1, 0));
+  // Carbon omits this SOF-authored value from Blue serialization, but it is
+  // part of the editable plane description and must survive values exchange.
+  blinkData = (_init_extra_position(this), _init_blinkData(this, vec4.fromValues(1, 0, 1, 0)));
   static {
     _initClass();
   }

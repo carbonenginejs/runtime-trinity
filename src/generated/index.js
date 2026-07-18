@@ -39,7 +39,6 @@ export * from "./raytracing/index.js";
 export * from "./renderJob/index.js";
 export * from "./shader/index.js";
 export * from "./sprite2d/index.js";
-export * from "./trinityAudio/index.js";
 export * from "./trinityCore/index.js";
 export * from "./ui/index.js";
 export * from "./utilities/index.js";

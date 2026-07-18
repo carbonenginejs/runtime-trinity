@@ -1,7 +1,6 @@
 export { AudioGameObject } from './AudioGameObject.js';
 export { EveCamera } from './EveCamera.js';
 export { EveEntity } from './EveEntity.js';
-export { EveUpdateContext } from './EveUpdateContext.js';
 export { DecalMeshCache } from './attachment/decal/DecalMeshCache.js';
 export { EveHazeSetItem } from './attachment/haze/EveHazeSetItem.js';
 export { EveSpotlightSetItem } from './attachment/spotlights/EveSpotlightSetItem.js';
@@ -126,7 +125,6 @@ export { EveInstancedMeshManager } from './scene/EveInstancedMeshManager.js';
 export { EvePendingPickingReadback } from './scene/EvePendingPickingReadback.js';
 export { EvePickingContext } from './scene/EvePickingContext.js';
 export { EveSceneStaticParticles } from './scene/EveSceneStaticParticles.js';
-export { EveSpaceScene } from './scene/EveSpaceScene.js';
 export { EveSpaceSceneRenderDriver } from './scene/EveSpaceSceneRenderDriver.js';
 export { Tr2OcclusionBuffer } from './scene/Tr2OcclusionBuffer.js';
 export { TriShadowFrustum } from './scene/TriShadowFrustum.js';

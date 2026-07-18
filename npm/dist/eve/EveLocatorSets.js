@@ -33,7 +33,7 @@ new class extends _identity {
     }
     Append(locators) {
       for (const locator of locators) {
-        this.locators.push(_Locator.Clone(locator));
+        this.locators.push(_Locator.from(locator));
       }
     }
     HasName(name) {
@@ -50,12 +50,17 @@ new class extends _identity {
     }
     Set(name, locators) {
       this.SetName(name);
-      this.locators = locators.map(locator => _Locator.Clone(locator));
+      this.locators = locators.map(locator => _Locator.from(locator));
     }
     SetLocator(index, value) {
       const existing = this.locators[index];
       if (existing) {
-        _Locator.CopyValues(existing, value);
+        existing.SetValues({
+          position: value.position,
+          direction: value.direction,
+          scale: value.scale ?? [0, 0, 0],
+          boneIndex: value.boneIndex ?? 0
+        });
       }
     }
   }];

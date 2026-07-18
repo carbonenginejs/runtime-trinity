@@ -1,4 +1,5 @@
 import test from "node:test";
+import assert from "node:assert/strict";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import { Tr2GpuSharedEmitter, Tr2GpuUniqueEmitter, Tr2ParticleAttractorForce, Tr2ParticleDirectForce, Tr2ParticleDragForce, Tr2ParticleFluidDragForce, Tr2ParticleSpring, Tr2ParticleVortexForce } from "../npm/dist/index.js";
@@ -161,6 +162,18 @@ test("GPU emitter Setup deep-copies CPU descriptors without realizing a particle
   assertVector(copiedParams.colors[2], [0, 0, 1, 1]);
   copiedParams.colors[2][2] = 50;
   assertVector(emitter.GetEmitterParams().colors[2], [0, 0, 1, 1]);
+
+  emitter.SetValues({
+    minSpeed: 13,
+    sizes: [6, 7, 8],
+    color2: [0.25, 0.5, 0.75, 1],
+    attractorStrength: 12
+  });
+  assert.equal(emitter.GetEmitterData().minSpeed, 13);
+  assertVector(emitter.GetEmitterParams().sizes, [6, 7, 8]);
+  assertVector(emitter.GetEmitterParams().colors[2], [0.25, 0.5, 0.75, 1]);
+  assert.equal(emitter.GetEmitterParams().attractorStrength, 12);
+  assertVector(emitter.GetEmitterParams().attractorPosition, [8, 7, 6]);
 
   const position = [5, 6, 7];
   emitter.SetPosition(position);

@@ -100,10 +100,32 @@ new class extends _identity {
       this.#revision++;
     }
     GetEmitterData() {
-      return _Tr2GpuSharedEmitter.CreateEmitterData(this.#emitterData);
+      return _Tr2GpuSharedEmitter.CreateEmitterData({
+        ...this.#emitterData,
+        radius: this.radius,
+        angle: this.angle,
+        innerAngle: this.innerAngle,
+        minSpeed: this.minSpeed,
+        maxSpeed: this.maxSpeed
+      });
     }
     GetEmitterParams() {
-      return _Tr2GpuSharedEmitter.CreateEmitterParams(this.#paramsData);
+      return _Tr2GpuSharedEmitter.CreateEmitterParams({
+        ...this.#paramsData,
+        minLifeTime: this.minLifeTime,
+        maxLifeTime: this.maxLifeTime,
+        textureIndex: this.textureIndex,
+        colorMidpoint: this.colorMidpoint,
+        colors: [this.color0, this.color1, this.color2, this.color3],
+        sizes: this.sizes,
+        sizeVariance: this.sizeVariance,
+        drag: this.drag,
+        turbulenceAmplitude: this.turbulenceAmplitude,
+        turbulenceFrequency: this.turbulenceFrequency,
+        gravity: this.gravity,
+        attractorStrength: "attractorStrength" in this ? this.attractorStrength : this.#paramsData.attractorStrength,
+        velocityStretchRotation: this.velocityStretchRotation
+      });
     }
     GetRevision() {
       return this.#revision;

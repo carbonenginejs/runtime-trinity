@@ -31,24 +31,27 @@ test("EveHazeSet maintains Carbon haze setup without renderer resources", () => 
 
   assert.equal(set.effect, effect);
   assert.deepEqual(set.hazes, [item]);
+  assert.equal(set.lights.length, 1);
+  assert.ok(set.lights[0] instanceof EveHazeSetLight);
   assert.equal(effect.GetOption("SPACE_OBJECT_INSTANCED_ATTACHMENT"), "SOIA_ENABLED");
   assert.equal(set.Initialize(), true);
   assert.doesNotThrow(() => set.Rebuild());
 });
 
-test("EveHazeSet exposes only Carbon's persisted public haze shape", () => {
+test("EveHazeSet exposes authored haze and light state as persisted graph fields", () => {
   const set = new EveHazeSet();
   assert.equal(set.effect, null);
   assert.equal(set.display, true);
   assert.equal(set.name, "");
   assert.deepEqual(set.hazes, []);
-  for (const name of ["effect", "display", "name", "hazes"])
+  assert.deepEqual(set.lights, []);
+  for (const name of ["effect", "display", "name", "hazes", "lights"])
   {
     assert.equal(CjsSchema.getField(EveHazeSet, name)?.io.persist, true, name);
   }
-  assert.equal(CjsSchema.getField(EveHazeSet, "lights"), null);
+  assert.equal(CjsSchema.getField(EveHazeSet, "lights")?.type.itemType, "EveHazeSetLight");
   assert.equal(CjsSchema.getField(EveHazeSet, "rebuildRevision"), null);
-  assert.equal(CjsSchema.getField(EveHazeSetLight, "lightProfilePath"), null);
+  assert.equal(CjsSchema.getField(EveHazeSetLight, "lightProfilePath")?.type.kind, "string");
   assert.equal(set.Initialize(), true);
 });
 

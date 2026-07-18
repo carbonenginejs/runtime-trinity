@@ -1,4 +1,5 @@
 import test from "node:test";
+import assert from "node:assert/strict";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriViewport } from "../npm/dist/trinityCore/index.js";
@@ -250,12 +251,72 @@ test("runtime instance data packs Carbon SOF records without realizing a GPU buf
   assertEquals(data.dirty, false);
   assertEquals(data.dataRevision, 1);
   assertEquals(Object.hasOwn(data, "gpuBuffer"), false);
+
+  const values = data.GetValues({ persistOnly: true });
+  assert.deepEqual(values.layout, layout);
+  assert.deepEqual(values.rows[0], [
+    [2, 3, 4, 5],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+    [13, 14, 15, 16],
+    [17, 18, 19, 20],
+    [21, 22, 23, 24],
+    0x01020304
+  ]);
+  assert.equal(Object.hasOwn(values, "data"), false);
+
+  const restored = Tr2RuntimeInstanceData.from(values);
+  assert.equal(restored.GetStride(), 100);
+  assert.equal(restored.GetCount(), 1);
+  assert.deepEqual(restored.GetItem(0), values.rows[0]);
+  assert.equal(restored.GetData().byteLength, 100);
+  assert.equal(Object.hasOwn(restored, "gpuBuffer"), false);
+});
+
+test("runtime instance data builds the standard transform stream as a non-GPU graph", () =>
+{
+  const data = new Tr2RuntimeInstanceData();
+  const transform = mat4.fromRotationTranslationScale(
+    mat4.create(),
+    [0, 0, 0, 1],
+    [5, 6, 7],
+    [2, 3, 4]
+  );
+  const previousTransform = mat4.fromTranslation(mat4.create(), [1, 2, 3]);
+  const maxScale = data.SetTransformInstances([{ transform, previousTransform, boneIndex: 9 }]);
+
+  assert.equal(maxScale, 4);
+  assert.equal(data.GetStride(), 100);
+  assert.equal(data.GetCount(), 1);
+  assert.deepEqual(data.layout, Tr2RuntimeInstanceData.TransformLayout);
+  assert.deepEqual(data.GetItem(0), [
+    [2, 0, 0, 5],
+    [0, 3, 0, 6],
+    [0, 0, 4, 7],
+    [1, 0, 0, 1],
+    [0, 1, 0, 2],
+    [0, 0, 1, 3],
+    9
+  ]);
+  assert.equal(data.explicitBoundingBox, true);
+  assert.deepEqual(Array.from(data.aabbMin), [5, 6, 7]);
+  assert.deepEqual(Array.from(data.aabbMax), [5, 6, 7]);
+  assert.equal(data.dirty, false);
+  assert.equal(Object.hasOwn(data, "gpuBuffer"), false);
+
+  const restored = Tr2RuntimeInstanceData.from(data.GetValues({ persistOnly: true }));
+  assert.deepEqual(restored.GetItem(0), data.GetItem(0));
+  assert.deepEqual(Array.from(restored.aabbMin), [5, 6, 7]);
+  assert.deepEqual(Array.from(restored.aabbMax), [5, 6, 7]);
+  assert.equal(restored.GetData().byteLength, 100);
 });
 
 test("runtime instance data preserves explicit bounds and computes position bounds", () =>
 {
   const data = new Tr2RuntimeInstanceData();
   assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "count")?.type.kind, "uint32");
+  assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "layout")?.type.kind, "array");
+  assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "rows")?.type.kind, "array");
   assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "aabbMin")?.type.kind, "vec3");
   assertEquals(CjsSchema.getField(Tr2RuntimeInstanceData, "aabbMax")?.type.kind, "vec3");
   assertEquals(data.aabbMin.join(","), "0,0,0");

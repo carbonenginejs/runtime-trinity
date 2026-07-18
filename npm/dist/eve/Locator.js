@@ -24,20 +24,6 @@ class Locator extends CjsModel {
   direction = (_init_extra_position(this), _init_direction(this, quat.create()));
   scale = (_init_extra_direction(this), _init_scale(this, vec3.create()));
   boneIndex = (_init_extra_scale(this), _init_boneIndex(this, 0));
-  static CopyValues(target, source) {
-    vec3.copy(target.position, source.position);
-    quat.copy(target.direction, source.direction);
-    if (source.scale) {
-      vec3.copy(target.scale, source.scale);
-    } else {
-      vec3.zero(target.scale);
-    }
-    target.boneIndex = source.boneIndex ?? 0;
-    return target;
-  }
-  static Clone(source) {
-    return this.CopyValues(new _Locator(), source);
-  }
   static {
     _initClass();
   }

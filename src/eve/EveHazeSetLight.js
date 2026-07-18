@@ -24,8 +24,7 @@ export class EveHazeSetLight extends CjsModel
   @type.mat4
   boneMatrix = mat4.create();
 
-  // Carbon consumes this constructor input while resolving lightProfile. Keep
-  // the authored path as private adapter intent until a resource runtime owns it.
+  @type.string
   lightProfilePath = "";
 
   static FromSOF(value)

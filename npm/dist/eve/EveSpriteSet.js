@@ -6,17 +6,17 @@ import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
 import { EveSpriteSetItem as _EveSpriteSetItem } from '../generated/eve/attachment/sprites/EveSpriteSetItem.js';
 import { EveSpriteLight as _EveSpriteLight } from './EveSpriteLight.js';
 
-let _initProto, _initClass, _init_sprites, _init_extra_sprites, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_display, _init_extra_display;
+let _initProto, _initClass, _init_sprites, _init_extra_sprites, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_display, _init_extra_display, _init_lights, _init_extra_lights;
 let _EveSpriteSet;
 class EveSpriteSet extends _EveEntity {
   static {
     ({
-      e: [_init_sprites, _init_extra_sprites, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_display, _init_extra_display, _initProto],
+      e: [_init_sprites, _init_extra_sprites, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_display, _init_extra_display, _init_lights, _init_extra_lights, _initProto],
       c: [_EveSpriteSet, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "EveSpriteSet",
       family: "eve/attachment/sprites"
-    })], [[[io, io.notify, io, io.persist, void 0, type.list("EveSpriteSetItem")], 16, "sprites"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSprites"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"]], 0, void 0, _EveEntity));
+    })], [[[io, io.notify, io, io.persist, void 0, type.list("EveSpriteSetItem")], 16, "sprites"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.list("EveSpriteLight")], 16, "lights"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSprites"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"]], 0, void 0, _EveEntity));
   }
   sprites = (_initProto(this), _init_sprites(this, []));
   name = (_init_extra_sprites(this), _init_name(this, ""));
@@ -24,10 +24,11 @@ class EveSpriteSet extends _EveEntity {
   skinned = (_init_extra_effect(this), _init_skinned(this, false));
   intensity = (_init_extra_skinned(this), _init_intensity(this, 1));
   display = (_init_extra_intensity(this), _init_display(this, true));
-  #lights = (_init_extra_display(this), []);
-  #rebuildRevision = 0;
+  lights = (_init_extra_display(this), _init_lights(this, []));
+  #rebuildRevision = (_init_extra_lights(this), 0);
   Clear() {
     this.sprites.length = 0;
+    this.lights.length = 0;
   }
   Add(positionOrItem, ...args) {
     if (positionOrItem && !ArrayBuffer.isView(positionOrItem) && !Array.isArray(positionOrItem) && args.length === 0) {
@@ -85,7 +86,7 @@ class EveSpriteSet extends _EveEntity {
     return true;
   }
   AddLightFromSOF(light) {
-    this.#lights.push(_EveSpriteLight.FromSOF(light));
+    this.lights.push(_EveSpriteLight.FromSOF(light));
   }
   static {
     _initClass();

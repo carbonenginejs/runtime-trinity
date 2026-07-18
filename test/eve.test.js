@@ -1,6 +1,6 @@
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
-import { BackAndForthData, CjsEveThrottleableState, DecalVSPerObjectData, EveBannerItem, EveBannerLight, EveBannerSet, EveBasicPerObjectData, EveBezierCurve, EveBoxVolume, EveChildModifierSRT, EveChildSpherePinPerObjectData, EveChildTransform, EveChildUpdateParams, EveCircle, EveCustomMask, EveDistanceField, EveEllipsoidVolume, EveImpactOverlay, EveLODHelper, EveLineData, EveLocator2, EveLocatorSets, EvePerObjectPSData, EvePerObjectVSData, EvePlaneLight, EvePlaneSet, EvePlaneSetItem, EveRemotePositionCurve, EveSpaceObjectDecal, EveSpaceObjectPSData, EveSpaceObjectVSData, EveSpacePerObjectData, EveSpherePinPerObjectData, EveSphereVolume, EveSpotlightLight, EveSpotlightSet, EveSpotlightSetItem, EveSpriteLight, EveSpriteLineSet, EveSpriteLineSetItem, EveSpriteSet, EveSpriteSetItem, EveThrottleable, EveVirtualCamera, EveVirtualCameraBehaviourFloatAdd, EveVirtualCameraBehaviourFloatBase, EveVirtualCameraBehaviourFloatDamping, EveVirtualCameraBehaviourFloatNoise, EveVirtualCameraBehaviourFloatSet, EveVirtualCameraBehaviourVector3Base, EveVirtualCameraBehaviourVector3Damping, EveVirtualCameraBehaviourVector3Inertia, EveVirtualCameraBehaviourVector3MoveBetween, EveVirtualCameraBehaviourVector3MoveForward, EveVirtualCameraBehaviourVector3MoveRight, EveVirtualCameraBehaviourVector3MoveUp, EveVirtualCameraBehaviourVector3Offset, EveVirtualCameraBehaviourVector3Orbit, EveVirtualCameraBehaviourVector3Shake, EveVirtualCameraSystem, EveVirtualCameraTransitionCut, EveVirtualCameraTransitionLerp, FollowASplineData, FormationData, InertiaData, LightData, Locator, LocatorData, PlacementDataWithIdentifier, PlayFXData, ProcessLifetimeData, SeekTargetData, Tr2CurveExtrapolation, Tr2Light, Tr2Lod, Tr2PointLight, Tr2ScalarFader, Tr2SpotLight, Tr2TexturedPointLight, TriPerlinCurve } from "../npm/dist/index.js";
+import { BackAndForthData, CjsEveThrottleableState, DecalVSPerObjectData, EveBannerItem, EveBannerLight, EveBannerSet, EveBasicPerObjectData, EveBezierCurve, EveBoxVolume, EveChildModifierSRT, EveChildSpherePinPerObjectData, EveChildTransform, EveChildUpdateParams, EveCircle, EveCustomMask, EveDistanceField, EveEllipsoidVolume, EveHazeSet, EveHazeSetLight, EveImpactOverlay, EveLODHelper, EveLineData, EveLocator2, EveLocatorSets, EvePerObjectPSData, EvePerObjectVSData, EvePlaneLight, EvePlaneSet, EvePlaneSetItem, EveRemotePositionCurve, EveSpaceObjectDecal, EveSpaceObjectPSData, EveSpaceObjectVSData, EveSpacePerObjectData, EveSpherePinPerObjectData, EveSphereVolume, EveSpotlightLight, EveSpotlightSet, EveSpotlightSetItem, EveSpriteLight, EveSpriteLineSet, EveSpriteLineSetItem, EveSpriteSet, EveSpriteSetItem, EveThrottleable, EveVirtualCamera, EveVirtualCameraBehaviourFloatAdd, EveVirtualCameraBehaviourFloatBase, EveVirtualCameraBehaviourFloatDamping, EveVirtualCameraBehaviourFloatNoise, EveVirtualCameraBehaviourFloatSet, EveVirtualCameraBehaviourVector3Base, EveVirtualCameraBehaviourVector3Damping, EveVirtualCameraBehaviourVector3Inertia, EveVirtualCameraBehaviourVector3MoveBetween, EveVirtualCameraBehaviourVector3MoveForward, EveVirtualCameraBehaviourVector3MoveRight, EveVirtualCameraBehaviourVector3MoveUp, EveVirtualCameraBehaviourVector3Offset, EveVirtualCameraBehaviourVector3Orbit, EveVirtualCameraBehaviourVector3Shake, EveVirtualCameraSystem, EveVirtualCameraTransitionCut, EveVirtualCameraTransitionLerp, FollowASplineData, FormationData, InertiaData, LightData, Locator, LocatorData, PlacementDataWithIdentifier, PlayFXData, ProcessLifetimeData, SeekTargetData, Tr2CurveExtrapolation, Tr2Light, Tr2Lod, Tr2PointLight, Tr2ScalarFader, Tr2SpotLight, Tr2TexturedPointLight, TriPerlinCurve } from "../npm/dist/index.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
@@ -279,7 +279,7 @@ test("EveSpriteSet builds the authored SOF sprite graph without renderer buffers
   assertEquals(set.skinned, false);
   assertEquals(set.intensity, 1);
   assertEquals(CjsSchema.getField(EveSpriteSet, "sprites")?.type.kind, "list");
-  assertEquals(CjsSchema.getField(EveSpriteSet, "lights"), null);
+  assertEquals(CjsSchema.getField(EveSpriteSet, "lights")?.type.kind, "list");
 
   const existing = new EveSpriteSetItem();
   assertEquals(set.Add(existing), existing);
@@ -306,7 +306,8 @@ test("EveSpriteSet builds the authored SOF sprite graph without renderer buffers
   assertEquals(set.skinned, true);
   assertEquals(set.Initialize(), true);
   set.AddLightFromSOF({ index: 1, boneMatrix: mat4.create() });
-  assertEquals(CjsSchema.getField(EveSpriteSet, "lights"), null);
+  assertEquals(set.lights.length, 1);
+  assertEquals(set.lights[0].index, 1);
   set.Clear();
   assertEquals(set.GetSprites().length, 0);
 });
@@ -314,15 +315,16 @@ test("EveSpriteSet builds the authored SOF sprite graph without renderer buffers
 test("EveBannerSet preserves the authored physical attachment graph", () =>
 {
   const set = new EveBannerSet();
+  const source = new EveBannerItem();
   assertEquals(set.display, true);
   assertEquals(set.isPickable, false);
   assertEquals(set.key, 0);
   assertEquals(CjsSchema.getField(EveBannerSet, "banners")?.type.kind, "list");
-  assertEquals(CjsSchema.getField(EveBannerSet, "lights"), null);
+  assertEquals(CjsSchema.getField(EveBannerSet, "lights")?.type.kind, "list");
   assertEquals(CjsSchema.getField(EveBannerSet, "primaryTextureParameter"), null);
-  assertEquals(CjsSchema.getField(EveBannerItem, "reference"), null);
+  assertEquals(CjsSchema.getField(EveBannerItem, "reference")?.type.kind, "int32");
+  assertEquals(CjsSchema.getField(EveBannerItem, "reference")?.io?.persist, true);
 
-  const source = new EveBannerItem();
   source.bone = 3;
   source.position.set([1, 2, 3]);
   source.scaling.set([4, 5, 6]);
@@ -334,6 +336,8 @@ test("EveBannerSet preserves the authored physical attachment graph", () =>
   source.position[0] = 99;
   assertVec3(banner.position, [1, 2, 3]);
   assertEquals(set.GetReference(0), 42);
+  const restoredBanner = EveBannerItem.from(banner.GetValues({ persistOnly: true }));
+  assertEquals(restoredBanner.reference, 42);
 
   const options = [];
   const effect = { SetOption: (...args) => options.push(args) };
@@ -344,12 +348,13 @@ test("EveBannerSet preserves the authored physical attachment graph", () =>
   assertEquals(set.GetPickingID(), 0xffffffff);
   set.SetPrimaryTextureParameter({ resourcePath: "res:/banner.dds" });
   set.AddLightFromSOF({ index: 0, boneMatrix: mat4.create() });
+  assert(set.lights[0] instanceof EveBannerLight);
   const bannerLight = EveBannerLight.FromSOF({ lightData: { flags: 1 }, saturation: 0.5 });
   assert(bannerLight.lightData instanceof LightData);
   assertEquals(bannerLight.saturation, 0.5);
   assertEquals(new EveBannerLight().saturation, 1);
   assertEquals(set.Initialize(), true);
-  assertEquals(CjsSchema.getField(EveBannerSet, "lights"), null);
+  assertEquals(CjsSchema.getField(EveBannerLight, "lightProfilePath")?.type.kind, "string");
 });
 
 test("EvePlaneSet preserves authored quad and SOF-light intent without GPU state", () =>
@@ -363,7 +368,11 @@ test("EvePlaneSet preserves authored quad and SOF-light intent without GPU state
   assertVec4(item.color, [1, 1, 1, 1]);
   assertVec4(item.layer1Transform, [1, 1, 0, 0]);
   assertVec4(item.blinkData, [1, 0, 1, 0]);
-  assertEquals(CjsSchema.getField(EvePlaneSetItem, "blinkData"), null);
+  assertEquals(CjsSchema.getField(EvePlaneSetItem, "blinkData")?.type.kind, "vec4");
+  assertEquals(CjsSchema.getField(EvePlaneSetItem, "blinkData")?.io?.persist, true);
+  item.blinkData.set([0.25, 0.5, 0.75, 1]);
+  const restoredItem = EvePlaneSetItem.from(item.GetValues({ persistOnly: true }));
+  assertVec4(restoredItem.blinkData, [0.25, 0.5, 0.75, 1]);
   assertEquals(CjsSchema.getField(EvePlaneSet, "planes")?.type.kind, "list");
 
   set.AddPlaneItem(item);
@@ -382,13 +391,14 @@ test("EvePlaneSet preserves authored quad and SOF-light intent without GPU state
   set.SetLayerMap2Parameter({ name: "LayerMap2" });
   set.SetMaskMapParameter({ name: "MaskMap" });
   set.AddLightFromSOF({ index: 0, boneMatrix: mat4.create() });
+  assert(set.lights[0] instanceof EvePlaneLight);
   const planeLight = EvePlaneLight.FromSOF({ lightData: { flags: 1 }, fadeType: EvePlaneLight.FT_FADEINOUT });
   assert(planeLight.lightData instanceof LightData);
   assertEquals(planeLight.saturation, 1);
   assertEquals(planeLight.fadeType, 4);
   assertEquals(EvePlaneLight.FadeType.FT_BLINK, 1);
-  assertEquals(CjsSchema.getField(EvePlaneLight, "lightProfilePath"), null);
-  assertEquals(CjsSchema.getField(EvePlaneSet, "lights"), null);
+  assertEquals(CjsSchema.getField(EvePlaneLight, "lightProfilePath")?.type.kind, "string");
+  assertEquals(CjsSchema.getField(EvePlaneSet, "lights")?.type.kind, "list");
   assertEquals(CjsSchema.getField(EvePlaneSet, "imageMapParameter"), null);
   assertEquals(set.Initialize(), true);
 });
@@ -432,9 +442,10 @@ test("EveSpotlightSet preserves authored cone, glow, and SOF-light intent", () =
   assertEquals(light.index, 7);
   assertEquals(light.lightProfilePath, "res:/profile.lp");
   assertEquals(light.boosterGainInfluence, true);
-  assertEquals(CjsSchema.getField(EveSpotlightLight, "lightProfilePath"), null);
+  assertEquals(CjsSchema.getField(EveSpotlightLight, "lightProfilePath")?.type.kind, "string");
   set.AddLightFromSOF(rawLight);
-  assertEquals(CjsSchema.getField(EveSpotlightSet, "lights"), null);
+  assert(set.lights[0] instanceof EveSpotlightLight);
+  assertEquals(CjsSchema.getField(EveSpotlightSet, "lights")?.type.kind, "list");
   assertEquals(CjsSchema.getField(EveSpotlightSet, "spotlightItems")?.type.kind, "list");
   assertEquals(set.Initialize(), true);
 });
@@ -490,11 +501,27 @@ test("EveSpriteLineSet expands Carbon line and circle positions without renderer
   assertVec3(light.lightData.position, [4, 5, 6]);
   assertEquals(light.index, 2);
   assertEquals(light.lightProfilePath, "res:/sprite-profile.lp");
-  assertEquals(CjsSchema.getField(EveSpriteLight, "lightProfilePath"), null);
+  assertEquals(CjsSchema.getField(EveSpriteLight, "lightProfilePath")?.type.kind, "string");
   set.AddLightFromSOF(rawLight);
-  assertEquals(CjsSchema.getField(EveSpriteLineSet, "lights"), null);
+  assert(set.lights[0] instanceof EveSpriteLight);
+  assertEquals(CjsSchema.getField(EveSpriteLineSet, "lights")?.type.kind, "list");
   assertEquals(set.display, true);
   assertEquals(set.Initialize(), true);
+});
+
+test("EveHazeSet exposes authored SOF lights through its public graph", () =>
+{
+  const set = new EveHazeSet();
+  set.AddLightFromSOF({
+    lightData: { position: [7, 8, 9], flags: 1 },
+    index: 3,
+    lightProfilePath: "res:/haze-profile.lp"
+  });
+  assert(set.lights[0] instanceof EveHazeSetLight);
+  assertVec3(set.lights[0].lightData.position, [7, 8, 9]);
+  assertEquals(set.lights[0].lightProfilePath, "res:/haze-profile.lp");
+  assertEquals(CjsSchema.getField(EveHazeSet, "lights")?.type.kind, "list");
+  assertEquals(CjsSchema.getField(EveHazeSetLight, "lightProfilePath")?.type.kind, "string");
 });
 
 test("Tr2Light subclasses preserve Carbon graph defaults without resource realization", () =>
@@ -623,12 +650,23 @@ test("EveLocatorSets translates and copies locator lists", () =>
   set.Append([second]);
   assertEquals(set.GetLocators().length, 2);
   assertVec3(set.GetLocators()[1].position, [4, 5, 6]);
+  const replacement = {
+    position: [7, 8, 9],
+    direction: [0, 0, 0, 1],
+    boneIndex: 4
+  };
+  set.SetLocator(1, replacement);
+  assertVec3(set.GetLocators()[1].position, [7, 8, 9]);
+  assertVec3(set.GetLocators()[1].scale, [0, 0, 0]);
+  assertEquals(set.GetLocators()[1].boneIndex, 4);
+  replacement.position[0] = 99;
+  assertVec3(set.GetLocators()[1].position, [7, 8, 9]);
   const zero = vec3.create();
   set.Translate(zero);
   assertVec3(set.GetLocators()[0].position, [1, 2, 3]);
   set.Translate(vec3.fromValues(10, 20, 30));
   assertVec3(set.GetLocators()[0].position, [11, 22, 33]);
-  assertVec3(set.GetLocators()[1].position, [14, 25, 36]);
+  assertVec3(set.GetLocators()[1].position, [17, 28, 39]);
 });
 test("EveThrottleable mirrors Carbon update skipping", () =>
 {

@@ -21,6 +21,34 @@ This runtime owns serializable CPU-side state and behavior. Geometry, texture,
 and effect resources are supplied by resource runtimes; WebGPU/WebGL device,
 upload, binding, and destruction lifecycles belong to renderer runtimes.
 
+## WebGPU Main semantic extraction
+
+Two GPU-free helpers expose the proven runtime values needed by the first
+bounded Eve space-object Main binding profile:
+
+- `extractTr2EffectConstantValues(effect, reflectedConstants)` reads only the
+  requested reflected float constants across `parameters` and
+  `constParameters`. Dynamic parameters use `CopyValueToEffect`, preserving
+  rerouted values and sRGB-to-linear conversion. Missing, duplicate, malformed,
+  array, resource-like, or unsupported values fail closed.
+- `createEveSpaceObjectMainPerObjectValues({ object, shared, shipData,
+  vsOverrides, psOverrides })` maps `EveSpaceObject2` transform aliases,
+  trustworthy clip values, `EveSpacePerObjectData` fields/SH alias, and custom
+  masks into frozen plain `perObjectVS`/`perObjectPS` values.
+
+The per-object precedence is object-derived values, then explicitly supplied
+shared data, then VS/PS overrides. `shipData` is always required because no
+source-proven builder currently exists. Ellipsoid `w`, screen size, morph/bone
+offsets, impact fields, and similar optional values are copied only when the
+shared data or overrides supply them; they are never guessed.
+
+There is deliberately no per-frame scene builder yet. Previous matrices,
+shadow state, projection conventions, gamma/mip policy, frame/jitter values,
+resolution, and other renderer-owned state are not completely represented by
+the Trinity scene graph. The active renderer must provide the complete
+`perFrameVS` and `perFramePS` semantic objects before an engine serializer is
+called.
+
 Baseline checks:
 
 ```sh

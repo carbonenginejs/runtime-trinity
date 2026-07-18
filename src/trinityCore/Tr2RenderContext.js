@@ -1,6 +1,20 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
-//   trinity/trinity/Tr2RenderContext.h
-// Hand-maintained from Carbon source; backend-private parallel state is omitted.
+//   trinity/trinity/Tr2RenderContext.h (name/role)
+//   trinity/trinityal/*/Tr2RenderContext*.h (command surface, recorded as intents)
+//   trinity/trinity/Tr2Renderer.cpp (view-state statics, relocated here)
+// Hand-maintained amalgam of three Carbon surfaces (audited 2026-07-18):
+// 1. The command surface (PushRenderTarget/Clear/SetViewport/PresentSwapChain/
+//    SetRenderState/...) mirrors the backend AL context classes and RECORDS
+//    INTENTS instead of executing - a deliberate stand-in until the
+//    WebGL/WebGPU engine exists.
+// 2. The cached view state (SetViewTransform -> GetViewTransform/
+//    GetInverseViewTransform/GetViewPosition) relocates Carbon's Tr2Renderer
+//    STATICS onto this context so frame consumers read it via the threaded
+//    updateContext.renderContext instead of a global.
+// 3. Carbon's actual Tr2RenderContext.h surface - RenderBatches family,
+//    GetConstantBuffer/GetBackBuffer, and Fork/Join parallel encoding - is NOT
+//    ported: batch rendering awaits the material/batch runtime; parallel
+//    encoding is intentionally omitted in single-threaded JS.
 import { type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";

@@ -7,6 +7,9 @@ import {
   EveChildContainer,
   EveChildEffectPropagator,
   EveChildExplosion,
+  EveChildInstancedMesh,
+  EveChildInstancedMeshArea,
+  EveChildInstancedMeshInstance,
   EveChildInstancedMeshes,
   EveChildMesh,
   EveChildParticleSystem,
@@ -250,6 +253,7 @@ test("EveChildInstancedMeshes owns shared SOF mesh records without backend state
   child.SetOrigin(IEveSpaceObjectChild.Origin.SOF);
   assert.equal(child.GetName(), "SharedInstancedMeshes");
   assert.equal(child.IsAlwaysOn(), false);
+  assert.equal(CjsSchema.getField(EveChildInstancedMeshes, "meshes")?.type.itemType, "EveChildInstancedMesh");
   assert.equal(child.AddMesh("res:/empty.gr2", false, 3, 0, [], [first]), false);
   assert.equal(child.AddMesh(
     "res:/extension.gr2",
@@ -265,6 +269,9 @@ test("EveChildInstancedMeshes owns shared SOF mesh records without backend state
   second[0] = 99;
 
   assert.equal(child.GetMeshCount(), 1);
+  assert.ok(child.meshes[0] instanceof EveChildInstancedMesh);
+  assert.ok(child.meshes[0].areas[0] instanceof EveChildInstancedMeshArea);
+  assert.ok(child.meshes[0].instances[0] instanceof EveChildInstancedMeshInstance);
   assert.deepEqual(child.GetMeshInfo(0), ["res:/extension.gr2", null, 0, true, 2, 1, 2]);
   assert.deepEqual(child.GetAreaInfo(0, 0), [effect, 0, 4, 2]);
   assert.deepEqual(child.GetSofSourceLocator(1), ["hull_alpha", "layout_a", 1]);
@@ -292,6 +299,18 @@ test("EveChildInstancedMeshes owns shared SOF mesh records without backend state
   assert.equal(child.GetMeshData(0).areas[0].effectHash, 8);
   assert.throws(() => child.GetMeshInfo(1), RangeError);
   assert.throws(() => child.GetAreaInfo(0, 1), RangeError);
+
+  const values = child.GetValues({ persistOnly: true });
+  assert.equal(values.meshes[0].geometryPath, "res:/extension.gr2");
+  assert.equal(values.meshes[0].areas[0].areaIndex, 4);
+  assert.deepEqual(values.meshes[0].instances[0].transform.slice(12, 15), [1, 2, 3]);
+
+  const restored = EveChildInstancedMeshes.from(values);
+  assert.ok(restored.meshes[0] instanceof EveChildInstancedMesh);
+  assert.ok(restored.meshes[0].areas[0] instanceof EveChildInstancedMeshArea);
+  assert.ok(restored.meshes[0].instances[0] instanceof EveChildInstancedMeshInstance);
+  assert.equal(restored.GetMeshCount(), 1);
+  assert.deepEqual(Array.from(restored.meshes[0].instances[0].transform.slice(12, 15)), [1, 2, 3]);
 });
 
 test("EveChildInstancedMeshes follows Carbon child update semantics", () =>

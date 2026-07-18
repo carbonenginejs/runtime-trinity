@@ -26,25 +26,4 @@ export class Locator extends CjsModel
   @io.persist
   @type.int32
   boneIndex = 0;
-
-  static CopyValues(target, source)
-  {
-    vec3.copy(target.position, source.position);
-    quat.copy(target.direction, source.direction);
-    if (source.scale)
-    {
-      vec3.copy(target.scale, source.scale);
-    }
-    else
-    {
-      vec3.zero(target.scale);
-    }
-    target.boneIndex = source.boneIndex ?? 0;
-    return target;
-  }
-
-  static Clone(source)
-  {
-    return this.CopyValues(new Locator(), source);
-  }
 }

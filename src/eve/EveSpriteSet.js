@@ -37,7 +37,10 @@ export class EveSpriteSet extends EveEntity
   @type.boolean
   display = true;
 
-  #lights = [];
+  @io.persist
+  @type.list("EveSpriteLight")
+  lights = [];
+
   #rebuildRevision = 0;
 
   @carbon.method
@@ -45,6 +48,7 @@ export class EveSpriteSet extends EveEntity
   Clear()
   {
     this.sprites.length = 0;
+    this.lights.length = 0;
   }
 
   @carbon.method
@@ -147,6 +151,6 @@ export class EveSpriteSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EveSpriteLight.FromSOF(light));
+    this.lights.push(EveSpriteLight.FromSOF(light));
   }
 }

@@ -24,8 +24,7 @@ export class EveSpotlightLight extends CjsModel
   @type.uint32
   index = 0;
 
-  // Carbon consumes this constructor input while resolving lightProfile. Keep
-  // the authored path as private adapter intent until a resource runtime owns it.
+  @type.string
   lightProfilePath = "";
 
   static FromSOF(value)

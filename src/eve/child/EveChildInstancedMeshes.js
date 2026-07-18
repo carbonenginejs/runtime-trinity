@@ -2,8 +2,100 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildInstancedMeshes.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildInstancedMeshes_Blue.cpp
 import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../generated/eve/EveEntity.js";
+
+
+@type.define({ className: "EveChildInstancedMeshArea", family: "eve/child" })
+export class EveChildInstancedMeshArea extends CjsModel
+{
+  @io.persist
+  @type.objectRef("Tr2Effect")
+  effect = null;
+
+  @io.persist
+  @type.uint32
+  batchType = 0;
+
+  @io.persist
+  @type.uint32
+  areaIndex = 0;
+
+  @io.persist
+  @type.uint32
+  areaCount = 1;
+
+  @io.read
+  @type.float32
+  effectHash = 0;
+}
+
+
+@type.define({ className: "EveChildInstancedMeshInstance", family: "eve/child" })
+export class EveChildInstancedMeshInstance extends CjsModel
+{
+  @io.persist
+  @type.mat4
+  transform = mat4.create();
+
+  @io.persist
+  @type.uint32
+  sphereIndex = 0;
+}
+
+
+@type.define({ className: "EveChildInstancedMesh", family: "eve/child" })
+export class EveChildInstancedMesh extends CjsModel
+{
+  @io.persist
+  @type.string
+  geometryPath = "";
+
+  @io.persist
+  @type.boolean
+  castsShadow = false;
+
+  @io.persist
+  @type.int32
+  reflectionMode = 3;
+
+  @io.persist
+  @type.uint32
+  meshIndex = 0;
+
+  @io.persist
+  @type.list("EveChildInstancedMeshArea")
+  areas = [];
+
+  @io.persist
+  @type.list("EveChildInstancedMeshInstance")
+  instances = [];
+
+  @io.persist
+  @type.string
+  sofHullName = "";
+
+  @io.persist
+  @type.string
+  sofLocatorSetName = "";
+
+  @io.persist
+  @type.boolean
+  display = true;
+
+  #geometry = null;
+
+  GetGeometryResource()
+  {
+    return this.#geometry;
+  }
+
+  SetGeometryResource(resource)
+  {
+    this.#geometry = resource ?? null;
+  }
+}
 
 
 @type.define({ className: "EveChildInstancedMeshes", family: "eve/child" })
@@ -21,7 +113,9 @@ export class EveChildInstancedMeshes extends EveEntity
   @type.boolean
   hasUpdated = false;
 
-  #meshes = [];
+  @io.persist
+  @type.list("EveChildInstancedMesh")
+  meshes = [];
 
   #revision = 0;
 
@@ -116,7 +210,7 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   SetShaderOption(name, value)
   {
-    for (const mesh of this.#meshes)
+    for (const mesh of this.meshes)
     {
       for (const area of mesh.areas)
       {
@@ -154,24 +248,22 @@ export class EveChildInstancedMeshes extends EveEntity
       {
         throw new TypeError("EveChildInstancedMeshes instance transforms must contain 16 values");
       }
-      return {
-        transform: mat4.clone(transform),
-        sphereIndex
-      };
+      const instance = new EveChildInstancedMeshInstance();
+      mat4.copy(instance.transform, transform);
+      instance.sphereIndex = sphereIndex;
+      return instance;
     });
 
-    this.#meshes.push({
-      geometryPath: String(geometryPath ?? ""),
-      geometry: null,
-      castsShadow: !!castsShadow,
-      reflectionMode: reflectionMode === undefined ? 3 : Number(reflectionMode) | 0,
-      meshIndex: Number(meshIndex) >>> 0,
-      areas: normalizedAreas,
-      instances,
-      sofHullName: String(sofHullName ?? ""),
-      sofLocatorSetName: String(sofLocatorSetName ?? ""),
-      display: true
-    });
+    const mesh = new EveChildInstancedMesh();
+    mesh.geometryPath = String(geometryPath ?? "");
+    mesh.castsShadow = !!castsShadow;
+    mesh.reflectionMode = reflectionMode === undefined ? 3 : Number(reflectionMode) | 0;
+    mesh.meshIndex = Number(meshIndex) >>> 0;
+    mesh.areas = normalizedAreas;
+    mesh.instances = instances;
+    mesh.sofHullName = String(sofHullName ?? "");
+    mesh.sofLocatorSetName = String(sofLocatorSetName ?? "");
+    this.meshes.push(mesh);
     this.#revision++;
     return true;
   }
@@ -180,7 +272,7 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   Clear()
   {
-    this.#meshes.length = 0;
+    this.meshes.length = 0;
     this.hasUpdated = false;
     this.#revision++;
   }
@@ -190,7 +282,7 @@ export class EveChildInstancedMeshes extends EveEntity
   GetSofSourceLocator(areaId)
   {
     const value = Number(areaId) >>> 0;
-    const mesh = this.#meshes[value >>> 16];
+    const mesh = this.meshes[value >>> 16];
     if (!mesh || !mesh.sofHullName)
     {
       return null;
@@ -202,17 +294,17 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.implemented
   GetMeshCount()
   {
-    return this.#meshes.length;
+    return this.meshes.length;
   }
 
   @carbon.method
   @impl.adapted
   GetMeshInfo(meshId)
   {
-    const mesh = EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId);
+    const mesh = EveChildInstancedMeshes.#GetMesh(this.meshes, meshId);
     return [
       mesh.geometryPath,
-      mesh.geometry,
+      mesh.GetGeometryResource(),
       mesh.meshIndex,
       mesh.castsShadow,
       mesh.reflectionMode,
@@ -225,7 +317,7 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   GetAreaInfo(meshId, areaId)
   {
-    const mesh = EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId);
+    const mesh = EveChildInstancedMeshes.#GetMesh(this.meshes, meshId);
     const index = Number(areaId) >>> 0;
     if (index >= mesh.areas.length)
     {
@@ -239,14 +331,14 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   GetMeshDisplay(meshId)
   {
-    return EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId).display;
+    return EveChildInstancedMeshes.#GetMesh(this.meshes, meshId).display;
   }
 
   @carbon.method
   @impl.adapted
   SetMeshDisplay(meshId, display)
   {
-    const mesh = EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId);
+    const mesh = EveChildInstancedMeshes.#GetMesh(this.meshes, meshId);
     const next = !!display;
     if (mesh.display !== next)
     {
@@ -259,10 +351,10 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   SetGeometryResource(meshId, geometry)
   {
-    const mesh = EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId);
-    if (mesh.geometry !== geometry)
+    const mesh = EveChildInstancedMeshes.#GetMesh(this.meshes, meshId);
+    if (mesh.GetGeometryResource() !== geometry)
     {
-      mesh.geometry = geometry ?? null;
+      mesh.SetGeometryResource(geometry);
       this.#revision++;
     }
   }
@@ -271,7 +363,7 @@ export class EveChildInstancedMeshes extends EveEntity
   @impl.adapted
   GetMeshData(meshId)
   {
-    const mesh = EveChildInstancedMeshes.#GetMesh(this.#meshes, meshId);
+    const mesh = EveChildInstancedMeshes.#GetMesh(this.meshes, meshId);
     return EveChildInstancedMeshes.#CloneMesh(mesh);
   }
 
@@ -292,24 +384,23 @@ export class EveChildInstancedMeshes extends EveEntity
     return meshes[index];
   }
 
-  static #CreateArea(area)
+  static #CreateArea(value)
   {
-    const source = area ?? {};
-    const effect = source.effect ?? null;
-    return {
-      effect,
-      batchType: Number(source.batchType) >>> 0,
-      areaIndex: Number(source.areaIndex) >>> 0,
-      areaCount: source.areaCount === undefined ? 1 : Number(source.areaCount) >>> 0,
-      effectHash: EveChildInstancedMeshes.#GetEffectHash(effect)
-    };
+    const source = value ?? {};
+    const area = new EveChildInstancedMeshArea();
+    area.effect = source.effect ?? null;
+    area.batchType = Number(source.batchType) >>> 0;
+    area.areaIndex = Number(source.areaIndex) >>> 0;
+    area.areaCount = source.areaCount === undefined ? 1 : Number(source.areaCount) >>> 0;
+    area.effectHash = EveChildInstancedMeshes.#GetEffectHash(area.effect);
+    return area;
   }
 
   static #CloneMesh(mesh)
   {
     return {
       geometryPath: mesh.geometryPath,
-      geometry: mesh.geometry,
+      geometry: mesh.GetGeometryResource(),
       castsShadow: mesh.castsShadow,
       reflectionMode: mesh.reflectionMode,
       meshIndex: mesh.meshIndex,

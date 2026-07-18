@@ -267,6 +267,137 @@ function LintClassMethods(file, source)
     return errors;
 }
 
+const CONTEXT_FIRST_NAME = /^_?(context|updateContext)$/u;
+
+/**
+ * Returns true when a decorator node is a `@carbon.contextual([...])` call.
+ *
+ * @param {object} decorator
+ * @returns {boolean}
+ */
+function IsContextualDecorator(decorator)
+{
+    const expression = decorator?.expression;
+    return expression?.type === "CallExpression" &&
+        expression.callee?.type === "MemberExpression" &&
+        expression.callee.object?.name === "carbon" &&
+        expression.callee.property?.name === "contextual";
+}
+
+/**
+ * Enforces the frame-context convention: methods marked `@carbon.contextual`
+ * are context CONSUMERS and must be context-first — their first parameter is
+ * the frame context, named `context` or `updateContext` (optionally
+ * underscore-prefixed). Context OWNERS (e.g. EveSpaceScene.Update) must not
+ * carry the marker.
+ *
+ * @param {string} file
+ * @param {string} source
+ * @returns {string[]}
+ */
+function LintContextualMethods(file, source)
+{
+    const relativeFile = path.relative(root, file).replaceAll(path.sep, "/");
+    const errors = [];
+    let ast;
+
+    try
+    {
+        ast = parse(source, {
+            sourceType: "module",
+            plugins: [
+                "classProperties",
+                "classStaticBlock",
+                "decoratorAutoAccessors",
+                "decorators",
+                "importAttributes"
+            ]
+        });
+    }
+    catch
+    {
+        // Parse failures are already reported by the other passes.
+        return errors;
+    }
+
+    Visit(ast.program, node =>
+    {
+        if (!METHOD_TYPES.has(node.type) || !(node.decorators ?? []).some(IsContextualDecorator))
+        {
+            return;
+        }
+
+        const declarationLine = GetDeclarationLine(node);
+        const first = node.params[0];
+        const identifier = first?.type === "Identifier"
+            ? first
+            : first?.type === "AssignmentPattern" && first.left?.type === "Identifier"
+                ? first.left
+                : null;
+
+        if (!identifier || !CONTEXT_FIRST_NAME.test(identifier.name))
+        {
+            errors.push(`${relativeFile}:${declarationLine}: @carbon.contextual method must be context-first (first parameter named context or updateContext)`);
+        }
+    });
+
+    return errors;
+}
+
+/**
+ * Self-check: the contextual rule must accept conforming methods and reject
+ * violations, or the lint itself is broken.
+ */
+function VerifyContextualMethodPolicy()
+{
+    const good = `
+        class Good
+        {
+            @carbon.method
+            @carbon.contextual(["camera"])
+            ApplyTransform(context, transform, out)
+            {
+                return out;
+            }
+
+            @carbon.contextual(["camera"])
+            UpdateAsyncronous(updateContext = null, params)
+            {
+                return params;
+            }
+
+            @carbon.method
+            Unmarked(transform)
+            {
+                return transform;
+            }
+        }
+    `;
+    const bad = `
+        class Bad
+        {
+            @carbon.contextual(["camera"])
+            ApplyTransform(transform, out)
+            {
+                return out;
+            }
+
+            @carbon.contextual(["camera"])
+            Tick()
+            {
+            }
+        }
+    `;
+
+    if (LintContextualMethods(path.join(root, "fixture.js"), good).length !== 0 ||
+        LintContextualMethods(path.join(root, "fixture.js"), bad).length !== 2)
+    {
+        throw new Error("Contextual context-first lint policy failed its self-check");
+    }
+}
+
+VerifyContextualMethodPolicy();
+
 const files = [];
 
 for (const sourceRoot of sourceRoots)
@@ -285,7 +416,9 @@ const allSourceFiles = await GetJavaScriptFiles(allSourceRoot);
 
 for (const file of allSourceFiles)
 {
-    errors.push(...LintClassMethods(file, await fs.readFile(file, "utf8")));
+    const source = await fs.readFile(file, "utf8");
+    errors.push(...LintClassMethods(file, source));
+    errors.push(...LintContextualMethods(file, source));
 }
 
 if (errors.length)

@@ -32,7 +32,10 @@ export class EveSpriteLineSet extends EveEntity
   @type.string
   name = "";
 
-  #lights = [];
+  @io.persist
+  @type.list("EveSpriteLight")
+  lights = [];
+
   #rebuildRevision = 0;
 
   @carbon.method
@@ -81,6 +84,6 @@ export class EveSpriteLineSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EveSpriteLight.FromSOF(light));
+    this.lights.push(EveSpriteLight.FromSOF(light));
   }
 }

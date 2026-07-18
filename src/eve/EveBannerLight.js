@@ -24,6 +24,7 @@ export class EveBannerLight extends CjsModel
   @type.mat4
   boneMatrix = mat4.create();
 
+  @type.string
   lightProfilePath = "";
 
   static FromSOF(value)

@@ -2,8 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import {
   EveBoosterSet2,
+  EveBoosterSet2Item,
   EveBoosterSet2Renderable,
   EveSpriteSet,
   EveTrailsSet
@@ -76,6 +78,15 @@ test("EveBoosterSet2 builds Carbon booster, glow, trail, light, and bounds CPU d
   assert.equal(boosters.Add(transform, [0, 1, 1, 1], true, 6, 7, 2), 0);
   transform[12] = 999;
 
+  assert.equal(CjsSchema.getField(EveBoosterSet2, "items")?.type.itemType, "EveBoosterSet2Item");
+  assert.equal(boosters.items[0] instanceof EveBoosterSet2Item, true);
+  assert.equal(boosters.items[0].transform[12], 10);
+  assert.deepEqual(Array.from(boosters.items[0].functionality), [0, 1, 1, 1]);
+  assert.equal(boosters.items[0].hasTrail, true);
+  assert.equal(boosters.items[0].atlasIndex0, 6);
+  assert.equal(boosters.items[0].atlasIndex1, 7);
+  assert.equal(boosters.items[0].lightScale, 2);
+
   const data = boosters.GetBoosterData();
   assert.equal(data.length, 1);
   assert.equal(data[0].transform[12], 10);
@@ -111,7 +122,20 @@ test("EveBoosterSet2 builds Carbon booster, glow, trail, light, and bounds CPU d
   assert.deepEqual(EveBoosterSet2.Shape, { STAR: 0, BOX: 1, SHAPE_COUNT: 2 });
   assert.equal(Object.isFrozen(EveBoosterSet2.Shape), true);
 
+  const values = boosters.GetValues({ persistOnly: true });
+  assert.equal(values.items.length, 1);
+  assert.equal(values.items[0].lightScale, 2);
+  const restored = EveBoosterSet2.from({
+    lightOffset: values.lightOffset,
+    items: values.items
+  });
+  assert.equal(restored.items[0] instanceof EveBoosterSet2Item, true);
+  assert.equal(restored.GetBoosterData().length, 1);
+  assertVecNear(restored.GetBoosterData()[0].lightPosition, [10, 20, 28]);
+  assert.equal(restored.GetBoosterData()[0].lightRadius, 6);
+
   boosters.Clear();
+  assert.deepEqual(boosters.items, []);
   assert.deepEqual(boosters.GetBoosterData(), []);
   assert.equal(glows.sprites.length, 0);
   assert.deepEqual(trails.GetTrailData(), []);

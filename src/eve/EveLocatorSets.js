@@ -39,7 +39,7 @@ export class EveLocatorSets extends CjsModel
   {
     for (const locator of locators)
     {
-      this.locators.push(Locator.Clone(locator));
+      this.locators.push(Locator.from(locator));
     }
   }
   @carbon.method
@@ -71,7 +71,7 @@ export class EveLocatorSets extends CjsModel
   Set(name, locators)
   {
     this.SetName(name);
-    this.locators = locators.map(locator => Locator.Clone(locator));
+    this.locators = locators.map(locator => Locator.from(locator));
   }
   @carbon.method
   @impl.adapted
@@ -80,7 +80,12 @@ export class EveLocatorSets extends CjsModel
     const existing = this.locators[index];
     if (existing)
     {
-      Locator.CopyValues(existing, value);
+      existing.SetValues({
+        position: value.position,
+        direction: value.direction,
+        scale: value.scale ?? [0, 0, 0],
+        boneIndex: value.boneIndex ?? 0
+      });
     }
   }
 

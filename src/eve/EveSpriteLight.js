@@ -33,8 +33,7 @@ export class EveSpriteLight extends CjsModel
   @type.mat4
   boneMatrix = mat4.create();
 
-  // Constructor input consumed by Carbon's resource manager. It remains
-  // nonserialized adapter intent until a resource runtime resolves the profile.
+  @type.string
   lightProfilePath = "";
 
   static FromSOF(value)

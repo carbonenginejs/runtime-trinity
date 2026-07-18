@@ -11,6 +11,35 @@ import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBoosterSet2Renderable } from "./EveBoosterSet2Renderable.js";
 
 
+@type.define({ className: "EveBoosterSet2Item", family: "eve/attachment/boosters" })
+export class EveBoosterSet2Item extends CjsModel
+{
+  @io.persist
+  @type.mat4
+  transform = mat4.create();
+
+  @io.persist
+  @type.vec4
+  functionality = vec4.fromValues(0, 1, 1, 1);
+
+  @io.persist
+  @type.boolean
+  hasTrail = true;
+
+  @io.persist
+  @type.uint32
+  atlasIndex0 = 0;
+
+  @io.persist
+  @type.uint32
+  atlasIndex1 = 0;
+
+  @io.persist
+  @type.float32
+  lightScale = 1;
+}
+
+
 @type.define({ className: "EveBoosterSet2", family: "eve/attachment/boosters" })
 export class EveBoosterSet2 extends EveEntity
 {
@@ -215,6 +244,11 @@ export class EveBoosterSet2 extends EveEntity
   @type.objectRef("EveTrailsSet")
   trails = null;
 
+  @io.notify
+  @io.persist
+  @type.list("EveBoosterSet2Item")
+  items = [];
+
   #singleBoosters = [];
 
   #revision = 0;
@@ -223,6 +257,7 @@ export class EveBoosterSet2 extends EveEntity
   @impl.adapted
   Initialize()
   {
+    EveBoosterSet2.#RebuildItems(this);
     for (const renderable of this.instances)
     {
       renderable?.SetBoosterSet?.(this);
@@ -235,6 +270,10 @@ export class EveBoosterSet2 extends EveEntity
   @impl.adapted
   OnModified(properties = null)
   {
+    if (hasModifiedProperty(properties, "items"))
+    {
+      EveBoosterSet2.#RebuildItems(this);
+    }
     if (hasModifiedProperty(properties, "staticTrailLength"))
     {
       EveBoosterSet2.#UpdateStaticTrailOffsets(this);
@@ -329,12 +368,8 @@ export class EveBoosterSet2 extends EveEntity
   @impl.adapted
   Clear()
   {
-    this.#singleBoosters.length = 0;
-    this.glows?.Clear?.();
-    this.trails?.Clear?.();
-    vec3.set(this.boosterBoundingSphereCenter, 0, 0, 0);
-    this.boosterBoundingSphereRadius = 0;
-    this.maxSize = 0;
+    this.items.length = 0;
+    EveBoosterSet2.#ClearRuntimeItems(this);
     this.#revision++;
   }
 
@@ -353,45 +388,77 @@ export class EveBoosterSet2 extends EveEntity
     {
       throw new TypeError("EveBoosterSet2 transforms must contain 16 values");
     }
-    const transform = mat4.clone(localMatrix);
+    const item = new EveBoosterSet2Item();
+    mat4.copy(item.transform, localMatrix);
+    vec4.copy(item.functionality, functionality ?? EveBoosterSet2.#defaultFunctionality);
+    item.hasTrail = !!hasTrail;
+    item.atlasIndex0 = Number(atlasIndex0) >>> 0;
+    item.atlasIndex1 = Number(atlasIndex1) >>> 0;
+    item.lightScale = Number(lightScale) || 0;
+    this.items.push(item);
+    EveBoosterSet2.#AddRuntimeItem(this, item);
+    this.#revision++;
+    return this.items.length - 1;
+  }
+
+  static #ClearRuntimeItems(owner)
+  {
+    owner.#singleBoosters.length = 0;
+    owner.glows?.Clear?.();
+    owner.trails?.Clear?.();
+    vec3.set(owner.boosterBoundingSphereCenter, 0, 0, 0);
+    owner.boosterBoundingSphereRadius = 0;
+    owner.maxSize = 0;
+  }
+
+  static #RebuildItems(owner)
+  {
+    EveBoosterSet2.#ClearRuntimeItems(owner);
+    for (const item of owner.items)
+    {
+      EveBoosterSet2.#AddRuntimeItem(owner, item);
+    }
+  }
+
+  static #AddRuntimeItem(owner, item)
+  {
+    const transform = mat4.clone(item.transform);
     const scale = Math.max(
       Math.hypot(transform[0], transform[1], transform[2]),
       Math.hypot(transform[4], transform[5], transform[6])
     );
     const lightPosition = vec3.transformMat4(
       vec3.create(),
-      [0, 0, -this.lightOffset],
+      [0, 0, -owner.lightOffset],
       transform
     );
     const booster = {
       transform,
-      functionality: vec4.clone(functionality ?? EveBoosterSet2.#defaultFunctionality),
+      functionality: vec4.clone(item.functionality),
       lightPosition,
-      lightRadius: scale * (Number(lightScale) || 0),
+      lightRadius: scale * item.lightScale,
       lightPhase: 128 * Math.random(),
-      atlasIndex0: Number(atlasIndex0) >>> 0,
-      atlasIndex1: Number(atlasIndex1) >>> 0,
-      hasTrail: !!hasTrail
+      atlasIndex0: item.atlasIndex0,
+      atlasIndex1: item.atlasIndex1,
+      hasTrail: item.hasTrail
     };
-    this.#singleBoosters.push(booster);
+    owner.#singleBoosters.push(booster);
 
-    if (this.glows)
+    if (owner.glows)
     {
-      EveBoosterSet2.#CreateFlares(this, booster);
+      EveBoosterSet2.#CreateFlares(owner, booster);
     }
-    if (this.trails && hasTrail)
+    if (owner.trails && item.hasTrail)
     {
       const trailTransform = mat4.clone(transform);
       trailTransform[12] -= trailTransform[8] * 0.5;
       trailTransform[13] -= trailTransform[9] * 0.5;
       trailTransform[14] -= trailTransform[10] * 0.5;
-      this.trails.Add?.(trailTransform, scale);
+      owner.trails.Add?.(trailTransform, scale);
     }
 
-    EveBoosterSet2.#UpdateBoundingSphere(this, transform.subarray(12, 15));
-    this.maxSize = Math.max(this.maxSize, scale);
-    this.#revision++;
-    return this.#singleBoosters.length - 1;
+    EveBoosterSet2.#UpdateBoundingSphere(owner, transform.subarray(12, 15));
+    owner.maxSize = Math.max(owner.maxSize, scale);
   }
 
   @carbon.method

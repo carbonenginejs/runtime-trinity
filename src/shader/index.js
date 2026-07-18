@@ -1,6 +1,7 @@
 export * from "./Tr2Effect.js";
 export * from "./Tr2Material.js";
 export * from "./Tr2Shader.js";
+export * from "./extractTr2EffectConstantValues.js";
 export * from "./material/Tr2EffectLibraryParameters.js";
 export * from "./material/Tr2EffectParam.js";
 export * from "./material/Tr2EffectPassParameters.js";

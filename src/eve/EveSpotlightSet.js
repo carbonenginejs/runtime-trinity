@@ -36,7 +36,10 @@ export class EveSpotlightSet extends EveEntity
   @type.float32
   intensity = 1;
 
-  #lights = [];
+  @io.persist
+  @type.list("EveSpotlightLight")
+  lights = [];
+
   #rebuildRevision = 0;
 
   @carbon.method
@@ -137,6 +140,6 @@ export class EveSpotlightSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EveSpotlightLight.FromSOF(light));
+    this.lights.push(EveSpotlightLight.FromSOF(light));
   }
 }

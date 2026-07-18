@@ -37,11 +37,14 @@ export class EvePlaneSet extends EveEntity
   @type.list("EvePlaneSetItem")
   planes = [];
 
+  @io.persist
+  @type.list("EvePlaneLight")
+  lights = [];
+
   #imageMapParameter = null;
   #layerMap1Parameter = null;
   #layerMap2Parameter = null;
   #maskMapParameter = null;
-  #lights = [];
   #rebuildRevision = 0;
 
   @carbon.method
@@ -139,6 +142,6 @@ export class EvePlaneSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EvePlaneLight.FromSOF(light));
+    this.lights.push(EvePlaneLight.FromSOF(light));
   }
 }

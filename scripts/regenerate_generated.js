@@ -20,6 +20,15 @@ const RESOURCE_OWNED_CLASSES = new Set(["TriTextureRes", "TriGeometryRes", "Tr2E
 const CHARACTER_OWNED_FAMILIES = new Set(["interior", "wod"]);
 const CHARACTER_OWNED_CLASSES = new Set(["Tr2Model", "Tr2SkinnedModel", "Tr2SkinnedObject"]);
 
+// Audio domain owned by runtime-audio (src/trinity there): the carbon-audio
+// package classes (audio), the Trinity<->audio contract interfaces
+// (trinityAudioApi), and the trinity-side stretch-audio classes (trinityAudio).
+// See runtime-audio/src/trinity/README.md for the ownership brief. Scene-graph
+// classes that merely hold an emitter ref (EveChildAudio, AudioGameObject,
+// EveStretch*) stay in runtime-trinity - ownership follows the audio system,
+// not the reference.
+const AUDIO_OWNED_FAMILIES = new Set(["audio", "trinityAudio", "trinityAudioApi"]);
+
 // Global vocabularies owned by runtime-const: generated classes import and
 // alias them as statics instead of inlining, keeping one source of truth.
 // The render-context numeric enums come from Carbon's Tr2RenderContextEnum /
@@ -184,6 +193,10 @@ function isResourceOwnedDoc(doc, schemaFamily)
 function isCharacterOwnedDoc(doc, schemaFamily)
 {
   return CHARACTER_OWNED_FAMILIES.has(schemaFamily) || CHARACTER_OWNED_CLASSES.has(classNameFor(doc, ""));
+}
+function isAudioOwnedDoc(doc, schemaFamily)
+{
+  return AUDIO_OWNED_FAMILIES.has(schemaFamily);
 }
 function resolveSourceRef(doc, value)
 {
@@ -741,6 +754,16 @@ for (const file of docs)
       className,
       schema: relativePosix(schemaRoot, file),
       reason: "owned by runtime-character"
+    });
+    continue;
+  }
+  if (isAudioOwnedDoc(rawDoc, schemaFamily))
+  {
+    generationSummary.skipped.push({
+      family,
+      className,
+      schema: relativePosix(schemaRoot, file),
+      reason: "owned by runtime-audio"
     });
     continue;
   }

@@ -1,26 +1,103 @@
-import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { applyDecs2311 as _applyDecs2311, identity as _identity } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../../generated/eve/EveEntity.js';
 
-let _initProto, _initClass, _init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated;
+let _initClass, _init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_areaIndex, _init_extra_areaIndex, _init_areaCount, _init_extra_areaCount, _init_effectHash, _init_extra_effectHash, _initClass2, _init_transform, _init_extra_transform, _init_sphereIndex, _init_extra_sphereIndex, _initClass3, _init_geometryPath, _init_extra_geometryPath, _init_castsShadow, _init_extra_castsShadow, _init_reflectionMode, _init_extra_reflectionMode, _init_meshIndex, _init_extra_meshIndex, _init_areas, _init_extra_areas, _init_instances, _init_extra_instances, _init_sofHullName, _init_extra_sofHullName, _init_sofLocatorSetName, _init_extra_sofLocatorSetName, _init_display, _init_extra_display, _initProto, _initClass4, _init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated, _init_meshes, _init_extra_meshes;
 let _EveChildInstancedMes;
+class EveChildInstancedMeshArea extends CjsModel {
+  static {
+    ({
+      e: [_init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_areaIndex, _init_extra_areaIndex, _init_areaCount, _init_extra_areaCount, _init_effectHash, _init_extra_effectHash],
+      c: [_EveChildInstancedMes, _initClass]
+    } = _applyDecs2311(this, [type.define({
+      className: "EveChildInstancedMeshArea",
+      family: "eve/child"
+    })], [[[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.uint32], 16, "batchType"], [[io, io.persist, type, type.uint32], 16, "areaIndex"], [[io, io.persist, type, type.uint32], 16, "areaCount"], [[io, io.read, type, type.float32], 16, "effectHash"]], 0, void 0, CjsModel));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_effectHash(this);
+  }
+  effect = _init_effect(this, null);
+  batchType = (_init_extra_effect(this), _init_batchType(this, 0));
+  areaIndex = (_init_extra_batchType(this), _init_areaIndex(this, 0));
+  areaCount = (_init_extra_areaIndex(this), _init_areaCount(this, 1));
+  effectHash = (_init_extra_areaCount(this), _init_effectHash(this, 0));
+  static {
+    _initClass();
+  }
+}
+let _EveChildInstancedMes2;
+class EveChildInstancedMeshInstance extends CjsModel {
+  static {
+    ({
+      e: [_init_transform, _init_extra_transform, _init_sphereIndex, _init_extra_sphereIndex],
+      c: [_EveChildInstancedMes2, _initClass2]
+    } = _applyDecs2311(this, [type.define({
+      className: "EveChildInstancedMeshInstance",
+      family: "eve/child"
+    })], [[[io, io.persist, type, type.mat4], 16, "transform"], [[io, io.persist, type, type.uint32], 16, "sphereIndex"]], 0, void 0, CjsModel));
+  }
+  constructor(...args) {
+    super(...args);
+    _init_extra_sphereIndex(this);
+  }
+  transform = _init_transform(this, mat4.create());
+  sphereIndex = (_init_extra_transform(this), _init_sphereIndex(this, 0));
+  static {
+    _initClass2();
+  }
+}
+let _EveChildInstancedMes3;
+class EveChildInstancedMesh extends CjsModel {
+  static {
+    ({
+      e: [_init_geometryPath, _init_extra_geometryPath, _init_castsShadow, _init_extra_castsShadow, _init_reflectionMode, _init_extra_reflectionMode, _init_meshIndex, _init_extra_meshIndex, _init_areas, _init_extra_areas, _init_instances, _init_extra_instances, _init_sofHullName, _init_extra_sofHullName, _init_sofLocatorSetName, _init_extra_sofLocatorSetName, _init_display, _init_extra_display],
+      c: [_EveChildInstancedMes3, _initClass3]
+    } = _applyDecs2311(this, [type.define({
+      className: "EveChildInstancedMesh",
+      family: "eve/child"
+    })], [[[io, io.persist, type, type.string], 16, "geometryPath"], [[io, io.persist, type, type.boolean], 16, "castsShadow"], [[io, io.persist, type, type.int32], 16, "reflectionMode"], [[io, io.persist, type, type.uint32], 16, "meshIndex"], [[io, io.persist, void 0, type.list("EveChildInstancedMeshArea")], 16, "areas"], [[io, io.persist, void 0, type.list("EveChildInstancedMeshInstance")], 16, "instances"], [[io, io.persist, type, type.string], 16, "sofHullName"], [[io, io.persist, type, type.string], 16, "sofLocatorSetName"], [[io, io.persist, type, type.boolean], 16, "display"]], 0, void 0, CjsModel));
+  }
+  geometryPath = _init_geometryPath(this, "");
+  castsShadow = (_init_extra_geometryPath(this), _init_castsShadow(this, false));
+  reflectionMode = (_init_extra_castsShadow(this), _init_reflectionMode(this, 3));
+  meshIndex = (_init_extra_reflectionMode(this), _init_meshIndex(this, 0));
+  areas = (_init_extra_meshIndex(this), _init_areas(this, []));
+  instances = (_init_extra_areas(this), _init_instances(this, []));
+  sofHullName = (_init_extra_instances(this), _init_sofHullName(this, ""));
+  sofLocatorSetName = (_init_extra_sofHullName(this), _init_sofLocatorSetName(this, ""));
+  display = (_init_extra_sofLocatorSetName(this), _init_display(this, true));
+  #geometry = (_init_extra_display(this), null);
+  GetGeometryResource() {
+    return this.#geometry;
+  }
+  SetGeometryResource(resource) {
+    this.#geometry = resource ?? null;
+  }
+  static {
+    _initClass3();
+  }
+}
+let _EveChildInstancedMes4;
 new class extends _identity {
   static [class EveChildInstancedMeshes extends _EveEntity {
     static {
       ({
-        e: [_init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated, _initProto],
-        c: [_EveChildInstancedMes, _initClass]
+        e: [_init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated, _init_meshes, _init_extra_meshes, _initProto],
+        c: [_EveChildInstancedMes4, _initClass4]
       } = _applyDecs2311(this, [type.define({
         className: "EveChildInstancedMeshes",
         family: "eve/child"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[io, io.persist, void 0, type.list("EveChildInstancedMesh")], 16, "meshes"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
     }
     name = (_initProto(this), _init_name(this, ""));
     worldTransform = (_init_extra_name(this), _init_worldTransform(this, mat4.create()));
     hasUpdated = (_init_extra_worldTransform(this), _init_hasUpdated(this, false));
-    #meshes = (_init_extra_hasUpdated(this), []);
-    #revision = 0;
+    meshes = (_init_extra_hasUpdated(this), _init_meshes(this, []));
+    #revision = (_init_extra_meshes(this), 0);
     GetName() {
       return this.name;
     }
@@ -55,10 +132,10 @@ new class extends _identity {
       return false;
     }
     SetShaderOption(name, value) {
-      for (const mesh of this.#meshes) {
+      for (const mesh of this.meshes) {
         for (const area of mesh.areas) {
           area.effect?.SetOption?.(name, value);
-          area.effectHash = _EveChildInstancedMes.#GetEffectHash(area.effect);
+          area.effectHash = _EveChildInstancedMes4.#GetEffectHash(area.effect);
         }
       }
       this.#revision++;
@@ -69,53 +146,51 @@ new class extends _identity {
       if (!sourceAreas.length || !sourceTransforms.length) {
         return false;
       }
-      const normalizedAreas = sourceAreas.map(area => _EveChildInstancedMes.#CreateArea(area));
+      const normalizedAreas = sourceAreas.map(area => _EveChildInstancedMes4.#CreateArea(area));
       const instances = sourceTransforms.map((transform, sphereIndex) => {
         if (!transform || transform.length !== 16) {
           throw new TypeError("EveChildInstancedMeshes instance transforms must contain 16 values");
         }
-        return {
-          transform: mat4.clone(transform),
-          sphereIndex
-        };
+        const instance = new _EveChildInstancedMes2();
+        mat4.copy(instance.transform, transform);
+        instance.sphereIndex = sphereIndex;
+        return instance;
       });
-      this.#meshes.push({
-        geometryPath: String(geometryPath ?? ""),
-        geometry: null,
-        castsShadow: !!castsShadow,
-        reflectionMode: reflectionMode === undefined ? 3 : Number(reflectionMode) | 0,
-        meshIndex: Number(meshIndex) >>> 0,
-        areas: normalizedAreas,
-        instances,
-        sofHullName: String(sofHullName ?? ""),
-        sofLocatorSetName: String(sofLocatorSetName ?? ""),
-        display: true
-      });
+      const mesh = new _EveChildInstancedMes3();
+      mesh.geometryPath = String(geometryPath ?? "");
+      mesh.castsShadow = !!castsShadow;
+      mesh.reflectionMode = reflectionMode === undefined ? 3 : Number(reflectionMode) | 0;
+      mesh.meshIndex = Number(meshIndex) >>> 0;
+      mesh.areas = normalizedAreas;
+      mesh.instances = instances;
+      mesh.sofHullName = String(sofHullName ?? "");
+      mesh.sofLocatorSetName = String(sofLocatorSetName ?? "");
+      this.meshes.push(mesh);
       this.#revision++;
       return true;
     }
     Clear() {
-      this.#meshes.length = 0;
+      this.meshes.length = 0;
       this.hasUpdated = false;
       this.#revision++;
     }
     GetSofSourceLocator(areaId) {
       const value = Number(areaId) >>> 0;
-      const mesh = this.#meshes[value >>> 16];
+      const mesh = this.meshes[value >>> 16];
       if (!mesh || !mesh.sofHullName) {
         return null;
       }
       return [mesh.sofHullName, mesh.sofLocatorSetName, value & 0xffff];
     }
     GetMeshCount() {
-      return this.#meshes.length;
+      return this.meshes.length;
     }
     GetMeshInfo(meshId) {
-      const mesh = _EveChildInstancedMes.#GetMesh(this.#meshes, meshId);
-      return [mesh.geometryPath, mesh.geometry, mesh.meshIndex, mesh.castsShadow, mesh.reflectionMode, mesh.areas.length, mesh.instances.length];
+      const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
+      return [mesh.geometryPath, mesh.GetGeometryResource(), mesh.meshIndex, mesh.castsShadow, mesh.reflectionMode, mesh.areas.length, mesh.instances.length];
     }
     GetAreaInfo(meshId, areaId) {
-      const mesh = _EveChildInstancedMes.#GetMesh(this.#meshes, meshId);
+      const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
       const index = Number(areaId) >>> 0;
       if (index >= mesh.areas.length) {
         throw new RangeError(`EveChildInstancedMeshes area index ${index} is out of range`);
@@ -124,10 +199,10 @@ new class extends _identity {
       return [area.effect, area.batchType, area.areaIndex, area.areaCount];
     }
     GetMeshDisplay(meshId) {
-      return _EveChildInstancedMes.#GetMesh(this.#meshes, meshId).display;
+      return _EveChildInstancedMes4.#GetMesh(this.meshes, meshId).display;
     }
     SetMeshDisplay(meshId, display) {
-      const mesh = _EveChildInstancedMes.#GetMesh(this.#meshes, meshId);
+      const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
       const next = !!display;
       if (mesh.display !== next) {
         mesh.display = next;
@@ -135,15 +210,15 @@ new class extends _identity {
       }
     }
     SetGeometryResource(meshId, geometry) {
-      const mesh = _EveChildInstancedMes.#GetMesh(this.#meshes, meshId);
-      if (mesh.geometry !== geometry) {
-        mesh.geometry = geometry ?? null;
+      const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
+      if (mesh.GetGeometryResource() !== geometry) {
+        mesh.SetGeometryResource(geometry);
         this.#revision++;
       }
     }
     GetMeshData(meshId) {
-      const mesh = _EveChildInstancedMes.#GetMesh(this.#meshes, meshId);
-      return _EveChildInstancedMes.#CloneMesh(mesh);
+      const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
+      return _EveChildInstancedMes4.#CloneMesh(mesh);
     }
     GetRevision() {
       return this.#revision;
@@ -156,21 +231,20 @@ new class extends _identity {
     }
     return meshes[index];
   }
-  #CreateArea(area) {
-    const source = area ?? {};
-    const effect = source.effect ?? null;
-    return {
-      effect,
-      batchType: Number(source.batchType) >>> 0,
-      areaIndex: Number(source.areaIndex) >>> 0,
-      areaCount: source.areaCount === undefined ? 1 : Number(source.areaCount) >>> 0,
-      effectHash: _EveChildInstancedMes.#GetEffectHash(effect)
-    };
+  #CreateArea(value) {
+    const source = value ?? {};
+    const area = new _EveChildInstancedMes();
+    area.effect = source.effect ?? null;
+    area.batchType = Number(source.batchType) >>> 0;
+    area.areaIndex = Number(source.areaIndex) >>> 0;
+    area.areaCount = source.areaCount === undefined ? 1 : Number(source.areaCount) >>> 0;
+    area.effectHash = _EveChildInstancedMes4.#GetEffectHash(area.effect);
+    return area;
   }
   #CloneMesh(mesh) {
     return {
       geometryPath: mesh.geometryPath,
-      geometry: mesh.geometry,
+      geometry: mesh.GetGeometryResource(),
       castsShadow: mesh.castsShadow,
       reflectionMode: mesh.reflectionMode,
       meshIndex: mesh.meshIndex,
@@ -191,9 +265,9 @@ new class extends _identity {
     return Number(hash) || 0;
   }
   constructor() {
-    super(_EveChildInstancedMes), _initClass();
+    super(_EveChildInstancedMes4), _initClass4();
   }
 }();
 
-export { _EveChildInstancedMes as EveChildInstancedMeshes };
+export { _EveChildInstancedMes3 as EveChildInstancedMesh, _EveChildInstancedMes as EveChildInstancedMeshArea, _EveChildInstancedMes2 as EveChildInstancedMeshInstance, _EveChildInstancedMes4 as EveChildInstancedMeshes };
 //# sourceMappingURL=EveChildInstancedMeshes.js.map

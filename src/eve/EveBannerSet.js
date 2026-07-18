@@ -35,7 +35,10 @@ export class EveBannerSet extends EveEntity
   @type.int32
   key = 0;
 
-  #lights = [];
+  @io.persist
+  @type.list("EveBannerLight")
+  lights = [];
+
   #primaryTextureParameter = null;
   #rebuildRevision = 0;
 
@@ -113,7 +116,7 @@ export class EveBannerSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EveBannerLight.FromSOF(light));
+    this.lights.push(EveBannerLight.FromSOF(light));
   }
 
   static #copyBanner(source)

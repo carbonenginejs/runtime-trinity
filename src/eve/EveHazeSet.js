@@ -24,7 +24,10 @@ export class EveHazeSet extends EveEntity
   @type.list("EveHazeSetItem")
   hazes = [];
 
-  #lights = [];
+  @io.persist
+  @type.list("EveHazeSetLight")
+  lights = [];
+
   #rebuildRevision = 0;
 
   @carbon.method
@@ -73,6 +76,6 @@ export class EveHazeSet extends EveEntity
   @impl.adapted
   AddLightFromSOF(light)
   {
-    this.#lights.push(EveHazeSetLight.FromSOF(light));
+    this.lights.push(EveHazeSetLight.FromSOF(light));
   }
 }

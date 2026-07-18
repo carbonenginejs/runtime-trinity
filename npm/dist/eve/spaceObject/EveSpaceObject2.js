@@ -8,7 +8,7 @@ import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { ReflectionMode } from '../../generated/eve/enums.js';
-import { Tr2Lod } from '../EveLODHelper.js';
+import { EveLODHelper, Tr2Lod } from '../EveLODHelper.js';
 
 let _initProto, _initClass, _init_reflectionMode, _init_extra_reflectionMode, _init_effectChildren, _init_extra_effectChildren, _init_children, _init_extra_children, _init_name, _init_extra_name, _init_mute, _init_extra_mute, _init_inheritProperties, _init_extra_inheritProperties, _init_customMasks, _init_extra_customMasks, _init_overlayEffects, _init_extra_overlayEffects, _init_positionDelta, _init_extra_positionDelta, _init_lodLevel, _init_extra_lodLevel, _init_curveSets, _init_extra_curveSets, _init_isPickable, _init_extra_isPickable, _init_estimatedPixelDiameter, _init_extra_estimatedPixelDiameter, _init_estimatedPixelDiameterWithChildren, _init_extra_estimatedPixelDiameterWithChildren, _init_generatedShapeEllipsoidCenter, _init_extra_generatedShapeEllipsoidCenter, _init_generatedShapeEllipsoidRadius, _init_extra_generatedShapeEllipsoidRadius, _init_animationUpdater, _init_extra_animationUpdater, _init_dna, _init_extra_dna, _init_castShadow, _init_extra_castShadow, _init_isAnimated, _init_extra_isAnimated, _init_dynamicBoundingSphereEnabled, _init_extra_dynamicBoundingSphereEnabled, _init_attachments, _init_extra_attachments, _init_decals, _init_extra_decals, _init_lights, _init_extra_lights, _init_externalParameters, _init_extra_externalParameters, _init_controllers, _init_extra_controllers, _init_locators, _init_extra_locators, _init_mesh, _init_extra_mesh, _init_impactOverlay, _init_extra_impactOverlay, _init_clipSphereCenter, _init_extra_clipSphereCenter, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2, _init_observers, _init_extra_observers, _init_worldPosition, _init_extra_worldPosition, _init_rotationCurve, _init_extra_rotationCurve, _init_worldRotation, _init_extra_worldRotation, _init_modelScale, _init_extra_modelScale, _init_locatorSets, _init_extra_locatorSets, _init_activationStrength, _init_extra_activationStrength, _init_albedoColor, _init_extra_albedoColor, _init_display, _init_extra_display, _init_update, _init_extra_update, _init_secondaryLightingSphereRadius, _init_extra_secondaryLightingSphereRadius, _init_boundingSphereCenter, _init_extra_boundingSphereCenter, _init_dirtLevel, _init_extra_dirtLevel, _init_lastDamageLocatorHit, _init_extra_lastDamageLocatorHit, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_modelWorldPosition, _init_extra_modelWorldPosition, _init_modelTranslationCurve, _init_extra_modelTranslationCurve, _init_modelRotationCurve, _init_extra_modelRotationCurve, _init_shapeEllipsoidCenter, _init_extra_shapeEllipsoidCenter, _init_shapeEllipsoidRadius, _init_extra_shapeEllipsoidRadius, _init_translationCurve, _init_extra_translationCurve, _init_worldTransform, _init_extra_worldTransform, _init_inverseWorldTransform, _init_extra_inverseWorldTransform, _init_lastWorldTransform, _init_extra_lastWorldTransform, _init_worldVelocity, _init_extra_worldVelocity, _init_audioGeometry, _init_extra_audioGeometry, _init_isVisible, _init_extra_isVisible;
 let _EveSpaceObject;
@@ -189,6 +189,10 @@ new class extends _identity {
     isVisible = (_init_extra_audioGeometry(this), _init_isVisible(this, false));
     #controllerVariables = (_init_extra_isVisible(this), new Map([["DirtLevel", 0], ["ActivationStrength", 1], ["ShieldDamage", 1], ["ArmorDamage", 1], ["HullDamage", 1], ["ClipSphereFactor", 0], ["ClipSphereFactor2", 0]]));
     #lastUpdateTransformTime = null;
+
+    // Carbon m_lastCurveUpdateTime: stamped by the sync-side LOD gate; the async
+    // side updates curve sets only when it matches the frame time.
+    #lastCurveUpdateTime = 0;
     get meshLod() {
       return this.mesh;
     }
@@ -331,6 +335,18 @@ new class extends _identity {
       for (const observer of this.observers) {
         observer?.Update?.(observerTransform);
       }
+
+      // LOD-gated curve/overlay stamp (Carbon EveSpaceObject2::UpdateSyncronous:
+      // ShouldUpdate(m_lodLevelWithChildren, time - m_lastCurveUpdateTime) -
+      // adapted to lodLevel, m_lodLevelWithChildren is unported). Overlay effects
+      // receive the context time as BOTH clocks, as Carbon does; the async pass
+      // updates curve sets only on frames stamped here.
+      if (EveLODHelper.ShouldUpdate(this.lodLevel, time - this.#lastCurveUpdateTime)) {
+        this.#lastCurveUpdateTime = time;
+        for (const overlay of this.overlayEffects) {
+          overlay?.Update?.(time, time);
+        }
+      }
       if (this.effectChildren.length) {
         const params = new _EveChildUpdateParams();
         params.spaceObjectParent = this;
@@ -353,6 +369,17 @@ new class extends _identity {
       const frequency = this.isVisible && threshold > 0 ? Math.min(1, this.estimatedPixelDiameter / threshold) : 0;
       for (const controller of this.controllers) {
         controller?.Update?.(frequency);
+      }
+
+      // Object-level curve sets update only on frames the sync-side LOD gate
+      // stamped, receiving the context time as BOTH realTime and simTime
+      // (Carbon EveSpaceObject2::UpdateAsyncronous: if (m_lastCurveUpdateTime ==
+      // time) (*it)->Update(time, time)).
+      const time = _EveSpaceObject.#GetContextValue(updateContext, "GetTime", "currentTime", "time");
+      if (this.#lastCurveUpdateTime === time) {
+        for (const curveSet of this.curveSets) {
+          curveSet?.Update?.(time, time);
+        }
       }
       for (const child of this.children) {
         child?.Update?.(updateContext);

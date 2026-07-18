@@ -48,6 +48,7 @@ export class EvePlaneLight extends CjsModel
   @type.mat4
   boneMatrix = mat4.create();
 
+  @type.string
   lightProfilePath = "";
 
   static FromSOF(value)
