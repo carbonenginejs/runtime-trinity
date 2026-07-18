@@ -304,7 +304,10 @@ new class extends _identity {
     } else if (_Tr2BindingPoint.#hasFunction(target, "OnValueChanged")) {
       target.OnValueChanged(attribute, value, source);
     } else if (_Tr2BindingPoint.#hasFunction(target, "OnModified")) {
-      target.OnModified(attribute, value, source);
+      target.OnModified({
+        property: attribute,
+        source
+      });
     } else if (_Tr2BindingPoint.#isObjectRecord(target._dirty)) {
       target._dirty[attribute] = true;
     }

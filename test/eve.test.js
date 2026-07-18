@@ -1378,13 +1378,11 @@ test("EveSphereVolume follows Carbon intensity, bounds, and change constraints",
 
   let changes = 0;
   const id = volume.RegisterForChanges(() => changes++);
-  volume.innerRadius = 5;
-  volume.OnModified("innerRadius");
+  volume.SetValues({ innerRadius: 5 });
   assertEquals(volume.radius, 5);
   assertEquals(changes, 1);
   volume.UnregisterForChanges(id);
-  volume.radius = -2;
-  volume.OnModified("radius");
+  volume.SetValues({ radius: -2 });
   assertEquals(volume.radius, 0);
   assertEquals(volume.innerRadius, 0);
   assertEquals(changes, 1);
@@ -1484,9 +1482,7 @@ test("EveDistanceField follows Carbon static and dynamic CPU coverage", () =>
   assertEquals(dynamic.distance, 10);
   dynamic.Update({ currentTime: 2, lastTime: 1, deltaT: 1, originShift: vec3.fromValues(1, 0, 0) });
   assertVec3(dynamic.midpoint, [1, 0, 0]);
-  dynamic.minDistance = 7;
-  dynamic.maxDistance = 80;
-  dynamic.OnModified("minDistance");
+  dynamic.SetValues({ minDistance: 7, maxDistance: 80 });
   dynamic.Update({ currentTime: 3, lastTime: 2, deltaT: 0, originShift: vec3.create() });
   const dynamicKeys = dynamic.curveSet.curves[0].GetKeys();
   assertEquals(dynamicKeys[0].time, 7);

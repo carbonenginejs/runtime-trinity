@@ -1,7 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveSphereVolume_Blue.cpp
-import { hasModifiedProperty } from "../../utilities/hasModifiedProperty.js";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
@@ -18,11 +17,13 @@ export class EveSphereVolume extends CjsModel
   @type.vec3
   position = vec3.create();
 
+  @io.flag("radius")
   @io.notify
   @io.persist
   @type.float32
   radius = 1;
 
+  @io.flag("innerRadius")
   @io.notify
   @io.persist
   @type.float32
@@ -83,15 +84,14 @@ export class EveSphereVolume extends CjsModel
 
   @carbon.method
   @impl.adapted
-  OnModified(value = null)
+  OnModified(_options = {})
   {
-    const innerChanged = hasModifiedProperty(value, "innerRadius");
-    const outerChanged = hasModifiedProperty(value, "radius");
-    if (innerChanged && !outerChanged && this.innerRadius > this.radius)
+    const flags = this.__state.flags;
+    if (flags.delete("innerRadius") && this.innerRadius > this.radius)
     {
       this.radius = this.innerRadius;
     }
-    if (outerChanged || !value)
+    if (flags.delete("radius"))
     {
       this.radius = Math.max(0, this.radius);
       if (this.innerRadius > this.radius)

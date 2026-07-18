@@ -37,7 +37,7 @@ class Tr2GrannyTrack extends CjsModel {
   /**
    * Relinks the resource when authored fields change.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.SetGrannyResource();
     return true;
   }

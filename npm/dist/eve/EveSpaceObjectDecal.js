@@ -1,5 +1,4 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
@@ -48,10 +47,8 @@ new class extends _identity {
     Initialize() {
       return this.#updateDecalMatrix();
     }
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "position") || hasModifiedProperty(properties, "rotation") || hasModifiedProperty(properties, "scaling")) {
-        this.#updateDecalMatrix();
-      }
+    OnModified(_options = {}) {
+      this.#updateDecalMatrix();
       return true;
     }
     CopyFrom(source) {

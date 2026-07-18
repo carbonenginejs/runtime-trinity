@@ -1,5 +1,4 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../../../utilities/hasModifiedProperty.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 
@@ -27,10 +26,8 @@ class EveVirtualCameraBehaviourFloatBase extends CjsModel {
   SetName(name) {
     this.name = String(name);
   }
-  OnModified(value = null) {
-    if (!value || hasModifiedProperty(value, "name")) {
-      this.SetName(this.name);
-    }
+  OnModified(_options = {}) {
+    this.SetName(this.name);
     return true;
   }
   IsActive() {

@@ -115,7 +115,7 @@ export class Tr2ScalarExprKey extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.ReEvaluate(null);
     return true;

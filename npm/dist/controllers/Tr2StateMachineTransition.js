@@ -50,7 +50,7 @@ new class extends _identity {
     /**
      * Refreshes cached destination/expression state after modification.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       this.#destination = this.#resolveDestination();
       this.#program = null;
       this.#programSource = null;

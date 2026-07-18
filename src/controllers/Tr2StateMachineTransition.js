@@ -67,7 +67,7 @@ export class Tr2StateMachineTransition extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#destination = this.#resolveDestination();
     this.#program = null;

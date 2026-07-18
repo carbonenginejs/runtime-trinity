@@ -57,7 +57,7 @@ export class Tr2RuntimeTextureParameter extends CjsShaderParameter
   }
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#invalidateResourceSets();
     return true;

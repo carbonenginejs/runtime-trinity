@@ -44,7 +44,7 @@ export class TriFloatArrayParameter extends CjsShaderParameter
   }
   @carbon.method
   @impl.adapted
-  OnModified(_value)
+  OnModified(_options = {})
   {
     this.RebuildEffectHandles(this.#cachedEffect);
     return true;

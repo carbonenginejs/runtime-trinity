@@ -107,7 +107,7 @@ export class Tr2ActionPython extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     const controller = this.#controller;
     const wasPlaying = this.#isPlaying;

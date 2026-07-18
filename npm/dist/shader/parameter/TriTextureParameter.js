@@ -1,5 +1,4 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import '@carbonenginejs/core-types/model';
 import { CjsShaderParameter } from './CjsShaderParameter.js';
@@ -14,7 +13,7 @@ class TriTextureParameter extends CjsShaderParameter {
     } = _applyDecs2311(this, [type.define({
       className: "TriTextureParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, type, type.path], 16, "resourcePath"], [[io, io.persist, type, type.uint32], 16, "uavMipLevel"], [[io, io.read, type, type.float32], 16, "positionScale"], [[io, io.read, void 0, type.objectRef("ITr2TextureProvider")], 16, "resource"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.float32], 16, "uvDensityScale0"], [[io, io.read, type, type.float32], 16, "uvDensityScale1"], [[io, io.read, type, type.float32], 16, "uvDensityScale2"], [[io, io.read, type, type.float32], 16, "uvDensityScale3"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetResourcePath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetResourcePath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetResource"], [[carbon, carbon.method, impl, impl.implemented], 18, "SupportsDirtyNotification"], [[carbon, carbon.method, impl, impl.adapted], 18, "EnableTextureLoding"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisableTextureLoding"], [[carbon, carbon.method, impl, impl.adapted], 18, "UsedWithScreenSize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnTextureChanged"]], 0, void 0, CjsShaderParameter));
+    })], [[[void 0, io.flag("resource"), io, io.notify, io, io.persist, type, type.path], 16, "resourcePath"], [[io, io.persist, type, type.uint32], 16, "uavMipLevel"], [[io, io.read, type, type.float32], 16, "positionScale"], [[io, io.read, void 0, type.objectRef("ITr2TextureProvider")], 16, "resource"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[void 0, io.flag("effectHandles"), io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.float32], 16, "uvDensityScale0"], [[io, io.read, type, type.float32], 16, "uvDensityScale1"], [[io, io.read, type, type.float32], 16, "uvDensityScale2"], [[io, io.read, type, type.float32], 16, "uvDensityScale3"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetResourcePath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetResourcePath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetResource"], [[carbon, carbon.method, impl, impl.implemented], 18, "SupportsDirtyNotification"], [[carbon, carbon.method, impl, impl.adapted], 18, "EnableTextureLoding"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisableTextureLoding"], [[carbon, carbon.method, impl, impl.adapted], 18, "UsedWithScreenSize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnTextureChanged"]], 0, void 0, CjsShaderParameter));
   }
   resourcePath = (_initProto(this), _init_resourcePath(this, ""));
   uavMipLevel = (_init_extra_resourcePath(this), _init_uavMipLevel(this, 0));
@@ -108,13 +107,14 @@ class TriTextureParameter extends CjsShaderParameter {
     this.#requestResourceResolution(requestedLod);
     return requestedLod;
   }
-  OnModified(properties = null) {
-    if (hasModifiedProperty(properties, "resourcePath")) {
+  OnModified(_options = {}) {
+    const flags = this.__state.flags;
+    if (flags.delete("resource")) {
       this.resource = null;
       this.#lowResResource = null;
       this.Initialize();
     }
-    if (hasModifiedProperty(properties, "name")) {
+    if (flags.delete("effectHandles")) {
       this.RebuildEffectHandles(this.#cachedEffect);
     }
     return true;

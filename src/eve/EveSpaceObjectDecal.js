@@ -1,7 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveSpaceObjectDecal_Blue.cpp
-import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
@@ -87,16 +86,9 @@ export class EveSpaceObjectDecal extends CjsModel
 
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (
-      hasModifiedProperty(properties, "position") ||
-      hasModifiedProperty(properties, "rotation") ||
-      hasModifiedProperty(properties, "scaling")
-    )
-    {
-      this.#updateDecalMatrix();
-    }
+    this.#updateDecalMatrix();
     return true;
   }
 

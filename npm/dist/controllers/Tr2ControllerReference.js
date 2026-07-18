@@ -1,5 +1,4 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { UnlinkReason } from './enums.js';
@@ -40,6 +39,7 @@ new class extends _identity {
     controller = (_initProto(this), _init_controller(this, null));
     path = (_init_extra_controller(this), _init_path(this, ""));
     #owner = (_init_extra_path(this), null);
+    #resolvedPath = "";
 
     /**
      * Initializes the referenced controller when it is already assigned.
@@ -50,10 +50,12 @@ new class extends _identity {
     }
 
     /**
-     * Handles path changes. JS runtime does not own resource loading yet.
+     * Handles path changes. Broad-safe: compares the authored path with the
+     * path the current controller was resolved from, so unrelated settles keep
+     * a resolved or directly attached controller.
      */
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "path")) {
+    OnModified(_options = {}) {
+      if (this.path !== this.#resolvedPath) {
         this.controller = null;
         this.ResolveController();
       }
@@ -128,6 +130,7 @@ new class extends _identity {
       return this.#owner;
     }
     ResolveController() {
+      this.#resolvedPath = this.path;
       if (!this.path) {
         this.controller = null;
         return;

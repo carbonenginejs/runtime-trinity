@@ -42,7 +42,7 @@ new class extends _identity {
     /**
      * Mirrors notified value changes to the bound destination and dirty mask.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       this.#writeDestination();
       this.#markDirty();
       return true;

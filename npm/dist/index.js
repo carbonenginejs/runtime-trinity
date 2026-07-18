@@ -268,7 +268,6 @@ export { Tr2EffectStateManager } from './shader/support/Tr2EffectStateManager.js
 export { Tr2ShaderBuffer } from './shader/support/Tr2ShaderBuffer.js';
 export { PROJECTION_TYPE, RenderingMode } from './generated/shader/enums.js';
 export { Range } from './utilities/Range.js';
-export { hasModifiedProperty } from './utilities/hasModifiedProperty.js';
 export { Tr2ExpressionTermInfo } from './trinityCore/Tr2ExpressionTermInfo.js';
 export { Tr2DepthStencil } from './trinityCore/Tr2DepthStencil.js';
 export { Tr2GpuBuffer } from './trinityCore/Tr2GpuBuffer.js';

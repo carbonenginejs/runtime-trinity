@@ -118,7 +118,7 @@ new class extends _identity {
     /**
      * Relinks after authored destination changes.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       if (this.#controller && !this.delayBinding) {
         this.LinkDestination(this.#controller);
       }

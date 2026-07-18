@@ -77,7 +77,7 @@ class Tr2ActionSetValue extends CjsModel {
   /**
    * Relinks or recompiles when authored fields change.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.#expression.program = null;
     if (this.#controller && !this.HasDelayedBinding()) {
       this.LinkDestination(this.#controller);

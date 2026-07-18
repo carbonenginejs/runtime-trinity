@@ -4,7 +4,6 @@
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 
 
 @type.define({ className: "Tr2RuntimeInstanceData", family: "trinityCore" })
@@ -18,11 +17,13 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @type.objectRef("Tr2ParticleSystem")
   particleSystem = null;
 
+  @io.flag("cpuData")
   @io.notify
   @io.persist
   @type.array("unknown")
   layout = [];
 
+  @io.flag("cpuData")
   @io.notify
   @io.persist
   @type.array("unknown")
@@ -75,12 +76,9 @@ export class Tr2RuntimeInstanceData extends CjsModel
 
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (
-      hasModifiedProperty(properties, "layout") ||
-      hasModifiedProperty(properties, "rows")
-    )
+    if (this.__state.flags.delete("cpuData"))
     {
       this.#rebuildCpuData();
     }

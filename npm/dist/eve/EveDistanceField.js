@@ -1,5 +1,4 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
@@ -18,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveDistanceField",
         family: "eve"
-      })], [[[io, io.read, type, type.vec3], 16, "dimensions"], [[io, io.read, type, type.vec3], 16, "midpoint"], [[io, io.readwrite, type, type.float32], 16, "distanceThreshold"], [[io, io.readwrite, type, type.float32], 16, "maxXZRatio"], [[io, io.readwrite, type, type.float32], 16, "minYRatio"], [[io, io.readwrite, type, type.float32], 16, "timeAdjustmentSecondsIn"], [[io, io.readwrite, type, type.float32], 16, "timeAdjustmentSecondsOut"], [[io, io.notify, io, io.read, void 0, type.list("ITriVectorFunction")], 16, "objects"], [[io, io.readwrite, void 0, type.objectRef("TriView")], 16, "cameraView"], [[io, io.readwrite, void 0, type.objectRef("TriCurveSet")], 16, "curveSet"], [[io, io.readwrite, type, type.float32], 16, "distance"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "minDistance"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "maxDistance"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetupStaticDistanceField"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetupDynamicDistanceField"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
+      })], [[[io, io.read, type, type.vec3], 16, "dimensions"], [[io, io.read, type, type.vec3], 16, "midpoint"], [[io, io.readwrite, type, type.float32], 16, "distanceThreshold"], [[io, io.readwrite, type, type.float32], 16, "maxXZRatio"], [[io, io.readwrite, type, type.float32], 16, "minYRatio"], [[io, io.readwrite, type, type.float32], 16, "timeAdjustmentSecondsIn"], [[io, io.readwrite, type, type.float32], 16, "timeAdjustmentSecondsOut"], [[io, io.notify, io, io.read, void 0, type.list("ITriVectorFunction")], 16, "objects"], [[io, io.readwrite, void 0, type.objectRef("TriView")], 16, "cameraView"], [[io, io.readwrite, void 0, type.objectRef("TriCurveSet")], 16, "curveSet"], [[io, io.readwrite, type, type.float32], 16, "distance"], [[void 0, io.flag("distanceCurve"), io, io.notify, io, io.readwrite, type, type.float32], 16, "minDistance"], [[void 0, io.flag("distanceCurve"), io, io.notify, io, io.readwrite, type, type.float32], 16, "maxDistance"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetupStaticDistanceField"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetupDynamicDistanceField"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
     }
     dimensions = (_initProto(this), _init_dimensions(this, vec3.create()));
     midpoint = (_init_extra_dimensions(this), _init_midpoint(this, vec3.create()));
@@ -87,8 +86,8 @@ new class extends _identity {
         }
       }
     }
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "minDistance") || hasModifiedProperty(properties, "maxDistance")) {
+    OnModified(_options = {}) {
+      if (this.__state.flags.delete("distanceCurve")) {
         this.#updateDistanceCurve = true;
       }
       return true;

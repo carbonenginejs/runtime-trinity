@@ -25,7 +25,7 @@ class TriFloatArrayParameter extends CjsShaderParameter {
   Initialize() {
     return true;
   }
-  OnModified(_value) {
+  OnModified(_options = {}) {
     this.RebuildEffectHandles(this.#cachedEffect);
     return true;
   }

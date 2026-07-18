@@ -58,7 +58,7 @@ export class Tr2ControllerFloatVariable extends CjsModel
    */
   @carbon.method
   @impl.implemented
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#writeDestination();
     this.#markDirty();

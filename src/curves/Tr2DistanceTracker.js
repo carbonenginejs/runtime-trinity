@@ -89,9 +89,9 @@ export class Tr2DistanceTracker extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_properties = null, options = {})
+  OnModified(options = {})
   {
-    const time = typeof options === "number" ? options : Number(options.time ?? 0);
+    const time = Number(options?.time ?? 0);
     this.UpdateValue(time);
     return true;
   }

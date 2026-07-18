@@ -54,8 +54,8 @@ class Tr2DistanceTracker extends CjsModel {
   /**
    * Refreshes the value after a notified source/target modification.
    */
-  OnModified(_properties = null, options = {}) {
-    const time = typeof options === "number" ? options : Number(options.time ?? 0);
+  OnModified(options = {}) {
+    const time = Number(options?.time ?? 0);
     this.UpdateValue(time);
     return true;
   }

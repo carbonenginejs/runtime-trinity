@@ -51,7 +51,7 @@ class Tr2ScalarExprKey extends CjsModel {
   /**
    * Re-evaluates expression-derived key values after modification.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.ReEvaluate(null);
     return true;
   }

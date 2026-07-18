@@ -395,7 +395,7 @@ export class Tr2BindingPoint extends CjsModel
     }
     else if (Tr2BindingPoint.#hasFunction(target, "OnModified"))
     {
-      target.OnModified(attribute, value, source);
+      target.OnModified({ property: attribute, source });
     }
     else if (Tr2BindingPoint.#isObjectRecord(target._dirty))
     {

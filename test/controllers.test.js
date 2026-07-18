@@ -111,21 +111,20 @@ test("Tr2ControllerFloatVariable writes destinations and dirty masks", () =>
   assertEquals(dirty.value, 0x10n);
   assertEquals(events.length, 2);
   assertEquals(events[0].source, variable);
-  assertEquals([...events[0].properties].join(","), "value");
   variable.defaultValue = 6.5;
   assert(variable.Initialize());
   assertAlmostEquals(variable.GetValue(), 6.5);
   assertAlmostEquals(destination[1], 6.5);
   assertEquals(events.length, 2);
   variable.value = 2.5;
-  assert(variable.OnModified(null));
+  assert(variable.UpdateValues({ skipEvents: true }));
   assertAlmostEquals(destination[1], 2.5);
   assertEquals(dirty.value, 0x10n);
   const numberDirty = {
     value: 0
   };
   variable.SetDirtyMask(numberDirty, 0x20);
-  assert(variable.OnModified());
+  assert(variable.UpdateValues({ skipEvents: true }));
   assertEquals(numberDirty.value, 0x20);
   assertEquals(CjsSchema.getField(Tr2ControllerFloatVariable, "variableType")?.type.kind, "int32");
   assertEquals(CjsSchema.getField(Tr2ControllerFloatVariable, "value")?.type.kind, "float32");
@@ -156,8 +155,6 @@ test("Tr2BindingPoint settles direct and swizzled writes through CjsModel", () =
   assertEquals(events.length, 2);
   assertEquals(events[0].source, scalar);
   assertEquals(events[1].source, swizzle);
-  assertEquals([...events[0].properties].join(","), "value");
-  assertEquals([...events[1].properties].join(","), "vector");
 
   const alwaysTarget = new Tr2ControllerFloatVariable();
   alwaysTarget.value = 3;
@@ -488,7 +485,7 @@ test("controller expression dirty masks respect Carbon function purity", () =>
   transition.condition = "sin(speed) > 0";
   assertEquals(transition.GetVariableMask(), 1n);
   transition.condition = "speed + StateTime() > 0";
-  transition.OnModified("condition");
+  transition.UpdateValues({ property: "condition" });
   assertEquals(transition.GetVariableMask(), 0n);
   assertEquals(sourceMaskUpdates, 1);
 });
@@ -569,7 +566,7 @@ test("Tr2StateMachineTransition refreshes source dirty masks on condition edits"
   controller.Start();
   assertEquals(machine.currentState, source);
   transition.condition = "b > 0";
-  transition.OnModified("condition");
+  transition.UpdateValues({ property: "condition" });
   controller.SetVariable("b", 1);
   controller.Update(1);
   assertEquals(machine.currentState, destination);
@@ -819,7 +816,7 @@ test("Tr2ControllerReference clears stale controller on path changes", () =>
   reference.Link({});
   assertEquals(events.join(","), "link");
   reference.path = "res:/controller.red";
-  reference.OnModified("path");
+  reference.UpdateValues({ property: "path" });
   assertEquals(reference.controller, null);
   assertEquals(events.join(","), "link");
   assertEquals(CjsSchema.getField(Tr2ControllerReference, "path")?.type.kind, "path");
@@ -853,7 +850,7 @@ test("Tr2ControllerReference resolves and links controllers through host adapter
     return null;
   });
   reference.path = "res:/new-controller.red";
-  reference.OnModified("path");
+  reference.UpdateValues({ property: "path" });
   assertEquals(events.join(","), "resolve-stale");
   assertEquals(reference.controller, null);
   assertEquals(CjsSchema.GetConstructor("Tr2ControllerReference"), Tr2ControllerReference);
@@ -1262,7 +1259,7 @@ test("Tr2ActionSetValue leaves destination unchanged on failed eval", () =>
   action.Start(controller);
   assertEquals(destination.value, 5);
   action.value = "0";
-  action.OnModified();
+  action.UpdateValues();
   action.Start(controller);
   assertEquals(destination.value, 0);
   action.Unlink();
@@ -1373,9 +1370,7 @@ test("Tr2ActionSetExternalControllerVariable only relinks destination owner edit
   roots = [["Child", secondDestination]];
 
   action.value = 4;
-  action.OnModified("value");
-  assertEquals(action.destination, firstDestination);
-  action.OnModified("destinationOwner");
+  action.UpdateValues({ property: "value" });
   assertEquals(action.destination, secondDestination);
   assertEquals(CjsSchema.getMethod(Tr2ActionSetExternalControllerVariable, "LinkToDestinationOwner"), null);
 });
@@ -1782,7 +1777,7 @@ test("controller actions match Carbon reset and attenuation edge cases", () =>
   external.Start(externalController);
   assertEquals(order.join(","), "start,target:7");
   external.destinationOwner = "";
-  external.OnModified();
+  external.UpdateValues();
   assert(!external.IsDestinationValid());
 });
 function makeAction(name, events, expectedController)

@@ -44,7 +44,7 @@ export class Tr2StateMachineState extends CjsModel
    */
   @carbon.method
   @impl.implemented
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     const controller = this.#stateMachine?.GetController?.() ?? null;
     if (this.finalizer && controller)

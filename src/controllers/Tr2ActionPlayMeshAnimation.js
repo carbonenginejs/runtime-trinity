@@ -182,7 +182,7 @@ export class Tr2ActionPlayMeshAnimation extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     if (this.#controller && !this.delayBinding)
     {

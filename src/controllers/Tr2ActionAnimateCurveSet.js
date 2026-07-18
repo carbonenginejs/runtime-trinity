@@ -111,7 +111,7 @@ export class Tr2ActionAnimateCurveSet extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#runtime.program = null;
     return true;

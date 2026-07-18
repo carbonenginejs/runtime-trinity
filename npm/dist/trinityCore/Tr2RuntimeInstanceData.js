@@ -2,7 +2,6 @@ import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virt
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_particleSystem, _init_extra_particleSystem, _init_layout, _init_extra_layout, _init_rows, _init_extra_rows, _init_explicitBoundingBox, _init_extra_explicitBoundingBox, _init_count, _init_extra_count, _init_aabbMin, _init_extra_aabbMin, _init_aabbMax, _init_extra_aabbMax;
 let _Tr2RuntimeInstanceDa;
@@ -15,7 +14,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2RuntimeInstanceData",
         family: "trinityCore"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2ParticleSystem")], 16, "particleSystem"], [[io, io.notify, io, io.persist, void 0, type.array("unknown")], 16, "layout"], [[io, io.notify, io, io.persist, void 0, type.array("unknown")], 16, "rows"], [[io, io.persist, type, type.boolean], 16, "explicitBoundingBox"], [[io, io.read, type, type.uint32], 16, "count"], [[io, io.persist, type, type.vec3], 16, "aabbMin"], [[io, io.persist, type, type.vec3], 16, "aabbMax"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetElementLayout"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetItem"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetItem"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetItemElement"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetItemElement"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateData"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceBufferBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetStride"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLayout"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetData"], [[carbon, carbon.method, impl, impl.adapted], 18, "DestroyData"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.objectRef("Tr2ParticleSystem")], 16, "particleSystem"], [[void 0, io.flag("cpuData"), io, io.notify, io, io.persist, void 0, type.array("unknown")], 16, "layout"], [[void 0, io.flag("cpuData"), io, io.notify, io, io.persist, void 0, type.array("unknown")], 16, "rows"], [[io, io.persist, type, type.boolean], 16, "explicitBoundingBox"], [[io, io.read, type, type.uint32], 16, "count"], [[io, io.persist, type, type.vec3], 16, "aabbMin"], [[io, io.persist, type, type.vec3], 16, "aabbMax"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetElementLayout"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetItem"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetItem"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetItemElement"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetItemElement"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateData"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceBufferBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetStride"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLayout"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetData"], [[carbon, carbon.method, impl, impl.adapted], 18, "DestroyData"]], 0, void 0, CjsModel));
     }
     name = (_initProto(this), _init_name(this, ""));
     particleSystem = (_init_extra_name(this), _init_particleSystem(this, null));
@@ -41,8 +40,8 @@ new class extends _identity {
       this.UpdateData();
       return true;
     }
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "layout") || hasModifiedProperty(properties, "rows")) {
+    OnModified(_options = {}) {
+      if (this.__state.flags.delete("cpuData")) {
         this.#rebuildCpuData();
       }
       return true;

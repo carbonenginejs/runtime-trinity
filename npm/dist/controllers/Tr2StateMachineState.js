@@ -30,7 +30,7 @@ new class extends _identity {
     /**
      * Relinks the finalizer after it is modified.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       const controller = this.#stateMachine?.GetController?.() ?? null;
       if (this.finalizer && controller) {
         this.finalizer.Link?.(controller);

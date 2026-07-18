@@ -56,7 +56,7 @@ new class extends _identity {
     /**
      * Relinks the start state after it is modified.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       if (this.startState && this.#controller) {
         this.startState.Link?.(this);
       }

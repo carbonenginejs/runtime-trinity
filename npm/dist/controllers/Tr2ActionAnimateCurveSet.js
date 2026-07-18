@@ -85,7 +85,7 @@ class Tr2ActionAnimateCurveSet extends CjsModel {
   /**
    * Recompiles when the expression changes.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.#runtime.program = null;
     return true;
   }

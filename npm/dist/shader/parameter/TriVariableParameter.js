@@ -1,5 +1,4 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import '@carbonenginejs/core-types/model';
 import { CjsShaderParameter } from './CjsShaderParameter.js';
@@ -16,7 +15,7 @@ class TriVariableParameter extends CjsShaderParameter {
     } = _applyDecs2311(this, [type.define({
       className: "TriVariableParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "variableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVariableType"]], 0, void 0, CjsShaderParameter));
+    })], [[[void 0, io.flag("effectHandles"), io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[void 0, io.flag("variable"), io, io.notify, io, io.persist, type, type.string], 16, "variableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVariableType"]], 0, void 0, CjsShaderParameter));
   }
   /** m_name (BlueSharedString) [READWRITE, NOTIFY, PERSIST] */
   name = (_initProto(this), _init_name(this, ""));
@@ -44,11 +43,12 @@ class TriVariableParameter extends CjsShaderParameter {
     this.variable = this.variableStore?.GetVariable?.(this.variableName) ?? this.variableStore?.getVariable?.(this.variableName) ?? this.variableStore?.[this.variableName] ?? this.variable;
     return true;
   }
-  OnModified(properties = null) {
-    if (hasModifiedProperty(properties, "variableName")) {
+  OnModified(_options = {}) {
+    const flags = this.__state.flags;
+    if (flags.delete("variable")) {
       this.Initialize(this.variableStore);
     }
-    if (hasModifiedProperty(properties, "name")) {
+    if (flags.delete("effectHandles")) {
       this.RebuildEffectHandles(this.cachedEffect);
     }
     return true;

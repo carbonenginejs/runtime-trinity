@@ -421,7 +421,7 @@ test("promoted variable, transform, and shader buffer classes expose graph behav
     modifiedOrder.push("name");
     return rebuildEffectHandles(...args);
   };
-  variable.OnModified(["name", "variableName"]);
+  variable.UpdateValues({ properties: ["name", "variableName"], skipEvents: true });
   assertEquals(modifiedOrder.join(","), "variableName,name");
   const shader = new Tr2Shader();
   shader.effect.techniques = [Object.assign(new Tr2EffectTechnique(), {
@@ -620,7 +620,6 @@ test("TriTextureParameter stays graph-owned and backend-free", () =>
   assertEquals(parameter.GetResourcePath(), "res:/texture/diffuse.dds");
   assert(parameter.SupportsDirtyNotification());
   assertEquals(modified.length, 1);
-  assertEquals([...modified[0].properties].join(","), "resourcePath");
   assertEquals(modified[0].source, parameter);
   const resourceLods = [];
   parameter.SetResource({

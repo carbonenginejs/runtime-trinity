@@ -38,7 +38,7 @@ export class Tr2TextureAnimationParameter extends CjsShaderParameter
 
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     for (const material of this.#materials)
     {

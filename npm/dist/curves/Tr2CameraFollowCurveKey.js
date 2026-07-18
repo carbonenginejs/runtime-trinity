@@ -47,7 +47,7 @@ new class extends _identity {
     /**
      * Recalculates derived values after modification.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       this.fovMultiplication = Math.min(0.999, Math.max(0.001, this.fovMultiplication));
       this.CalculateBoxPosition();
       return true;

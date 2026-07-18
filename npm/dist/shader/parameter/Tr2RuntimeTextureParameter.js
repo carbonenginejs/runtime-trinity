@@ -40,7 +40,7 @@ class Tr2RuntimeTextureParameter extends CjsShaderParameter {
   GetParameterName() {
     return this.name;
   }
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.#invalidateResourceSets();
     return true;
   }

@@ -29,7 +29,7 @@ class Tr2TextureAnimationParameter extends CjsShaderParameter {
   GetParameterName() {
     return this.name;
   }
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     for (const material of this.#materials) {
       CjsShaderParameter.markMaterialResourcesDirty(material);
     }

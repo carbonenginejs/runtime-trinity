@@ -147,7 +147,7 @@ export class Tr2ActionAnimateValue extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#runtime.program = null;
     if (this.#runtime.controller && !this.HasDelayedBinding())

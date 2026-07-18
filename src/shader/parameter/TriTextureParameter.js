@@ -1,6 +1,5 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriTextureParameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriTextureParameter.cpp
-import { hasModifiedProperty } from "../../utilities/hasModifiedProperty.js";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { CjsShaderParameter } from "./CjsShaderParameter.js";
@@ -12,6 +11,7 @@ import { CjsShaderParameter } from "./CjsShaderParameter.js";
 })
 export class TriTextureParameter extends CjsShaderParameter
 {
+  @io.flag("resource")
   @io.notify
   @io.persist
   @type.path
@@ -37,6 +37,7 @@ export class TriTextureParameter extends CjsShaderParameter
   @type.boolean
   usedByCurrentEffect = false;
 
+  @io.flag("effectHandles")
   @io.notify
   @io.persist
   @type.string
@@ -173,15 +174,16 @@ export class TriTextureParameter extends CjsShaderParameter
   }
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (hasModifiedProperty(properties, "resourcePath"))
+    const flags = this.__state.flags;
+    if (flags.delete("resource"))
     {
       this.resource = null;
       this.#lowResResource = null;
       this.Initialize();
     }
-    if (hasModifiedProperty(properties, "name"))
+    if (flags.delete("effectHandles"))
     {
       this.RebuildEffectHandles(this.#cachedEffect);
     }

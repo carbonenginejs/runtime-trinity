@@ -54,7 +54,7 @@ export class Tr2GrannyTrack extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.SetGrannyResource();
     return true;

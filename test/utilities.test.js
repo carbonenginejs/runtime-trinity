@@ -1,5 +1,5 @@
 import test from "node:test";
-import { hasModifiedProperty, Range } from "../npm/dist/index.js";
+import { Range } from "../npm/dist/index.js";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 
 
@@ -51,14 +51,4 @@ test("Range preserves Carbon slider and uniformity edge behavior", () =>
   assertEquals(range.GetMaxRangePoint(), 12);
   range.ToggleIsUniform();
   assertEquals(range.GetIsUniform(), false);
-});
-
-test("hasModifiedProperty matches scalar, iterable, and broad selections", () =>
-{
-  assertEquals(hasModifiedProperty("name", "name"), true);
-  assertEquals(hasModifiedProperty("name", "path"), false);
-  assertEquals(hasModifiedProperty(["name", "path"], "path"), true);
-  assertEquals(hasModifiedProperty(new Set(["name"]), "path"), false);
-  assertEquals(hasModifiedProperty(null, "anything"), true);
-  assertEquals(hasModifiedProperty(undefined, "anything"), true);
 });

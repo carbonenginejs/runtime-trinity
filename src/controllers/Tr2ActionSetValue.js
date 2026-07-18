@@ -110,7 +110,7 @@ export class Tr2ActionSetValue extends CjsModel
    */
   @carbon.method
   @impl.adapted
-  OnModified(_value = null)
+  OnModified(_options = {})
   {
     this.#expression.program = null;
     if (this.#controller && !this.HasDelayedBinding())

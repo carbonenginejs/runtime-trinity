@@ -101,7 +101,7 @@ class Tr2ActionAnimateValue extends CjsModel {
   /**
    * Handles authored field changes.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.#runtime.program = null;
     if (this.#runtime.controller && !this.HasDelayedBinding()) {
       this.LinkDestination(this.#runtime.controller);

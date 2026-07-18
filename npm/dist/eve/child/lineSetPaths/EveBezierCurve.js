@@ -1,5 +1,4 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../../../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { sph3 } from '@carbonenginejs/core-math/sph3';
@@ -50,16 +49,10 @@ new class extends _identity {
       this.#regeneratePoints = true;
       return true;
     }
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "completeness")) {
-        this.completeness = Math.min(2, Math.max(0, this.completeness));
-      }
-      if (hasModifiedProperty(properties, "segments")) {
-        this.segments = Math.min(128, Math.max(1, this.segments));
-      }
-      if (hasModifiedProperty(properties, "segmentOffset")) {
-        this.segmentOffset = Math.min(1, Math.max(0, this.segmentOffset));
-      }
+    OnModified(_options = {}) {
+      this.completeness = Math.min(2, Math.max(0, this.completeness));
+      this.segments = Math.min(128, Math.max(1, this.segments));
+      this.segmentOffset = Math.min(1, Math.max(0, this.segmentOffset));
       this.#regeneratePoints = true;
       return true;
     }

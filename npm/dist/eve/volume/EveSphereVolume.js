@@ -1,5 +1,4 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../../utilities/hasModifiedProperty.js';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
@@ -14,7 +13,7 @@ class EveSphereVolume extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveSphereVolume",
       family: "eve/volume"
-    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.notify, io, io.persist, type, type.float32], 16, "radius"], [[io, io.notify, io, io.persist, type, type.float32], 16, "innerRadius"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterForChanges"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnregisterForChanges"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[void 0, io.flag("radius"), io, io.notify, io, io.persist, type, type.float32], 16, "radius"], [[void 0, io.flag("innerRadius"), io, io.notify, io, io.persist, type, type.float32], 16, "innerRadius"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterForChanges"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnregisterForChanges"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
   }
   position = (_initProto(this), _init_position(this, vec3.create()));
   radius = (_init_extra_position(this), _init_radius(this, 1));
@@ -49,13 +48,12 @@ class EveSphereVolume extends CjsModel {
   UnregisterForChanges(callbackId) {
     this.#callbacks.delete(callbackId);
   }
-  OnModified(value = null) {
-    const innerChanged = hasModifiedProperty(value, "innerRadius");
-    const outerChanged = hasModifiedProperty(value, "radius");
-    if (innerChanged && !outerChanged && this.innerRadius > this.radius) {
+  OnModified(_options = {}) {
+    const flags = this.__state.flags;
+    if (flags.delete("innerRadius") && this.innerRadius > this.radius) {
       this.radius = this.innerRadius;
     }
-    if (outerChanged || !value) {
+    if (flags.delete("radius")) {
       this.radius = Math.max(0, this.radius);
       if (this.innerRadius > this.radius) {
         this.innerRadius = this.radius;

@@ -78,7 +78,7 @@ new class extends _identity {
     /**
      * Recreates the action instance when authoring fields change.
      */
-    OnModified(_value = null) {
+    OnModified(_options = {}) {
       const controller = this.#controller;
       const wasPlaying = this.#isPlaying;
       if (controller) {

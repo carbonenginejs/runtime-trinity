@@ -97,7 +97,7 @@ class Tr2ActionBindRTPC extends CjsModel {
   /**
    * Recompiles when authored fields change.
    */
-  OnModified(_value = null) {
+  OnModified(_options = {}) {
     this.#runtime.program = null;
     return true;
   }

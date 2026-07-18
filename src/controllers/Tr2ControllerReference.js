@@ -1,6 +1,5 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerReference.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerReference.cpp
-import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { UnlinkReason } from "./enums.js";
@@ -50,6 +49,8 @@ export class Tr2ControllerReference extends CjsModel
 
   #owner = null;
 
+  #resolvedPath = "";
+
   /**
    * Initializes the referenced controller when it is already assigned.
    */
@@ -62,13 +63,15 @@ export class Tr2ControllerReference extends CjsModel
   }
 
   /**
-   * Handles path changes. JS runtime does not own resource loading yet.
+   * Handles path changes. Broad-safe: compares the authored path with the
+   * path the current controller was resolved from, so unrelated settles keep
+   * a resolved or directly attached controller.
    */
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (hasModifiedProperty(properties, "path"))
+    if (this.path !== this.#resolvedPath)
     {
       this.controller = null;
       this.ResolveController();
@@ -173,6 +176,7 @@ export class Tr2ControllerReference extends CjsModel
   }
   ResolveController()
   {
+    this.#resolvedPath = this.path;
     if (!this.path)
     {
       this.controller = null;

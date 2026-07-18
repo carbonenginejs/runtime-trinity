@@ -78,8 +78,6 @@ test("leaf authored curve setters emit exact settled changes", () =>
 
   assertEquals(events.length, 4);
   assertEquals(events.every(event => event.source === curve), true);
-  assertEquals([...events[0].properties].join(","), "name");
-  assertEquals([...events[3].properties].sort().join(","), "extrapolationAfter,extrapolationBefore");
 
   const curveSet = new TriCurveSet();
   assertEquals(curveSet.SetName("movement"), true);
@@ -1073,7 +1071,7 @@ test("Tr2DistanceTracker measures projected and signed distances", () =>
   tracker.signedDistance = true;
   tracker.UpdateValue(0);
   assertAlmostEquals(tracker.value, -3);
-  assert(tracker.OnModified(null, 0));
+  assert(tracker.UpdateValues({ time: 0, skipEvents: true }));
   assertEquals(CjsSchema.getField(Tr2DistanceTracker, "sourceObject")?.type.kind, "objectRef");
   assertEquals(CjsSchema.getField(Tr2DistanceTracker, "value")?.type.kind, "float32");
 });

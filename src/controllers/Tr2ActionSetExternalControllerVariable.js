@@ -1,6 +1,5 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionSetExternalControllerVariable.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionSetExternalControllerVariable.cpp
-import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { ITr2ControllerAction } from "./ITr2ControllerAction.js";
@@ -90,16 +89,15 @@ export class Tr2ActionSetExternalControllerVariable extends CjsModel
   }
 
   /**
-   * Relinks the destination when authored fields change.
+   * Relinks the destination after authored changes. Broad-safe: the relink
+   * recomputes the destination from scratch, so an unchanged owner name
+   * resolves to the same destination.
    */
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (hasModifiedProperty(properties, "destinationOwner"))
-    {
-      this.#linkToDestinationOwner();
-    }
+    this.#linkToDestinationOwner();
     return true;
   }
 

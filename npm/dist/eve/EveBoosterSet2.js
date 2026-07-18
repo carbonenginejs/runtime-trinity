@@ -1,5 +1,4 @@
 import { applyDecs2311 as _applyDecs2311, identity as _identity } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { hasModifiedProperty } from '../utilities/hasModifiedProperty.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
@@ -44,7 +43,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveBoosterSet2",
         family: "eve/attachment/boosters"
-      })], [[[io, io.notify, io, io.readwrite, type, type.boolean], 16, "flareLodEnabled"], [[io, io.notify, io, io.persist, type, type.float32], 16, "staticTrailLength"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets0"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets1"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets2"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets3"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets4"], [[io, io.persist, type, type.float32], 16, "lightOffset"], [[io, io.persist, type, type.float32], 16, "lightFlickerAmplitude"], [[io, io.persist, type, type.float32], 16, "lightFlickerFrequency"], [[io, io.persist, type, type.float32], 16, "lightRadius"], [[io, io.persist, type, type.color], 16, "lightColor"], [[io, io.persist, type, type.float32], 16, "lightWarpRadius"], [[io, io.persist, type, type.color], 16, "lightWarpColor"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "alwaysOnIntensity"], [[io, io.notify, io, io.persist, type, type.color], 16, "warpGlowColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "glowColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "haloColor"], [[io, io.notify, io, io.persist, type, type.color], 16, "warpHaloColor"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effectFar"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.read, void 0, type.list("EveBoosterSet2Renderable")], 16, "instances"], [[io, io.readwrite, type, type.float32], 16, "maxVel"], [[io, io.notify, io, io.persist, type, type.float32], 16, "glowScale"], [[io, io.notify, io, io.persist, type, type.float32], 16, "symHaloScale"], [[io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleX"], [[io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleY"], [[io, io.persist, type, type.float32], 16, "trailsSmoothing"], [[io, io.persist, void 0, type.objectRef("EveSpriteSet")], 16, "glows"], [[io, io.read, type, type.float32], 16, "maxSize"], [[io, io.read, type, type.vec3], 16, "boosterBoundingSphereCenter"], [[io, io.read, type, type.float32], 16, "boosterBoundingSphereRadius"], [[io, io.readwrite, type, type.float32], 16, "warpIntensity"], [[io, io.persist, type, type.boolean], 16, "physicsUpdate"], [[io, io.persist, type, type.boolean], 16, "destinyUpdate"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.objectRef("EveTrailsSet")], 16, "trails"], [[io, io.notify, io, io.persist, void 0, type.list("EveBoosterSet2Item")], 16, "items"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateTrails"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlow"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTrail"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
+      })], [[[io, io.notify, io, io.readwrite, type, type.boolean], 16, "flareLodEnabled"], [[void 0, io.flag("staticTrailOffsets"), io, io.notify, io, io.persist, type, type.float32], 16, "staticTrailLength"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets0"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets1"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets2"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets3"], [[io, io.persist, type, type.vec3], 16, "trailsStaticOffsets4"], [[io, io.persist, type, type.float32], 16, "lightOffset"], [[io, io.persist, type, type.float32], 16, "lightFlickerAmplitude"], [[io, io.persist, type, type.float32], 16, "lightFlickerFrequency"], [[io, io.persist, type, type.float32], 16, "lightRadius"], [[io, io.persist, type, type.color], 16, "lightColor"], [[io, io.persist, type, type.float32], 16, "lightWarpRadius"], [[io, io.persist, type, type.color], 16, "lightWarpColor"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "alwaysOnIntensity"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.color], 16, "warpGlowColor"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.color], 16, "glowColor"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.color], 16, "haloColor"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.color], 16, "warpHaloColor"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effectFar"], [[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.read, void 0, type.list("EveBoosterSet2Renderable")], 16, "instances"], [[io, io.readwrite, type, type.float32], 16, "maxVel"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.float32], 16, "glowScale"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.float32], 16, "symHaloScale"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleX"], [[void 0, io.flag("flares"), io, io.notify, io, io.persist, type, type.float32], 16, "haloScaleY"], [[io, io.persist, type, type.float32], 16, "trailsSmoothing"], [[io, io.persist, void 0, type.objectRef("EveSpriteSet")], 16, "glows"], [[io, io.read, type, type.float32], 16, "maxSize"], [[io, io.read, type, type.vec3], 16, "boosterBoundingSphereCenter"], [[io, io.read, type, type.float32], 16, "boosterBoundingSphereRadius"], [[io, io.readwrite, type, type.float32], 16, "warpIntensity"], [[io, io.persist, type, type.boolean], 16, "physicsUpdate"], [[io, io.persist, type, type.boolean], 16, "destinyUpdate"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.objectRef("EveTrailsSet")], 16, "trails"], [[void 0, io.flag("items"), io, io.notify, io, io.persist, void 0, type.list("EveBoosterSet2Item")], 16, "items"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateTrails"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlow"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTrail"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoosterData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
       _ClearRuntimeItems = function (owner) {
         owner.#singleBoosters.length = 0;
         owner.glows?.Clear?.();
@@ -206,14 +205,15 @@ new class extends _identity {
       this.#revision++;
       return true;
     }
-    OnModified(properties = null) {
-      if (hasModifiedProperty(properties, "items")) {
+    OnModified(_options = {}) {
+      const flags = this.__state.flags;
+      if (flags.has("items")) {
         _EveBoosterSet.#RebuildItems(this);
       }
-      if (hasModifiedProperty(properties, "staticTrailLength")) {
+      if (flags.has("staticTrailOffsets")) {
         _EveBoosterSet.#UpdateStaticTrailOffsets(this);
       }
-      if (this.glows && _EveBoosterSet.#HasModifiedFlareProperty(properties)) {
+      if (flags.delete("flares") && this.glows) {
         this.glows.Clear?.();
         for (const booster of this.#singleBoosters) {
           _EveBoosterSet.#CreateFlares(this, booster);
@@ -357,6 +357,8 @@ new class extends _identity {
     for (const item of owner.items) {
       _EveBoosterSet.#AddRuntimeItem(owner, item);
     }
+    owner.__state.flags.delete("items");
+    owner.__state.flags.delete("flares");
   }
   #AddRuntimeItem(_0, _1) {
     return _AddRuntimeItem.apply(this, arguments);
@@ -377,9 +379,6 @@ new class extends _identity {
     _EveBoosterSet.#AddFlare(owner, position, direction, 3, seed, 1 + seed, scale * owner.symHaloScale, scale * owner.symHaloScale, owner.haloColor, owner.warpHaloColor);
     _EveBoosterSet.#AddFlare(owner, position, direction, 3.01, seed, 1 + seed, scale * owner.haloScaleX, scale * owner.haloScaleY, owner.haloColor, owner.warpHaloColor);
   }
-  #HasModifiedFlareProperty(properties) {
-    return _EveBoosterSet.#flareProperties.some(property => hasModifiedProperty(properties, property));
-  }
   #AddFlare(owner, position, direction, distance, blinkRate, blinkPhase, minScale, maxScale, color, warpColor) {
     const spritePosition = vec3.scaleAndAdd(vec3.create(), position, direction, -distance);
     owner.glows.Add?.(spritePosition, blinkRate, blinkPhase, minScale, maxScale, 0, color, warpColor);
@@ -395,6 +394,7 @@ new class extends _identity {
     owner.boosterBoundingSphereRadius = 0.5 * (radius + distance);
   }
   #UpdateStaticTrailOffsets(owner) {
+    owner.__state.flags.delete("staticTrailOffsets");
     const step = owner.staticTrailLength / 4;
     const offsets = [owner.trailsStaticOffsets0, owner.trailsStaticOffsets1, owner.trailsStaticOffsets2, owner.trailsStaticOffsets3, owner.trailsStaticOffsets4];
     for (let index = 0; index < offsets.length; index++) {
@@ -431,7 +431,6 @@ new class extends _identity {
   #zero = Object.freeze([0, 0, 0]);
   #identityRotation = Object.freeze([0, 0, 0, 1]);
   #defaultFunctionality = Object.freeze([0, 1, 1, 1]);
-  #flareProperties = Object.freeze(["glowScale", "haloScaleX", "haloScaleY", "symHaloScale", "glowColor", "warpGlowColor", "haloColor", "warpHaloColor"]);
   Shape = Object.freeze({
     STAR: 0,
     BOX: 1,

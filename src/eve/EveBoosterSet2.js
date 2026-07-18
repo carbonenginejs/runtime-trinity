@@ -1,7 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2_Blue.cpp
-import { hasModifiedProperty } from "../utilities/hasModifiedProperty.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
@@ -51,6 +50,7 @@ export class EveBoosterSet2 extends EveEntity
   flareLodEnabled = true;
 
   /** m_staticTrailLength (float) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("staticTrailOffsets")
   @io.notify
   @io.persist
   @type.float32
@@ -127,24 +127,28 @@ export class EveBoosterSet2 extends EveEntity
   alwaysOnIntensity = 1;
 
   /** m_warpGlowColor (Color) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.color
   warpGlowColor = vec4.create();
 
   /** m_glowColor (Color) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.color
   glowColor = vec4.create();
 
   /** m_haloColor (Color) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.color
   haloColor = vec4.create();
 
   /** m_warpHaloColor (Color) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.color
@@ -171,24 +175,28 @@ export class EveBoosterSet2 extends EveEntity
   maxVel = 250;
 
   /** m_glowScale (float) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.float32
   glowScale = 1;
 
   /** m_symHaloScale (float) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.float32
   symHaloScale = 1;
 
   /** m_haloScaleX (float) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.float32
   haloScaleX = 1;
 
   /** m_haloScaleY (float) [READWRITE, PERSIST, NOTIFY] */
+  @io.flag("flares")
   @io.notify
   @io.persist
   @type.float32
@@ -244,6 +252,7 @@ export class EveBoosterSet2 extends EveEntity
   @type.objectRef("EveTrailsSet")
   trails = null;
 
+  @io.flag("items")
   @io.notify
   @io.persist
   @type.list("EveBoosterSet2Item")
@@ -268,17 +277,18 @@ export class EveBoosterSet2 extends EveEntity
 
   @carbon.method
   @impl.adapted
-  OnModified(properties = null)
+  OnModified(_options = {})
   {
-    if (hasModifiedProperty(properties, "items"))
+    const flags = this.__state.flags;
+    if (flags.has("items"))
     {
       EveBoosterSet2.#RebuildItems(this);
     }
-    if (hasModifiedProperty(properties, "staticTrailLength"))
+    if (flags.has("staticTrailOffsets"))
     {
       EveBoosterSet2.#UpdateStaticTrailOffsets(this);
     }
-    if (this.glows && EveBoosterSet2.#HasModifiedFlareProperty(properties))
+    if (flags.delete("flares") && this.glows)
     {
       this.glows.Clear?.();
       for (const booster of this.#singleBoosters)
@@ -418,6 +428,8 @@ export class EveBoosterSet2 extends EveEntity
     {
       EveBoosterSet2.#AddRuntimeItem(owner, item);
     }
+    owner.__state.flags.delete("items");
+    owner.__state.flags.delete("flares");
   }
 
   static #AddRuntimeItem(owner, item)
@@ -602,12 +614,6 @@ export class EveBoosterSet2 extends EveEntity
       scale * owner.haloScaleX, scale * owner.haloScaleY, owner.haloColor, owner.warpHaloColor);
   }
 
-  static #HasModifiedFlareProperty(properties)
-  {
-    return EveBoosterSet2.#flareProperties.some(property =>
-      hasModifiedProperty(properties, property));
-  }
-
   static #AddFlare(owner, position, direction, distance, blinkRate, blinkPhase, minScale, maxScale, color, warpColor)
   {
     const spritePosition = vec3.scaleAndAdd(vec3.create(), position, direction, -distance);
@@ -643,6 +649,7 @@ export class EveBoosterSet2 extends EveEntity
 
   static #UpdateStaticTrailOffsets(owner)
   {
+    owner.__state.flags.delete("staticTrailOffsets");
     const step = owner.staticTrailLength / 4;
     const offsets = [
       owner.trailsStaticOffsets0,
@@ -695,17 +702,6 @@ export class EveBoosterSet2 extends EveEntity
   static #identityRotation = Object.freeze([0, 0, 0, 1]);
 
   static #defaultFunctionality = Object.freeze([0, 1, 1, 1]);
-
-  static #flareProperties = Object.freeze([
-    "glowScale",
-    "haloScaleX",
-    "haloScaleY",
-    "symHaloScale",
-    "glowColor",
-    "warpGlowColor",
-    "haloColor",
-    "warpHaloColor"
-  ]);
 
   static Shape = Object.freeze({
     STAR: 0,
