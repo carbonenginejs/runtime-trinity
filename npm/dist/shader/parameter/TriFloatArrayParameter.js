@@ -1,10 +1,10 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsShaderParameter } from './CjsShaderParameter.js';
+import { CjsParameter } from './CjsParameter.js';
 
 let _initProto, _initClass, _init_value, _init_extra_value, _init_usedByCurrentTechnique, _init_extra_usedByCurrentTechnique, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_name, _init_extra_name;
 let _TriFloatArrayParamet;
-class TriFloatArrayParameter extends CjsShaderParameter {
+class TriFloatArrayParameter extends CjsParameter {
   static {
     ({
       e: [_init_value, _init_extra_value, _init_usedByCurrentTechnique, _init_extra_usedByCurrentTechnique, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_name, _init_extra_name, _initProto],
@@ -12,7 +12,7 @@ class TriFloatArrayParameter extends CjsShaderParameter {
     } = _applyDecs2311(this, [type.define({
       className: "TriFloatArrayParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, void 0, type.list("TriVector4")], 16, "value"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsShaderParameter));
+    })], [[[io, io.notify, io, io.persist, void 0, type.list("TriVector4")], 16, "value"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
   }
   value = (_initProto(this), _init_value(this, []));
   usedByCurrentTechnique = (_init_extra_value(this), _init_usedByCurrentTechnique(this, false));
@@ -31,7 +31,7 @@ class TriFloatArrayParameter extends CjsShaderParameter {
   }
   RebuildEffectHandles(effectRes) {
     this.#cachedEffect = effectRes;
-    const used = !!this.name && CjsShaderParameter.hasEffectConstant(effectRes, this.name);
+    const used = !!this.name && CjsParameter.hasEffectConstant(effectRes, this.name);
     this.usedByCurrentEffect = used;
     this.usedByCurrentTechnique = used;
   }

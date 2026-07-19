@@ -15,7 +15,7 @@ import { TriFloatArrayParameter as _TriFloatArrayParamet } from './parameter/Tri
 import { TriTextureParameter as _TriTextureParameter } from './parameter/TriTextureParameter.js';
 import { TriVariableParameter as _TriVariableParameter } from './parameter/TriVariableParameter.js';
 import { TriVector4 as _TriVector } from './parameter/TriVector4.js';
-import { CjsShaderParameter } from './parameter/CjsShaderParameter.js';
+import { CjsParameter } from './parameter/CjsParameter.js';
 import { CjsVariableStore } from './support/CjsVariableStore.js';
 
 let _initProto, _initClass, _init_effectFilePath, _init_extra_effectFilePath, _init_options, _init_extra_options, _init_name, _init_extra_name, _init_constParameters, _init_extra_constParameters, _init_parameters, _init_extra_parameters, _init_resources, _init_extra_resources, _init_effectResource, _init_extra_effectResource, _init_actualEffectFilePath, _init_extra_actualEffectFilePath, _init_samplerOverrides, _init_extra_samplerOverrides;
@@ -71,7 +71,7 @@ new class extends _identity {
 
     /** Carbon method GetParameterAnnotations -> PyGetParameterAnnotations (MAP_METHOD). */
     GetParameterAnnotations(parameterName) {
-      return CjsShaderParameter.getEffectAnnotations(this.shader, parameterName);
+      return CjsParameter.getEffectAnnotations(this.shader, parameterName);
     }
 
     /** Carbon method PopulateParameters (MAP_METHOD_AND_WRAP). */
@@ -119,9 +119,9 @@ new class extends _identity {
       if (!this.shader) {
         return false;
       }
-      this.parameters = this.parameters.filter(parameter => this.#isShaderParameterVisible(CjsShaderParameter.getNamedValue(parameter)));
+      this.parameters = this.parameters.filter(parameter => this.#isShaderParameterVisible(CjsParameter.getNamedValue(parameter)));
       this.constParameters = this.constParameters.filter(parameter => this.#isShaderParameterVisible(parameter?.name));
-      this.resources = this.resources.filter(parameter => this.#isShaderParameterVisible(CjsShaderParameter.getNamedValue(parameter)));
+      this.resources = this.resources.filter(parameter => this.#isShaderParameterVisible(CjsParameter.getNamedValue(parameter)));
       return true;
     }
 
@@ -347,7 +347,7 @@ new class extends _identity {
         if (!vector) {
           throw new TypeError(`Tr2Effect.SetConstParameters cannot read a vec4 value for "${name}".`);
         }
-        const existing = CjsShaderParameter.findByName(this.constParameters, name);
+        const existing = CjsParameter.findByName(this.constParameters, name);
         if (existing) {
           vec4.copy(existing.value, vector);
         } else {
@@ -374,7 +374,7 @@ new class extends _identity {
           updated = this.#removeNamed(this.samplerOverrides, name) || updated;
           continue;
         }
-        const existing = CjsShaderParameter.findByName(this.samplerOverrides, name);
+        const existing = CjsParameter.findByName(this.samplerOverrides, name);
         if (value instanceof _Tr2SamplerOverride) {
           if (!value.name) {
             value.name = String(name);
@@ -428,7 +428,7 @@ new class extends _identity {
         } = value;
         const parameter = new ExplicitClass();
         parameter.SetValues(fields);
-        if (name && !CjsShaderParameter.getNamedValue(parameter)) {
+        if (name && !CjsParameter.getNamedValue(parameter)) {
           parameter.SetValues({
             name: String(name)
           });
@@ -455,7 +455,7 @@ new class extends _identity {
       return null;
     }
     #removeNamed(list, name) {
-      const existing = CjsShaderParameter.findByName(list, name);
+      const existing = CjsParameter.findByName(list, name);
       if (!existing) {
         return false;
       }
@@ -469,7 +469,7 @@ new class extends _identity {
       if (typeof value === "string") {
         return this.#setNamedTexture(name, value);
       }
-      const existing = CjsShaderParameter.findByName(this.parameters, name);
+      const existing = CjsParameter.findByName(this.parameters, name);
       if (existing && existing.constructor.isValue?.(value)) {
         existing.SetValue(value);
         return true;
@@ -479,7 +479,7 @@ new class extends _identity {
         throw new TypeError(`Tr2Effect.SetParameters cannot infer a parameter type for "${name}".`);
       }
       if (created instanceof _TriTextureParameter) {
-        const existingResource = CjsShaderParameter.findByName(this.resources, name);
+        const existingResource = CjsParameter.findByName(this.resources, name);
         if (existingResource) {
           existingResource?.OnRemovedFromMaterial?.(this);
           this.resources[this.resources.indexOf(existingResource)] = created;
@@ -500,7 +500,7 @@ new class extends _identity {
       if (typeof value !== "string") {
         throw new TypeError(`Tr2Effect.SetTextures requires res path strings for "${name}".`);
       }
-      const existing = CjsShaderParameter.findByName(this.resources, name);
+      const existing = CjsParameter.findByName(this.resources, name);
       if (existing) {
         if (existing.resourcePath === value) {
           return false;
@@ -533,7 +533,7 @@ new class extends _identity {
       this.RebuildCachedDataInternal();
     }
     SetOption(name, value) {
-      const existing = CjsShaderParameter.findByName(this.options, name);
+      const existing = CjsParameter.findByName(this.options, name);
       if (existing) {
         if (existing.value !== value) {
           existing.value = String(value);
@@ -552,16 +552,16 @@ new class extends _identity {
       this.RebuildCachedDataInternal();
     }
     GetOption(name) {
-      return CjsShaderParameter.findByName(this.options, name)?.value ?? "";
+      return CjsParameter.findByName(this.options, name)?.value ?? "";
     }
     GetParameterByName(name) {
       return this.FindParameterByName(name) ?? this.GetResourceByName(name);
     }
     FindParameterByName(name) {
-      return this.parameters.find(parameter => CjsShaderParameter.getNamedValue(parameter) === name) ?? null;
+      return this.parameters.find(parameter => CjsParameter.getNamedValue(parameter) === name) ?? null;
     }
     GetResourceByName(name) {
-      return this.resources.find(parameter => CjsShaderParameter.getNamedValue(parameter) === name) ?? null;
+      return this.resources.find(parameter => CjsParameter.getNamedValue(parameter) === name) ?? null;
     }
     HasSamplerOverride(name) {
       return this.samplerOverrides.some(value => value?.name === name);
@@ -726,7 +726,7 @@ new class extends _identity {
     if (typeof value === "number") {
       return vec4.fromValues(value, value, value, value);
     }
-    if (CjsShaderParameter.isNumberArrayValue(value, 4)) {
+    if (CjsParameter.isNumberArrayValue(value, 4)) {
       return vec4.clone(value);
     }
     if (value && typeof value === "object" && !Array.isArray(value) && "value" in value) {

@@ -3,7 +3,7 @@ import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schem
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsShaderParameter } from './CjsShaderParameter.js';
+import { CjsParameter } from './CjsParameter.js';
 import { TriTransformBase } from '@carbonenginejs/runtime-const/graphics';
 
 let _initProto, _initClass, _init_transformBase, _init_extra_transformBase, _init_rotationCenter, _init_extra_rotationCenter, _init_name, _init_extra_name, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_translation, _init_extra_translation, _init_worldTransform, _init_extra_worldTransform;
@@ -11,7 +11,7 @@ let _initProto, _initClass, _init_transformBase, _init_extra_transformBase, _ini
 /** TriTransformParameter (shader) - generated from schema shapeHash de073c4a.... */
 let _TriTransformParamete;
 new class extends _identity {
-  static [class TriTransformParameter extends CjsShaderParameter {
+  static [class TriTransformParameter extends CjsParameter {
     static {
       ({
         e: [_init_transformBase, _init_extra_transformBase, _init_rotationCenter, _init_extra_rotationCenter, _init_name, _init_extra_name, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_translation, _init_extra_translation, _init_worldTransform, _init_extra_worldTransform, _initProto],
@@ -19,7 +19,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "TriTransformParameter",
         family: "shader"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("TRITRANSFORMBASE")], 16, "transformBase"], [[io, io.persist, type, type.vec3], 16, "rotationCenter"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsShaderParameter));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("TRITRANSFORMBASE")], 16, "transformBase"], [[io, io.persist, type, type.vec3], 16, "rotationCenter"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
     }
     constructor(...args) {
       super(...args);

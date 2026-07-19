@@ -1,13 +1,13 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import '@carbonenginejs/core-types/model';
-import { CjsShaderParameter } from './CjsShaderParameter.js';
+import { CjsParameter } from './CjsParameter.js';
 
 let _initProto, _initClass, _init_resourcePath, _init_extra_resourcePath, _init_gpuBuffer, _init_extra_gpuBuffer, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_meshIndex, _init_extra_meshIndex, _init_name, _init_extra_name;
 
 /** Tr2GeometryBufferParameter (shader) - generated from schema shapeHash bc9ed4c6.... */
 let _Tr2GeometryBufferPar;
-class Tr2GeometryBufferParameter extends CjsShaderParameter {
+class Tr2GeometryBufferParameter extends CjsParameter {
   static {
     ({
       e: [_init_resourcePath, _init_extra_resourcePath, _init_gpuBuffer, _init_extra_gpuBuffer, _init_usedByCurrentEffect, _init_extra_usedByCurrentEffect, _init_meshIndex, _init_extra_meshIndex, _init_name, _init_extra_name, _initProto],
@@ -15,7 +15,7 @@ class Tr2GeometryBufferParameter extends CjsShaderParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2GeometryBufferParameter",
       family: "shader"
-    })], [[[void 0, io.flag("resource"), io, io.notify, io, io.persist, type, type.string], 16, "resourcePath"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2GpuBuffer")], 16, "gpuBuffer"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.int32], 16, "meshIndex"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsValid"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGpuBuffer"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetGpuBuffer"]], 0, void 0, CjsShaderParameter));
+    })], [[[void 0, io.flag("resource"), io, io.notify, io, io.persist, type, type.string], 16, "resourcePath"], [[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2GpuBuffer")], 16, "gpuBuffer"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.int32], 16, "meshIndex"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsValid"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGpuBuffer"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetGpuBuffer"]], 0, void 0, CjsParameter));
   }
   /** m_resourcePath (std::wstring) [READWRITE, NOTIFY, PERSIST] */
   resourcePath = (_initProto(this), _init_resourcePath(this, ""));
@@ -47,7 +47,7 @@ class Tr2GeometryBufferParameter extends CjsShaderParameter {
   }
   RebuildEffectHandles(effectRes) {
     this.cachedEffect = effectRes;
-    this.usedByCurrentEffect = !!this.name && !!CjsShaderParameter.getEffectResource(effectRes, this.name);
+    this.usedByCurrentEffect = !!this.name && !!CjsParameter.getEffectResource(effectRes, this.name);
   }
   CopyToResourceSet() {
     return false;

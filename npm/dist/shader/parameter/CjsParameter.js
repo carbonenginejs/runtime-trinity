@@ -1,14 +1,14 @@
 import { CjsModel } from '@carbonenginejs/core-types/model';
 
-class CjsShaderParameter extends CjsModel {
+class CjsParameter extends CjsModel {
   static isScalarDestination(value) {
-    return typeof value === "function" || CjsShaderParameter.isNumberHolder(value) || CjsShaderParameter.isWritableNumberArray(value, 1);
+    return typeof value === "function" || CjsParameter.isNumberHolder(value) || CjsParameter.isWritableNumberArray(value, 1);
   }
   static readScalarDestination(destination, fallback) {
     if (typeof destination === "function") {
       return fallback;
     }
-    if (CjsShaderParameter.isNumberHolder(destination)) {
+    if (CjsParameter.isNumberHolder(destination)) {
       return Number(destination.value);
     }
     return Number(destination[0]);
@@ -18,7 +18,7 @@ class CjsShaderParameter extends CjsModel {
       destination(value);
       return;
     }
-    if (CjsShaderParameter.isNumberHolder(destination)) {
+    if (CjsParameter.isNumberHolder(destination)) {
       destination.value = value;
       return;
     }
@@ -45,7 +45,7 @@ class CjsShaderParameter extends CjsModel {
     }
   }
   static hasEffectConstant(effectRes, name) {
-    return !!CjsShaderParameter.getEffectConstant(effectRes, name);
+    return !!CjsParameter.getEffectConstant(effectRes, name);
   }
   static getEffectConstant(effectRes, name) {
     const reader = effectRes;
@@ -70,7 +70,7 @@ class CjsShaderParameter extends CjsModel {
     return typeof value === "string" ? value : value?.name ?? value?.key ?? "";
   }
   static findByName(values, name) {
-    return Array.isArray(values) ? values.find(value => CjsShaderParameter.getArrayItemName(value) === name || CjsShaderParameter.getNamedValue(value) === name) ?? null : null;
+    return Array.isArray(values) ? values.find(value => CjsParameter.getArrayItemName(value) === name || CjsParameter.getNamedValue(value) === name) ?? null : null;
   }
   static markMaterialResourcesDirty(material) {
     material?.InvalidateResourceSets?.();
@@ -96,28 +96,6 @@ class CjsShaderParameter extends CjsModel {
     return true;
   }
 }
-class CjsShaderVectorParameter extends CjsShaderParameter {
-  static isVectorDestination(value, length) {
-    return CjsShaderVectorParameter.isWritableNumberArray(value, length);
-  }
-  static readVectorDestination(destination, out, length) {
-    for (let i = 0; i < length; i++) {
-      out[i] = destination[i];
-    }
-    return out;
-  }
-  static writeVectorDestination(destination, value, length) {
-    for (let i = 0; i < length; i++) {
-      destination[i] = value[i];
-    }
-  }
-  static copyNumberArray(out, value, length) {
-    for (let i = 0; i < length; i++) {
-      out[i] = value[i];
-    }
-    return out;
-  }
-}
 
-export { CjsShaderParameter, CjsShaderVectorParameter };
-//# sourceMappingURL=CjsShaderParameter.js.map
+export { CjsParameter };
+//# sourceMappingURL=CjsParameter.js.map

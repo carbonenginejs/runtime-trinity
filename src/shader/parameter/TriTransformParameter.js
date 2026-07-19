@@ -5,12 +5,12 @@ import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schem
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { CjsParameter } from "./CjsParameter.js";
 import { TriTransformBase } from "@carbonenginejs/runtime-const/graphics";
 
 /** TriTransformParameter (shader) - generated from schema shapeHash de073c4a.... */
 @type.define({ className: "TriTransformParameter", family: "shader" })
-export class TriTransformParameter extends CjsShaderParameter
+export class TriTransformParameter extends CjsParameter
 {
 
   /** m_transformBase (TRITRANSFORMBASE - enum TRITRANSFORMBASE) [READWRITE, PERSIST, ENUM] */

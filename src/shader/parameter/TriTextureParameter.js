@@ -2,14 +2,14 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriTextureParameter.cpp
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
-import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { CjsParameter } from "./CjsParameter.js";
 
 
 @type.define({
   className: "TriTextureParameter",
   family: "shader"
 })
-export class TriTextureParameter extends CjsShaderParameter
+export class TriTextureParameter extends CjsParameter
 {
   @io.flag("resource")
   @io.notify
@@ -200,7 +200,7 @@ export class TriTextureParameter extends CjsShaderParameter
   RebuildEffectHandles(effectRes)
   {
     this.#cachedEffect = effectRes;
-    const used = !!this.name && (CjsShaderParameter.hasEffectResource(effectRes, this.name) || CjsShaderParameter.hasEffectConstant(effectRes, this.name));
+    const used = !!this.name && (CjsParameter.hasEffectResource(effectRes, this.name) || CjsParameter.hasEffectConstant(effectRes, this.name));
     this.usedByCurrentEffect = used;
     this.usedByCurrentTechnique = used;
   }

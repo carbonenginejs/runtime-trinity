@@ -1,11 +1,11 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2FloatParameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2FloatParameter.cpp
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { CjsParameter } from "./CjsParameter.js";
 
 
 @type.define({className: "Tr2FloatParameter", family: "shader"})
-export class Tr2FloatParameter extends CjsShaderParameter
+export class Tr2FloatParameter extends CjsParameter
 {
   @io.persistOnly
   @type.float32
@@ -37,7 +37,7 @@ export class Tr2FloatParameter extends CjsShaderParameter
   {
     if (this.#reroutedValue)
     {
-      this.value = CjsShaderParameter.readScalarDestination(this.#reroutedValue, this.value);
+      this.value = CjsParameter.readScalarDestination(this.#reroutedValue, this.value);
       this.#valueRef.value = this.value;
     }
     return this.value;
@@ -51,7 +51,7 @@ export class Tr2FloatParameter extends CjsShaderParameter
     this.#valueRef.value = this.value;
     if (this.#reroutedValue)
     {
-      CjsShaderParameter.writeScalarDestination(this.#reroutedValue, this.value);
+      CjsParameter.writeScalarDestination(this.#reroutedValue, this.value);
     }
   }
 
@@ -66,16 +66,16 @@ export class Tr2FloatParameter extends CjsShaderParameter
   @impl.adapted
   SetDestination(dest, size = 4)
   {
-    if (size >= 4 && CjsShaderParameter.isScalarDestination(dest))
+    if (size >= 4 && CjsParameter.isScalarDestination(dest))
     {
       this.#reroutedValue = dest;
-      CjsShaderParameter.writeScalarDestination(dest, this.value);
+      CjsParameter.writeScalarDestination(dest, this.value);
     }
     else
     {
       this.#reroutedValue = null;
     }
-    CjsShaderParameter.notifyBindings(this.#bindings, this.GetDestination().dest);
+    CjsParameter.notifyBindings(this.#bindings, this.GetDestination().dest);
   }
 
   @carbon.method
@@ -92,14 +92,14 @@ export class Tr2FloatParameter extends CjsShaderParameter
   @impl.adapted
   RegisterBinding(binding)
   {
-    CjsShaderParameter.registerBinding(this.#bindings, binding);
+    CjsParameter.registerBinding(this.#bindings, binding);
   }
 
   @carbon.method
   @impl.adapted
   UnregisterBinding(binding)
   {
-    CjsShaderParameter.unregisterBinding(this.#bindings, binding);
+    CjsParameter.unregisterBinding(this.#bindings, binding);
   }
 
   @carbon.method
@@ -110,7 +110,7 @@ export class Tr2FloatParameter extends CjsShaderParameter
     {
       this.SetDestination(null, 0);
     }
-    this.usedByCurrentEffect = !!this.name && CjsShaderParameter.hasEffectConstant(effectRes, this.name);
+    this.usedByCurrentEffect = !!this.name && CjsParameter.hasEffectConstant(effectRes, this.name);
   }
 
   @carbon.method
@@ -120,7 +120,7 @@ export class Tr2FloatParameter extends CjsShaderParameter
     this.#valueRef.value = this.value;
     if (this.#reroutedValue)
     {
-      CjsShaderParameter.writeScalarDestination(this.#reroutedValue, this.value);
+      CjsParameter.writeScalarDestination(this.#reroutedValue, this.value);
     }
     return true;
   }
@@ -129,7 +129,7 @@ export class Tr2FloatParameter extends CjsShaderParameter
   @impl.adapted
   CopyValueToEffect(_inputType, out)
   {
-    CjsShaderParameter.writeScalarDestination(out, this.GetValue());
+    CjsParameter.writeScalarDestination(out, this.GetValue());
   }
 
   /** JS convenience: raw values this parameter class claims for map-form inference. */

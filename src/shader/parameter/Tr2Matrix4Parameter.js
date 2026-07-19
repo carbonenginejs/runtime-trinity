@@ -2,14 +2,14 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Matrix4Parameter.cpp
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsShaderVectorParameter } from "./CjsShaderParameter.js";
+import { CjsVectorParameter } from "./CjsVectorParameter.js";
 
 
 @type.define({
   className: "Tr2Matrix4Parameter",
   family: "shader"
 })
-export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
+export class Tr2Matrix4Parameter extends CjsVectorParameter
 {
   @io.persistOnly
   @type.mat4
@@ -44,18 +44,18 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   {
     if (this.#reroutedValue)
     {
-      CjsShaderVectorParameter.readVectorDestination(this.#reroutedValue, this.value, 16);
+      CjsVectorParameter.readVectorDestination(this.#reroutedValue, this.value, 16);
     }
-    return CjsShaderVectorParameter.copyNumberArray(out, this.value, 16);
+    return CjsVectorParameter.copyNumberArray(out, this.value, 16);
   }
   @carbon.method
   @impl.implemented
   SetValue(value)
   {
-    CjsShaderVectorParameter.copyNumberArray(this.value, value, 16);
+    CjsVectorParameter.copyNumberArray(this.value, value, 16);
     if (this.#reroutedValue)
     {
-      CjsShaderVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 16);
+      CjsVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 16);
     }
   }
   @carbon.method
@@ -68,16 +68,16 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   @impl.adapted
   SetDestination(dest, size = 64)
   {
-    if (size >= 64 && CjsShaderVectorParameter.isVectorDestination(dest, 16))
+    if (size >= 64 && CjsVectorParameter.isVectorDestination(dest, 16))
     {
       this.#reroutedValue = dest;
-      CjsShaderVectorParameter.writeVectorDestination(dest, this.value, 16);
+      CjsVectorParameter.writeVectorDestination(dest, this.value, 16);
     }
     else
     {
       this.#reroutedValue = null;
     }
-    CjsShaderVectorParameter.notifyBindings(this.#bindings, this.GetDestination().dest);
+    CjsVectorParameter.notifyBindings(this.#bindings, this.GetDestination().dest);
   }
   @carbon.method
   @impl.adapted
@@ -92,13 +92,13 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   @impl.adapted
   RegisterBinding(binding)
   {
-    CjsShaderVectorParameter.registerBinding(this.#bindings, binding);
+    CjsVectorParameter.registerBinding(this.#bindings, binding);
   }
   @carbon.method
   @impl.adapted
   UnregisterBinding(binding)
   {
-    CjsShaderVectorParameter.unregisterBinding(this.#bindings, binding);
+    CjsVectorParameter.unregisterBinding(this.#bindings, binding);
   }
   @carbon.method
   @impl.adapted
@@ -108,7 +108,7 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
     {
       this.SetDestination(null, 0);
     }
-    const used = !!this.name && CjsShaderVectorParameter.hasEffectConstant(effectRes, this.name);
+    const used = !!this.name && CjsVectorParameter.hasEffectConstant(effectRes, this.name);
     this.usedByCurrentEffect = used;
     this.usedByCurrentTechnique = used;
   }
@@ -118,7 +118,7 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   {
     if (this.#reroutedValue)
     {
-      CjsShaderVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 16);
+      CjsVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 16);
     }
     return true;
   }
@@ -126,13 +126,13 @@ export class Tr2Matrix4Parameter extends CjsShaderVectorParameter
   @impl.adapted
   CopyValueToEffect(_inputType, out)
   {
-    CjsShaderVectorParameter.writeVectorDestination(out, this.GetValue(), 16);
+    CjsVectorParameter.writeVectorDestination(out, this.GetValue(), 16);
   }
 
   /** JS convenience: raw values this parameter class claims for map-form inference. */
   static isValue(value)
   {
-    return CjsShaderVectorParameter.isNumberArrayValue(value, 16);
+    return CjsVectorParameter.isNumberArrayValue(value, 16);
   }
 
 }

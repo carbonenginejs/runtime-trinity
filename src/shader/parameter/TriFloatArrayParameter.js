@@ -1,14 +1,14 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriFloatArrayParameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\TriFloatArrayParameter.cpp
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { CjsParameter } from "./CjsParameter.js";
 
 
 @type.define({
   className: "TriFloatArrayParameter",
   family: "shader"
 })
-export class TriFloatArrayParameter extends CjsShaderParameter
+export class TriFloatArrayParameter extends CjsParameter
 {
   @io.notify
   @io.persist
@@ -54,7 +54,7 @@ export class TriFloatArrayParameter extends CjsShaderParameter
   RebuildEffectHandles(effectRes)
   {
     this.#cachedEffect = effectRes;
-    const used = !!this.name && CjsShaderParameter.hasEffectConstant(effectRes, this.name);
+    const used = !!this.name && CjsParameter.hasEffectConstant(effectRes, this.name);
     this.usedByCurrentEffect = used;
     this.usedByCurrentTechnique = used;
   }

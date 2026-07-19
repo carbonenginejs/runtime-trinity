@@ -1,13 +1,13 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { type } from '@carbonenginejs/core-types/schema';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsShaderParameter } from './CjsShaderParameter.js';
+import { CjsParameter } from './CjsParameter.js';
 
 let _initClass, _init_name, _init_extra_name, _init_value, _init_extra_value;
 
 /** Tr2ConstantEffectParameter (shader) - generated from schema shapeHash b4e14ee0.... */
 let _Tr2ConstantEffectPar;
-class Tr2ConstantEffectParameter extends CjsShaderParameter {
+class Tr2ConstantEffectParameter extends CjsParameter {
   static {
     ({
       e: [_init_name, _init_extra_name, _init_value, _init_extra_value],
@@ -15,7 +15,7 @@ class Tr2ConstantEffectParameter extends CjsShaderParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ConstantEffectParameter",
       family: "shader"
-    })], [[[type, type.string], 16, "name"], [[type, type.vec4], 16, "value"]], 0, void 0, CjsShaderParameter));
+    })], [[[type, type.string], 16, "name"], [[type, type.vec4], 16, "value"]], 0, void 0, CjsParameter));
   }
   constructor(...args) {
     super(...args);

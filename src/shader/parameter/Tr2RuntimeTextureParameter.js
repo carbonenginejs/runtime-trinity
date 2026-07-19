@@ -2,14 +2,14 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2RuntimeTextureParameter.cpp
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2RuntimeTextureParameter_Blue.cpp
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsShaderParameter } from "./CjsShaderParameter.js";
+import { CjsParameter } from "./CjsParameter.js";
 
 
 @type.define({
   className: "Tr2RuntimeTextureParameter",
   family: "shader"
 })
-export class Tr2RuntimeTextureParameter extends CjsShaderParameter
+export class Tr2RuntimeTextureParameter extends CjsParameter
 {
   @io.notify
   @io.persist
