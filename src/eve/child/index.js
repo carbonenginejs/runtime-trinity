@@ -1,4 +1,5 @@
 export * from "./EveChildContainer.js";
+export * from "./EveChildEffectPropagator.js";
 export * from "./EveChildInheritProperties.js";
 export * from "./EveChildInstancedMeshes.js";
 export * from "./EveChildMesh.js";

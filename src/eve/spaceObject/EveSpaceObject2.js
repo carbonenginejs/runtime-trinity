@@ -10,6 +10,7 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
+import { ImpactConfiguration } from "../../generated/include/enums.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 
 @type.define({ className: "EveSpaceObject2", family: "eve/spaceObject" })
@@ -976,16 +977,189 @@ export class EveSpaceObject2 extends EveEntity
    */
   @carbon.method
   @impl.adapted
-  GetDamageLocatorDirection(index, out = vec3.create())
+  GetDamageLocatorDirection(index, inWorldSpaceOrOut = vec3.create(), out = vec3.create())
+  {
+    const targetableCall = typeof inWorldSpaceOrOut === "boolean";
+    const inWorldSpace = targetableCall && inWorldSpaceOrOut;
+    if (!targetableCall) out = inWorldSpaceOrOut;
+    const locators = this.#GetLocatorsForSet(EveSpaceObject2.#damageLocatorSetName);
+    if (!locators || !(index >= 0 && index < locators.length))
+    {
+      vec3.set(out, 0, targetableCall ? 1 : 0, 0);
+      return targetableCall ? false : out;
+    }
+    const position = vec3.create();
+    this.#GetLocatorInObjectSpace(position, out, locators[index]);
+    if (inWorldSpace) EveSpaceObject2.#TransformNormal(out, out, this.worldTransform);
+    return targetableCall ? true : out;
+  }
+
+  /** Internal ITriTargetable locator query, using the org-standard out-last convention. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("CarbonEngineJS keeps output parameters last and returns a validity flag for targetable callers.")
+  GetDamageLocatorPosition(index, inWorldSpace, out = vec3.create())
   {
     const locators = this.#GetLocatorsForSet(EveSpaceObject2.#damageLocatorSetName);
     if (!locators || !(index >= 0 && index < locators.length))
     {
-      return vec3.set(out, 0, 0, 0);
+      if (inWorldSpace) vec3.set(out, this.worldTransform[12], this.worldTransform[13], this.worldTransform[14]);
+      else vec3.set(out, 0, 0, 0);
+      return false;
     }
-    const position = vec3.create();
-    this.#GetLocatorInObjectSpace(position, out, locators[index]);
+    this.#GetLocatorInObjectSpace(out, EveSpaceObject2.#locatorDirection, locators[index]);
+    if (inWorldSpace) vec3.transformMat4(out, out, this.worldTransform);
+    return true;
+  }
+
+  /** Gets the closest facing damage locator for ITriTargetable consumers. */
+  @carbon.method
+  @impl.implemented
+  GetClosestDamageLocatorIndex(position)
+  {
+    return this.#GetClosestLocatorIndex(position, EveSpaceObject2.#damageLocatorSetName);
+  }
+
+  /** Ports Carbon's randomized distance/direction fit for impact variation. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("TriRand is represented by Math.random; all locator scoring remains source-faithful.")
+  GetGoodDamageLocatorIndex(position)
+  {
+    const locators = this.#GetLocatorsForSet(EveSpaceObject2.#damageLocatorSetName);
+    if (!locators) return 0;
+
+    const objectPosition = vec3.transformMat4(EveSpaceObject2.#objectPosition, position, this.inverseWorldTransform);
+    let minDistance = Infinity;
+    let maxDistance = Number.MIN_VALUE;
+    let bestDirectionFit = 0;
+
+    for (const locator of locators)
+    {
+      this.#GetLocatorInObjectSpace(EveSpaceObject2.#locatorPosition, EveSpaceObject2.#locatorDirection, locator);
+      if (!EveSpaceObject2.#IsLocatorFacingPosition(EveSpaceObject2.#locatorDirection, objectPosition)) continue;
+      vec3.subtract(EveSpaceObject2.#locatorOffset, EveSpaceObject2.#locatorPosition, objectPosition);
+      const distance = vec3.length(EveSpaceObject2.#locatorOffset);
+      minDistance = Math.min(minDistance, distance);
+      maxDistance = Math.max(maxDistance, distance);
+      if (distance) vec3.scale(EveSpaceObject2.#locatorOffset, EveSpaceObject2.#locatorOffset, 1 / distance);
+      bestDirectionFit = Math.max(bestDirectionFit, EveSpaceObject2.#GetDirectionFit(EveSpaceObject2.#locatorDirection, EveSpaceObject2.#locatorOffset));
+    }
+
+    const desiredFit = Math.random() * (0.25 - (1 - bestDirectionFit)) + 0.75;
+    let bestFit = 1;
+    let bestLocator = -1;
+    for (let index = 0; index < locators.length; index++)
+    {
+      this.#GetLocatorInObjectSpace(EveSpaceObject2.#locatorPosition, EveSpaceObject2.#locatorDirection, locators[index]);
+      if (!EveSpaceObject2.#IsLocatorFacingPosition(EveSpaceObject2.#locatorDirection, objectPosition)) continue;
+      vec3.subtract(EveSpaceObject2.#locatorOffset, EveSpaceObject2.#locatorPosition, objectPosition);
+      const distance = vec3.length(EveSpaceObject2.#locatorOffset);
+      const range = maxDistance - minDistance;
+      let scale = range > 0 ? 1 - (distance - minDistance) / range : 1;
+      let value = 2 * scale - 1;
+      value = value < 0 ? 1 - Math.sqrt(Math.abs(value)) : Math.sqrt(Math.abs(value)) + 1;
+      value *= 0.5;
+      if (distance) vec3.scale(EveSpaceObject2.#locatorOffset, EveSpaceObject2.#locatorOffset, 1 / distance);
+      value *= EveSpaceObject2.#GetDirectionFit(EveSpaceObject2.#locatorDirection, EveSpaceObject2.#locatorOffset);
+      const fit = Math.abs(value - desiredFit);
+      if (fit < bestFit)
+      {
+        bestFit = fit;
+        bestLocator = index;
+      }
+    }
+    return bestLocator < 0 ? this.#GetClosestLocatorIndex(position, EveSpaceObject2.#damageLocatorSetName) : bestLocator;
+  }
+
+  /** Gets the model-scaled target radius. */
+  @carbon.method
+  @impl.implemented
+  GetRadius()
+  {
+    return this.GetBoundingSphereRadius();
+  }
+
+  /** Computes a miss point just outside the model silhouette. */
+  @carbon.method
+  @impl.implemented
+  GetMissPosition(hit, source, out = vec3.create())
+  {
+    if (this.boundingSphereRadius > 0)
+    {
+      vec3.copy(out, this.modelWorldPosition);
+      if (hit && source)
+      {
+        vec3.subtract(EveSpaceObject2.#missOffset, hit, out);
+        vec3.subtract(EveSpaceObject2.#missDirection, hit, source);
+        const directionLength = vec3.length(EveSpaceObject2.#missDirection);
+        if (directionLength) vec3.scale(EveSpaceObject2.#missDirection, EveSpaceObject2.#missDirection, 1 / directionLength);
+        vec3.scaleAndAdd(EveSpaceObject2.#missOffset, EveSpaceObject2.#missOffset, EveSpaceObject2.#missDirection, -vec3.dot(EveSpaceObject2.#missDirection, EveSpaceObject2.#missOffset));
+        const offsetLength = vec3.length(EveSpaceObject2.#missOffset);
+        if (offsetLength) vec3.scale(EveSpaceObject2.#missOffset, EveSpaceObject2.#missOffset, 1 / offsetLength);
+        vec3.scaleAndAdd(out, out, EveSpaceObject2.#missOffset, this.GetBoundingSphereRadius() * 1.125);
+      }
+    }
+    else
+    {
+      this.GetDamageLocatorPosition(-1, true, out);
+    }
     return out;
+  }
+
+  /** Gets the current target impact material. */
+  @carbon.method
+  @impl.implemented
+  GetImpactConfiguration()
+  {
+    return this.impactOverlay?.GetImpactConfiguration?.() ?? ImpactConfiguration.IMPACT_INVALID;
+  }
+
+  /** Reports whether impacts currently use the authored shield ellipsoid. */
+  @carbon.method
+  @impl.implemented
+  HasImpactConfigurationShield()
+  {
+    return !!this.impactOverlay?.HasShieldEllipsoid?.()
+      && this.GetImpactConfiguration() === ImpactConfiguration.IMPACT_SHIELD;
+  }
+
+  /** Resolves a shield-ray or damage-locator collision point. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("CarbonEngineJS uses an out-last signature; the ellipsoid intersection is otherwise source-faithful CPU math.")
+  GetImpactPosition(locator, posPrev, posNow, epsilon, out = vec3.create())
+  {
+    if (!this.HasImpactConfigurationShield())
+    {
+      this.GetDamageLocatorPosition(locator, true, out);
+      return vec3.squaredDistance(posNow, out) < Number(epsilon);
+    }
+
+    vec3.transformMat4(EveSpaceObject2.#rayOrigin, posPrev, this.inverseWorldTransform);
+    vec3.transformMat4(EveSpaceObject2.#rayEnd, posNow, this.inverseWorldTransform);
+    vec3.subtract(EveSpaceObject2.#rayDirection, EveSpaceObject2.#rayEnd, EveSpaceObject2.#rayOrigin);
+    this.#GetShapeEllipsoid(EveSpaceObject2.#ellipsoidCenter, EveSpaceObject2.#ellipsoidRadii);
+    const t = EveSpaceObject2.#IntersectEllipsoidRay(out, EveSpaceObject2.#ellipsoidCenter, EveSpaceObject2.#ellipsoidRadii, EveSpaceObject2.#rayOrigin, EveSpaceObject2.#rayDirection);
+    if (t !== null && t >= -1 && t <= 1)
+    {
+      vec3.transformMat4(out, out, this.worldTransform);
+      return true;
+    }
+    if (EveSpaceObject2.#IsPointInsideEllipsoid(EveSpaceObject2.#ellipsoidCenter, EveSpaceObject2.#ellipsoidRadii, EveSpaceObject2.#rayEnd))
+    {
+      vec3.copy(out, posNow);
+      return true;
+    }
+    return false;
+  }
+
+  /** Updates an existing impact overlay entry. */
+  @carbon.method
+  @impl.implemented
+  UpdateImpact(out, direction, impactIndex)
+  {
+    return this.impactOverlay?.UpdateImpact?.(out, direction, impactIndex) ?? false;
   }
 
   /**
@@ -1533,6 +1707,66 @@ export class EveSpaceObject2 extends EveEntity
     return out;
   }
 
+  #GetShapeEllipsoid(outCenter, outRadii)
+  {
+    if (this.shapeEllipsoidRadius[0] > 0)
+    {
+      vec3.copy(outCenter, this.shapeEllipsoidCenter);
+      vec3.copy(outRadii, this.shapeEllipsoidRadius);
+    }
+    else
+    {
+      const bounds = this.GetLocalBoundingBox(EveSpaceObject2.#boundsMin, EveSpaceObject2.#boundsMax);
+      if (bounds === false)
+      {
+        vec3.set(EveSpaceObject2.#boundsMin, -1, -1, -1);
+        vec3.set(EveSpaceObject2.#boundsMax, 1, 1, 1);
+      }
+      vec3.subtract(outRadii, EveSpaceObject2.#boundsMax, EveSpaceObject2.#boundsMin);
+      vec3.scale(outRadii, outRadii, Math.sqrt(3) * 0.5);
+      vec3.lerp(outCenter, EveSpaceObject2.#boundsMin, EveSpaceObject2.#boundsMax, 0.5);
+    }
+    vec3.copy(this.generatedShapeEllipsoidCenter, outCenter);
+    vec3.copy(this.generatedShapeEllipsoidRadius, outRadii);
+  }
+
+  static #GetDirectionFit(v0, v1)
+  {
+    const direction = -vec3.dot(v0, v1);
+    return direction < 0
+      ? (1 - Math.sqrt(Math.abs(direction))) * 0.5
+      : (Math.sqrt(Math.abs(direction)) + 1) * 0.5;
+  }
+
+  static #IntersectEllipsoidRay(out, center, radii, origin, direction)
+  {
+    const vx = direction[0] / radii[0];
+    const vy = direction[1] / radii[1];
+    const vz = direction[2] / radii[2];
+    const sx = (origin[0] - center[0]) / radii[0];
+    const sy = (origin[1] - center[1]) / radii[1];
+    const sz = (origin[2] - center[2]) / radii[2];
+    const vv = vx * vx + vy * vy + vz * vz;
+    if (!(vv > 0)) return null;
+    const vs = vx * sx + vy * sy + vz * sz;
+    const ss = sx * sx + sy * sy + sz * sz;
+    let discriminant = (vs / vv) ** 2 - ss / vv + 1 / vv;
+    if (discriminant < 0) return null;
+    discriminant = Math.sqrt(discriminant);
+    let t = -discriminant - vs / vv;
+    if (t < 0) t = discriminant - vs / vv;
+    vec3.scaleAndAdd(out, origin, direction, t);
+    return t;
+  }
+
+  static #IsPointInsideEllipsoid(center, radii, point)
+  {
+    const x = (point[0] - center[0]) / radii[0];
+    const y = (point[1] - center[1]) / radii[1];
+    const z = (point[2] - center[2]) / radii[2];
+    return x * x + y * y + z * z <= 1;
+  }
+
   // Mesh bone matrices come from the (unported) animation updater; only
   // mat4-shaped entries are usable.
   static #GetBoneMatrix(updater, boneIndex)
@@ -1606,6 +1840,20 @@ export class EveSpaceObject2 extends EveEntity
 
   static #unitY = Object.freeze([0, 1, 0]);
 
+  static #locatorDirection = vec3.create();
+  static #locatorPosition = vec3.create();
+  static #locatorOffset = vec3.create();
+  static #objectPosition = vec3.create();
+  static #missOffset = vec3.create();
+  static #missDirection = vec3.create();
+  static #rayOrigin = vec3.create();
+  static #rayEnd = vec3.create();
+  static #rayDirection = vec3.create();
+  static #ellipsoidCenter = vec3.create();
+  static #ellipsoidRadii = vec3.create();
+  static #boundsMin = vec3.create();
+  static #boundsMax = vec3.create();
+
   static #identityRotation = Object.freeze([0, 0, 0, 1]);
 
   static #damageLocatorSetName = "damage";
@@ -1613,5 +1861,7 @@ export class EveSpaceObject2 extends EveEntity
   static ReflectionMode = ReflectionMode;
 
   static Tr2Lod = Tr2Lod;
+
+  static ImpactConfiguration = ImpactConfiguration;
 
 }

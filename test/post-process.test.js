@@ -6,6 +6,7 @@ import {
   Tr2PPLutEffect,
   Tr2PPTaaEffect,
   Tr2PPTonemappingEffect,
+  Tr2PostProcess,
   Tr2PostProcess2,
   Tr2PostProcessAttributes
 } from "../npm/dist/index.js";
@@ -29,6 +30,17 @@ function assertVector(actual, expected, epsilon = 1e-6)
   assertEquals(actual.length, expected.length);
   for (let index = 0; index < expected.length; index++) assertAlmostEquals(actual[index], expected[index], epsilon);
 }
+
+test("Tr2PostProcess owns Carbon's legacy stage graph", () =>
+{
+  const postProcess = new Tr2PostProcess();
+  assertEquals(postProcess.stages.length, 0);
+  postProcess.stages.push({ name: "stage" });
+  assertEquals(postProcess.Initialize(), true);
+  assertEquals(postProcess.stages.length, 1);
+  assertEquals(CjsSchema.GetConstructor("Tr2PostProcess"), Tr2PostProcess);
+  assertEquals(CjsSchema.getMethod(Tr2PostProcess, "Initialize")?.impl?.status, "implemented");
+});
 
 test("post-process attributes expand Carbon's complete 114-field Blue surface", () =>
 {

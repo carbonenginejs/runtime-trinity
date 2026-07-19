@@ -187,8 +187,8 @@ export class Tr2ScalarExprKey extends CjsModel
   }
 }
 const SCALAR_EXPR_KEY_FUNCTIONS = {
-  perlin_simple: (_ctx, x = 0) => (noise.perlin1D(ToFiniteNumber(x), 1.1, 2, 3) + 1) * 0.5,
-  perlin: (_ctx, x = 0, a = 1, b = 1, n = 1) => (noise.perlin1D(ToFiniteNumber(x), ToFiniteNumber(a), ToFiniteNumber(b), Math.trunc(ToFiniteNumber(n))) + 1) * 0.5
+  perlin_simple: (_ctx, x = 0) => (noise.carbonPerlin1D(ToFiniteNumber(x), 1.1, 2, 3) + 1) * 0.5,
+  perlin: (_ctx, x = 0, a = 1, b = 1, n = 1) => (noise.carbonPerlin1D(ToFiniteNumber(x), ToFiniteNumber(a), ToFiniteNumber(b), Math.trunc(ToFiniteNumber(n))) + 1) * 0.5
 };
 const SCALAR_EXPR_KEY_PURE_FUNCTIONS = ["perlin_simple", "perlin"];
 function ToFiniteNumber(value)

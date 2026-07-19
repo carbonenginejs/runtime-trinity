@@ -38,7 +38,7 @@ export class Tr2TextureArray extends CjsModel
   /** m_gpuUsage (Tr2GpuUsage::Type - enum Tr2GpuUsage) */
   @type.int32
   @schema.enum("Tr2GpuUsage")
-  gpuUsage = 0;
+  gpuUsage = 16;
 
   static Tr2CpuUsage = Tr2CpuUsage;
 

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { EveEntity, EveLocatorSets, EveLocator2, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
+import { EveEntity, EveLocatorSets, EveLocator2, EveRootTransform, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
 import { EveChildInheritProperties } from "../npm/dist/eve/child/EveChildInheritProperties.js";
 
 
@@ -16,6 +16,16 @@ const assertVecNear = (actual, expected, epsilon = 1e-6) =>
       `component ${index}: expected ${expected[index]}, received ${actual[index]}`);
   }
 };
+
+test("EveRootTransform returns its authored Carbon bounding radius", () =>
+{
+  const root = new EveRootTransform();
+  assert.equal(root.GetBoundingSphereRadius(), -1);
+  root.boundingSphereRadius = 42.5;
+  assert.equal(root.GetBoundingSphereRadius(), 42.5);
+  assert.equal(CjsSchema.GetConstructor("EveRootTransform"), EveRootTransform);
+  assert.equal(existsSync(new URL("../src/generated/eve/spaceObject/EveRootTransform.js", import.meta.url)), false);
+});
 
 test("EveChildInheritProperties owns Carbon's 44 enum-ordered color copies", () =>
 {

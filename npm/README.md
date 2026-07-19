@@ -57,6 +57,30 @@ npm run build:npm
 npm test
 ```
 
+## Turrets and missiles
+
+The maintained Eve combat-effect graph now includes Carbon's portable turret,
+stretch, and MIRV missile behavior:
+
+- `EveMobile` maps authored `locator_*` transforms (and optional animated bone
+  transforms) into `EveTurretSet` instances. Turret sets own state changes,
+  paired turret/damage-locator selection, looping-fire rechecks, tracking fades,
+  muzzle transforms, target updates, firing effects, and ambient/controller
+  forwarding.
+- `EveSpaceObject2` supplies the targetable damage-locator, miss-position,
+  radius, impact-material, and shield-ellipsoid collision surface consumed by
+  both turrets and missiles.
+- `EveTransform`, `EveMissile`, and `EveMissileWarhead` own CPU transforms,
+  launch/eject/tracking states, Carbon fixed-seed Perlin path offsets, target
+  switching, impacts, explosion callbacks, particles, visibility, and dynamic
+  MIRV bounds. `EveMissileWarheadPerObjectData` publishes the portable matrix
+  and missile-size record.
+
+Native animation-pose realization, geometry/resource loading, quad submission,
+draw batches, device buffers, and shader uploads remain renderer/runtime-engine
+responsibilities. Trinity exposes duck-typed pose, emitter, renderable, and
+constant-data seams without importing a browser graphics API.
+
 ## Graph ownership and GPU realization
 
 Carbon class ownership follows graph fidelity, not graphics terminology.

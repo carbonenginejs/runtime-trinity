@@ -3,7 +3,13 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2ExpressionTermInfo_Blue.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { TermType } from "../generated/trinityCore/enums.js";
+
+
+const TermType = Object.freeze({
+  VARIABLE: 0,
+  FUNCTION: 1,
+  STRING_FUNCTION: 2
+});
 
 
 @type.define({

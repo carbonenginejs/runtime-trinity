@@ -98,6 +98,10 @@ new class extends _identity {
       throw new Error("Tr2TextureAtlas.ConsolidateFreeAreas is not implemented in CarbonEngineJS.");
     }
   }];
+  AtlasTextureType = Object.freeze({
+    ATT_DEFAULT: 0,
+    ATT_VIDEO: 1
+  });
   PixelFormat = PixelFormat;
   constructor() {
     super(_Tr2TextureAtlas), _initClass();

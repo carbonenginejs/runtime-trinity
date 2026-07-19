@@ -1,5 +1,5 @@
 import test from "node:test";
-import { CjsGrannyCurves, Tr2BoneMatrixCurve, Tr2CameraFollowCurveKey, Tr2CurveColor, Tr2CurveColorMixer, Tr2CurveCombiner, Tr2CurveConstant, Tr2CurveEulerRotation, Tr2CurveEulerRotationExpression, Tr2CurveExtrapolation, Tr2CurveInterpolation, Tr2CurveQuaternion, Tr2CurveQuaternionKey, Tr2CurveRandomAxisRotation, Tr2CurveScalar, Tr2CurveScalarExpression, Tr2CurveScalarKey, Tr2CurveSetRange, Tr2CurveVector2, Tr2CurveVector3, Tr2CurveVector3Expression, Tr2CurveVector3Lerp, Tr2CurveVector3LerpKeyInterpolation, Tr2DistanceTracker, Tr2FollowCurve, Tr2FollowCurveKeyInterpolation, Tr2GrannyEventTrack, Tr2GrannyTrack, Tr2GrannyTransformTrack, Tr2GrannyVectorTrack, Tr2MatrixKey, Tr2ObjectFollowCurveKey, Tr2ObjectFollowCurveKeyRotationSetting, Tr2QuaternionLerpCurve, Tr2RotationAdapter, Tr2ScalarExprKey, Tr2ScalarExprKeyCurve, Tr2ScalarFader, Tr2TranslationAdapter, TriCurveSet, TriEventCurve, TriExtrapolation, TriPerlinCurve } from "../npm/dist/index.js";
+import { CjsGrannyCurves, Tr2BoneMatrixCurve, Tr2CameraFollowCurveKey, Tr2CurveColor, Tr2CurveColorMixer, Tr2CurveCombiner, Tr2CurveConstant, Tr2CurveEulerRotation, Tr2CurveEulerRotationExpression, Tr2CurveExtrapolation, Tr2CurveInterpolation, Tr2CurveQuaternion, Tr2CurveQuaternionKey, Tr2CurveRandomAxisRotation, Tr2CurveScalar, Tr2CurveScalarExpression, Tr2CurveScalarKey, Tr2CurveSetRange, Tr2CurveVector2, Tr2CurveVector3, Tr2CurveVector3Expression, Tr2CurveVector3Lerp, Tr2CurveVector3LerpKeyInterpolation, Tr2DistanceTracker, Tr2FollowCurve, Tr2FollowCurveKeyInterpolation, Tr2GrannyEventTrack, Tr2GrannyTrack, Tr2GrannyTransformTrack, Tr2GrannyVectorTrack, Tr2MatrixKey, Tr2ObjectFollowCurveKey, Tr2ObjectFollowCurveKeyRotationSetting, Tr2QuaternionLerpCurve, Tr2RotationAdapter, Tr2ScalarExprKey, Tr2ScalarExprKeyCurve, Tr2ScalarFader, Tr2TranslationAdapter, TriColorSequencer, TriCurveSet, TriEventCurve, TriExtrapolation, TriPerlinCurve, TriVectorSequencer } from "../npm/dist/index.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { num } from "@carbonenginejs/core-math/num";
@@ -30,6 +30,73 @@ function assertAlmostEquals(actual, expected, epsilon = 1e-6)
     throw new Error(`expected ${expected}, got ${actual}`);
   }
 }
+function assertVector(actual, expected, epsilon = 1e-6)
+{
+  assertEquals(actual.length, expected.length);
+  for (let index = 0; index < expected.length; index++)
+  {
+    assertAlmostEquals(actual[index], expected[index], epsilon);
+  }
+}
+test("TriVectorSequencer ports Carbon combination and derivative behavior", () =>
+{
+  const makeFunction = (value, dot, doubleDot) => ({
+    GetValueAt: (_time, out) => vec3.copy(out, value),
+    GetValueDotAt: (_time, out) => vec3.copy(out, dot),
+    GetValueDoubleDotAt: (_time, out) => vec3.copy(out, doubleDot)
+  });
+  const sequencer = new TriVectorSequencer();
+  sequencer.functions = [
+    makeFunction([2, 3, 4], [1, 2, 3], [4, 5, 6]),
+    makeFunction([0.5, 2, 0.25], [2, 3, 4], [5, 6, 7])
+  ];
+  const out = vec3.create();
+
+  assertEquals(sequencer.GetValueAt(2, out), out);
+  assertVector(out, [1, 6, 1]);
+  sequencer.operator = TriVectorSequencer.TRIOPERATOR.TRIOP_ADD;
+  assertVector(sequencer.GetValueAt(2, out), [2.5, 5, 4.25]);
+  sequencer.operator = TriVectorSequencer.TRIOPERATOR.TRIOP_AVERAGE;
+  assertVector(sequencer.GetValueAt(2, out), [1.25, 2.5, 2.125]);
+  assertVector(sequencer.GetValueDotAt(2, out), [3, 5, 7]);
+  assertVector(sequencer.GetValueDoubleDotAt(2, out), [9, 11, 13]);
+
+  vec3.set(out, 8, 9, 10);
+  assertEquals(sequencer.InterpolatedPosition(2, out), out);
+  assertVector(out, [8, 9, 10]);
+  assertEquals(sequencer.Update(2, out), out);
+  assertVector(sequencer.value, [1.25, 2.5, 2.125]);
+  sequencer.UpdateValue(3);
+  assertVector(sequencer.value, [1.25, 2.5, 2.125]);
+
+  assertEquals(CjsSchema.GetConstructor("TriVectorSequencer"), TriVectorSequencer);
+  assertCarbonMethod(TriVectorSequencer, "UpdateValue", "implemented");
+  assertCarbonMethod(TriVectorSequencer, "GetValueAt", "adapted");
+});
+test("TriColorSequencer preserves Carbon's double-time additive quirk", () =>
+{
+  const makeFunction = (value, length) => ({
+    GetValueAt: (_time, out) => vec4.copy(out, value),
+    Length: () => length
+  });
+  const sequencer = new TriColorSequencer();
+  sequencer.functions = [
+    makeFunction([2, 0.5, 1, 2], 3),
+    makeFunction([0.5, 2, 0.25, 0.5], 7)
+  ];
+  const out = vec4.create();
+
+  assertVector(sequencer.GetValueAt(2, out), [1, 1, 0.25, 1]);
+  sequencer.operator = TriColorSequencer.TRIOPERATOR.TRIOP_ADD;
+  assertVector(sequencer.GetValueAt(2, out), [3.5, 3.5, 2.25, 3.5]);
+  assertEquals(sequencer.Length(), 7);
+  assertEquals(sequencer.Update(2, out), out);
+  assertVector(sequencer.value, [3.5, 3.5, 2.25, 3.5]);
+
+  assertEquals(CjsSchema.GetConstructor("TriColorSequencer"), TriColorSequencer);
+  assertCarbonMethod(TriColorSequencer, "Length", "implemented");
+  assertCarbonMethod(TriColorSequencer, "GetValueAt", "adapted");
+});
 test("TriPerlinCurve follows Carbon fixed-seed noise and update caching", () =>
 {
   const curve = new TriPerlinCurve();

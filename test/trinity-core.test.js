@@ -3,9 +3,12 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriVariable, TriViewport } from "../npm/dist/trinityCore/index.js";
+import { Tr2DepthStencil, Tr2DirectInstanceData, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VisibilityResults, TriDevice, TriObserverLocal, TriProjection, TriRect, TriVariable, TriView, TriViewport } from "../npm/dist/trinityCore/index.js";
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
-import { TermType, TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
+import { TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
+
+
+const { TermType } = Tr2ExpressionTermInfo;
 
 
 function assertEquals(actual, expected, message)
@@ -44,7 +47,6 @@ test("Carbon device graph descriptions remain canonical runtime-trinity classes"
     Tr2GpuBuffer,
     Tr2RuntimeGpuBuffer,
     Tr2SwapChain,
-    Tr2VideoAdapters,
     Tr2PresentParameters
   ];
   for (const Class of graphClasses)
@@ -80,7 +82,6 @@ test("device graph descriptions keep Carbon defaults without realizing a backend
   assertEquals(TriDevice.ThrottlingReason.WINDOW_HIDDEN, 2);
   assertEquals(TriDevice.ThrottlingReason.THERMAL_STATE, 4);
   assertEquals(Tr2GpuBuffer.CreationFlags.DRAW_INDIRECT, 4);
-  assertEquals(Tr2VideoAdapters.DEFAULT_ADAPTER, 0);
   assertEquals(Tr2RenderContext.TextureAddressMode.TA_WRAP, 1);
   assertEquals(Tr2RenderContext.TextureFilter.TF_ANISOTROPIC, 3);
 });
@@ -477,6 +478,54 @@ test("TriProjection custom transforms are copied at both API boundaries", () =>
   assertAlmostEquals(projection.GetTransform()[12], 4);
 });
 
+test("TriView builds Carbon's right-handed look-at transform", () =>
+{
+  const view = new TriView();
+  const expected = mat4.create();
+  mat4.lookAt(expected, [3, 4, 5], [0, 0, 0], [0, 1, 0]);
+
+  assertEquals(view.SetLookAtPosition([3, 4, 5], [0, 0, 0], [0, 1, 0]), undefined);
+  assertMatrixValues(view.transform, expected);
+  assertEquals(CjsSchema.getMethod(TriView, "SetLookAtPosition")?.impl?.status, "implemented");
+  assertEquals(existsSync(new URL("../src/generated/trinityCore/TriView.js", import.meta.url)), false);
+});
+
+test("Tr2DirectInstanceData retains detached CPU bounds", () =>
+{
+  const data = new Tr2DirectInstanceData();
+  const min = [-3, -2, -1];
+  const max = [4, 5, 6];
+
+  data.SetBoundingBox({ min, max });
+  min[0] = -30;
+  max[0] = 40;
+  assertEquals(data.aabbMin.join(","), "-3,-2,-1");
+  assertEquals(data.aabbMax.join(","), "4,5,6");
+
+  data.SetBoundingBox([-8, -7, -6], [8, 7, 6]);
+  assertEquals(data.aabbMin.join(","), "-8,-7,-6");
+  assertEquals(data.aabbMax.join(","), "8,7,6");
+  assert.throws(() => data.SetBoundingBox(null), /requires min and max/);
+  assertEquals(existsSync(new URL("../src/generated/trinityCore/Tr2DirectInstanceData.js", import.meta.url)), false);
+});
+
+test("Tr2VisibilityResults keeps native events transient", () =>
+{
+  const results = new Tr2VisibilityResults();
+  const event = { eventType: 128, userData: { id: 7 } };
+  results.AddVisibilityEvent(event);
+  assertEquals(results.GetNumVisibilityEvents(), 1);
+  assert.deepEqual(results.GetEvents(), [event]);
+
+  const detached = results.GetEvents();
+  detached.length = 0;
+  assertEquals(results.GetNumVisibilityEvents(), 1);
+  results.Clear();
+  assertEquals(results.GetNumVisibilityEvents(), 0);
+  assertEquals(CjsSchema.getField(Tr2VisibilityResults, "events"), null);
+  assertEquals(existsSync(new URL("../src/generated/trinityCore/Tr2VisibilityResults.js", import.meta.url)), false);
+});
+
 test("TriViewport preserves Carbon defaults, initialization, and aspect ratios", () =>
 {
   const viewport = new TriViewport();
@@ -620,35 +669,60 @@ test("Tr2VariableStore forms a global-rooted graph with Carbon lookup rules", ()
   assertEquals(CjsSchema.GetConstructor("TriVariable"), TriVariable);
 });
 
-test("dropped Blue math wrappers stay quarantined outside generated and exports", () =>
+test("dropped Blue and native scanner shapes stay quarantined", () =>
 {
-  const dropped = ["TriVector", "TriMatrix", "TriQuaternion", "TriColor"];
-  const droppedInterfaces = ["ITriVector", "ITriMatrix", "ITriQuaternion", "ITriColor"];
-  for (const name of dropped)
+  const droppedByFamily = {
+    trinityCore: ["TriVector", "TriQuaternion", "TriColor"],
+    include: ["ITriVector", "ITriMatrix", "ITriQuaternion", "ITriColor", "ITriDevice", "ITriEffectTextureParameter", "Point", "Tr2CurveBase", "Tr2DebugColor", "Tr2DebugObjectReference", "Tr2Rect", "TriPerlinNoise"],
+    curves: ["Tr2CurveRasterizeDestination", "Tr2CurveScalarDefinition", "Tr2Key"]
+  };
+  const dropped = Object.values(droppedByFamily).flat();
+  const droppedReadme = readFileSync(new URL("../src/dropped/README.md", import.meta.url), "utf8");
+  for (const [family, names] of Object.entries(droppedByFamily))
   {
-    assert.equal(existsSync(new URL(`../src/generated/trinityCore/${name}.js`, import.meta.url)), false, name);
-    assert.equal(existsSync(new URL(`../src/dropped/${name}.js`, import.meta.url)), true, name);
-  }
-  for (const name of droppedInterfaces)
-  {
-    assert.equal(existsSync(new URL(`../src/generated/include/${name}.js`, import.meta.url)), false, name);
-    assert.equal(existsSync(new URL(`../src/dropped/${name}.js`, import.meta.url)), true, name);
+    for (const name of names)
+    {
+      assert.equal(existsSync(new URL(`../src/generated/${family}/${name}.js`, import.meta.url)), false, name);
+      assert.equal(existsSync(new URL(`../src/dropped/${name}.js`, import.meta.url)), true, name);
+      assert.equal(droppedReadme.includes(`| \`${name}.js\` |`), true, `${name} disposition`);
+    }
   }
   // No barrel may export them and the schema registry must not know them.
-  const trinityCoreBarrel = readFileSync(new URL("../src/generated/trinityCore/index.js", import.meta.url), "utf8");
-  const includeBarrel = readFileSync(new URL("../src/generated/include/index.js", import.meta.url), "utf8");
-  for (const name of [...dropped, ...droppedInterfaces])
+  const barrels = Object.fromEntries(Object.keys(droppedByFamily).map(family => [
+    family,
+    readFileSync(new URL(`../src/generated/${family}/index.js`, import.meta.url), "utf8")
+  ]));
+  for (const [family, names] of Object.entries(droppedByFamily))
   {
-    assert.equal(trinityCoreBarrel.includes(`${name}.js"`), false, name);
-    assert.equal(includeBarrel.includes(`${name}.js"`), false, name);
-    assert.equal(CjsSchema.GetConstructor(name), null, name);
+    for (const name of names)
+    {
+      assert.equal(barrels[family].includes(`${name}.js"`), false, name);
+      assert.equal(CjsSchema.GetConstructor(name), null, name);
+    }
   }
   // The generator records the quarantine as skipped hand symbols.
   const summary = JSON.parse(readFileSync(new URL("../src/generated/summary.json", import.meta.url), "utf8"));
   const skippedNames = summary.skipped.map(entry => entry.className);
-  for (const name of [...dropped, ...droppedInterfaces])
+  for (const name of dropped)
   {
     assert.equal(skippedNames.includes(name), true, name);
   }
-  assert.equal(existsSync(new URL("../src/dropped/README.md", import.meta.url)), true);
+  const characterMatrixSkip = summary.generation.skipped.find(entry => entry.className === "TriMatrix" && entry.reason === "owned by runtime-character");
+  assert.ok(characterMatrixSkip, "TriMatrix must remain owned by runtime-character");
+  for (const [owner, names] of Object.entries({
+    "runtime-core": ["Tr2DisplayMode", "Tr2PlatformInfo", "Tr2VideoAdapter", "Tr2VideoAdapters", "Tr2VideoDriver"],
+    "runtime-input": ["Tr2MainWindow", "Tr2MainWindowState", "Tr2MouseCursor", "UIScancode"]
+  }))
+  {
+    for (const name of names)
+    {
+      const skip = summary.generation.skipped.find(entry => entry.className === name && entry.reason === `owned by ${owner}`);
+      assert.ok(skip, `${name} must remain owned by ${owner}`);
+      assert.equal(CjsSchema.GetConstructor(name), null, name);
+    }
+  }
+  assert.equal(existsSync(new URL("../src/generated/trinityCore/TriMatrix.js", import.meta.url)), false);
+  assert.equal(CjsSchema.GetConstructor("TriMatrix"), null);
+  assert.equal(existsSync(new URL("../src/generated/eve/socket/_className.js", import.meta.url)), false);
+  assert.equal(existsSync(new URL("../src/generated/include/ITr2InteriorLight.js", import.meta.url)), false);
 });

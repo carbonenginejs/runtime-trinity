@@ -18,7 +18,33 @@ const RESOURCE_OWNED_CLASSES = new Set(["TriTextureRes", "TriGeometryRes", "Tr2E
 // classes win over these (e.g. WodPlaceableRes is wod-family but a *Res
 // resource, owned by runtime-resource) - the skip checks run in that order.
 const CHARACTER_OWNED_FAMILIES = new Set(["interior", "wod"]);
-const CHARACTER_OWNED_CLASSES = new Set(["Tr2Model", "Tr2SkinnedModel", "Tr2SkinnedObject"]);
+const CHARACTER_OWNED_CLASSES = new Set(["ITr2InteriorLight", "Tr2Model", "Tr2SkinnedModel", "Tr2SkinnedObject", "TriMatrix"]);
+
+// Browser platform/capability snapshots and discovery belong to runtime-core;
+// Trinity consumes registered capabilities and must not probe the host.
+const CORE_OWNED_CLASSES = new Set([
+  "Tr2DisplayMode",
+  "Tr2PlatformInfo",
+  "Tr2VideoAdapter",
+  "Tr2VideoAdapters",
+  "Tr2VideoDriver"
+]);
+
+// Browser window/input ownership belongs to the optional runtime-input leaf.
+// Tr2MainWindowState follows its owner so runtime-input never depends back on
+// runtime-trinity merely to represent window state.
+const INPUT_OWNED_CLASSES = new Set([
+  "Tr2MainWindow",
+  "Tr2MainWindowState",
+  "Tr2MouseCursor",
+  "UIScancode"
+]);
+
+// Scanner artifacts and native/template implementation details that are not
+// constructible Carbon graph classes. The live format-carbon schema is a
+// separately reviewed artifact, so the runtime generator rejects known false
+// classes at its own boundary rather than publishing them.
+const INVALID_GENERATED_CLASSES = new Set(["_className"]);
 
 // Audio domain owned by runtime-audio (src/trinity there): the carbon-audio
 // package classes (audio), the Trinity<->audio contract interfaces
@@ -62,6 +88,16 @@ const RUNTIME_CANONICAL_CLASS_FAMILIES = new Map([
   ["TriMatrix", "trinityCore"],
   ["TriQuaternion", "trinityCore"],
   ["TriVector", "trinityCore"]
+]);
+const RUNTIME_CLASS_FAMILY_OVERRIDES = new Map([
+  ["EveSprite2dBracket", "eve/ui"],
+  ["EveSprite2dBracketRenderer", "eve/ui"],
+  ["Tr2PostProcess", "postProcess"],
+  ["Tr2RenderNodeEffect", "renderJob"],
+  ["Tr2RenderNodeSprite2dScene", "renderJob"],
+  ["Tr2VectorFunctionModifier", "curves"],
+  ["TriColorSequencer", "curves"],
+  ["TriVectorSequencer", "curves"]
 ]);
 const RUNTIME_FIELD_DEFAULT_OVERRIDES = new Map([
   ["ITr2GenericEmitter.emitCountFactor", 1]
@@ -256,8 +292,12 @@ function familyForEveSource(family, source)
 }
 function runtimeFamilyForDoc(doc, schemaFamily)
 {
-  const family = familyForEveSource(schemaFamily, preferredDocSource(doc));
   const className = classNameFor(doc, "");
+  if (RUNTIME_CLASS_FAMILY_OVERRIDES.has(className))
+  {
+    return RUNTIME_CLASS_FAMILY_OVERRIDES.get(className);
+  }
+  const family = familyForEveSource(schemaFamily, preferredDocSource(doc));
   if (className === "Tr2Key")
   {
     return "curves";
@@ -682,6 +722,7 @@ const generationSummary = {
   generated: 0,
   fallback: 0,
   skippedSof: 0,
+  skippedInvalid: 0,
   errors: 0,
   nonAsciiOutputs: 0,
   byFamily: {},
@@ -722,6 +763,17 @@ for (const file of docs)
     errors: 0
   };
   generationSummary.byFamily[family].docs++;
+  if (INVALID_GENERATED_CLASSES.has(className))
+  {
+    generationSummary.skippedInvalid++;
+    generationSummary.skipped.push({
+      family,
+      className,
+      schema: relativePosix(schemaRoot, file),
+      reason: "scanner macro placeholder, not a Carbon class"
+    });
+    continue;
+  }
   const canonicalFamily = RUNTIME_CANONICAL_CLASS_FAMILIES.get(className);
   if (canonicalFamily && family !== canonicalFamily)
   {
@@ -745,6 +797,21 @@ for (const file of docs)
       className,
       schema: relativePosix(schemaRoot, file),
       reason: isSofOwnedDoc(rawDoc) ? "owned by runtime-sof" : "owned by runtime-resource"
+    });
+    continue;
+  }
+  const externalRuntimeOwner = CORE_OWNED_CLASSES.has(className)
+    ? "runtime-core"
+    : INPUT_OWNED_CLASSES.has(className)
+      ? "runtime-input"
+      : null;
+  if (externalRuntimeOwner)
+  {
+    generationSummary.skipped.push({
+      family,
+      className,
+      schema: relativePosix(schemaRoot, file),
+      reason: `owned by ${externalRuntimeOwner}`
     });
     continue;
   }

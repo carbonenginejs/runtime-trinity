@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { EveMobile as _EveMobile } from './EveMobile.js';
+import { EveMobile as _EveMobile } from '../../../eve/spaceObject/EveMobile.js';
 
 let _initProto, _initClass, _init_boosters, _init_extra_boosters, _init_displayKillCounterValue, _init_extra_displayKillCounterValue, _init_speed, _init_extra_speed;
 

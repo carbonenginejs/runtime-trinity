@@ -1,6 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { carbonPerlin1D } from '@carbonenginejs/core-math/noise';
 
 let _initProto, _initClass, _init_alpha, _init_extra_alpha, _init_beta, _init_extra_beta, _init_N, _init_extra_N, _init_value, _init_extra_value, _init_scale, _init_extra_scale, _init_offset, _init_extra_offset, _init_speed, _init_extra_speed, _init_name, _init_extra_name;
 let _TriPerlinCurve;
@@ -53,59 +54,11 @@ new class extends _identity {
       this.scale = scale;
     }
     static PerlinNoise1D(position, inverseAmplitude, frequency, octaves) {
-      let sum = 0;
-      let amplitude = 1;
-      const count = Math.max(0, Math.trunc(octaves));
-      for (let index = 0; index < count; index++) {
-        sum += _TriPerlinCurve.#noise(position) * amplitude;
-        amplitude *= 1 / inverseAmplitude;
-        position *= frequency;
-      }
-      return sum;
+      return carbonPerlin1D(position, inverseAmplitude, frequency, octaves);
     }
   }];
   expressionCurveFakeRandom = false;
-  #gradients = _TriPerlinCurve.#createGradients();
   #triRandState = 1234;
-  #noise(position) {
-    const floor = Math.floor(position);
-    const first = floor & 255;
-    const second = first + 1 & 255;
-    const x0 = position - floor;
-    const x1 = x0 - 1;
-    const value0 = x0 * _TriPerlinCurve.#gradients[first];
-    const value1 = x1 * _TriPerlinCurve.#gradients[second];
-    const curve = x0 * x0 * (3 - 2 * x0);
-    return value0 + curve * (value1 - value0);
-  }
-  #createGradients() {
-    const state = new Uint32Array(624);
-    state[0] = 0;
-    for (let index = 1; index < state.length; index++) {
-      const previous = state[index - 1] ^ state[index - 1] >>> 30;
-      state[index] = Math.imul(1812433253, previous) + index >>> 0;
-    }
-    let cursor = state.length;
-    const twist = () => {
-      for (let index = 0; index < state.length; index++) {
-        const bits = state[index] & 0x80000000 | state[(index + 1) % 624] & 0x7fffffff;
-        state[index] = state[(index + 397) % 624] ^ bits >>> 1 ^ (bits & 1 ? 0x9908b0df : 0);
-      }
-      cursor = 0;
-    };
-    const next = () => {
-      if (cursor >= state.length) twist();
-      let value = state[cursor++];
-      value ^= value >>> 11;
-      value ^= value << 7 & 0x9d2c5680;
-      value ^= value << 15 & 0xefc60000;
-      value ^= value >>> 18;
-      return value >>> 0;
-    };
-    return Float64Array.from({
-      length: 256
-    }, () => (next() % 512 - 256) / 256);
-  }
   #nextStartOffset() {
     let state = _TriPerlinCurve.#triRandState;
     state = (state << 12) + 150889 >>> 0;

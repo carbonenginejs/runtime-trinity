@@ -134,6 +134,11 @@ export class Tr2TextureAtlas extends CjsModel
     throw new Error("Tr2TextureAtlas.ConsolidateFreeAreas is not implemented in CarbonEngineJS.");
   }
 
+  static AtlasTextureType = Object.freeze({
+    ATT_DEFAULT: 0,
+    ATT_VIDEO: 1,
+  });
+
   static PixelFormat = PixelFormat;
 
 }

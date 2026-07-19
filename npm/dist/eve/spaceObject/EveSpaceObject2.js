@@ -8,6 +8,7 @@ import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { ReflectionMode } from '../../generated/eve/enums.js';
+import { ImpactConfiguration } from '../../generated/include/enums.js';
 import { EveLODHelper, Tr2Lod } from '../EveLODHelper.js';
 
 let _initProto, _initClass, _init_reflectionMode, _init_extra_reflectionMode, _init_effectChildren, _init_extra_effectChildren, _init_children, _init_extra_children, _init_name, _init_extra_name, _init_mute, _init_extra_mute, _init_inheritProperties, _init_extra_inheritProperties, _init_customMasks, _init_extra_customMasks, _init_overlayEffects, _init_extra_overlayEffects, _init_positionDelta, _init_extra_positionDelta, _init_lodLevel, _init_extra_lodLevel, _init_curveSets, _init_extra_curveSets, _init_isPickable, _init_extra_isPickable, _init_estimatedPixelDiameter, _init_extra_estimatedPixelDiameter, _init_estimatedPixelDiameterWithChildren, _init_extra_estimatedPixelDiameterWithChildren, _init_generatedShapeEllipsoidCenter, _init_extra_generatedShapeEllipsoidCenter, _init_generatedShapeEllipsoidRadius, _init_extra_generatedShapeEllipsoidRadius, _init_animationUpdater, _init_extra_animationUpdater, _init_dna, _init_extra_dna, _init_castShadow, _init_extra_castShadow, _init_isAnimated, _init_extra_isAnimated, _init_dynamicBoundingSphereEnabled, _init_extra_dynamicBoundingSphereEnabled, _init_attachments, _init_extra_attachments, _init_decals, _init_extra_decals, _init_lights, _init_extra_lights, _init_externalParameters, _init_extra_externalParameters, _init_controllers, _init_extra_controllers, _init_locators, _init_extra_locators, _init_mesh, _init_extra_mesh, _init_impactOverlay, _init_extra_impactOverlay, _init_clipSphereCenter, _init_extra_clipSphereCenter, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2, _init_observers, _init_extra_observers, _init_worldPosition, _init_extra_worldPosition, _init_rotationCurve, _init_extra_rotationCurve, _init_worldRotation, _init_extra_worldRotation, _init_modelScale, _init_extra_modelScale, _init_locatorSets, _init_extra_locatorSets, _init_activationStrength, _init_extra_activationStrength, _init_albedoColor, _init_extra_albedoColor, _init_display, _init_extra_display, _init_update, _init_extra_update, _init_secondaryLightingSphereRadius, _init_extra_secondaryLightingSphereRadius, _init_boundingSphereCenter, _init_extra_boundingSphereCenter, _init_dirtLevel, _init_extra_dirtLevel, _init_lastDamageLocatorHit, _init_extra_lastDamageLocatorHit, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_modelWorldPosition, _init_extra_modelWorldPosition, _init_modelTranslationCurve, _init_extra_modelTranslationCurve, _init_modelRotationCurve, _init_extra_modelRotationCurve, _init_shapeEllipsoidCenter, _init_extra_shapeEllipsoidCenter, _init_shapeEllipsoidRadius, _init_extra_shapeEllipsoidRadius, _init_translationCurve, _init_extra_translationCurve, _init_worldTransform, _init_extra_worldTransform, _init_inverseWorldTransform, _init_extra_inverseWorldTransform, _init_lastWorldTransform, _init_extra_lastWorldTransform, _init_worldVelocity, _init_extra_worldVelocity, _init_audioGeometry, _init_extra_audioGeometry, _init_isVisible, _init_extra_isVisible;
@@ -21,7 +22,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveSpaceObject2",
         family: "eve/spaceObject"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.adapted], 18, "TransformLocators"]], 0, void 0, _EveEntity));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS keeps output parameters last and returns a validity flag for targetable callers.")], 18, "GetDamageLocatorPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetClosestDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("TriRand is represented by Math.random; all locator scoring remains source-faithful.")], 18, "GetGoodDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRadius"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMissPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetImpactConfiguration"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasImpactConfigurationShield"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS uses an out-last signature; the ellipsoid intersection is otherwise source-faithful CPU math.")], 18, "GetImpactPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.adapted], 18, "TransformLocators"]], 0, void 0, _EveEntity));
     }
     /** m_reflectionMode (EntityComponents::ReflectionMode - enum ReflectionMode) [READWRITE, PERSIST, NOTIFY, ENUM] */
     reflectionMode = (_initProto(this), _init_reflectionMode(this, 3));
@@ -625,14 +626,140 @@ new class extends _identity {
      * indices out of range (Carbon script GetDamageLocatorDirection maps to
      * GetDamageLocatorDirectionLocal).
      */
-    GetDamageLocatorDirection(index, out = vec3.create()) {
+    GetDamageLocatorDirection(index, inWorldSpaceOrOut = vec3.create(), out = vec3.create()) {
+      const targetableCall = typeof inWorldSpaceOrOut === "boolean";
+      const inWorldSpace = targetableCall && inWorldSpaceOrOut;
+      if (!targetableCall) out = inWorldSpaceOrOut;
       const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
       if (!locators || !(index >= 0 && index < locators.length)) {
-        return vec3.set(out, 0, 0, 0);
+        vec3.set(out, 0, targetableCall ? 1 : 0, 0);
+        return targetableCall ? false : out;
       }
       const position = vec3.create();
       this.#GetLocatorInObjectSpace(position, out, locators[index]);
+      if (inWorldSpace) _EveSpaceObject.#TransformNormal(out, out, this.worldTransform);
+      return targetableCall ? true : out;
+    }
+
+    /** Internal ITriTargetable locator query, using the org-standard out-last convention. */
+    GetDamageLocatorPosition(index, inWorldSpace, out = vec3.create()) {
+      const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
+      if (!locators || !(index >= 0 && index < locators.length)) {
+        if (inWorldSpace) vec3.set(out, this.worldTransform[12], this.worldTransform[13], this.worldTransform[14]);else vec3.set(out, 0, 0, 0);
+        return false;
+      }
+      this.#GetLocatorInObjectSpace(out, _EveSpaceObject.#locatorDirection, locators[index]);
+      if (inWorldSpace) vec3.transformMat4(out, out, this.worldTransform);
+      return true;
+    }
+
+    /** Gets the closest facing damage locator for ITriTargetable consumers. */
+    GetClosestDamageLocatorIndex(position) {
+      return this.#GetClosestLocatorIndex(position, _EveSpaceObject.#damageLocatorSetName);
+    }
+
+    /** Ports Carbon's randomized distance/direction fit for impact variation. */
+    GetGoodDamageLocatorIndex(position) {
+      const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
+      if (!locators) return 0;
+      const objectPosition = vec3.transformMat4(_EveSpaceObject.#objectPosition, position, this.inverseWorldTransform);
+      let minDistance = Infinity;
+      let maxDistance = Number.MIN_VALUE;
+      let bestDirectionFit = 0;
+      for (const locator of locators) {
+        this.#GetLocatorInObjectSpace(_EveSpaceObject.#locatorPosition, _EveSpaceObject.#locatorDirection, locator);
+        if (!_EveSpaceObject.#IsLocatorFacingPosition(_EveSpaceObject.#locatorDirection, objectPosition)) continue;
+        vec3.subtract(_EveSpaceObject.#locatorOffset, _EveSpaceObject.#locatorPosition, objectPosition);
+        const distance = vec3.length(_EveSpaceObject.#locatorOffset);
+        minDistance = Math.min(minDistance, distance);
+        maxDistance = Math.max(maxDistance, distance);
+        if (distance) vec3.scale(_EveSpaceObject.#locatorOffset, _EveSpaceObject.#locatorOffset, 1 / distance);
+        bestDirectionFit = Math.max(bestDirectionFit, _EveSpaceObject.#GetDirectionFit(_EveSpaceObject.#locatorDirection, _EveSpaceObject.#locatorOffset));
+      }
+      const desiredFit = Math.random() * (0.25 - (1 - bestDirectionFit)) + 0.75;
+      let bestFit = 1;
+      let bestLocator = -1;
+      for (let index = 0; index < locators.length; index++) {
+        this.#GetLocatorInObjectSpace(_EveSpaceObject.#locatorPosition, _EveSpaceObject.#locatorDirection, locators[index]);
+        if (!_EveSpaceObject.#IsLocatorFacingPosition(_EveSpaceObject.#locatorDirection, objectPosition)) continue;
+        vec3.subtract(_EveSpaceObject.#locatorOffset, _EveSpaceObject.#locatorPosition, objectPosition);
+        const distance = vec3.length(_EveSpaceObject.#locatorOffset);
+        const range = maxDistance - minDistance;
+        let scale = range > 0 ? 1 - (distance - minDistance) / range : 1;
+        let value = 2 * scale - 1;
+        value = value < 0 ? 1 - Math.sqrt(Math.abs(value)) : Math.sqrt(Math.abs(value)) + 1;
+        value *= 0.5;
+        if (distance) vec3.scale(_EveSpaceObject.#locatorOffset, _EveSpaceObject.#locatorOffset, 1 / distance);
+        value *= _EveSpaceObject.#GetDirectionFit(_EveSpaceObject.#locatorDirection, _EveSpaceObject.#locatorOffset);
+        const fit = Math.abs(value - desiredFit);
+        if (fit < bestFit) {
+          bestFit = fit;
+          bestLocator = index;
+        }
+      }
+      return bestLocator < 0 ? this.#GetClosestLocatorIndex(position, _EveSpaceObject.#damageLocatorSetName) : bestLocator;
+    }
+
+    /** Gets the model-scaled target radius. */
+    GetRadius() {
+      return this.GetBoundingSphereRadius();
+    }
+
+    /** Computes a miss point just outside the model silhouette. */
+    GetMissPosition(hit, source, out = vec3.create()) {
+      if (this.boundingSphereRadius > 0) {
+        vec3.copy(out, this.modelWorldPosition);
+        if (hit && source) {
+          vec3.subtract(_EveSpaceObject.#missOffset, hit, out);
+          vec3.subtract(_EveSpaceObject.#missDirection, hit, source);
+          const directionLength = vec3.length(_EveSpaceObject.#missDirection);
+          if (directionLength) vec3.scale(_EveSpaceObject.#missDirection, _EveSpaceObject.#missDirection, 1 / directionLength);
+          vec3.scaleAndAdd(_EveSpaceObject.#missOffset, _EveSpaceObject.#missOffset, _EveSpaceObject.#missDirection, -vec3.dot(_EveSpaceObject.#missDirection, _EveSpaceObject.#missOffset));
+          const offsetLength = vec3.length(_EveSpaceObject.#missOffset);
+          if (offsetLength) vec3.scale(_EveSpaceObject.#missOffset, _EveSpaceObject.#missOffset, 1 / offsetLength);
+          vec3.scaleAndAdd(out, out, _EveSpaceObject.#missOffset, this.GetBoundingSphereRadius() * 1.125);
+        }
+      } else {
+        this.GetDamageLocatorPosition(-1, true, out);
+      }
       return out;
+    }
+
+    /** Gets the current target impact material. */
+    GetImpactConfiguration() {
+      return this.impactOverlay?.GetImpactConfiguration?.() ?? ImpactConfiguration.IMPACT_INVALID;
+    }
+
+    /** Reports whether impacts currently use the authored shield ellipsoid. */
+    HasImpactConfigurationShield() {
+      return !!this.impactOverlay?.HasShieldEllipsoid?.() && this.GetImpactConfiguration() === ImpactConfiguration.IMPACT_SHIELD;
+    }
+
+    /** Resolves a shield-ray or damage-locator collision point. */
+    GetImpactPosition(locator, posPrev, posNow, epsilon, out = vec3.create()) {
+      if (!this.HasImpactConfigurationShield()) {
+        this.GetDamageLocatorPosition(locator, true, out);
+        return vec3.squaredDistance(posNow, out) < Number(epsilon);
+      }
+      vec3.transformMat4(_EveSpaceObject.#rayOrigin, posPrev, this.inverseWorldTransform);
+      vec3.transformMat4(_EveSpaceObject.#rayEnd, posNow, this.inverseWorldTransform);
+      vec3.subtract(_EveSpaceObject.#rayDirection, _EveSpaceObject.#rayEnd, _EveSpaceObject.#rayOrigin);
+      this.#GetShapeEllipsoid(_EveSpaceObject.#ellipsoidCenter, _EveSpaceObject.#ellipsoidRadii);
+      const t = _EveSpaceObject.#IntersectEllipsoidRay(out, _EveSpaceObject.#ellipsoidCenter, _EveSpaceObject.#ellipsoidRadii, _EveSpaceObject.#rayOrigin, _EveSpaceObject.#rayDirection);
+      if (t !== null && t >= -1 && t <= 1) {
+        vec3.transformMat4(out, out, this.worldTransform);
+        return true;
+      }
+      if (_EveSpaceObject.#IsPointInsideEllipsoid(_EveSpaceObject.#ellipsoidCenter, _EveSpaceObject.#ellipsoidRadii, _EveSpaceObject.#rayEnd)) {
+        vec3.copy(out, posNow);
+        return true;
+      }
+      return false;
+    }
+
+    /** Updates an existing impact overlay entry. */
+    UpdateImpact(out, direction, impactIndex) {
+      return this.impactOverlay?.UpdateImpact?.(out, direction, impactIndex) ?? false;
     }
 
     /**
@@ -1041,6 +1168,23 @@ new class extends _identity {
       }
       return closestIndex;
     }
+    #GetShapeEllipsoid(outCenter, outRadii) {
+      if (this.shapeEllipsoidRadius[0] > 0) {
+        vec3.copy(outCenter, this.shapeEllipsoidCenter);
+        vec3.copy(outRadii, this.shapeEllipsoidRadius);
+      } else {
+        const bounds = this.GetLocalBoundingBox(_EveSpaceObject.#boundsMin, _EveSpaceObject.#boundsMax);
+        if (bounds === false) {
+          vec3.set(_EveSpaceObject.#boundsMin, -1, -1, -1);
+          vec3.set(_EveSpaceObject.#boundsMax, 1, 1, 1);
+        }
+        vec3.subtract(outRadii, _EveSpaceObject.#boundsMax, _EveSpaceObject.#boundsMin);
+        vec3.scale(outRadii, outRadii, Math.sqrt(3) * 0.5);
+        vec3.lerp(outCenter, _EveSpaceObject.#boundsMin, _EveSpaceObject.#boundsMax, 0.5);
+      }
+      vec3.copy(this.generatedShapeEllipsoidCenter, outCenter);
+      vec3.copy(this.generatedShapeEllipsoidRadius, outRadii);
+    }
 
     // Mesh bone matrices come from the (unported) animation updater; only
     // mat4-shaped entries are usable.
@@ -1057,6 +1201,35 @@ new class extends _identity {
     out[1] = matrix[1] * x + matrix[5] * y + matrix[9] * z;
     out[2] = matrix[2] * x + matrix[6] * y + matrix[10] * z;
     return out;
+  }
+  #GetDirectionFit(v0, v1) {
+    const direction = -vec3.dot(v0, v1);
+    return direction < 0 ? (1 - Math.sqrt(Math.abs(direction))) * 0.5 : (Math.sqrt(Math.abs(direction)) + 1) * 0.5;
+  }
+  #IntersectEllipsoidRay(out, center, radii, origin, direction) {
+    const vx = direction[0] / radii[0];
+    const vy = direction[1] / radii[1];
+    const vz = direction[2] / radii[2];
+    const sx = (origin[0] - center[0]) / radii[0];
+    const sy = (origin[1] - center[1]) / radii[1];
+    const sz = (origin[2] - center[2]) / radii[2];
+    const vv = vx * vx + vy * vy + vz * vz;
+    if (!(vv > 0)) return null;
+    const vs = vx * sx + vy * sy + vz * sz;
+    const ss = sx * sx + sy * sy + sz * sz;
+    let discriminant = (vs / vv) ** 2 - ss / vv + 1 / vv;
+    if (discriminant < 0) return null;
+    discriminant = Math.sqrt(discriminant);
+    let t = -discriminant - vs / vv;
+    if (t < 0) t = discriminant - vs / vv;
+    vec3.scaleAndAdd(out, origin, direction, t);
+    return t;
+  }
+  #IsPointInsideEllipsoid(center, radii, point) {
+    const x = (point[0] - center[0]) / radii[0];
+    const y = (point[1] - center[1]) / radii[1];
+    const z = (point[2] - center[2]) / radii[2];
+    return x * x + y * y + z * z <= 1;
   }
   #GetBoneMatrix(updater, boneIndex) {
     const bones = updater.GetMeshBoneMatrixList?.();
@@ -1106,10 +1279,24 @@ new class extends _identity {
   }
   #zero = Object.freeze([0, 0, 0]);
   #unitY = Object.freeze([0, 1, 0]);
+  #locatorDirection = vec3.create();
+  #locatorPosition = vec3.create();
+  #locatorOffset = vec3.create();
+  #objectPosition = vec3.create();
+  #missOffset = vec3.create();
+  #missDirection = vec3.create();
+  #rayOrigin = vec3.create();
+  #rayEnd = vec3.create();
+  #rayDirection = vec3.create();
+  #ellipsoidCenter = vec3.create();
+  #ellipsoidRadii = vec3.create();
+  #boundsMin = vec3.create();
+  #boundsMax = vec3.create();
   #identityRotation = Object.freeze([0, 0, 0, 1]);
   #damageLocatorSetName = "damage";
   ReflectionMode = ReflectionMode;
   Tr2Lod = Tr2Lod;
+  ImpactConfiguration = ImpactConfiguration;
   constructor() {
     super(_EveSpaceObject), _initClass();
   }

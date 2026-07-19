@@ -16,9 +16,18 @@ test("published package resolves root, family, and deep generated exports", () =
     const child = await import("@carbonenginejs/runtime-trinity/generated/eve/child/EveChildLineSet.js");
     const renderStep = await import("@carbonenginejs/runtime-trinity/generated/renderJob/TriStepFilterVisibilityResults.js");
 
-    if (!packageRoot.Tr2Effect || !eve.EveChildRef || !child.EveChildLineSet || !renderStep.TriStepFilterVisibilityResults)
+    if (!packageRoot.Tr2Effect || !packageRoot.TriVectorSequencer || !packageRoot.TriColorSequencer ||
+        !packageRoot.Tr2PostProcess || !packageRoot.EveSprite2dBracket || !eve.EveChildRef ||
+        !child.EveChildLineSet || !renderStep.TriStepFilterVisibilityResults)
     {
       throw new Error("Published package exports did not expose the expected classes");
+    }
+    for (const invalidName of ["_className", "ITriDevice", "ITriEffectTextureParameter", "Tr2CurveBase", "Tr2Key"])
+    {
+      if (invalidName in packageRoot)
+      {
+        throw new Error(invalidName + " must not be exported as a runtime model");
+      }
     }
   `;
 

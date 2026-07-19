@@ -4,6 +4,7 @@ export { Tr2PPGenericEffect } from './Tr2PPGenericEffect.js';
 export { Tr2PPTaaEffect } from './Tr2PPTaaEffect.js';
 export { Tr2PPTonemappingEffect } from './Tr2PPTonemappingEffect.js';
 export { Tr2PostProcess2 } from './Tr2PostProcess2.js';
+export { Tr2PostProcess } from './Tr2PostProcess.js';
 export { Tr2PostProcessAttributes } from './Tr2PostProcessAttributes.js';
 export { BlurContext } from '../generated/postProcess/BlurContext.js';
 export { CASConstants } from '../generated/postProcess/CASConstants.js';

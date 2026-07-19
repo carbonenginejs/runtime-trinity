@@ -200,4 +200,12 @@ export class Tr2CurveLineSet extends CjsModel
     throw new Error("Tr2CurveLineSet.SubmitChanges is not implemented in CarbonEngineJS.");
   }
 
+  static LineType = Object.freeze({
+    LINETYPE_INVALID: 0,
+    LINETYPE_STRAIGHT: 1,
+    LINETYPE_SPHERED: 2,
+    LINETYPE_CURVED: 3,
+    LINETYPE_PARTICLE: 4,
+  });
+
 }

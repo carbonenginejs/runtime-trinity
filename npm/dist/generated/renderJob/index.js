@@ -1,3 +1,5 @@
+export { Tr2RenderNodeEffect } from './Tr2RenderNodeEffect.js';
+export { Tr2RenderNodeSprite2dScene } from './Tr2RenderNodeSprite2dScene.js';
 export { Tr2StepExecuteRenderNode } from './Tr2StepExecuteRenderNode.js';
 export { TriStepClearUav } from './TriStepClearUav.js';
 export { TriStepFilterVisibilityResults } from './TriStepFilterVisibilityResults.js';

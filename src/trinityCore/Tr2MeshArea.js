@@ -133,6 +133,13 @@ export class Tr2MeshArea extends CjsModel
   }
 
   @carbon.method
+  @impl.implemented
+  GetName()
+  {
+    return this.name;
+  }
+
+  @carbon.method
   @impl.adapted
   SetName(value)
   {

@@ -61,4 +61,10 @@ export class Tr2TextureAnimation extends CjsModel
     throw new Error("Tr2TextureAnimation.RestartAnimation is not implemented in CarbonEngineJS.");
   }
 
+  static RestartState = Object.freeze({
+    NotRestarting: 0,
+    WaitingToRestart: 1,
+    WaitingForFrame: 2,
+  });
+
 }

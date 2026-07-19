@@ -1,8 +1,8 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 356,
-    "skipped": 253
+    "written": 309,
+    "skipped": 288
   },
   "enums": {
     "written": 17,
@@ -216,7 +216,17 @@
     },
     {
       "family": "curves",
+      "className": "Tr2CurveRasterizeDestination",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
       "className": "Tr2CurveScalar",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2CurveScalarDefinition",
       "reason": "hand-maintained source exists"
     },
     {
@@ -396,6 +406,11 @@
     },
     {
       "family": "eve/child",
+      "className": "EveChildEffectPropagator",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child",
       "className": "EveChildInheritProperties",
       "reason": "hand-maintained source exists"
     },
@@ -450,6 +465,11 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "eve/renderable/stretch",
+      "className": "EveFiringEffectElementContainer",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "eve/attachment/haze",
       "className": "EveHazeSet",
       "reason": "hand-maintained source exists"
@@ -470,6 +490,11 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "eve/renderable/stretch",
+      "className": "EveLocalPositionCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "eve/utils",
       "className": "EveLocator2",
       "reason": "hand-maintained source exists"
@@ -477,6 +502,21 @@
     {
       "family": "eve/utils",
       "className": "EveLocatorSets",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject",
+      "className": "EveMissile",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject",
+      "className": "EveMissileWarhead",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject",
+      "className": "EveMobile",
       "reason": "hand-maintained source exists"
     },
     {
@@ -507,6 +547,11 @@
     {
       "family": "eve/renderable/stretch",
       "className": "EveRemotePositionCurve",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject",
+      "className": "EveRootTransform",
       "reason": "hand-maintained source exists"
     },
     {
@@ -580,6 +625,21 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "eve/renderable/stretch",
+      "className": "EveStretch",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/renderable/stretch",
+      "className": "EveStretch2",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/renderable/stretch",
+      "className": "EveStretch3",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "eve/utils",
       "className": "EveThrottleable",
       "reason": "hand-maintained source exists"
@@ -587,6 +647,46 @@
     {
       "family": "eve/attachment/boosters",
       "className": "EveTrailsSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject",
+      "className": "EveTransform",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/turrets",
+      "className": "EveTurretFiringFX",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/turrets",
+      "className": "EveTurretSet",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/perObjectData",
+      "className": "EveTurretSetPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/turrets",
+      "className": "EveTurretSetPSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/turrets",
+      "className": "EveTurretSetVSData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/turrets",
+      "className": "EveTurretTarget",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/ui",
+      "className": "EveUiObject",
       "reason": "hand-maintained source exists"
     },
     {
@@ -731,6 +831,16 @@
     },
     {
       "family": "include",
+      "className": "ITriDevice",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "ITriEffectTextureParameter",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
       "className": "ITriMatrix",
       "reason": "hand-maintained source exists"
     },
@@ -742,6 +852,41 @@
     {
       "family": "include",
       "className": "ITriVector",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "Point",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "Tr2CurveBase",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "Tr2DebugColor",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "Tr2DebugObjectReference",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "Tr2Key",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "Tr2Rect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "TriPerlinNoise",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1140,8 +1285,18 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "eve/ui",
+      "className": "EveSprite2dBracket",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "trinityCore",
       "className": "Tr2DepthStencil",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "Tr2DirectInstanceData",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1161,6 +1316,11 @@
     },
     {
       "family": "trinityCore",
+      "className": "Tr2MaterialParameterStore",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
       "className": "Tr2Mesh",
       "reason": "hand-maintained source exists"
     },
@@ -1172,6 +1332,11 @@
     {
       "family": "trinityCore",
       "className": "Tr2MeshBase",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PostProcess",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1211,7 +1376,7 @@
     },
     {
       "family": "trinityCore",
-      "className": "Tr2VideoAdapters",
+      "className": "Tr2VisibilityResults",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1220,13 +1385,13 @@
       "reason": "hand-maintained source exists"
     },
     {
-      "family": "trinityCore",
-      "className": "TriDevice",
+      "family": "curves",
+      "className": "TriColorSequencer",
       "reason": "hand-maintained source exists"
     },
     {
       "family": "trinityCore",
-      "className": "TriMatrix",
+      "className": "TriDevice",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1257,6 +1422,16 @@
     {
       "family": "trinityCore",
       "className": "TriVector",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "curves",
+      "className": "TriVectorSequencer",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "TriView",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1314,8 +1489,8 @@
   ],
   "families": {
     "curves": {
-      "exports": 3,
-      "classes": 3,
+      "exports": 1,
+      "classes": 1,
       "enumsFile": false
     },
     "eve": {
@@ -1349,13 +1524,13 @@
       "enumsFile": false
     },
     "eve/attachment/turrets": {
-      "exports": 6,
-      "classes": 5,
+      "exports": 1,
+      "classes": 0,
       "enumsFile": true
     },
     "eve/child": {
-      "exports": 31,
-      "classes": 26,
+      "exports": 30,
+      "classes": 25,
       "enumsFile": true
     },
     "eve/child/behaviors": {
@@ -1429,8 +1604,8 @@
       "enumsFile": false
     },
     "eve/perObjectData": {
-      "exports": 7,
-      "classes": 7,
+      "exports": 6,
+      "classes": 6,
       "enumsFile": false
     },
     "eve/renderable": {
@@ -1439,8 +1614,8 @@
       "enumsFile": false
     },
     "eve/renderable/stretch": {
-      "exports": 6,
-      "classes": 5,
+      "exports": 1,
+      "classes": 0,
       "enumsFile": true
     },
     "eve/scene": {
@@ -1459,13 +1634,13 @@
       "enumsFile": true
     },
     "eve/socket": {
-      "exports": 3,
-      "classes": 3,
+      "exports": 2,
+      "classes": 2,
       "enumsFile": false
     },
     "eve/spaceObject": {
-      "exports": 11,
-      "classes": 9,
+      "exports": 6,
+      "classes": 4,
       "enumsFile": true
     },
     "eve/spaceObject/swarm": {
@@ -1484,8 +1659,8 @@
       "enumsFile": false
     },
     "include": {
-      "exports": 10,
-      "classes": 9,
+      "exports": 1,
+      "classes": 0,
       "enumsFile": true
     },
     "particle": {
@@ -1504,8 +1679,8 @@
       "enumsFile": false
     },
     "renderJob": {
-      "exports": 24,
-      "classes": 23,
+      "exports": 26,
+      "classes": 25,
       "enumsFile": true
     },
     "shader": {
@@ -1519,13 +1694,13 @@
       "enumsFile": true
     },
     "trinityCore": {
-      "exports": 73,
-      "classes": 72,
+      "exports": 57,
+      "classes": 56,
       "enumsFile": true
     },
     "ui": {
-      "exports": 5,
-      "classes": 4,
+      "exports": 1,
+      "classes": 0,
       "enumsFile": true
     },
     "utilities": {
@@ -1539,9 +1714,10 @@
     "outRoot": "src/generated",
     "scannedDocs": 1247,
     "relevantDocs": 893,
-    "generated": 609,
+    "generated": 597,
     "fallback": 120,
     "skippedSof": 97,
+    "skippedInvalid": 1,
     "errors": 0,
     "nonAsciiOutputs": 0,
     "byFamily": {
@@ -1553,8 +1729,8 @@
         "errors": 0
       },
       "curves": {
-        "docs": 42,
-        "generated": 39,
+        "docs": 45,
+        "generated": 42,
         "fallback": 3,
         "skippedSof": 0,
         "errors": 0
@@ -1672,8 +1848,8 @@
         "errors": 0
       },
       "eve/ui": {
-        "docs": 14,
-        "generated": 14,
+        "docs": 16,
+        "generated": 16,
         "fallback": 0,
         "skippedSof": 0,
         "errors": 0
@@ -1771,7 +1947,7 @@
       },
       "eve/socket": {
         "docs": 5,
-        "generated": 3,
+        "generated": 2,
         "fallback": 2,
         "skippedSof": 0,
         "errors": 0
@@ -1848,7 +2024,7 @@
       },
       "include": {
         "docs": 40,
-        "generated": 13,
+        "generated": 12,
         "fallback": 22,
         "skippedSof": 0,
         "errors": 0
@@ -1875,8 +2051,8 @@
         "errors": 0
       },
       "postProcess": {
-        "docs": 23,
-        "generated": 22,
+        "docs": 24,
+        "generated": 23,
         "fallback": 1,
         "skippedSof": 0,
         "errors": 0
@@ -1889,8 +2065,8 @@
         "errors": 0
       },
       "renderJob": {
-        "docs": 52,
-        "generated": 44,
+        "docs": 54,
+        "generated": 46,
         "fallback": 8,
         "skippedSof": 0,
         "errors": 0
@@ -1924,15 +2100,15 @@
         "errors": 0
       },
       "trinityCore": {
-        "docs": 107,
-        "generated": 97,
+        "docs": 99,
+        "generated": 83,
         "fallback": 7,
         "skippedSof": 0,
         "errors": 0
       },
       "ui": {
         "docs": 5,
-        "generated": 5,
+        "generated": 1,
         "fallback": 0,
         "skippedSof": 0,
         "errors": 0
@@ -3258,10 +3434,22 @@
         "reason": "owned by runtime-sof"
       },
       {
+        "family": "eve/socket",
+        "className": "_className",
+        "schema": "eve/_className.json",
+        "reason": "scanner macro placeholder, not a Carbon class"
+      },
+      {
         "family": "include",
         "className": "ITr2InstanceData",
         "schema": "include/ITr2InstanceData.json",
         "reason": "canonical runtime family is trinityCore"
+      },
+      {
+        "family": "include",
+        "className": "ITr2InteriorLight",
+        "schema": "include/ITr2InteriorLight.json",
+        "reason": "owned by runtime-character"
       },
       {
         "family": "include",
@@ -3631,9 +3819,21 @@
       },
       {
         "family": "trinityCore",
+        "className": "Tr2DisplayMode",
+        "schema": "trinityCore/Tr2DisplayMode.json",
+        "reason": "owned by runtime-core"
+      },
+      {
+        "family": "trinityCore",
         "className": "Tr2Model",
         "schema": "trinityCore/Tr2Model.json",
         "reason": "owned by runtime-character"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2PlatformInfo",
+        "schema": "trinityCore/Tr2PlatformInfo.json",
+        "reason": "owned by runtime-core"
       },
       {
         "family": "trinityCore",
@@ -3646,6 +3846,54 @@
         "className": "Tr2SkinnedObject",
         "schema": "trinityCore/Tr2SkinnedObject.json",
         "reason": "owned by runtime-character"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2VideoAdapter",
+        "schema": "trinityCore/Tr2VideoAdapter.json",
+        "reason": "owned by runtime-core"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2VideoAdapters",
+        "schema": "trinityCore/Tr2VideoAdapters.json",
+        "reason": "owned by runtime-core"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2VideoDriver",
+        "schema": "trinityCore/Tr2VideoDriver.json",
+        "reason": "owned by runtime-core"
+      },
+      {
+        "family": "trinityCore",
+        "className": "TriMatrix",
+        "schema": "trinityCore/TriMatrix.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "ui",
+        "className": "Tr2MainWindow",
+        "schema": "ui/Tr2MainWindow.json",
+        "reason": "owned by runtime-input"
+      },
+      {
+        "family": "ui",
+        "className": "Tr2MainWindowState",
+        "schema": "ui/Tr2MainWindowState.json",
+        "reason": "owned by runtime-input"
+      },
+      {
+        "family": "ui",
+        "className": "Tr2MouseCursor",
+        "schema": "ui/Tr2MouseCursor.json",
+        "reason": "owned by runtime-input"
+      },
+      {
+        "family": "ui",
+        "className": "UIScancode",
+        "schema": "ui/UIScancode.json",
+        "reason": "owned by runtime-input"
       },
       {
         "family": "wod",
@@ -3662,12 +3910,6 @@
     ],
     "errorsList": [],
     "suppressedInheritedMethods": [
-      {
-        "family": "eve/child",
-        "className": "EveChildEffectPropagator",
-        "method": "RebuildLocalTransform",
-        "baseClass": "EveChildContainer"
-      },
       {
         "family": "eve/child",
         "className": "EveChildExplosion",

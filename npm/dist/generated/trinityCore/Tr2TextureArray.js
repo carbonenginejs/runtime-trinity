@@ -41,7 +41,7 @@ new class extends _identity {
     cpuUsage = (_init_extra_increment(this), _init_cpuUsage(this, 0));
 
     /** m_gpuUsage (Tr2GpuUsage::Type - enum Tr2GpuUsage) */
-    gpuUsage = (_init_extra_cpuUsage(this), _init_gpuUsage(this, 0));
+    gpuUsage = (_init_extra_cpuUsage(this), _init_gpuUsage(this, 16));
   }];
   Tr2CpuUsage = Tr2CpuUsage;
   Tr2GpuUsage = Tr2GpuUsage;

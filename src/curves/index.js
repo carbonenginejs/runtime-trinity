@@ -36,5 +36,7 @@ export * from "./TriEventCurve.js";
 export * from "./TriEventKey.js";
 export * from "./TriCurveSet.js";
 export * from "./TriPerlinCurve.js";
+export * from "./TriColorSequencer.js";
+export * from "./TriVectorSequencer.js";
 export * from "./contracts.js";
 export * from "./enums.js";

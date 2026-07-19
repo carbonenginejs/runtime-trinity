@@ -1,4 +1,2 @@
-export { Tr2CurveRasterizeDestination } from './Tr2CurveRasterizeDestination.js';
-export { Tr2CurveScalarDefinition } from './Tr2CurveScalarDefinition.js';
-export { Tr2Key } from './Tr2Key.js';
+export { Tr2VectorFunctionModifier } from './Tr2VectorFunctionModifier.js';
 //# sourceMappingURL=index.js.map

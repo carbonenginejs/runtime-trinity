@@ -3,7 +3,6 @@ export * from "./EveChildBehaviorSystem.js";
 export * from "./EveChildBulletStorm.js";
 export * from "./EveChildCloud.js";
 export * from "./EveChildCloud2.js";
-export * from "./EveChildEffectPropagator.js";
 export * from "./EveChildExplosion.js";
 export * from "./EveChildFogVolume.js";
 export * from "./EveChildInstanceContainer.js";
