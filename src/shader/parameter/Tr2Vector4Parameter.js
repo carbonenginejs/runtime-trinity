@@ -157,7 +157,7 @@ export class Tr2Vector4Parameter extends CjsVectorParameter
     const source = this.#reroutedValue ?? (this.isSrgb ? this.linearValue : this.value);
     CjsVectorParameter.writeVectorDestination(out, source, 4);
   }
-  
+
   #updateLinearValue()
   {
     if (!this.isSrgb)

@@ -132,7 +132,7 @@ export class Tr2Vector3Parameter extends CjsVectorParameter
     }
     return true;
   }
-  
+
   @carbon.method
   @impl.adapted
   CopyValueToEffect(_inputType, out)
