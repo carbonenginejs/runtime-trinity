@@ -22,10 +22,13 @@ If a class is not actually a Carbon class, it should use a `Cjs` prefix. Shared
 helpers that are not classes should live in utility modules with lower-camel
 names, for example `utils/shaderParameters.js`.
 
-`CjsVariableStore` follows this rule. Carbon refers to `Tr2VariableStorePtr`, but
-our schema scrape does not expose a reflected `Tr2VariableStore` class. The
-runtime implementation is therefore a CJS support class that models the Carbon
-concept without claiming to be a generated Carbon type.
+`CjsVariableStore` follows this rule as the shader-local helper store. Since
+2026-07-19 a maintained Carbon port of `Tr2VariableStore` (with a minimal
+`TriVariable`) also exists in `src/trinityCore/`, implementing the reflected
+Blue class and its global-rooted store graph. The two are not yet unified:
+shader parameters still consume `CjsVariableStore`, and moving
+`TriVariableParameter` onto the Carbon store's `GlobalStore()` (per the kb §8
+cleanup gate) is an open owner decision.
 
 ## Ownership Rationale
 
