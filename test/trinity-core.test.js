@@ -567,6 +567,16 @@ test("Tr2VariableStore forms a global-rooted graph with Carbon lookup rules", ()
   assertEquals(store.RegisterVariable("vsTestCount", 3).GetType(), TriVariable.ContentType.TRIVARIABLE_INT);
   assertEquals(store.RegisterVariable("vsTestColor", [1, 0, 0, 1]).GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT4);
   assertEquals(store.RegisterVariable("vsTestMatrix", mat4.create()).GetType(), TriVariable.ContentType.TRIVARIABLE_FLOAT4X4);
+  // Booleans register as INT, the way the Python bridge coerces them.
+  const flag = store.RegisterVariable("vsTestFlag", true);
+  assertEquals(flag.GetType(), TriVariable.ContentType.TRIVARIABLE_INT);
+  assertEquals(flag.GetValue(), 1);
+  // An unsupported value shape registers nothing and never clobbers an
+  // existing variable; null reserves like the bridge's None.
+  assertEquals(store.RegisterVariable("vsTestSpeed", { bogus: true }), null);
+  assertEquals(store.FindLocalVariable("vsTestSpeed").GetValue(), 0.5);
+  assertEquals(store.FindLocalVariable("vsTestNone"), null);
+  assertEquals(store.RegisterVariable("vsTestNone", null).GetType(), TriVariable.ContentType.TRIVARIABLE_INVALID);
 
   // Same-name same-type registration reuses the variable; a reserved
   // variable adopts the incoming type; a hard conflict returns null.

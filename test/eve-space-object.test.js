@@ -501,6 +501,8 @@ test("EveSpaceObject2 answers Carbon locator set queries in object and world spa
   mat4.fromTranslation(object.worldTransform, [10, 20, 30]);
   mat4.invert(object.inverseWorldTransform, object.worldTransform);
   assertVecNear(object.GetTransformedDamageLocator(0), [11, 20, 30]);
+  // Out-of-range indices return (0,0,0) untransformed, as Carbon does.
+  assertVecNear(object.GetTransformedDamageLocator(9), [0, 0, 0]);
 
   assertVecNear(object.GetLocatorPositionFromSet(1, false, "damage"), [0, 0, 5]);
   assertVecNear(object.GetLocatorPositionFromSet(1, true, "damage"), [10, 20, 35]);
@@ -518,7 +520,7 @@ test("EveSpaceObject2 answers Carbon locator set queries in object and world spa
   assert.equal(object.GetGoodLocatorIndex([10, 20, 34], "damage"), 1);
 });
 
-test("EveSpaceObject2 locator transforms come from authored locators and joints", () =>
+test("EveSpaceObject2 locator transforms resolve by name with animated-bone priority", () =>
 {
   const object = new EveSpaceObject2();
   const locator = new EveLocator2();
@@ -526,20 +528,28 @@ test("EveSpaceObject2 locator transforms come from authored locators and joints"
   mat4.fromTranslation(locator.transform, [4, 5, 6]);
   object.locators.push(locator);
 
-  const transform = object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_TRANSFORM, 0);
+  const transform = object.GetLocatorTransform("locator_attach_a01");
   assertVecNear(Array.from(transform).slice(12, 15), [4, 5, 6]);
-  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_TRANSFORM, 3), null);
-  // Joint transforms require an animation updater with published world poses.
-  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 0), null);
+  // Unknown names answer with the identity, as Carbon does.
+  assertVecNear(Array.from(object.GetLocatorTransform("missing")), Array.from(mat4.create()));
+  // An animation updater that resolves the name wins over the authored
+  // transform; one that does not falls back to it.
   object.animationUpdater = {
-    GetWorldTransforms()
+    GetBoneWorldTransform(name, out)
     {
-      return [mat4.fromTranslation(mat4.create(), [7, 8, 9])];
+      if (name !== "locator_attach_a01") return false;
+      mat4.fromTranslation(out, [7, 8, 9]);
+      return true;
     }
   };
-  const joint = object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 0);
-  assertVecNear(Array.from(joint).slice(12, 15), [7, 8, 9]);
-  assert.equal(object.GetLocatorTransform(EveSpaceObject2.LocatorType.ELT_JOINT, 1), null);
+  assertVecNear(Array.from(object.GetLocatorTransform("locator_attach_a01")).slice(12, 15), [7, 8, 9]);
+  object.animationUpdater = {
+    GetBoneWorldTransform()
+    {
+      return false;
+    }
+  };
+  assertVecNear(Array.from(object.GetLocatorTransform("locator_attach_a01")).slice(12, 15), [4, 5, 6]);
 });
 
 test("EveSpaceObject2 bounds follow Carbon dynamic-sphere and cached-box rules", () =>
@@ -728,14 +738,17 @@ test("EveSpaceObject2 transforms locator records and freezes high detail meshes"
   const object = new EveSpaceObject2();
   const authored = [
     { position: [1, 0, 0], direction: [0, 0, 0, 1], boneIndex: 0 },
-    { position: [0, 2, 0], direction: [0, 0, 0, 1], boneIndex: 0 }
+    [[0, 2, 0], [0, 0, 0, 1], 5]
   ];
+  // Locator records and (position, rotation, boneIndex) tuples are both
+  // accepted; results are always tuples, as the Carbon script surface emits.
   const passthrough = object.TransformLocators(authored);
   assert.equal(passthrough.length, 2);
-  assertVecNear(passthrough[0].position, [1, 0, 0]);
-  assertVecNear(passthrough[1].position, [0, 2, 0]);
-  assertVecNear(passthrough[0].rotation, [0, 0, 0, 1]);
-  assert.equal(passthrough[0].boneIndex, 0);
+  assertVecNear(passthrough[0][0], [1, 0, 0]);
+  assertVecNear(passthrough[1][0], [0, 2, 0]);
+  assertVecNear(passthrough[0][1], [0, 0, 0, 1]);
+  assert.equal(passthrough[0][2], 0);
+  assert.equal(passthrough[1][2], 5);
 
   // Model transform: translation adds, then rotation spins position and
   // pre-multiplies the record rotation (sampled at the time origin).
@@ -753,8 +766,8 @@ test("EveSpaceObject2 transforms locator records and freezes high detail meshes"
     }
   };
   const moved = object.TransformLocators([{ position: [1, 0, 0], direction: [0, 0, 0, 1], boneIndex: 0 }]);
-  assertVecNear(moved[0].position, [3, 0, -1], 1e-6);
-  assertVecNear(moved[0].rotation, [0, 0.7071067811865476, 0, 0.7071067811865476], 1e-6);
+  assertVecNear(moved[0][0], [3, 0, -1], 1e-6);
+  assertVecNear(moved[0][1], [0, 0.7071067811865476, 0, 0.7071067811865476], 1e-6);
 
   const decalStates = [];
   object.decals.push({

@@ -38,6 +38,8 @@ export class Tr2ActionSetExternalControllerVariable extends CjsModel
 
   #controller = null;
 
+  #linkedOwner = null;
+
   /**
    * Links to the destination owner.
    */
@@ -89,15 +91,19 @@ export class Tr2ActionSetExternalControllerVariable extends CjsModel
   }
 
   /**
-   * Relinks the destination after authored changes. Broad-safe: the relink
-   * recomputes the destination from scratch, so an unchanged owner name
-   * resolves to the same destination.
+   * Relinks the destination when the authored owner name changed since the
+   * last link (Carbon gates on the m_destinationOwner notification;
+   * broad-safe here means comparing against the cached linked owner rather
+   * than a changed-property list).
    */
   @carbon.method
   @impl.adapted
   OnModified(_options = {})
   {
-    this.#linkToDestinationOwner();
+    if (this.destinationOwner !== this.#linkedOwner)
+    {
+      this.#linkToDestinationOwner();
+    }
     return true;
   }
 
@@ -120,6 +126,7 @@ export class Tr2ActionSetExternalControllerVariable extends CjsModel
   }
   #linkToDestinationOwner()
   {
+    this.#linkedOwner = this.destinationOwner;
     this.destination = null;
     if (!this.#controller)
     {

@@ -16,6 +16,7 @@ const SWIZZLE_OFFSETS = {
   w: 3,
   a: 3
 };
+
 @type.define({
   className: "Tr2BindingPoint",
   family: "controllers"

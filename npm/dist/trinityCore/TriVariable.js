@@ -61,11 +61,16 @@ new class extends _identity {
 
     /**
      * Maps a script value onto a Carbon content type the way the Python
-     * bridge does: integers register as INT, other numbers as FLOAT, arrays
-     * by length, texture-provider-shaped objects as TEXTURE_RES. Unknown
-     * values stay INVALID (a reservation).
+     * bridge does: integers and booleans register as INT (Python bools are
+     * ints), other numbers as FLOAT, arrays by length, texture-provider
+     * shapes as TEXTURE_RES. Unknown values map to INVALID, which
+     * RegisterVariable treats as unsupported (GPU-buffer duck detection has
+     * no reliable JS shape yet and is left to the realization layer).
      */
     static getVariableType(value) {
+      if (typeof value === "boolean") {
+        return TriVariableContentType.TRIVARIABLE_INT;
+      }
       if (typeof value === "number") {
         return Number.isInteger(value) ? TriVariableContentType.TRIVARIABLE_INT : TriVariableContentType.TRIVARIABLE_FLOAT;
       }

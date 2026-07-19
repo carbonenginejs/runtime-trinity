@@ -651,10 +651,15 @@ new class extends _identity {
 
     /**
      * Gets the world-space position of an indexed damage locator, (0,0,0) for
-     * indices out of range.
+     * indices out of range (returned untransformed, as Carbon does).
      */
     GetTransformedDamageLocator(index, out = vec3.create()) {
-      this.GetDamageLocator(index, out);
+      const locators = this.#GetLocatorsForSet(_EveSpaceObject.#damageLocatorSetName);
+      if (!locators || !(index >= 0 && index < locators.length)) {
+        return vec3.set(out, 0, 0, 0);
+      }
+      const direction = vec3.create();
+      this.#GetLocatorInObjectSpace(out, direction, locators[index]);
       return vec3.transformMat4(out, out, this.worldTransform);
     }
 
@@ -776,25 +781,27 @@ new class extends _identity {
     }
 
     /**
-     * Gets an authored locator transform (ELT_TRANSFORM) or an animated joint
-     * world transform (ELT_JOINT). Returns null for unknown indices where
-     * Carbon dereferences unchecked, and for joint queries until an animation
-     * updater publishes world transforms.
+     * Gets a named locator's transform (Carbon script GetLocatorTransform maps
+     * to GetEveLocatorTransform): the identity for unknown names, the animated
+     * bone world transform when the animation updater resolves the name, else
+     * the authored locator transform.
      */
-    GetLocatorTransform(locatorType, locatorIndex) {
-      switch (locatorType) {
-        case _EveSpaceObject.LocatorType.ELT_TRANSFORM:
-          return this.locators[locatorIndex]?.GetTransform() ?? null;
-        case _EveSpaceObject.LocatorType.ELT_JOINT:
-          {
-            const worldTransforms = this.animationUpdater?.GetWorldTransforms?.();
-            if (!worldTransforms?.length || locatorIndex >= worldTransforms.length) {
-              return null;
-            }
-            return worldTransforms[locatorIndex];
-          }
+    GetLocatorTransform(name, out = mat4.create()) {
+      const target = String(name ?? "");
+      let locator = null;
+      for (const candidate of this.locators) {
+        if (candidate?.GetName?.() === target) {
+          locator = candidate;
+          break;
+        }
       }
-      return null;
+      if (!locator) {
+        return mat4.identity(out);
+      }
+      if (this.animationUpdater?.GetBoneWorldTransform?.(target, out)) {
+        return out;
+      }
+      return mat4.copy(out, locator.GetTransform());
     }
 
     /**
@@ -914,25 +921,33 @@ new class extends _identity {
     }
 
     /**
-     * Applies bone and model transforms to locator records and returns the
-     * transformed { position, rotation, boneIndex } records (Carbon script
-     * TransformLocators maps to PyTransformLocators).
+     * Applies bone and model transforms to locators and returns
+     * [position, rotation, boneIndex] tuples, as the Carbon script surface
+     * does (TransformLocators maps to PyTransformLocators). Accepts either
+     * locator records ({ position, direction, boneIndex }, Carbon's
+     * LocatorStructureList shape) or the same [position, rotation, boneIndex]
+     * tuple shape it returns.
      */
     TransformLocators(locators = []) {
       const result = [];
       for (const locator of locators ?? []) {
-        const position = vec3.clone(locator.position ?? _EveSpaceObject.#zero);
-        const rotation = quat.clone(locator.direction ?? locator.rotation ?? _EveSpaceObject.#identityRotation);
-        const boneIndex = Number(locator.boneIndex ?? 0);
+        const record = Array.isArray(locator) ? {
+          position: locator[0],
+          rotation: locator[1],
+          boneIndex: locator[2]
+        } : {
+          position: locator?.position,
+          rotation: locator?.direction ?? locator?.rotation,
+          boneIndex: locator?.boneIndex
+        };
+        const position = vec3.clone(record.position ?? _EveSpaceObject.#zero);
+        const rotation = quat.clone(record.rotation ?? _EveSpaceObject.#identityRotation);
+        const boneIndex = Number(record.boneIndex ?? 0);
         this.#TransformLocator(position, rotation, boneIndex);
         if (this.modelTranslationCurve || this.modelRotationCurve) {
           this.#ApplyModelTransform(position, rotation);
         }
-        result.push({
-          position,
-          rotation,
-          boneIndex
-        });
+        result.push([position, rotation, boneIndex]);
       }
       return result;
     }
@@ -1029,8 +1044,6 @@ new class extends _identity {
 
     // Mesh bone matrices come from the (unported) animation updater; only
     // mat4-shaped entries are usable.
-
-    /** Carbon EveSpaceObject2::LocatorType. */
   }];
   #IsLocatorFacingPosition(locatorDirection, posInObjectSpace) {
     const moved = vec3.subtract(vec3.create(), posInObjectSpace, locatorDirection);
@@ -1097,11 +1110,6 @@ new class extends _identity {
   #damageLocatorSetName = "damage";
   ReflectionMode = ReflectionMode;
   Tr2Lod = Tr2Lod;
-  LocatorType = Object.freeze({
-    ELT_TRANSFORM: 0,
-    ELT_JOINT: 1,
-    ELT_COUNT: 2
-  });
   constructor() {
     super(_EveSpaceObject), _initClass();
   }

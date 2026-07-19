@@ -48,17 +48,23 @@ new class extends _identity {
     }
 
     /**
-     * Registers a variable. Without a value the name is reserved with the
-     * INVALID type; with one, the content type is derived the way the script
-     * bridge does and the value stored. Returns null on a type conflict, as
-     * Carbon does after logging.
+     * Registers a variable. Without a value (or with null, the script
+     * bridge's None) the name is reserved with the INVALID type. Otherwise
+     * the content type is derived the way the script bridge does and the
+     * value stored. An unsupported value shape registers nothing and returns
+     * null, matching the Python bridge falling through every extractor; a
+     * type conflict also returns null, as Carbon does after logging.
      */
     RegisterVariable(name, value = undefined) {
-      if (value === undefined) {
+      if (value === undefined || value === null) {
         return this.#RegisterVariableType(name, TriVariableContentType.TRIVARIABLE_INVALID);
       }
-      const variable = this.#RegisterVariableType(name, _TriVariable.getVariableType(value));
-      variable?.SetValue(value);
+      const contentType = _TriVariable.getVariableType(value);
+      if (contentType === TriVariableContentType.TRIVARIABLE_INVALID) {
+        return null;
+      }
+      const variable = this.#RegisterVariableType(name, contentType);
+      variable?.SetValue(typeof value === "boolean" ? Number(value) : value);
       return variable;
     }
 

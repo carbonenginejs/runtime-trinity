@@ -1367,10 +1367,13 @@ test("Tr2ActionSetExternalControllerVariable only relinks destination owner edit
   action.destinationOwner = "child";
   action.Link(controller);
   assertEquals(action.destination, firstDestination);
-  roots = [["Child", secondDestination]];
+  roots = [["Child", secondDestination], ["Backup", secondDestination]];
 
-  action.value = 4;
-  action.UpdateValues({ property: "value" });
+  // A value-only settle keeps the cached link even though the roots moved.
+  action.SetValues({ value: 4 });
+  assertEquals(action.destination, firstDestination);
+  // Changing the owner name relinks against the current roots.
+  action.SetValues({ destinationOwner: "backup" });
   assertEquals(action.destination, secondDestination);
   assertEquals(CjsSchema.getMethod(Tr2ActionSetExternalControllerVariable, "LinkToDestinationOwner"), null);
 });
