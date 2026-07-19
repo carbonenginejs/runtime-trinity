@@ -1,8 +1,8 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 364,
-    "skipped": 245
+    "written": 356,
+    "skipped": 253
   },
   "enums": {
     "written": 17,
@@ -725,6 +725,26 @@
       "reason": "hand-maintained source exists"
     },
     {
+      "family": "include",
+      "className": "ITriColor",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "ITriMatrix",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "ITriQuaternion",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "include",
+      "className": "ITriVector",
+      "reason": "hand-maintained source exists"
+    },
+    {
       "family": "eve/lights",
       "className": "Tr2Light",
       "reason": "hand-maintained source exists"
@@ -1196,7 +1216,17 @@
     },
     {
       "family": "trinityCore",
+      "className": "TriColor",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
       "className": "TriDevice",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "TriMatrix",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1216,7 +1246,17 @@
     },
     {
       "family": "trinityCore",
+      "className": "TriQuaternion",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
       "className": "TriRect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "TriVector",
       "reason": "hand-maintained source exists"
     },
     {
@@ -1444,8 +1484,8 @@
       "enumsFile": false
     },
     "include": {
-      "exports": 14,
-      "classes": 13,
+      "exports": 10,
+      "classes": 9,
       "enumsFile": true
     },
     "particle": {
@@ -1479,8 +1519,8 @@
       "enumsFile": true
     },
     "trinityCore": {
-      "exports": 77,
-      "classes": 76,
+      "exports": 73,
+      "classes": 72,
       "enumsFile": true
     },
     "ui": {

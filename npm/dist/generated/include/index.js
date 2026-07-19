@@ -1,10 +1,6 @@
 export { ITr2InteriorLight } from './ITr2InteriorLight.js';
-export { ITriColor } from './ITriColor.js';
 export { ITriDevice } from './ITriDevice.js';
 export { ITriEffectTextureParameter } from './ITriEffectTextureParameter.js';
-export { ITriMatrix } from './ITriMatrix.js';
-export { ITriQuaternion } from './ITriQuaternion.js';
-export { ITriVector } from './ITriVector.js';
 export { Point } from './Point.js';
 export { Tr2CurveBase } from './Tr2CurveBase.js';
 export { Tr2DebugColor } from './Tr2DebugColor.js';

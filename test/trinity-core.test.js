@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import { Tr2DepthStencil, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VideoAdapters, TriDevice, TriObserverLocal, TriProjection, TriRect, TriVariable, TriViewport } from "../npm/dist/trinityCore/index.js";
@@ -617,4 +618,37 @@ test("Tr2VariableStore forms a global-rooted graph with Carbon lookup rules", ()
   globalStore.UnregisterLocalVariable("vsTestGlobal");
   assertEquals(CjsSchema.GetConstructor("Tr2VariableStore"), Tr2VariableStore);
   assertEquals(CjsSchema.GetConstructor("TriVariable"), TriVariable);
+});
+
+test("dropped Blue math wrappers stay quarantined outside generated and exports", () =>
+{
+  const dropped = ["TriVector", "TriMatrix", "TriQuaternion", "TriColor"];
+  const droppedInterfaces = ["ITriVector", "ITriMatrix", "ITriQuaternion", "ITriColor"];
+  for (const name of dropped)
+  {
+    assert.equal(existsSync(new URL(`../src/generated/trinityCore/${name}.js`, import.meta.url)), false, name);
+    assert.equal(existsSync(new URL(`../src/dropped/${name}.js`, import.meta.url)), true, name);
+  }
+  for (const name of droppedInterfaces)
+  {
+    assert.equal(existsSync(new URL(`../src/generated/include/${name}.js`, import.meta.url)), false, name);
+    assert.equal(existsSync(new URL(`../src/dropped/${name}.js`, import.meta.url)), true, name);
+  }
+  // No barrel may export them and the schema registry must not know them.
+  const trinityCoreBarrel = readFileSync(new URL("../src/generated/trinityCore/index.js", import.meta.url), "utf8");
+  const includeBarrel = readFileSync(new URL("../src/generated/include/index.js", import.meta.url), "utf8");
+  for (const name of [...dropped, ...droppedInterfaces])
+  {
+    assert.equal(trinityCoreBarrel.includes(`${name}.js"`), false, name);
+    assert.equal(includeBarrel.includes(`${name}.js"`), false, name);
+    assert.equal(CjsSchema.GetConstructor(name), null, name);
+  }
+  // The generator records the quarantine as skipped hand symbols.
+  const summary = JSON.parse(readFileSync(new URL("../src/generated/summary.json", import.meta.url), "utf8"));
+  const skippedNames = summary.skipped.map(entry => entry.className);
+  for (const name of [...dropped, ...droppedInterfaces])
+  {
+    assert.equal(skippedNames.includes(name), true, name);
+  }
+  assert.equal(existsSync(new URL("../src/dropped/README.md", import.meta.url)), true);
 });
