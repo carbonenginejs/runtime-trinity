@@ -26,9 +26,9 @@
   }, 
   "version": "0.4.0", 
   "dependencies": {
-    "@carbonenginejs/core-math": "^0.1.3", 
-    "@carbonenginejs/core-types": "^0.6.0", 
-    "@carbonenginejs/runtime-const": "file:../runtime-const"
+    "@carbonenginejs/core-math": "^0.1.5",
+    "@carbonenginejs/core-types": "^0.12.0",
+    "@carbonenginejs/runtime-const": "^0.1.0"
   }, 
   "type": "module", 
   "description": "CarbonEngineJS Trinity graph classes and JSON contract."
