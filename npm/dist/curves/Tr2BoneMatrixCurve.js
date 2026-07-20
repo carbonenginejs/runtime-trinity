@@ -6,6 +6,7 @@ import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { Tr2MatrixKey as _Tr2MatrixKey } from './Tr2MatrixKey.js';
 
 let _initProto, _initClass, _init_currentValue, _init_extra_currentValue, _init_name, _init_extra_name, _init_length, _init_extra_length, _init_cycle, _init_extra_cycle, _init_reversed, _init_extra_reversed, _init_startValue, _init_extra_startValue, _init_endValue, _init_extra_endValue, _init_skinnedObject, _init_extra_skinnedObject, _init_transform, _init_extra_transform, _init_keys, _init_extra_keys;
+const SPHERICAL_LINEAR = 4;
 let _Tr2BoneMatrixCurve;
 new class extends _identity {
   static [class Tr2BoneMatrixCurve extends CjsModel {
@@ -16,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2BoneMatrixCurve",
         family: "curves"
-      })], [[[io, io.read, type, type.mat4], 16, "currentValue"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "length"], [[io, io.persist, type, type.boolean], 16, "cycle"], [[io, io.persist, type, type.boolean], 16, "reversed"], [[io, io.persist, type, type.mat4], 16, "startValue"], [[io, io.persist, type, type.mat4], 16, "endValue"], [[io, io.readwrite, void 0, type.objectRef("Tr2SkinnedObject")], 16, "skinnedObject"], [[io, io.persist, type, type.mat4], 16, "transform"], [[io, io.persistOnly, void 0, type.list("Tr2MatrixKey")], 16, "keys"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "Length"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetValueAt"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "Sort"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetBone"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBone"]], 0, void 0, CjsModel));
+      })], [[[io, io.read, type, type.mat4], 16, "currentValue"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "length"], [[io, io.persist, type, type.boolean], 16, "cycle"], [[io, io.persist, type, type.boolean], 16, "reversed"], [[io, io.persist, type, type.mat4], 16, "startValue"], [[io, io.persist, type, type.mat4], 16, "endValue"], [[io, io.readwrite, void 0, type.objectRef("Tr2SkinnedObject")], 16, "skinnedObject"], [[io, io.persist, type, type.mat4], 16, "transform"], [[io, io.persistOnly, void 0, type.list("Tr2MatrixKey")], 16, "keys"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "Length"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetValueAt"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "Sort"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetKeyCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetKeyTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetKeyTime"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("JavaScript returns a detached matrix instead of exposing Carbon's const Matrix reference.")], 18, "GetKeyValue"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("JavaScript copies authored matrix values so curve storage never aliases caller-owned arrays.")], 18, "SetKeyValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetKeyInterpolation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetKeyInterpolation"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetBone"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBone"]], 0, void 0, CjsModel));
     }
     currentValue = (_initProto(this), _init_currentValue(this, mat4.create()));
     name = (_init_extra_currentValue(this), _init_name(this, ""));
@@ -112,16 +113,67 @@ new class extends _identity {
       const key = new _Tr2MatrixKey();
       key.time = time;
       mat4.copy(key.value, keyValue);
+      _Tr2BoneMatrixCurve.#keyInterpolations.set(key, SPHERICAL_LINEAR);
       keys.push(key);
       this.Sort();
       return keys.indexOf(key);
+    }
+
+    /** Gets the number of matrix keys. */
+    GetKeyCount() {
+      return this.keys.length;
+    }
+
+    /** Gets a key time, or the curve length when the index is out of range. */
+    GetKeyTime(index) {
+      return Number(this.keys[index]?.time ?? this.length);
+    }
+
+    /** Sets a key time without reordering; Carbon requires an explicit Sort call. */
+    SetKeyTime(index, time) {
+      if (this.keys[index]) {
+        this.keys[index].time = Number(time);
+      }
+    }
+
+    /** Gets a detached key matrix, or the curve end value when out of range. */
+    GetKeyValue(index) {
+      return mat4.clone(this.keys[index]?.value ?? this.endValue);
+    }
+
+    /** Copies a matrix into an existing key. */
+    SetKeyValue(index, value) {
+      if (this.keys[index]) {
+        if (!isArrayLike(value, 16)) {
+          throw new TypeError("Matrix key values must contain 16 components");
+        }
+        mat4.copy(this.keys[index].value, value);
+      }
+    }
+
+    /** Gets a key interpolation, or Carbon's spherical-linear curve default. */
+    GetKeyInterpolation(index) {
+      const key = this.keys[index];
+      return key ? _Tr2BoneMatrixCurve.#keyInterpolations.get(key) ?? SPHERICAL_LINEAR : SPHERICAL_LINEAR;
+    }
+
+    /** Sets the unpersisted interpolation mode on an existing matrix key. */
+    SetKeyInterpolation(index, interpolation) {
+      const key = this.keys[index];
+      if (key) {
+        _Tr2BoneMatrixCurve.#keyInterpolations.set(key, Math.trunc(Number(interpolation)) >>> 0);
+      }
     }
 
     /**
      * Removes a matrix key.
      */
     RemoveKey(index) {
-      this.keys.splice(index, 1);
+      if (Number.isInteger(index) && index >= 0 && index < this.keys.length) {
+        const [key] = this.keys.splice(index, 1);
+        _Tr2BoneMatrixCurve.#keyInterpolations.delete(key);
+        this.Sort();
+      }
     }
 
     /**
@@ -154,6 +206,7 @@ new class extends _identity {
     }
   }];
   #identityMatrix = mat4.create();
+  #keyInterpolations = new WeakMap();
   #getBoneMatrix(skinnedObject, bone) {
     if (!skinnedObject || !bone) {
       return null;

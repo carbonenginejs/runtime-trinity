@@ -677,6 +677,38 @@ test("promoted follow and bone curves keep Carbon defaults", () =>
   const rolloverKeys = rollover.keys;
   assertEquals(rolloverKeys[0].time, 1);
   assertAlmostEquals(rolloverKeys[0].value[12], 0);
+  assertEquals(rollover.GetKeyCount(), 1);
+  assertEquals(rollover.GetKeyTime(0), 1);
+  assertEquals(rollover.GetKeyTime(20), rollover.length);
+  assertEquals(rollover.GetKeyInterpolation(0), 4);
+  assertEquals(rollover.GetKeyInterpolation(20), 4);
+  rollover.SetKeyInterpolation(0, 5);
+  assertEquals(rollover.GetKeyInterpolation(0), 5);
+  const detachedValue = rollover.GetKeyValue(0);
+  detachedValue[12] = 99;
+  assertAlmostEquals(rollover.GetKeyValue(0)[12], 0);
+  const replacement = TranslationMat4(7, 8, 9);
+  rollover.SetKeyValue(0, replacement);
+  replacement[12] = 100;
+  assertAlmostEquals(rollover.GetKeyValue(0)[12], 7);
+  rollover.SetKeyTime(0, 2);
+  assertEquals(rollover.GetKeyTime(0), 2);
+  rollover.RemoveKey(-1);
+  assertEquals(rollover.GetKeyCount(), 1);
+  rollover.RemoveKey(0);
+  assertEquals(rollover.GetKeyCount(), 0);
+  for (const [method, status] of [
+    ["GetKeyCount", "implemented"],
+    ["GetKeyTime", "implemented"],
+    ["SetKeyTime", "implemented"],
+    ["GetKeyValue", "adapted"],
+    ["SetKeyValue", "adapted"],
+    ["GetKeyInterpolation", "implemented"],
+    ["SetKeyInterpolation", "implemented"]
+  ])
+  {
+    assertEquals(CjsSchema.getMethod(Tr2BoneMatrixCurve, method)?.impl?.status, status, method);
+  }
 });
 test("Tr2CurveScalarKey defaults match Carbon", () =>
 {

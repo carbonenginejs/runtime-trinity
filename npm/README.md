@@ -87,7 +87,11 @@ implemented; root traversal does not invent missing child rendering behavior.
 Character GState ownership lives in `runtime-character`:
 `Tr2GStateAnimation` and `Tr2GStateParameter` are not Trinity exports. The
 generic `Tr2GrannyAnimation` graph remains here for non-character skinned
-geometry, while `Tr2GrannyStateRes` remains a runtime-resource class.
+geometry, while `Tr2GrannyStateRes` remains a runtime-resource class. The
+generic updater samples legacy scalar vector tracks and modern morph channels,
+composes layers in native lexical order, exposes a detached morph snapshot,
+and applies `GrannyBoneOffset` corrections after animation sampling but before
+world-transform composition.
 
 ## Implementation-gap audit
 
@@ -97,6 +101,19 @@ Explicit generated and maintained implementation gaps can be inventoried with:
 npm run audit:gaps
 ```
 
+Promoted-class public method parity can be checked against the compiled Carbon
+schema with:
+
+```sh
+npm run audit:parity
+```
+
+The parity audit resolves JavaScript inheritance, requires `@carbon.method`
+exposure, and excludes the explicitly documented `src/dropped` quarantine. It
+uses the sibling `tools-core/.scratch/schema-build` by default; pass
+`-- --schema-root <directory>` or set `CARBON_SCHEMA_ROOT` for another compiled
+schema location.
+
 The command reports `@impl.notImplemented` methods and `@type.unknown`
 properties by class, family, source owner, and line. It excludes `src/dropped`
 by default because every quarantined file has a file-specific disposition in
@@ -105,8 +122,8 @@ quarantine. Marker output is a lower bound: maintained classes must also be
 checked against Carbon public headers, interfaces, implementations, and Blue
 exposure to find methods omitted rather than stubbed.
 
-As of 2026-07-20, the audited in-scope snapshot contains 129 explicit method
-gaps across 34 classes and no unknown properties, down from 389/106 and 85/34
+As of 2026-07-21, the audited in-scope snapshot contains 127 explicit method
+gaps across 32 classes and no unknown properties, down from 389/106 and 85/34
 respectively. The completed wave covers Carbon's
 missing `EveSpaceObject2` bounds/frustum surface, CPU primitive and line
 collections, line graphs, render-debug accumulation and backend-neutral render
@@ -115,6 +132,10 @@ forwarding, tactical trails, and ship booster-locator rebuilding. Remaining
 gaps are concentrated in coherent native, GPU, font, animation, bitmap/atlas,
 particle, scene-picking, and swarm families; they are intentionally still
 explicit until a browser owner or backend seam is established.
+
+The promoted-class parity audit checks 270 maintained classes, excludes 18
+documented quarantines, and currently reports no omitted or unexposed Carbon
+methods, missing schemas/classes, or unresolved base classes.
 
 The child reference/socket resource seam is synchronous and injected. Socket
 parameter auto-creation currently covers the emitted string parameter type;

@@ -25,6 +25,11 @@ import { EveChildLineSet } from "../npm/dist/generated/eve/child/EveChildLineSet
 
 test("generated Eve children inherit maintained local-transform rebuilding", () =>
 {
+  new EveChildTransform();
+  assert.equal(
+    CjsSchema.getMethod(EveChildTransform, "RebuildLocalTransform")?.impl?.status,
+    "implemented"
+  );
   const affected = [
     EveChildRef,
     EveChildParticleSystem,
@@ -37,9 +42,19 @@ test("generated Eve children inherit maintained local-transform rebuilding", () 
 
   for (const Child of affected)
   {
+    const child = new Child();
     assert.equal(Object.hasOwn(Child.prototype, "RebuildLocalTransform"), false,
       Child.name);
-    const child = new Child();
+    assert.equal(
+      Child.prototype.RebuildLocalTransform,
+      EveChildTransform.prototype.RebuildLocalTransform,
+      Child.name
+    );
+    assert.equal(
+      CjsSchema.getMethod(Child, "RebuildLocalTransform")?.impl?.status,
+      "implemented",
+      Child.name
+    );
     assert.doesNotThrow(() => child.Setup(
       [2, 3, 4],
       [0, 0, 0, 1],

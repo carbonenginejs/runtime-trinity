@@ -4,7 +4,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
 
 
 @type.define({
@@ -40,6 +40,8 @@ export class EveChildTransform extends CjsModel
   @type.boolean
   useStaticScale = false;
 
+  @carbon.method
+  @impl.implemented
   RebuildLocalTransform()
   {
     if (this.useSRT)

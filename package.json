@@ -22,7 +22,7 @@
   "name": "@carbonenginejs/runtime-trinity",
   "sideEffects": false,
   "private": true,
-  "version": "0.4.2",
+  "version": "0.4.3",
   "publishConfig": {
     "access": "public"
   },
@@ -33,6 +33,7 @@
   },
   "scripts": {
     "audit:gaps": "node scripts/audit_implementation_gaps.js",
+    "audit:parity": "node scripts/audit_public_method_parity.js",
     "test": "npm run build:npm && node --test test/*.test.js",
     "lint": "node scripts/lint_source_style.js",
     "build:npm": "npm run lint && node scripts/build_npm.js && rollup -c"

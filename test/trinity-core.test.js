@@ -9,6 +9,8 @@ import { GrannyBoneOffset, Tr2DepthStencil, Tr2DirectInstanceData, Tr2Expression
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
 import { TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
 import { Tr2DebugRenderer } from "../npm/dist/generated/trinityCore/Tr2DebugRenderer.js";
+import { Tr2ParticleElementDeclaration } from "../npm/dist/generated/particle/Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleSystem } from "../npm/dist/generated/particle/Tr2ParticleSystem.js";
 import { Tr2HostBitmap } from "../npm/dist/generated/trinityCore/Tr2HostBitmap.js";
 import { Tr2SSAO } from "../npm/dist/generated/trinityCore/Tr2SSAO.js";
 import { Tr2BoundingLineSet } from "../npm/dist/generated/trinityCore/Tr2BoundingLineSet.js";
@@ -559,6 +561,56 @@ test("runtime instance data preserves explicit bounds and computes position boun
   assertEquals(data.GetStride(), 16);
   assertEquals(data.count, 0);
   assertEquals(data.GetData(), null);
+});
+
+test("runtime instance data spawns Carbon particle declarations from CPU rows", () =>
+{
+  const particleSystem = new Tr2ParticleSystem();
+  particleSystem.maxParticleCount = 2;
+  for (const [elementType, customName, usageIndex] of [
+    [Tr2ParticleElementDeclaration.Type.LIFETIME, "", 0],
+    [Tr2ParticleElementDeclaration.Type.POSITION, "", 0],
+    [Tr2ParticleElementDeclaration.Type.VELOCITY, "", 0],
+    [Tr2ParticleElementDeclaration.Type.MASS, "", 0],
+    [Tr2ParticleElementDeclaration.Type.CUSTOM, "heat", 3]
+  ])
+  {
+    const element = new Tr2ParticleElementDeclaration();
+    element.elementType = elementType;
+    element.customName = customName;
+    element.usageIndex = usageIndex;
+    particleSystem.elements.push(element);
+  }
+  assertEquals(particleSystem.UpdateElementDeclaration(), true);
+
+  const data = new Tr2RuntimeInstanceData();
+  data.particleSystem = particleSystem;
+  data.SetElementLayout([
+    { usage: "TANGENT", usageIndex: 0, type: "FLOAT32_2", name: "lifetime" },
+    { usage: "POSITION", usageIndex: 0, type: "FLOAT32_3", name: "position" },
+    { usage: "NORMAL", usageIndex: 0, type: "FLOAT32_3", name: "velocity" },
+    { usage: "BITANGENT", usageIndex: 0, type: "FLOAT32_1", name: "mass" },
+    { usage: "TEXCOORD", usageIndex: 3, type: "FLOAT32_1", name: "heat" }
+  ]);
+  data.SetData([
+    [[0.25, 4], [1, 2, 3], [4, 5, 6], 7, 8],
+    [[0.5, 9], [10, 11, 12], [13, 14, 15], 16, 17]
+  ]);
+
+  particleSystem.SpawnParticle({ position: [99, 99, 99] });
+  data.Spawn();
+  assertEquals(particleSystem.aliveCount, 2);
+  assert.deepEqual(Array.from(particleSystem.GetParticleElement(0, "semantic:0")), [0.25, 4]);
+  assert.deepEqual(Array.from(particleSystem.GetParticleElement(0, "semantic:1")), [1, 2, 3]);
+  assert.deepEqual(Array.from(particleSystem.GetParticleElement(1, "semantic:2")), [13, 14, 15]);
+  assert.deepEqual(Array.from(particleSystem.GetParticleElement(1, "semantic:3")), [16]);
+  assert.deepEqual(Array.from(particleSystem.GetParticleElement(1, "custom:heat")), [17]);
+
+  assertEquals(CjsSchema.getMethod(Tr2RuntimeInstanceData, "Spawn")?.impl?.status, "adapted");
+  assertEquals(CjsSchema.getMethod(Tr2RuntimeInstanceData, "SaveToCMF")?.impl?.status, "notImplemented");
+  assertEquals(CjsSchema.getMethod(Tr2RuntimeInstanceData, "SaveToGranny")?.impl?.status, "notImplemented");
+  assert.throws(() => data.SaveToCMF("res:/instance.cmf"), /not implemented/);
+  assert.throws(() => data.SaveToGranny("res:/instance.gr2"), /not implemented/);
 });
 
 test("TriObserverLocal maintains Carbon placement and mute state without creating audio objects", () =>

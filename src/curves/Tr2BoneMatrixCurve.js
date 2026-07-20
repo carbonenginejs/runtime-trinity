@@ -7,6 +7,9 @@ import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { Tr2MatrixKey } from "./Tr2MatrixKey.js";
 
 
+const SPHERICAL_LINEAR = 4;
+
+
 @type.define({
   className: "Tr2BoneMatrixCurve",
   family: "curves"
@@ -14,6 +17,8 @@ import { Tr2MatrixKey } from "./Tr2MatrixKey.js";
 export class Tr2BoneMatrixCurve extends CjsModel
 {
   static #identityMatrix = mat4.create();
+
+  static #keyInterpolations = new WeakMap();
 
   @io.read
   @type.mat4
@@ -166,9 +171,85 @@ export class Tr2BoneMatrixCurve extends CjsModel
     const key = new Tr2MatrixKey();
     key.time = time;
     mat4.copy(key.value, keyValue);
+    Tr2BoneMatrixCurve.#keyInterpolations.set(key, SPHERICAL_LINEAR);
     keys.push(key);
     this.Sort();
     return keys.indexOf(key);
+  }
+
+  /** Gets the number of matrix keys. */
+  @carbon.method
+  @impl.implemented
+  GetKeyCount()
+  {
+    return this.keys.length;
+  }
+
+  /** Gets a key time, or the curve length when the index is out of range. */
+  @carbon.method
+  @impl.implemented
+  GetKeyTime(index)
+  {
+    return Number(this.keys[index]?.time ?? this.length);
+  }
+
+  /** Sets a key time without reordering; Carbon requires an explicit Sort call. */
+  @carbon.method
+  @impl.implemented
+  SetKeyTime(index, time)
+  {
+    if (this.keys[index])
+    {
+      this.keys[index].time = Number(time);
+    }
+  }
+
+  /** Gets a detached key matrix, or the curve end value when out of range. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("JavaScript returns a detached matrix instead of exposing Carbon's const Matrix reference.")
+  GetKeyValue(index)
+  {
+    return mat4.clone(this.keys[index]?.value ?? this.endValue);
+  }
+
+  /** Copies a matrix into an existing key. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("JavaScript copies authored matrix values so curve storage never aliases caller-owned arrays.")
+  SetKeyValue(index, value)
+  {
+    if (this.keys[index])
+    {
+      if (!isArrayLike(value, 16))
+      {
+        throw new TypeError("Matrix key values must contain 16 components");
+      }
+      mat4.copy(this.keys[index].value, value);
+    }
+  }
+
+  /** Gets a key interpolation, or Carbon's spherical-linear curve default. */
+  @carbon.method
+  @impl.implemented
+  GetKeyInterpolation(index)
+  {
+    const key = this.keys[index];
+    return key
+      ? Tr2BoneMatrixCurve.#keyInterpolations.get(key) ?? SPHERICAL_LINEAR
+      : SPHERICAL_LINEAR;
+  }
+
+  /** Sets the unpersisted interpolation mode on an existing matrix key. */
+  @carbon.method
+  @impl.implemented
+  SetKeyInterpolation(index, interpolation)
+  {
+    const key = this.keys[index];
+    if (key)
+    {
+      Tr2BoneMatrixCurve.#keyInterpolations.set(key, Math.trunc(Number(interpolation)) >>> 0);
+    }
   }
 
   /**
@@ -178,7 +259,12 @@ export class Tr2BoneMatrixCurve extends CjsModel
   @impl.implemented
   RemoveKey(index)
   {
-    this.keys.splice(index, 1);
+    if (Number.isInteger(index) && index >= 0 && index < this.keys.length)
+    {
+      const [key] = this.keys.splice(index, 1);
+      Tr2BoneMatrixCurve.#keyInterpolations.delete(key);
+      this.Sort();
+    }
   }
 
   /**

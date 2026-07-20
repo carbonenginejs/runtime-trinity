@@ -4,6 +4,7 @@
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { Tr2ParticleElementDeclaration } from "../generated/particle/Tr2ParticleElementDeclaration.js";
 
 
 @type.define({ className: "Tr2RuntimeInstanceData", family: "trinityCore" })
@@ -265,6 +266,86 @@ export class Tr2RuntimeInstanceData extends CjsModel
     this.#data = null;
     this.count = 0;
     this.#dirty = true;
+  }
+
+  /**
+   * Replaces the target particle system with particles decoded from the CPU
+   * instance rows.
+   */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Maps Carbon vertex semantics into the maintained CPU particle-system declaration without GPU buffers.")
+  Spawn()
+  {
+    const particleSystem = this.particleSystem;
+    if (!particleSystem?.isValid || !this.#layout.length || !this.#data)
+    {
+      return;
+    }
+
+    const declaration = particleSystem.GetElementDeclaration();
+    if (!(declaration instanceof Map))
+    {
+      throw new TypeError("Tr2ParticleSystem.GetElementDeclaration must return the CPU declaration Map.");
+    }
+
+    const mappings = [];
+    for (const element of declaration.values())
+    {
+      const usage = Tr2RuntimeInstanceData.#particleUsageToVertexUsage(element.elementType);
+      const usageIndex = element.elementType === Tr2ParticleElementDeclaration.Type.CUSTOM
+        ? element.usageIndex
+        : 0;
+      const layoutIndex = this.#layout.findIndex(item =>
+        item.usage === usage && item.usageIndex === usageIndex
+      );
+      if (layoutIndex === -1)
+      {
+        return;
+      }
+
+      const layout = this.#layout[layoutIndex];
+      if (layout.baseType !== "FLOAT32" || layout.componentCount < element.dimension)
+      {
+        return;
+      }
+      mappings.push({ element, layoutIndex });
+    }
+
+    particleSystem.ClearParticles();
+    for (const row of this.rows)
+    {
+      const particleIndex = particleSystem.BeginSpawnParticle();
+      if (particleIndex === null)
+      {
+        break;
+      }
+      for (const mapping of mappings)
+      {
+        particleSystem.SetParticleElement(
+          particleIndex,
+          mapping.element.key,
+          row[mapping.layoutIndex]
+        );
+      }
+      particleSystem.EndSpawnParticle();
+    }
+  }
+
+  /** Carbon's CMF writer requires the native resource-path and file encoder. */
+  @carbon.method
+  @impl.notImplemented
+  SaveToCMF(...args)
+  {
+    throw new Error("Tr2RuntimeInstanceData.SaveToCMF is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon's Granny writer requires the native Granny SDK and filesystem. */
+  @carbon.method
+  @impl.notImplemented
+  SaveToGranny(...args)
+  {
+    throw new Error("Tr2RuntimeInstanceData.SaveToGranny is not implemented in CarbonEngineJS.");
   }
 
   /**

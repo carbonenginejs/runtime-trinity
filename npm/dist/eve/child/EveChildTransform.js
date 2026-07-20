@@ -3,26 +3,26 @@ import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
 
-let _initClass, _init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale;
+let _initProto, _initClass, _init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale;
 let _EveChildTransform;
 new class extends _identity {
   static [class EveChildTransform extends CjsModel {
     static {
       ({
-        e: [_init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale],
+        e: [_init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale, _initProto],
         c: [_EveChildTransform, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "EveChildTransform",
         family: "eve/child"
-      })], [[[type, type.vec3], 16, "translation"], [[type, type.vec3], 16, "scaling"], [[type, type.quat], 16, "rotation"], [[type, type.mat4], 16, "localTransform"], [[type, type.mat4], 16, "worldTransform"], [[type, type.boolean], 16, "staticTransform"], [[type, type.boolean], 16, "useSRT"], [[type, type.boolean], 16, "useStaticRotation"], [[type, type.boolean], 16, "useStaticScale"]], 0, void 0, CjsModel));
+      })], [[[type, type.vec3], 16, "translation"], [[type, type.vec3], 16, "scaling"], [[type, type.quat], 16, "rotation"], [[type, type.mat4], 16, "localTransform"], [[type, type.mat4], 16, "worldTransform"], [[type, type.boolean], 16, "staticTransform"], [[type, type.boolean], 16, "useSRT"], [[type, type.boolean], 16, "useStaticRotation"], [[type, type.boolean], 16, "useStaticScale"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildLocalTransform"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
       _init_extra_useStaticScale(this);
     }
-    translation = _init_translation(this, vec3.create());
+    translation = (_initProto(this), _init_translation(this, vec3.create()));
     scaling = (_init_extra_translation(this), _init_scaling(this, vec3.fromValues(1, 1, 1)));
     rotation = (_init_extra_scaling(this), _init_rotation(this, quat.create()));
     localTransform = (_init_extra_rotation(this), _init_localTransform(this, mat4.create()));
