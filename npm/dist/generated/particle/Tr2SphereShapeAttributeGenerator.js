@@ -3,6 +3,7 @@ import { io, type, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { bindParticleElement } from '../../particle/particleElementBinding.js';
 import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
 
 let _initProto, _initClass, _init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_distributionExponent, _init_extra_distributionExponent, _init_controlPosition, _init_extra_controlPosition, _init_controlVelocity, _init_extra_controlVelocity, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid;
@@ -70,9 +71,9 @@ class Tr2SphereShapeAttributeGenerator extends CjsModel {
 
   /** m_valid (bool) [READ] */
   valid = (_init_extra_minRadius(this), _init_valid(this, false));
-  Bind(particleSystem) {
-    this.#positionElement = this.controlPosition ? particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.POSITION) : null;
-    this.#velocityElement = this.controlVelocity ? particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.VELOCITY) : null;
+  Bind(particleSystem, boundElements) {
+    this.#positionElement = this.controlPosition ? bindParticleElement(particleSystem, _Tr2ParticleElementDe.Type.POSITION, boundElements) : null;
+    this.#velocityElement = this.controlVelocity ? bindParticleElement(particleSystem, _Tr2ParticleElementDe.Type.VELOCITY, boundElements) : null;
     this.valid = (!this.controlPosition || !!this.#positionElement) && (!this.controlVelocity || !!this.#velocityElement);
     return this.valid;
   }

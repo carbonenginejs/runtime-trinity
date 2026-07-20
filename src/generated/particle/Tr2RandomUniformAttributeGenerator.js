@@ -4,6 +4,7 @@
 import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { bindParticleElement } from "../../particle/particleElementBinding.js";
 import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
 
 /** Tr2RandomUniformAttributeGenerator (particle) - generated from schema shapeHash 35889046.... */
@@ -40,11 +41,11 @@ export class Tr2RandomUniformAttributeGenerator extends CjsModel
   valid = false;
 
   @impl.implemented
-  Bind(particleSystem)
+  Bind(particleSystem, boundElements)
   {
     this.#element = this.elementType === Tr2ParticleElementDeclaration.Type.CUSTOM
-      ? particleSystem?.GetElement?.(this.customName)
-      : particleSystem?.GetElement?.(this.elementType);
+      ? bindParticleElement(particleSystem, this.customName, boundElements)
+      : bindParticleElement(particleSystem, this.elementType, boundElements);
     this.valid = !!this.#element;
     return this.valid;
   }

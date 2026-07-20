@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { hasUnboundParticleElements } from '../../particle/particleElementBinding.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_isValid, _init_extra_isValid, _init_generators, _init_extra_generators, _init_maxParticles, _init_extra_maxParticles, _init_rate, _init_extra_rate, _init_particleSystem, _init_extra_particleSystem;
 
@@ -50,12 +51,19 @@ class Tr2DynamicEmitter extends CjsModel {
     if (!this.particleSystem?.isValid) {
       return false;
     }
+    const boundElements = new Set();
     for (const generator of this.generators) {
-      if (typeof generator?.Bind === "function" && generator.Bind(this.particleSystem) === false) {
+      if (typeof generator?.Bind !== "function") {
+        throw new TypeError("Particle generators must implement Carbon's Bind contract.");
+      }
+      if (generator.Bind(this.particleSystem, boundElements) === false) {
         return false;
       }
     }
-    this.#declarationHash = this.particleSystem.GetElementDeclarationHash?.() ?? 0;
+    if (hasUnboundParticleElements(this.particleSystem, boundElements)) {
+      return false;
+    }
+    this.#declarationHash = this.particleSystem.GetElementDeclarationHash();
     this.isValid = true;
     return true;
   }

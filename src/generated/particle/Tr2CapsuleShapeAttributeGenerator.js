@@ -5,6 +5,7 @@ import { impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { bindParticleElement } from "../../particle/particleElementBinding.js";
 import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
 
 /** Tr2CapsuleShapeAttributeGenerator (particle) - generated from schema shapeHash e27fdce8.... */
@@ -92,13 +93,19 @@ export class Tr2CapsuleShapeAttributeGenerator extends CjsModel
   valid = false;
 
   @impl.implemented
-  Bind(particleSystem)
+  Bind(particleSystem, boundElements)
   {
-    this.#positionElement = particleSystem?.GetElement?.(
-      Tr2ParticleElementDeclaration.Type.POSITION
-    ) ?? null;
+    this.#positionElement = bindParticleElement(
+      particleSystem,
+      Tr2ParticleElementDeclaration.Type.POSITION,
+      boundElements
+    );
     this.#velocityElement = this.controlVelocity
-      ? particleSystem?.GetElement?.(Tr2ParticleElementDeclaration.Type.VELOCITY) ?? null
+      ? bindParticleElement(
+        particleSystem,
+        Tr2ParticleElementDeclaration.Type.VELOCITY,
+        boundElements
+      )
       : null;
     this.valid = !!this.#positionElement
       && (!this.controlVelocity || !!this.#velocityElement);

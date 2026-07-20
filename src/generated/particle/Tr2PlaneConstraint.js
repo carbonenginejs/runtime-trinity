@@ -110,9 +110,14 @@ export class Tr2PlaneConstraint extends CjsModel
     {
       return false;
     }
+    const boundElements = new Set();
     for (const generator of this.generators)
     {
-      if (generator?.Bind?.(particleSystem) === false)
+      if (typeof generator?.Bind !== "function")
+      {
+        throw new TypeError("Particle generators must implement Carbon's Bind contract.");
+      }
+      if (generator.Bind(particleSystem, boundElements) === false)
       {
         return false;
       }

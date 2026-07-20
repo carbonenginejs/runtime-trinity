@@ -1,6 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { bindParticleElement } from '../../particle/particleElementBinding.js';
 import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
 
 let _initProto, _initClass, _init_elementType, _init_extra_elementType, _init_customName, _init_extra_customName, _init_valid, _init_extra_valid;
@@ -32,8 +33,8 @@ new class extends _identity {
 
     /** m_valid (bool) [READ] */
     valid = (_init_extra_customName(this), _init_valid(this, false));
-    Bind(particleSystem) {
-      this.#element = this.elementType === _Tr2ParticleElementDe.Type.CUSTOM ? particleSystem?.GetElement?.(this.customName) : particleSystem?.GetElement?.(this.elementType);
+    Bind(particleSystem, boundElements) {
+      this.#element = this.elementType === _Tr2ParticleElementDe.Type.CUSTOM ? bindParticleElement(particleSystem, this.customName, boundElements) : bindParticleElement(particleSystem, this.elementType, boundElements);
       this.valid = !!this.#element;
       return this.valid;
     }

@@ -24,7 +24,7 @@
   "publishConfig": {
     "access": "public"
   }, 
-  "version": "0.4.1",
+  "version": "0.4.2",
   "dependencies": {
     "@carbonenginejs/core-math": "^0.1.5",
     "@carbonenginejs/core-types": "^0.12.0",

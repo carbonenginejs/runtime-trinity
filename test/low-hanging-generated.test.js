@@ -30,6 +30,7 @@ import { EveChildBulletStorm } from "../npm/dist/generated/eve/child/EveChildBul
 import { EveChildExplosion } from "../npm/dist/generated/eve/child/EveChildExplosion.js";
 import { EveChildInstanceContainer } from "../npm/dist/generated/eve/child/EveChildInstanceContainer.js";
 import { EveChildPlug } from "../npm/dist/generated/eve/child/EveChildPlug.js";
+import { EveChildParticleSphere } from "../npm/dist/generated/eve/child/EveChildParticleSphere.js";
 import { EveChildRef } from "../npm/dist/generated/eve/child/EveChildRef.js";
 import { EveChildSocket } from "../npm/dist/generated/eve/child/EveChildSocket.js";
 import { EveChildProceduralContainer } from "../npm/dist/generated/eve/child/procedural/EveChildProceduralContainer.js";
@@ -814,7 +815,27 @@ test("CPU particle declarations, emitters, simulation, and bounds follow Carbon 
   assert.equal(system.UpdateElementDeclaration(), true);
 
   const generator = {
-    Bind: owner => owner === system,
+    Bind(owner, boundElements)
+    {
+      if (owner !== system || !(boundElements instanceof Set))
+      {
+        return false;
+      }
+      for (const elementType of [
+        Tr2ParticleElementDeclaration.Type.LIFETIME,
+        Tr2ParticleElementDeclaration.Type.POSITION,
+        Tr2ParticleElementDeclaration.Type.VELOCITY
+      ])
+      {
+        const element = owner.GetElement(elementType);
+        if (!element || boundElements.has(element.key))
+        {
+          return false;
+        }
+        boundElements.add(element.key);
+      }
+      return true;
+    },
     Generate(position, velocity, index)
     {
       system.SetParticleElement(index, Tr2ParticleElementDeclaration.Type.LIFETIME, [0, 2]);
@@ -899,6 +920,78 @@ test("authored particle generators and element constraints bind to CPU declarati
   system.UpdateSimulation(0);
   assert.deepEqual(Array.from(system.GetParticleElement(0, "heat")), [9]);
   assert.equal(CjsSchema.getField(Tr2RandomUniformAttributeGenerator, "customName")?.type.kind, "string");
+});
+
+test("particle emitters and near-field spheres enforce Carbon's shared element claims", () =>
+{
+  const createSystem = includeHeat =>
+  {
+    const system = new Tr2ParticleSystem();
+    system.maxParticleCount = 2;
+    for (const elementType of [
+      Tr2ParticleElementDeclaration.Type.LIFETIME,
+      Tr2ParticleElementDeclaration.Type.POSITION,
+      Tr2ParticleElementDeclaration.Type.VELOCITY
+    ])
+    {
+      const element = new Tr2ParticleElementDeclaration();
+      element.elementType = elementType;
+      system.elements.push(element);
+    }
+    if (includeHeat)
+    {
+      const heat = new Tr2ParticleElementDeclaration();
+      heat.elementType = Tr2ParticleElementDeclaration.Type.CUSTOM;
+      heat.customName = "heat";
+      system.elements.push(heat);
+    }
+    return system;
+  };
+
+  const nearField = new EveChildParticleSphere();
+  assert.equal(nearField.Refresh(), false);
+  nearField.particleSystem = createSystem(false);
+  assert.equal(nearField.Refresh(), true);
+
+  const heat = new Tr2RandomUniformAttributeGenerator();
+  heat.customName = "heat";
+  nearField.particleSystem = createSystem(true);
+  nearField.generators = [heat];
+  assert.equal(nearField.Refresh(), true);
+  nearField.generators = [heat, heat];
+  assert.equal(nearField.Refresh(), false);
+  nearField.generators = [];
+  assert.equal(nearField.Refresh(), false);
+  nearField.generators = [{}];
+  assert.throws(
+    () => nearField.Refresh(),
+    /Carbon's Bind contract/
+  );
+
+  const emitter = new Tr2DynamicEmitter();
+  const shape = new Tr2SphereShapeAttributeGenerator();
+  const lifetime = new Tr2RandomUniformAttributeGenerator();
+  lifetime.elementType = Tr2ParticleElementDeclaration.Type.LIFETIME;
+  emitter.particleSystem = createSystem(true);
+  emitter.particleSystem.UpdateElementDeclaration();
+  emitter.generators = [shape, heat];
+  assert.equal(emitter.Rebind(), false);
+  emitter.generators.push(lifetime);
+  assert.equal(emitter.Rebind(), true);
+  emitter.generators.push(heat);
+  assert.equal(emitter.Rebind(), false);
+
+  const constraint = new Tr2PlaneConstraint();
+  const constraintSystem = createSystem(false);
+  constraintSystem.UpdateElementDeclaration();
+  const collisionGenerator = new Tr2RandomUniformAttributeGenerator();
+  collisionGenerator.elementType = Tr2ParticleElementDeclaration.Type.POSITION;
+  constraint.generators = [collisionGenerator];
+  assert.equal(constraint.Bind(constraintSystem), true);
+  constraint.generators.push(collisionGenerator);
+  assert.equal(constraint.Bind(constraintSystem), false);
+
+  assert.equal(CjsSchema.getMethod(EveChildParticleSphere, "Refresh")?.impl?.status, "adapted");
 });
 
 test("capsule particle generators interpolate authored emitter transforms", () =>
