@@ -2,15 +2,16 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveSpotlightSet.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { type } from "@carbonenginejs/core-types/schema";
-import { LightData } from "../generated/eve/lights/LightData.js";
+import { io, type } from "@carbonenginejs/core-types/schema";
+import { CjsLightData } from "./lights/CjsLightData.js";
 
 
 @type.define({ className: "EveSpotlightLight", family: "eve/attachment/spotlights" })
 export class EveSpotlightLight extends CjsModel
 {
-  @type.rawStruct("LightData")
-  lightData = new LightData();
+  @io.owned
+  @type.struct("CjsLightData")
+  lightData = new CjsLightData();
 
   @type.mat4
   boneMatrix = mat4.create();
@@ -29,13 +30,10 @@ export class EveSpotlightLight extends CjsModel
 
   static FromSOF(value)
   {
-    const result = new EveSpotlightLight();
-    result.lightData = LightData.from(value?.lightData ?? {});
-    if (value?.boneMatrix) mat4.copy(result.boneMatrix, value.boneMatrix);
-    result.lightProfile = value?.lightProfile ?? null;
-    result.boosterGainInfluence = value?.boosterGainInfluence === true;
-    result.index = Number(value?.index ?? 0) >>> 0;
-    result.lightProfilePath = String(value?.lightProfilePath ?? value?.lightData?.texturePath ?? "");
-    return result;
+    const values = value ?? {};
+    return EveSpotlightLight.from({
+      ...values,
+      lightProfilePath: String(values.lightProfilePath ?? values.lightData?.texturePath ?? "")
+    });
   }
 }

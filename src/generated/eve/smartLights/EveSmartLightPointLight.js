@@ -5,16 +5,20 @@ import { io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../EveEntity.js";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import {
+  CjsLightData,
+  defineCjsLightDataAccessors,
+  setCjsLightDataOwnerValues
+} from "../../../eve/lights/CjsLightData.js";
 
 /** EveSmartLightPointLight (eve/smartLights) - generated from schema shapeHash d980f7c3.... */
 @type.define({ className: "EveSmartLightPointLight", family: "eve/smartLights" })
 export class EveSmartLightPointLight extends EveEntity
 {
-
-  /** m_lightGroupData.flags (LightData) [READWRITE, PERSIST] */
-  @io.persist
-  @type.uint16
-  flags = 1;
+  /** m_lightGroupData (LightData) */
+  @io.owned
+  @type.struct("CjsLightData")
+  lightData = new CjsLightData();
 
   /** m_lightProfile (Tr2LightProfileResPtr) [READ] */
   @io.read
@@ -30,21 +34,6 @@ export class EveSmartLightPointLight extends EveEntity
   @io.persist
   @type.boolean
   display = true;
-
-  /** m_lightGroupData.innerRadius (LightData) [READWRITE, PERSIST] */
-  @io.persist
-  @type.float32
-  innerRadius = 0;
-
-  /** m_lightGroupData.brightness (LightData) [READWRITE, PERSIST] */
-  @io.persist
-  @type.float32
-  brightness = 1;
-
-  /** m_lightGroupData.radius (LightData) [READWRITE, PERSIST] */
-  @io.persist
-  @type.float32
-  radius = 0;
 
   /** m_lightProfilePath (std::wstring) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
@@ -62,4 +51,19 @@ export class EveSmartLightPointLight extends EveEntity
   @type.quat
   staticOffsetRotation = quat.create();
 
+  SetValues(values = {}, options = {})
+  {
+    return setCjsLightDataOwnerValues(
+      this,
+      values,
+      options,
+      (ownerValues, ownerOptions) => super.SetValues(ownerValues, ownerOptions),
+      this.constructor.LightDataFields
+    );
+  }
+
+  static LightDataFields = ["flags", "innerRadius", "brightness", "radius"];
+
 }
+
+defineCjsLightDataAccessors(EveSmartLightPointLight, EveSmartLightPointLight.LightDataFields);

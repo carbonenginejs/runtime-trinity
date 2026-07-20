@@ -2,8 +2,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { schema, type } from "@carbonenginejs/core-types/schema";
-import { LightData } from "../generated/eve/lights/LightData.js";
+import { io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsLightData } from "./lights/CjsLightData.js";
 
 
 @type.define({ className: "EvePlaneLight", family: "eve/attachment/planes" })
@@ -23,8 +23,9 @@ export class EvePlaneLight extends CjsModel
   static FT_FADEOUT = 3;
   static FT_FADEINOUT = 4;
 
-  @type.rawStruct("LightData")
-  lightData = new LightData();
+  @io.owned
+  @type.struct("CjsLightData")
+  lightData = new CjsLightData();
 
   @type.float32
   saturation = 1;
@@ -53,16 +54,10 @@ export class EvePlaneLight extends CjsModel
 
   static FromSOF(value)
   {
-    const result = new EvePlaneLight();
-    result.lightData = LightData.from(value?.lightData ?? {});
-    result.saturation = Number(value?.saturation ?? 1);
-    result.lightProfile = value?.lightProfile ?? null;
-    result.fadeType = Number(value?.fadeType ?? EvePlaneLight.FT_NONE) | 0;
-    result.blinkPhase = Number(value?.blinkPhase ?? 0);
-    result.blinkRate = Number(value?.blinkRate ?? 0);
-    result.index = Number(value?.index ?? 0) >>> 0;
-    if (value?.boneMatrix) mat4.copy(result.boneMatrix, value.boneMatrix);
-    result.lightProfilePath = String(value?.lightProfilePath ?? value?.lightData?.texturePath ?? "");
-    return result;
+    const values = value ?? {};
+    return EvePlaneLight.from({
+      ...values,
+      lightProfilePath: String(values.lightProfilePath ?? values.lightData?.texturePath ?? "")
+    });
   }
 }

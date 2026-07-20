@@ -2,15 +2,16 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveBannerSet.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { type } from "@carbonenginejs/core-types/schema";
-import { LightData } from "../generated/eve/lights/LightData.js";
+import { io, type } from "@carbonenginejs/core-types/schema";
+import { CjsLightData } from "./lights/CjsLightData.js";
 
 
 @type.define({ className: "EveBannerLight", family: "eve/attachment/banners" })
 export class EveBannerLight extends CjsModel
 {
-  @type.rawStruct("LightData")
-  lightData = new LightData();
+  @io.owned
+  @type.struct("CjsLightData")
+  lightData = new CjsLightData();
 
   @type.float32
   saturation = 1;
@@ -29,13 +30,10 @@ export class EveBannerLight extends CjsModel
 
   static FromSOF(value)
   {
-    const result = new EveBannerLight();
-    result.lightData = LightData.from(value?.lightData ?? {});
-    result.saturation = Number(value?.saturation ?? 1);
-    result.lightProfile = value?.lightProfile ?? null;
-    result.index = Number(value?.index ?? 0) >>> 0;
-    if (value?.boneMatrix) mat4.copy(result.boneMatrix, value.boneMatrix);
-    result.lightProfilePath = String(value?.lightProfilePath ?? value?.lightData?.texturePath ?? "");
-    return result;
+    const values = value ?? {};
+    return EveBannerLight.from({
+      ...values,
+      lightProfilePath: String(values.lightProfilePath ?? values.lightData?.texturePath ?? "")
+    });
   }
 }

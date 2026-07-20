@@ -85,6 +85,7 @@ export { Billboard2D, DistanceBase } from './child/modifiers/EveChildModifierTra
 export { EveChildAudio } from './child/EveChildAudio.js';
 export { EveChildFogVolume } from './child/EveChildFogVolume.js';
 export { EveChildLightingOverride } from './child/EveChildLightingOverride.js';
+export { CjsLightData, defineCjsLightDataAccessors, setCjsLightDataOwnerValues } from './lights/CjsLightData.js';
 export { Tr2Light } from './lights/Tr2Light.js';
 export { Tr2PointLight } from './lights/Tr2PointLight.js';
 export { Tr2SpotLight } from './lights/Tr2SpotLight.js';

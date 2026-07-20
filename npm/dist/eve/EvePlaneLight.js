@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { type, schema } from '@carbonenginejs/core-types/schema';
-import { LightData as _LightData } from '../generated/eve/lights/LightData.js';
+import { io, type, schema } from '@carbonenginejs/core-types/schema';
+import { CjsLightData as _CjsLightData } from './lights/CjsLightData.js';
 
 let _initClass, _init_lightData, _init_extra_lightData, _init_saturation, _init_extra_saturation, _init_lightProfile, _init_extra_lightProfile, _init_fadeType, _init_extra_fadeType, _init_blinkPhase, _init_extra_blinkPhase, _init_blinkRate, _init_extra_blinkRate, _init_index, _init_extra_index, _init_boneMatrix, _init_extra_boneMatrix, _init_lightProfilePath, _init_extra_lightProfilePath;
 let _EvePlaneLight;
@@ -15,13 +15,13 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EvePlaneLight",
         family: "eve/attachment/planes"
-      })], [[type.rawStruct("LightData"), 0, "lightData"], [[type, type.float32], 16, "saturation"], [type.objectRef("Tr2LightProfileRes"), 0, "lightProfile"], [[type, type.int32, void 0, schema.enum("FadeType")], 16, "fadeType"], [[type, type.float32], 16, "blinkPhase"], [[type, type.float32], 16, "blinkRate"], [[type, type.uint32], 16, "index"], [[type, type.mat4], 16, "boneMatrix"], [[type, type.string], 16, "lightProfilePath"]], 0, void 0, CjsModel));
+      })], [[[io, io.owned, void 0, type.struct("CjsLightData")], 16, "lightData"], [[type, type.float32], 16, "saturation"], [type.objectRef("Tr2LightProfileRes"), 0, "lightProfile"], [[type, type.int32, void 0, schema.enum("FadeType")], 16, "fadeType"], [[type, type.float32], 16, "blinkPhase"], [[type, type.float32], 16, "blinkRate"], [[type, type.uint32], 16, "index"], [[type, type.mat4], 16, "boneMatrix"], [[type, type.string], 16, "lightProfilePath"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
       _init_extra_lightProfilePath(this);
     }
-    lightData = _init_lightData(this, new _LightData());
+    lightData = _init_lightData(this, new _CjsLightData());
     saturation = (_init_extra_lightData(this), _init_saturation(this, 1));
     lightProfile = (_init_extra_saturation(this), _init_lightProfile(this, null));
     fadeType = (_init_extra_lightProfile(this), _init_fadeType(this, _EvePlaneLight.FT_NONE));
@@ -31,17 +31,11 @@ new class extends _identity {
     boneMatrix = (_init_extra_index(this), _init_boneMatrix(this, mat4.create()));
     lightProfilePath = (_init_extra_boneMatrix(this), _init_lightProfilePath(this, ""));
     static FromSOF(value) {
-      const result = new _EvePlaneLight();
-      result.lightData = _LightData.from(value?.lightData ?? {});
-      result.saturation = Number(value?.saturation ?? 1);
-      result.lightProfile = value?.lightProfile ?? null;
-      result.fadeType = Number(value?.fadeType ?? _EvePlaneLight.FT_NONE) | 0;
-      result.blinkPhase = Number(value?.blinkPhase ?? 0);
-      result.blinkRate = Number(value?.blinkRate ?? 0);
-      result.index = Number(value?.index ?? 0) >>> 0;
-      if (value?.boneMatrix) mat4.copy(result.boneMatrix, value.boneMatrix);
-      result.lightProfilePath = String(value?.lightProfilePath ?? value?.lightData?.texturePath ?? "");
-      return result;
+      const values = value ?? {};
+      return _EvePlaneLight.from({
+        ...values,
+        lightProfilePath: String(values.lightProfilePath ?? values.lightData?.texturePath ?? "")
+      });
     }
   }];
   FadeType = Object.freeze({

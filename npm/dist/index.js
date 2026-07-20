@@ -160,6 +160,7 @@ export { Billboard2D, DistanceBase } from './eve/child/modifiers/EveChildModifie
 export { EveChildAudio } from './eve/child/EveChildAudio.js';
 export { EveChildFogVolume } from './eve/child/EveChildFogVolume.js';
 export { EveChildLightingOverride } from './eve/child/EveChildLightingOverride.js';
+export { CjsLightData, defineCjsLightDataAccessors, setCjsLightDataOwnerValues } from './eve/lights/CjsLightData.js';
 export { Tr2Light } from './eve/lights/Tr2Light.js';
 export { Tr2PointLight } from './eve/lights/Tr2PointLight.js';
 export { Tr2SpotLight } from './eve/lights/Tr2SpotLight.js';
@@ -420,7 +421,6 @@ export { EveStarfield } from './generated/eve/effect/EveStarfield.js';
 export { AmbientOcclusionQuality, AntiAliasingQuality, BackgroundRenderingReason, BoundingSphereQuery, EveVisualizeMethod, ParameterType, ReflectionMode, ReflectionQuality, ReflectionSetting, VisualizerType } from './generated/eve/enums.js';
 export { EveCameraFxAttributes } from './generated/eve/fxAttributes/EveCameraFxAttributes.js';
 export { EveSpaceObjectFxAttributes } from './generated/eve/fxAttributes/EveSpaceObjectFxAttributes.js';
-export { LightData } from './generated/eve/lights/LightData.js';
 export { LightFeatures } from './generated/eve/lights/LightFeatures.js';
 export { Tr2FactionLight } from './generated/eve/lights/Tr2FactionLight.js';
 export { PerLightShadowSetting } from './generated/eve/lights/enums.js';

@@ -1011,7 +1011,7 @@ test("CPU plane and sphere constraints resolve penetrations and reflect velocity
   assert.deepEqual(Array.from(sphereSystem.GetParticleElement(0, "velocity")), [3, 0, 0]);
 });
 
-test("flattened Carbon light fields remain backed by their shared light data", () =>
+test("Carbon light accessors remain backed by one shared CjsLightData", () =>
 {
   const light = new Tr2FactionLight();
   light.radius = 12;
@@ -1031,7 +1031,9 @@ test("flattened Carbon light fields remain backed by their shared light data", (
   smartSpot.outerAngle = 40;
   assert.equal(smartSpot.innerAngle, 20);
   assert.equal(smartSpot.outerAngle, 40);
-  assert.equal(CjsSchema.getField(EveSmartLightSpotLight, "innerAngle")?.type.kind, "float32");
+  assert.equal(smartSpot.lightData.constructor.name, "CjsLightData");
+  assert.equal(Object.hasOwn(smartSpot, "innerAngle"), false);
+  assert.equal(CjsSchema.getField(EveSmartLightSpotLight, "lightData")?.type.kind, "struct");
 });
 
 test("behavior groups maintain portable DroneAgent counts and spawn positions", () =>

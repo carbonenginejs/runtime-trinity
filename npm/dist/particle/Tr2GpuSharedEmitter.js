@@ -15,7 +15,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2GpuSharedEmitter",
         family: "particle"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "continuousEmitter"], [[io, io.persist, type, type.float32], 16, "rate"], [[io, io.persist, type, type.float32], 16, "emissionDensity"], [[io, io.persist, type, type.float32], 16, "maxEmissionDensity"], [[io, io.persist, type, type.float32], 16, "maxDisplacement"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.vec3], 16, "direction"], [[io, io.persist, type, type.float32], 16, "angle"], [[io, io.persist, type, type.float32], 16, "innerAngle"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.persist, type, type.float32], 16, "inheritVelocity"], [[io, io.persist, type, type.float32], 16, "minSpeed"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minLifeTime"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxLifeTime"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "sizes"], [[io, io.notify, io, io.persist, type, type.float32], 16, "sizeVariance"], [[io, io.notify, io, io.persist, type, type.color], 16, "color0"], [[io, io.notify, io, io.persist, type, type.color], 16, "color1"], [[io, io.notify, io, io.persist, type, type.color], 16, "color2"], [[io, io.notify, io, io.persist, type, type.color], 16, "color3"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "textureIndex"], [[io, io.notify, io, io.persist, type, type.float32], 16, "colorMidpoint"], [[io, io.notify, io, io.persist, type, type.float32], 16, "velocityStretchRotation"], [[io, io.notify, io, io.persist, type, type.float32], 16, "drag"], [[io, io.notify, io, io.persist, type, type.float32], 16, "turbulenceAmplitude"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "turbulenceFrequency"], [[io, io.notify, io, io.persist, type, type.float32], 16, "gravity"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Enable"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsEnabled"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDirection"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetEmitterData"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetEmitterParams"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetRevision"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "continuousEmitter"], [[io, io.persist, type, type.float32], 16, "rate"], [[io, io.persist, type, type.float32], 16, "emissionDensity"], [[io, io.persist, type, type.float32], 16, "maxEmissionDensity"], [[io, io.persist, type, type.float32], 16, "maxDisplacement"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.vec3], 16, "direction"], [[io, io.persist, type, type.float32], 16, "angle"], [[io, io.persist, type, type.float32], 16, "innerAngle"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.persist, type, type.float32], 16, "inheritVelocity"], [[io, io.persist, type, type.float32], 16, "minSpeed"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.notify, io, io.persist, type, type.float32], 16, "minLifeTime"], [[io, io.notify, io, io.persist, type, type.float32], 16, "maxLifeTime"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "sizes"], [[io, io.notify, io, io.persist, type, type.float32], 16, "sizeVariance"], [[io, io.notify, io, io.persist, type, type.color], 16, "color0"], [[io, io.notify, io, io.persist, type, type.color], 16, "color1"], [[io, io.notify, io, io.persist, type, type.color], 16, "color2"], [[io, io.notify, io, io.persist, type, type.color], 16, "color3"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "textureIndex"], [[io, io.notify, io, io.persist, type, type.float32], 16, "colorMidpoint"], [[io, io.notify, io, io.persist, type, type.float32], 16, "velocityStretchRotation"], [[io, io.notify, io, io.persist, type, type.float32], 16, "drag"], [[io, io.notify, io, io.persist, type, type.float32], 16, "turbulenceAmplitude"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "turbulenceFrequency"], [[io, io.notify, io, io.persist, type, type.float32], 16, "gravity"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Enable"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsEnabled"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDirection"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPosition"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Projects Carbon's setup structs onto the schema-backed editor fields; renderer-only spawn history and transformed parameters remain adapter-owned.")], 18, "Setup"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetRevision"]], 0, void 0, CjsModel));
     }
     name = (_initProto(this), _init_name(this, ""));
     continuousEmitter = (_init_extra_name(this), _init_continuousEmitter(this, true));
@@ -48,8 +48,6 @@ new class extends _identity {
     gravity = (_init_extra_turbulenceFrequency(this), _init_gravity(this, 0));
     #enabled = (_init_extra_gravity(this), true);
     #previousTime = -1;
-    #emitterData = _Tr2GpuSharedEmitter.CreateEmitterData();
-    #paramsData = _Tr2GpuSharedEmitter.CreateEmitterParams();
     #revision = 0;
     Initialize() {
       this.#revision++;
@@ -73,111 +71,50 @@ new class extends _identity {
       vec3.copy(this.position, value || _Tr2GpuSharedEmitter.#zero3);
     }
     Setup(rate, emitterData, paramsData) {
-      this.rate = Number(rate) || 0;
-      this.#emitterData = _Tr2GpuSharedEmitter.CreateEmitterData(emitterData);
-      this.#paramsData = _Tr2GpuSharedEmitter.CreateEmitterParams(paramsData);
-      this.radius = this.#emitterData.radius;
-      this.angle = this.#emitterData.angle;
-      this.innerAngle = this.#emitterData.innerAngle;
-      this.minSpeed = this.#emitterData.minSpeed;
-      this.maxSpeed = this.#emitterData.maxSpeed;
-      this.minLifeTime = this.#paramsData.minLifeTime;
-      this.maxLifeTime = this.#paramsData.maxLifeTime;
-      this.textureIndex = this.#paramsData.textureIndex;
-      this.colorMidpoint = this.#paramsData.colorMidpoint;
-      vec4.copy(this.color0, this.#paramsData.colors[0]);
-      vec4.copy(this.color1, this.#paramsData.colors[1]);
-      vec4.copy(this.color2, this.#paramsData.colors[2]);
-      vec4.copy(this.color3, this.#paramsData.colors[3]);
-      vec3.copy(this.sizes, this.#paramsData.sizes);
-      this.sizeVariance = this.#paramsData.sizeVariance;
-      this.drag = this.#paramsData.drag;
-      this.turbulenceAmplitude = this.#paramsData.turbulenceAmplitude;
-      this.turbulenceFrequency = this.#paramsData.turbulenceFrequency;
-      this.gravity = this.#paramsData.gravity;
-      this.velocityStretchRotation = this.#paramsData.velocityStretchRotation;
-      if ("attractorStrength" in this) this.attractorStrength = this.#paramsData.attractorStrength;
-      this.#revision++;
-    }
-    GetEmitterData() {
-      return _Tr2GpuSharedEmitter.CreateEmitterData({
-        ...this.#emitterData,
-        radius: this.radius,
-        angle: this.angle,
-        innerAngle: this.innerAngle,
-        minSpeed: this.minSpeed,
-        maxSpeed: this.maxSpeed
+      const emitter = emitterData || {};
+      const parameters = paramsData || {};
+      const colors = parameters.colors || [];
+      const values = {
+        rate,
+        radius: emitter.radius,
+        angle: emitter.angle,
+        innerAngle: emitter.innerAngle,
+        minSpeed: emitter.minSpeed,
+        maxSpeed: emitter.maxSpeed,
+        minLifeTime: parameters.minLifeTime,
+        maxLifeTime: parameters.maxLifeTime,
+        textureIndex: parameters.textureIndex,
+        colorMidpoint: parameters.colorMidpoint ?? 0.5,
+        color0: colors[0] ?? parameters.color0,
+        color1: colors[1] ?? parameters.color1,
+        color2: colors[2] ?? parameters.color2,
+        color3: colors[3] ?? parameters.color3,
+        sizes: parameters.sizes,
+        sizeVariance: parameters.sizeVariance,
+        drag: parameters.drag,
+        turbulenceAmplitude: parameters.turbulenceAmplitude,
+        turbulenceFrequency: parameters.turbulenceFrequency ?? 1,
+        gravity: parameters.gravity,
+        velocityStretchRotation: parameters.velocityStretchRotation
+      };
+      if ("attractorStrength" in this) {
+        values.attractorStrength = parameters.attractorStrength;
+      }
+      this.SetValues(values, {
+        source: this,
+        skipEvents: true,
+        skipUpdate: true
       });
-    }
-    GetEmitterParams() {
-      return _Tr2GpuSharedEmitter.CreateEmitterParams({
-        ...this.#paramsData,
-        minLifeTime: this.minLifeTime,
-        maxLifeTime: this.maxLifeTime,
-        textureIndex: this.textureIndex,
-        colorMidpoint: this.colorMidpoint,
-        colors: [this.color0, this.color1, this.color2, this.color3],
-        sizes: this.sizes,
-        sizeVariance: this.sizeVariance,
-        drag: this.drag,
-        turbulenceAmplitude: this.turbulenceAmplitude,
-        turbulenceFrequency: this.turbulenceFrequency,
-        gravity: this.gravity,
-        attractorStrength: "attractorStrength" in this ? this.attractorStrength : this.#paramsData.attractorStrength,
-        velocityStretchRotation: this.velocityStretchRotation
+      this.UpdateValues({
+        source: this,
+        skipEvents: true
       });
     }
     GetRevision() {
       return this.#revision;
     }
-    static CreateEmitterData(values = null) {
-      const source = values || {};
-      return {
-        position: _Tr2GpuSharedEmitter.#copyVec3(source.position),
-        count: Number(source.count) >>> 0,
-        positionPrevious: _Tr2GpuSharedEmitter.#copyVec3(source.positionPrevious),
-        radius: Number(source.radius) || 0,
-        direction: _Tr2GpuSharedEmitter.#copyVec3(source.direction),
-        angle: Number(source.angle) || 0,
-        directionPrevious: _Tr2GpuSharedEmitter.#copyVec3(source.directionPrevious),
-        emitterSeed: Number(source.emitterSeed) >>> 0,
-        velocity: _Tr2GpuSharedEmitter.#copyVec3(source.velocity),
-        minSpeed: Number(source.minSpeed) || 0,
-        velocityPrevious: _Tr2GpuSharedEmitter.#copyVec3(source.velocityPrevious),
-        maxSpeed: Number(source.maxSpeed) || 0,
-        innerAngle: Number(source.innerAngle) || 0,
-        unused: _Tr2GpuSharedEmitter.#copyVec3(source.unused)
-      };
-    }
-    static CreateEmitterParams(values = null) {
-      const source = values || {};
-      const colors = source.colors || [];
-      return {
-        minLifeTime: Number(source.minLifeTime) || 0,
-        maxLifeTime: Number(source.maxLifeTime) || 0,
-        textureIndex: Number(source.textureIndex) >>> 0,
-        colorMidpoint: source.colorMidpoint === undefined ? 0.5 : Number(source.colorMidpoint) || 0,
-        colors: [0, 1, 2, 3].map(index => _Tr2GpuSharedEmitter.#copyColor(colors[index] ?? source[`color${index}`])),
-        sizes: _Tr2GpuSharedEmitter.#copyVec3(source.sizes),
-        sizeVariance: Number(source.sizeVariance) || 0,
-        drag: Number(source.drag) || 0,
-        turbulenceAmplitude: Number(source.turbulenceAmplitude) || 0,
-        turbulenceFrequency: source.turbulenceFrequency === undefined ? 1 : Number(source.turbulenceFrequency) >>> 0,
-        gravity: Number(source.gravity) || 0,
-        attractorPosition: _Tr2GpuSharedEmitter.#copyVec3(source.attractorPosition),
-        attractorStrength: Number(source.attractorStrength) || 0,
-        velocityStretchRotation: Number(source.velocityStretchRotation) || 0
-      };
-    }
   }];
-  #copyVec3(value) {
-    return vec3.copy(vec3.create(), value || _Tr2GpuSharedEmitter.#zero3);
-  }
-  #copyColor(value) {
-    return vec4.copy(vec4.createLinear(), value || _Tr2GpuSharedEmitter.#zero4);
-  }
   #zero3 = vec3.create();
-  #zero4 = vec4.createLinear();
   constructor() {
     super(_Tr2GpuSharedEmitter), _initClass();
   }

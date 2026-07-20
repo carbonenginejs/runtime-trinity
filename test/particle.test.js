@@ -107,7 +107,7 @@ test("GPU emitter graph descriptors preserve Carbon CPU types and defaults", () 
   }
 });
 
-test("GPU emitter Setup deep-copies CPU descriptors without realizing a particle backend", () =>
+test("GPU emitter Setup projects CPU descriptors onto its authored model fields", () =>
 {
   const emitterData = {
     count: 7,
@@ -115,9 +115,7 @@ test("GPU emitter Setup deep-copies CPU descriptors without realizing a particle
     angle: 0.75,
     innerAngle: 0.25,
     minSpeed: 3,
-    maxSpeed: 9,
-    position: [1, 2, 3],
-    velocity: [4, 5, 6]
+    maxSpeed: 9
   };
   const paramsData = {
     minLifeTime: 1,
@@ -152,16 +150,16 @@ test("GPU emitter Setup deep-copies CPU descriptors without realizing a particle
   }
   assertVector(emitter.attractorPosition, [0, 0, 0]);
 
-  emitterData.position[0] = 99;
   paramsData.sizes[0] = 99;
   paramsData.colors[2][2] = 99;
-  const copiedEmitter = emitter.GetEmitterData();
-  const copiedParams = emitter.GetEmitterParams();
-  assertVector(copiedEmitter.position, [1, 2, 3]);
-  assertVector(copiedParams.sizes, [2, 3, 4]);
-  assertVector(copiedParams.colors[2], [0, 0, 1, 1]);
-  copiedParams.colors[2][2] = 50;
-  assertVector(emitter.GetEmitterParams().colors[2], [0, 0, 1, 1]);
+  assertVector(emitter.sizes, [2, 3, 4]);
+  assertVector(emitter.color2, [0, 0, 1, 1]);
+
+  const exported = emitter.GetValues();
+  exported.sizes[0] = 50;
+  exported.color2[2] = 50;
+  assertVector(emitter.sizes, [2, 3, 4]);
+  assertVector(emitter.color2, [0, 0, 1, 1]);
 
   emitter.SetValues({
     minSpeed: 13,
@@ -169,11 +167,11 @@ test("GPU emitter Setup deep-copies CPU descriptors without realizing a particle
     color2: [0.25, 0.5, 0.75, 1],
     attractorStrength: 12
   });
-  assert.equal(emitter.GetEmitterData().minSpeed, 13);
-  assertVector(emitter.GetEmitterParams().sizes, [6, 7, 8]);
-  assertVector(emitter.GetEmitterParams().colors[2], [0.25, 0.5, 0.75, 1]);
-  assert.equal(emitter.GetEmitterParams().attractorStrength, 12);
-  assertVector(emitter.GetEmitterParams().attractorPosition, [8, 7, 6]);
+  assert.equal(emitter.minSpeed, 13);
+  assertVector(emitter.sizes, [6, 7, 8]);
+  assertVector(emitter.color2, [0.25, 0.5, 0.75, 1]);
+  assert.equal(emitter.attractorStrength, 12);
+  assertVector(emitter.attractorPosition, [0, 0, 0]);
 
   const position = [5, 6, 7];
   emitter.SetPosition(position);

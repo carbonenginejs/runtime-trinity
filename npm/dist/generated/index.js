@@ -92,7 +92,6 @@ export { EveStarfield } from './eve/effect/EveStarfield.js';
 export { AmbientOcclusionQuality, AntiAliasingQuality, BackgroundRenderingReason, BoundingSphereQuery, EveVisualizeMethod, ParameterType, ReflectionMode, ReflectionQuality, ReflectionSetting, VisualizerType } from './eve/enums.js';
 export { EveCameraFxAttributes } from './eve/fxAttributes/EveCameraFxAttributes.js';
 export { EveSpaceObjectFxAttributes } from './eve/fxAttributes/EveSpaceObjectFxAttributes.js';
-export { LightData } from './eve/lights/LightData.js';
 export { LightFeatures } from './eve/lights/LightFeatures.js';
 export { Tr2FactionLight } from './eve/lights/Tr2FactionLight.js';
 export { PerLightShadowSetting } from './eve/lights/enums.js';
