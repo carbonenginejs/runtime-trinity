@@ -8,6 +8,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { CjsGrannyCurves } from "../../curves/CjsGrannyCurves.js";
+import { GrannyBoneOffset } from "../../trinityCore/GrannyBoneOffset.js";
 
 
 function createLayer(name = "", weight = 1, allBones = false)
@@ -57,6 +58,12 @@ export class Tr2GrannyAnimation extends CjsModel
 
   #meshBoneIndices = [];
 
+  #morphAnimations = new Map();
+
+  #morphCurveCache = new WeakMap();
+
+  #morphSample = new Float32Array(1);
+
   #paused = false;
 
   #runtimeModel = null;
@@ -101,7 +108,7 @@ export class Tr2GrannyAnimation extends CjsModel
   /** m_boneOffset (PGrannyBoneOffset) [READ] */
   @io.read
   @type.objectRef("GrannyBoneOffset")
-  boneOffset = null;
+  boneOffset = new GrannyBoneOffset();
 
   /** Resolves an authored resource path from the shared CPU Granny registry. */
   @impl.adapted
@@ -134,6 +141,9 @@ export class Tr2GrannyAnimation extends CjsModel
     this.#runtimeModel = null;
     this.#meshBoneIndices.length = 0;
     this.#curveCache = new WeakMap();
+    this.#morphCurveCache = new WeakMap();
+    this.#morphAnimations.clear();
+    this.boneOffset?.ClearRigBindings?.();
     if (!model || sourceBones.length === 0)
     {
       this.#initialized = false;
@@ -160,16 +170,18 @@ export class Tr2GrannyAnimation extends CjsModel
     }
     const deltaTime = this.#paused ? 0 : Math.max(0, Number(dt) || 0);
     this.#advanceLayer(this.#baseLayer, deltaTime);
-    for (const layer of this.#layers.values())
+    for (const layer of this.#getOrderedLayers())
     {
       this.#advanceLayer(layer, deltaTime);
     }
     this.#resetPose();
+    this.#morphAnimations.clear();
     this.#sampleLayer(this.#baseLayer, false);
-    for (const layer of this.#layers.values())
+    for (const layer of this.#getOrderedLayers())
     {
       this.#sampleLayer(layer, this.#additiveMode);
     }
+    this.#applyBoneOffsets();
     this.#composePose();
     return true;
   }
@@ -535,6 +547,13 @@ export class Tr2GrannyAnimation extends CjsModel
     return this.#runtimeModel?.bones.map(bone => bone.name) ?? [];
   }
 
+  /** Returns a detached snapshot of morph values sampled during the last update. */
+  @impl.implemented
+  GetMorphAnimations()
+  {
+    return new Map(this.#morphAnimations);
+  }
+
   /** Exposes retained aim state to an engine-side IK adapter. */
   @impl.adapted
   GetAimBoneState()
@@ -591,6 +610,26 @@ export class Tr2GrannyAnimation extends CjsModel
     {
       request.elapsed = duration * request.loopCount / speed;
       request.held = true;
+    }
+  }
+
+  #applyBoneOffsets()
+  {
+    const bones = this.#runtimeModel?.bones ?? [];
+    const offsets = this.boneOffset;
+    if (!bones.length || !offsets?.HaveTransforms?.())
+    {
+      return;
+    }
+
+    if (offsets.NeedRebind?.(bones.length))
+    {
+      offsets.BindToRig?.(bones.map(bone => bone.name), bones.length);
+    }
+
+    for (const bone of bones)
+    {
+      offsets.ApplyToLocal?.(bone.index, bone.orientation, bone.position);
     }
   }
 
@@ -690,6 +729,13 @@ export class Tr2GrannyAnimation extends CjsModel
     return name ? this.#layers.get(name) ?? null : this.#baseLayer;
   }
 
+  #getOrderedLayers()
+  {
+    return [ ...this.#layers.entries() ]
+      .sort(([ left ], [ right ]) => left < right ? -1 : left > right ? 1 : 0)
+      .map(([, layer ]) => layer);
+  }
+
   #getSource(resource)
   {
     let value = resource?.GetPayload?.() ?? resource;
@@ -786,6 +832,85 @@ export class Tr2GrannyAnimation extends CjsModel
     }
   }
 
+  #decodeMorphCurve(curve, modern)
+  {
+    if (!curve || typeof curve !== "object")
+    {
+      return null;
+    }
+
+    if (!this.#morphCurveCache.has(curve))
+    {
+      this.#morphCurveCache.set(curve, modern
+        ? CjsGrannyCurves.decodeAnimationCurve(curve, 1)
+        : CjsGrannyCurves.decodeGrannyCurve(curve, 1));
+    }
+    return this.#morphCurveCache.get(curve);
+  }
+
+  #sampleMorphs(animation, time, duration, weight, additive)
+  {
+    if (!(duration > 0) || time < 0 || time >= duration)
+    {
+      return;
+    }
+
+    const amount = Number(weight) || 0;
+    const channels = this.#getArray(animation, "channels", "Channels");
+    const curves = this.#getArray(animation, "curves", "Curves");
+    for (const channel of channels)
+    {
+      const targetType = channel.targetType ?? channel.TargetType;
+      if (targetType !== "MorphTarget" && targetType !== 3)
+      {
+        continue;
+      }
+
+      const name = String(channel.target ?? channel.Target ?? "");
+      const curve = curves[Number(channel.curveIndex ?? channel.CurveIndex)];
+      this.#sampleMorph(name, this.#decodeMorphCurve(curve, true), time, duration, amount, additive);
+    }
+
+    for (const group of CjsGrannyCurves.getTrackGroups(animation))
+    {
+      if (getName(group) !== "root")
+      {
+        continue;
+      }
+
+      for (const track of this.#getArray(group, "vectorTracks", "VectorTracks"))
+      {
+        const curve = track.valueCurve ?? track.ValueCurve;
+        const dimension = Number(track.dimension ?? track.Dimension ?? curve?.dimension ?? curve?.Dimension);
+        if (dimension !== 1)
+        {
+          continue;
+        }
+        this.#sampleMorph(getName(track), this.#decodeMorphCurve(curve, false), time, duration, amount, additive);
+      }
+      break;
+    }
+  }
+
+  #sampleMorph(name, curve, time, duration, weight, additive)
+  {
+    if (!name || !curve)
+    {
+      return;
+    }
+
+    this.#morphSample[0] = 0;
+    CjsGrannyCurves.sampleGrannyCurve(this.#morphSample, curve, time, false, duration);
+    const value = this.#morphSample[0] * weight;
+    if (!Number.isFinite(value))
+    {
+      return;
+    }
+
+    const previous = this.#morphAnimations.get(name);
+    this.#morphAnimations.set(name, additive && previous !== undefined ? previous + value : value);
+  }
+
   #sampleLayer(layer, additive)
   {
     const request = layer.queue[0];
@@ -813,6 +938,7 @@ export class Tr2GrannyAnimation extends CjsModel
         }
       }
     }
+    this.#sampleMorphs(animation, time, duration, layer.weight, additive);
     const trackGroups = CjsGrannyCurves.getTrackGroups(animation);
     const modelName = getName(this.#runtimeModel.model);
     const matchingGroups = trackGroups.filter(group => getName(group) === modelName);

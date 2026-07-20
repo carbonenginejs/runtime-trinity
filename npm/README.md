@@ -93,6 +93,13 @@ composes layers in native lexical order, exposes a detached morph snapshot,
 and applies `GrannyBoneOffset` corrections after animation sampling but before
 world-transform composition.
 
+`Tr2Mesh` owns the native LOD-0 indexed morph-weight state, including persisted
+manual weights and baked flags. `EveChildMesh` rebuilds its CPU morph record
+buffer during asynchronous updates: exact-name animation values override mesh
+weights, values below `0.001` remain inactive, and active runtime/baked records
+are partitioned before an engine backend uploads or evaluates them. This
+package prepares those records but does not perform GPU deformation or baking.
+
 ## Implementation-gap audit
 
 Explicit generated and maintained implementation gaps can be inventoried with:

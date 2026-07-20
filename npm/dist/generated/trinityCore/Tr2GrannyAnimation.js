@@ -6,6 +6,7 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { io, type, impl, carbon } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { CjsGrannyCurves } from '../../curves/CjsGrannyCurves.js';
+import { GrannyBoneOffset as _GrannyBoneOffset } from '../../trinityCore/GrannyBoneOffset.js';
 
 let _initProto, _initClass, _init_resPath_, _init_extra_resPath_, _init_model_, _init_extra_model_, _init_grannyRes, _init_extra_grannyRes, _init_eventListener, _init_extra_eventListener, _init_animationEnabled, _init_extra_animationEnabled, _init_debugRenderJointNames, _init_extra_debugRenderJointNames, _init_debugRenderSkeleton, _init_extra_debugRenderSkeleton, _init_boneOffset, _init_extra_boneOffset;
 function createLayer(name = "", weight = 1, allBones = false) {
@@ -35,7 +36,7 @@ class Tr2GrannyAnimation extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2GrannyAnimation",
       family: "trinityCore"
-    })], [[[io, io.persistOnly, type, type.string], 16, "resPath_"], [[io, io.persistOnly, type, type.string], 16, "model_"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "grannyRes"], [[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "eventListener"], [[io, io.readwrite, type, type.boolean], 16, "animationEnabled"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderJointNames"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderSkeleton"], [[io, io.read, void 0, type.objectRef("GrannyBoneOffset")], 16, "boneOffset"], [[impl, impl.adapted], 18, "Initialize"], [[impl, impl.adapted], 18, "SetGrannyResource"], [[impl, impl.adapted], 18, "RebuildCachedData"], [[impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayer"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerAllBones"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Resource loading stays runtime-resource-owned; registered decoded resources are attached synchronously when available.")], 18, "AddSecondaryResPath"], [[impl, impl.adapted], 18, "SetSecondaryGrannyResource"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser graph retains Carbon's aim request; final IK realization can be refined by an engine adapter.")], 18, "AimBone"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimationLayers"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisableAimBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLayerWeight"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetSecondaryAnimationName"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[impl, impl.adapted], 18, "PlayAnimationOnce"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayLayerAnimation"], [[impl, impl.adapted], 18, "PlayLayerAnimationByName"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAnimationNames"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParam"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParamSkewRate"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "TogglePauseAnimations"], [[impl, impl.implemented], 18, "IsInitialized"], [[impl, impl.adapted], 18, "GetMeshBoneMatrixList"], [[impl, impl.implemented], 18, "GetMeshBoneCount"], [[impl, impl.adapted], 18, "GetBoneWorldTransform"], [[impl, impl.adapted], 18, "GetBoneTransform"], [[impl, impl.adapted], 18, "GetBoneMatrix"], [[impl, impl.implemented], 18, "GetAnimationTransforms"], [[impl, impl.implemented], 18, "GetAnimationBoneList"], [[impl, impl.adapted], 18, "GetAimBoneState"]], 0, void 0, CjsModel));
+    })], [[[io, io.persistOnly, type, type.string], 16, "resPath_"], [[io, io.persistOnly, type, type.string], 16, "model_"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "grannyRes"], [[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "eventListener"], [[io, io.readwrite, type, type.boolean], 16, "animationEnabled"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderJointNames"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderSkeleton"], [[io, io.read, void 0, type.objectRef("GrannyBoneOffset")], 16, "boneOffset"], [[impl, impl.adapted], 18, "Initialize"], [[impl, impl.adapted], 18, "SetGrannyResource"], [[impl, impl.adapted], 18, "RebuildCachedData"], [[impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayer"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerAllBones"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Resource loading stays runtime-resource-owned; registered decoded resources are attached synchronously when available.")], 18, "AddSecondaryResPath"], [[impl, impl.adapted], 18, "SetSecondaryGrannyResource"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser graph retains Carbon's aim request; final IK realization can be refined by an engine adapter.")], 18, "AimBone"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimationLayers"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisableAimBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLayerWeight"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetSecondaryAnimationName"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[impl, impl.adapted], 18, "PlayAnimationOnce"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayLayerAnimation"], [[impl, impl.adapted], 18, "PlayLayerAnimationByName"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAnimationNames"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParam"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParamSkewRate"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "TogglePauseAnimations"], [[impl, impl.implemented], 18, "IsInitialized"], [[impl, impl.adapted], 18, "GetMeshBoneMatrixList"], [[impl, impl.implemented], 18, "GetMeshBoneCount"], [[impl, impl.adapted], 18, "GetBoneWorldTransform"], [[impl, impl.adapted], 18, "GetBoneTransform"], [[impl, impl.adapted], 18, "GetBoneMatrix"], [[impl, impl.implemented], 18, "GetAnimationTransforms"], [[impl, impl.implemented], 18, "GetAnimationBoneList"], [[impl, impl.implemented], 18, "GetMorphAnimations"], [[impl, impl.adapted], 18, "GetAimBoneState"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -51,6 +52,9 @@ class Tr2GrannyAnimation extends CjsModel {
   #initialized = false;
   #layers = new Map();
   #meshBoneIndices = [];
+  #morphAnimations = new Map();
+  #morphCurveCache = new WeakMap();
+  #morphSample = new Float32Array(1);
   #paused = false;
   #runtimeModel = null;
   #secondaryResources = new Map();
@@ -77,7 +81,7 @@ class Tr2GrannyAnimation extends CjsModel {
   debugRenderSkeleton = (_init_extra_debugRenderJointNames(this), _init_debugRenderSkeleton(this, false));
 
   /** m_boneOffset (PGrannyBoneOffset) [READ] */
-  boneOffset = (_init_extra_debugRenderSkeleton(this), _init_boneOffset(this, null));
+  boneOffset = (_init_extra_debugRenderSkeleton(this), _init_boneOffset(this, new _GrannyBoneOffset()));
 
   /** Resolves an authored resource path from the shared CPU Granny registry. */
   Initialize() {
@@ -103,6 +107,9 @@ class Tr2GrannyAnimation extends CjsModel {
     this.#runtimeModel = null;
     this.#meshBoneIndices.length = 0;
     this.#curveCache = new WeakMap();
+    this.#morphCurveCache = new WeakMap();
+    this.#morphAnimations.clear();
+    this.boneOffset?.ClearRigBindings?.();
     if (!model || sourceBones.length === 0) {
       this.#initialized = false;
       return false;
@@ -130,14 +137,16 @@ class Tr2GrannyAnimation extends CjsModel {
     }
     const deltaTime = this.#paused ? 0 : Math.max(0, Number(dt) || 0);
     this.#advanceLayer(this.#baseLayer, deltaTime);
-    for (const layer of this.#layers.values()) {
+    for (const layer of this.#getOrderedLayers()) {
       this.#advanceLayer(layer, deltaTime);
     }
     this.#resetPose();
+    this.#morphAnimations.clear();
     this.#sampleLayer(this.#baseLayer, false);
-    for (const layer of this.#layers.values()) {
+    for (const layer of this.#getOrderedLayers()) {
       this.#sampleLayer(layer, this.#additiveMode);
     }
+    this.#applyBoneOffsets();
     this.#composePose();
     return true;
   }
@@ -385,6 +394,11 @@ class Tr2GrannyAnimation extends CjsModel {
     return this.#runtimeModel?.bones.map(bone => bone.name) ?? [];
   }
 
+  /** Returns a detached snapshot of morph values sampled during the last update. */
+  GetMorphAnimations() {
+    return new Map(this.#morphAnimations);
+  }
+
   /** Exposes retained aim state to an engine-side IK adapter. */
   GetAimBoneState() {
     return {
@@ -426,6 +440,19 @@ class Tr2GrannyAnimation extends CjsModel {
     } else {
       request.elapsed = duration * request.loopCount / speed;
       request.held = true;
+    }
+  }
+  #applyBoneOffsets() {
+    const bones = this.#runtimeModel?.bones ?? [];
+    const offsets = this.boneOffset;
+    if (!bones.length || !offsets?.HaveTransforms?.()) {
+      return;
+    }
+    if (offsets.NeedRebind?.(bones.length)) {
+      offsets.BindToRig?.(bones.map(bone => bone.name), bones.length);
+    }
+    for (const bone of bones) {
+      offsets.ApplyToLocal?.(bone.index, bone.orientation, bone.position);
     }
   }
   #composePose() {
@@ -501,6 +528,9 @@ class Tr2GrannyAnimation extends CjsModel {
   #getLayer(layerName) {
     const name = String(layerName ?? "");
     return name ? this.#layers.get(name) ?? null : this.#baseLayer;
+  }
+  #getOrderedLayers() {
+    return [...this.#layers.entries()].sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0).map(([, layer]) => layer);
   }
   #getSource(resource) {
     let value = resource?.GetPayload?.() ?? resource;
@@ -579,6 +609,59 @@ class Tr2GrannyAnimation extends CjsModel {
       mat3.copy(bone.scaleShear, bone.restScaleShear);
     }
   }
+  #decodeMorphCurve(curve, modern) {
+    if (!curve || typeof curve !== "object") {
+      return null;
+    }
+    if (!this.#morphCurveCache.has(curve)) {
+      this.#morphCurveCache.set(curve, modern ? CjsGrannyCurves.decodeAnimationCurve(curve, 1) : CjsGrannyCurves.decodeGrannyCurve(curve, 1));
+    }
+    return this.#morphCurveCache.get(curve);
+  }
+  #sampleMorphs(animation, time, duration, weight, additive) {
+    if (!(duration > 0) || time < 0 || time >= duration) {
+      return;
+    }
+    const amount = Number(weight) || 0;
+    const channels = this.#getArray(animation, "channels", "Channels");
+    const curves = this.#getArray(animation, "curves", "Curves");
+    for (const channel of channels) {
+      const targetType = channel.targetType ?? channel.TargetType;
+      if (targetType !== "MorphTarget" && targetType !== 3) {
+        continue;
+      }
+      const name = String(channel.target ?? channel.Target ?? "");
+      const curve = curves[Number(channel.curveIndex ?? channel.CurveIndex)];
+      this.#sampleMorph(name, this.#decodeMorphCurve(curve, true), time, duration, amount, additive);
+    }
+    for (const group of CjsGrannyCurves.getTrackGroups(animation)) {
+      if (getName(group) !== "root") {
+        continue;
+      }
+      for (const track of this.#getArray(group, "vectorTracks", "VectorTracks")) {
+        const curve = track.valueCurve ?? track.ValueCurve;
+        const dimension = Number(track.dimension ?? track.Dimension ?? curve?.dimension ?? curve?.Dimension);
+        if (dimension !== 1) {
+          continue;
+        }
+        this.#sampleMorph(getName(track), this.#decodeMorphCurve(curve, false), time, duration, amount, additive);
+      }
+      break;
+    }
+  }
+  #sampleMorph(name, curve, time, duration, weight, additive) {
+    if (!name || !curve) {
+      return;
+    }
+    this.#morphSample[0] = 0;
+    CjsGrannyCurves.sampleGrannyCurve(this.#morphSample, curve, time, false, duration);
+    const value = this.#morphSample[0] * weight;
+    if (!Number.isFinite(value)) {
+      return;
+    }
+    const previous = this.#morphAnimations.get(name);
+    this.#morphAnimations.set(name, additive && previous !== undefined ? previous + value : value);
+  }
   #sampleLayer(layer, additive) {
     const request = layer.queue[0];
     const animation = request?.animation;
@@ -599,6 +682,7 @@ class Tr2GrannyAnimation extends CjsModel {
         }
       }
     }
+    this.#sampleMorphs(animation, time, duration, layer.weight, additive);
     const trackGroups = CjsGrannyCurves.getTrackGroups(animation);
     const modelName = getName(this.#runtimeModel.model);
     const matchingGroups = trackGroups.filter(group => getName(group) === modelName);

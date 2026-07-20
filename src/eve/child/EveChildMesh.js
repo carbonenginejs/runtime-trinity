@@ -14,6 +14,18 @@ import { Tr2Lod } from "../EveLODHelper.js";
 @type.define({ className: "EveChildMesh", family: "eve/child" })
 export class EveChildMesh extends EveChildTransform
 {
+  #isMorphsBaked = false;
+
+  #morphAnimationBuffer = [];
+
+  #morphAnimationOffsets = {
+    runtimeEvaluatedOffset: 0,
+    runtimeEvaluatedCount: 0,
+    bakedOffset: 0,
+    bakedCount: 0,
+    allCount: 0
+  };
+
   @io.notify
   @io.persist
   @type.int32
@@ -339,6 +351,110 @@ export class EveChildMesh extends EveChildTransform
     return this.mesh?.GetMorphTargetWeight?.(name) ?? 0;
   }
 
+  /** Rebuilds the source-backed indexed morph buffer from manual and animation weights. */
+  @impl.adapted
+  UpdateMorphAnimationBuffer()
+  {
+    const names = this.mesh?.GetMorphTargetNames?.();
+
+    this.#morphAnimationOffsets = {
+      runtimeEvaluatedOffset: 0,
+      runtimeEvaluatedCount: 0,
+      bakedOffset: 0,
+      bakedCount: 0,
+      allCount: 0
+    };
+
+    if (!Array.isArray(names))
+    {
+      this.#morphAnimationBuffer = [];
+      return 0;
+    }
+
+    const manual = this.mesh?.GetMorphAnimations?.();
+    const records = names.map((name, index) => ({
+      index,
+      weight: ReadMorphWeight(
+        ReadNamedMorph(manual, name) ?? this.mesh?.GetMorphTargetWeight?.(name) ?? 0,
+        name,
+        "mesh"
+      ),
+      baked: !!(this.mesh?.IsBakedMorph?.(index)
+        ?? this.mesh?.GetBakedMorphTarget?.(name)
+        ?? false)
+    }));
+
+    if (this.animationUpdater?.IsInitialized?.())
+    {
+      const animated = this.animationUpdater.GetMorphAnimations?.();
+
+      for (const record of records)
+      {
+        const name = names[record.index];
+        const value = ReadNamedMorph(animated, name);
+
+        if (value !== undefined)
+        {
+          record.weight = ReadMorphWeight(value, name, "animation");
+        }
+      }
+    }
+
+    const runtime = [];
+    const baked = [];
+    const inactive = [];
+
+    for (const record of records)
+    {
+      if (record.weight >= 0.001)
+      {
+        (record.baked ? baked : runtime).push(record);
+      }
+      else
+      {
+        inactive.push(record);
+      }
+    }
+
+    this.#morphAnimationBuffer = [ ...runtime, ...baked, ...inactive ];
+    this.#morphAnimationOffsets.runtimeEvaluatedCount = runtime.length;
+    this.#morphAnimationOffsets.bakedOffset = runtime.length;
+    this.#morphAnimationOffsets.bakedCount = baked.length;
+    this.#morphAnimationOffsets.allCount = runtime.length + baked.length;
+    return this.#morphAnimationOffsets.allCount;
+  }
+
+  /** Returns detached active indexed morph records for the native filter. */
+  @impl.adapted
+  GetMorphTargets(filter = 2)
+  {
+    const normalized = NormalizeMorphFilter(filter);
+    let offset = 0;
+    let count = 0;
+
+    if (normalized === 2)
+    {
+      count = this.#morphAnimationOffsets.allCount;
+    }
+    else if (normalized === 0)
+    {
+      offset = this.#isMorphsBaked
+        ? this.#morphAnimationOffsets.runtimeEvaluatedOffset
+        : 0;
+      count = this.#isMorphsBaked
+        ? this.#morphAnimationOffsets.runtimeEvaluatedCount
+        : this.#morphAnimationOffsets.allCount;
+    }
+    else
+    {
+      offset = this.#morphAnimationOffsets.bakedOffset;
+      count = this.#morphAnimationOffsets.bakedCount;
+    }
+
+    return this.#morphAnimationBuffer.slice(offset, offset + count)
+      .map(value => ({ index: value.index, weight: value.weight }));
+  }
+
   @carbon.method
   @impl.adapted
   GetSofSourceLocator()
@@ -368,12 +484,14 @@ export class EveChildMesh extends EveChildTransform
       this.UpdateTransform(parentTransform);
     }
 
-    return applyTransformModifiers(
+    const result = applyTransformModifiers(
       this,
       updateContext,
       params?.boneCount ?? 0,
       params?.bones ?? null
     );
+    this.UpdateMorphAnimationBuffer();
+    return result;
   }
 
   static Origin = Origin;
@@ -382,4 +500,46 @@ export class EveChildMesh extends EveChildTransform
 
   static Tr2Lod = Tr2Lod;
 
+}
+
+function ReadNamedMorph(values, name)
+{
+  if (values instanceof Map)
+  {
+    return values.has(name) ? values.get(name) : undefined;
+  }
+
+  if (values && typeof values === "object" && Object.hasOwn(values, name))
+  {
+    return values[name];
+  }
+
+  return undefined;
+}
+
+function ReadMorphWeight(value, name, source)
+{
+  const weight = Number(value && typeof value === "object" ? value.weight : value);
+
+  if (!Number.isFinite(weight))
+  {
+    throw new TypeError(`EveChildMesh ${source} morph target "${name}" weight must be finite`);
+  }
+
+  return weight;
+}
+
+function NormalizeMorphFilter(value)
+{
+  if (typeof value === "string")
+  {
+    const normalized = value.toLowerCase();
+    if (normalized === "runtime" || normalized === "runtime_evaluated") return 0;
+    if (normalized === "baked") return 1;
+    if (normalized === "all") return 2;
+  }
+
+  const filter = Number(value);
+  if (filter === 0 || filter === 1 || filter === 2) return filter;
+  throw new TypeError(`Unsupported EveChildMesh morph target filter "${value}"`);
 }

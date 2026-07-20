@@ -1,3 +1,5 @@
+import { num } from '@carbonenginejs/core-math/num';
+
 /**
  * Granny animation-curve decoding authored by cppctamber for ccpwgl2.
  *
@@ -120,7 +122,8 @@ class CjsGrannyCurves {
     }
     const knot = CjsGrannyCurves.#findKnotIndex(knots, time);
     if (curve.degree <= 0 || count === 1 || controlCount === 1) {
-      return CjsGrannyCurves.#copyControl(out, curve, Math.min(knot, controlCount - 1));
+      const index = time >= knots[count - 1] ? count - 1 : Math.max(0, knot - 1);
+      return CjsGrannyCurves.#copyControl(out, curve, Math.min(index, controlCount - 1));
     }
     if (curve.degree === 1) {
       return CjsGrannyCurves.#sampleLinearCurve(out, curve, time, cycle, duration || knots[count - 1], knot);
@@ -217,6 +220,32 @@ class CjsGrannyCurves {
         degree: decoded.degree,
         dimension: decoded.dimension,
         keyframed: normalized.format === 0
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  /** Decodes an already-materialized Carbon animation curve into the shared sampler shape. */
+  static decodeAnimationCurve(curve, dimension) {
+    if (!curve) {
+      return null;
+    }
+    const valueDimension = Number(curve.valueDimension ?? curve.ValueDimension);
+    const knotCount = Number(curve.knotCount ?? curve.KnotCount);
+    if (valueDimension !== dimension || !Number.isSafeInteger(knotCount) || knotCount <= 0) {
+      return null;
+    }
+    try {
+      const knots = decodeElements(curve.knots ?? curve.Knots, curve.knotType ?? curve.KnotType, knotCount);
+      const controls = decodeElements(curve.values ?? curve.Values, curve.valueType ?? curve.ValueType, knotCount * valueDimension);
+      const interpolation = curve.interpolation ?? curve.Interpolation;
+      return {
+        knots,
+        controls,
+        degree: interpolation === "Step" || interpolation === 0 ? 0 : 1,
+        dimension: valueDimension,
+        keyframed: false
       };
     } catch {
       return null;
@@ -413,6 +442,82 @@ class CjsGrannyCurves {
       out[i] = c2 * curve.controls[p0 + i] + c1 * curve.controls[p1 + i] + ci * curve.controls[p2 + i];
     }
     return out;
+  }
+}
+const ANIMATION_ELEMENT_TYPES = Object.freeze(["Float32", "Float16", "UInt16Norm", "UInt16", "Int16Norm", "Int16", "UInt8Norm", "UInt8", "Int8Norm", "Int8"]);
+function decodeElements(value, typeValue, count) {
+  const type = typeof typeValue === "number" ? ANIMATION_ELEMENT_TYPES[typeValue] : typeValue;
+  const size = elementTypeSize(type);
+  if (ArrayBuffer.isView(value) && !(value instanceof Uint8Array) && value.length === count) {
+    return Array.from(value, Number);
+  }
+  if (Array.isArray(value) && size > 1 && value.length === count) {
+    return value.map(Number);
+  }
+  const bytes = asByteView(value);
+  if (!bytes || bytes.byteLength < count * size) {
+    throw new TypeError("Animation curve data is incomplete");
+  }
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  return Array.from({
+    length: count
+  }, (_, index) => readElement(view, index * size, type));
+}
+function asByteView(value) {
+  if (value instanceof Uint8Array) {
+    return value;
+  }
+  if (ArrayBuffer.isView(value)) {
+    return new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+  }
+  if (value instanceof ArrayBuffer) {
+    return new Uint8Array(value);
+  }
+  return Array.isArray(value) ? Uint8Array.from(value) : null;
+}
+function elementTypeSize(type) {
+  switch (type) {
+    case "Float32":
+      return 4;
+    case "Float16":
+    case "UInt16Norm":
+    case "UInt16":
+    case "Int16Norm":
+    case "Int16":
+      return 2;
+    case "UInt8Norm":
+    case "UInt8":
+    case "Int8Norm":
+    case "Int8":
+      return 1;
+    default:
+      throw new TypeError(`Unsupported animation curve element type "${type}"`);
+  }
+}
+function readElement(view, offset, type) {
+  switch (type) {
+    case "Float32":
+      return view.getFloat32(offset, true);
+    case "Float16":
+      return num.fromHalfFloat(view.getUint16(offset, true));
+    case "UInt16Norm":
+      return view.getUint16(offset, true) / 65535;
+    case "UInt16":
+      return view.getUint16(offset, true);
+    case "Int16Norm":
+      return Math.max(view.getInt16(offset, true) / 32767, -1);
+    case "Int16":
+      return view.getInt16(offset, true);
+    case "UInt8Norm":
+      return view.getUint8(offset) / 255;
+    case "UInt8":
+      return view.getUint8(offset);
+    case "Int8Norm":
+      return Math.max(view.getInt8(offset) / 127, -1);
+    case "Int8":
+      return view.getInt8(offset);
+    default:
+      throw new TypeError(`Unsupported animation curve element type "${type}"`);
   }
 }
 function exactDiv(numerator, divisor, what) {
