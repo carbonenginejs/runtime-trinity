@@ -88,6 +88,88 @@ export class EveBoxVolume extends CjsModel
 
   @carbon.method
   @impl.adapted
+  GeneratePointsInVolume(points, howManyToAdd, excludeInnerVolume, fallOffFactor)
+  {
+    if (this.scaling[0] === 0 || this.scaling[1] === 0 || this.scaling[2] === 0)
+    {
+      return;
+    }
+
+    const leftRightSideSize = (this.scaling[0] - this.innerScaling[0])
+      * this.scaling[1] * this.scaling[2];
+    const topBottomSize = this.innerScaling[0]
+      * (this.scaling[1] - this.innerScaling[1]) * this.scaling[2];
+    const frontBackLidSize = this.innerScaling[0] * this.innerScaling[1]
+      * (this.scaling[2] - this.innerScaling[2]);
+    const outerSidesSize = 2 * (leftRightSideSize + topBottomSize + frontBackLidSize);
+    let innerToOuterSizeRatio = 0;
+
+    if (!excludeInnerVolume)
+    {
+      const rangeX = this.scaling[0] - this.innerScaling[0];
+      const rangeY = this.scaling[1] - this.innerScaling[1];
+      const rangeZ = this.scaling[2] - this.innerScaling[2];
+      const adjustedOuterCubeSize = (this.innerScaling[0] + 0.5 * rangeX)
+        * (this.innerScaling[1] + 0.5 * rangeY)
+        * (this.innerScaling[2] + 0.5 * rangeZ);
+      innerToOuterSizeRatio = this.innerScaling[0] * this.innerScaling[1]
+        * this.innerScaling[2] / adjustedOuterCubeSize;
+      innerToOuterSizeRatio = 1 - Math.pow(
+        1 - innerToOuterSizeRatio,
+        0.8 + 0.2 * fallOffFactor
+      );
+    }
+
+    const count = Math.max(0, Math.trunc(howManyToAdd));
+    for (let i = 0; i < count; i++)
+    {
+      let zonePicker = Math.random();
+      if (zonePicker < innerToOuterSizeRatio)
+      {
+        points.push(vec3.fromValues(
+          this.innerScaling[0] * Math.random() - 0.5 * this.innerScaling[0],
+          this.innerScaling[1] * Math.random() - 0.5 * this.innerScaling[1],
+          this.innerScaling[2] * Math.random() - 0.5 * this.innerScaling[2]
+        ));
+        continue;
+      }
+
+      zonePicker *= outerSidesSize;
+      const position = vec3.create();
+      if (zonePicker < 2 * leftRightSideSize)
+      {
+        const distance = 0.5 * this.innerScaling[0]
+          + Math.pow(Math.random(), fallOffFactor)
+          * (this.scaling[0] - this.innerScaling[0]) * 0.5;
+        position[0] = zonePicker < leftRightSideSize ? distance : -distance;
+        position[1] = Math.random() * this.scaling[1] - 0.5 * this.scaling[1];
+        position[2] = Math.random() * this.scaling[2] - 0.5 * this.scaling[2];
+      }
+      else if (zonePicker < 2 * (leftRightSideSize + topBottomSize))
+      {
+        const distance = 0.5 * this.innerScaling[1]
+          + Math.pow(Math.random(), fallOffFactor)
+          * (this.scaling[1] - this.innerScaling[1]) * 0.5;
+        position[0] = Math.random() * this.innerScaling[0] - 0.5 * this.innerScaling[0];
+        position[1] = zonePicker < 2 * leftRightSideSize + topBottomSize ? distance : -distance;
+        position[2] = Math.random() * this.scaling[2] - 0.5 * this.scaling[2];
+      }
+      else
+      {
+        // Carbon uses the Y dimensions for the front/back distance here.
+        const distance = 0.5 * this.innerScaling[1]
+          + Math.pow(Math.random(), fallOffFactor)
+          * (this.scaling[1] - this.innerScaling[1]) * 0.5;
+        position[0] = Math.random() * this.innerScaling[0] - 0.5 * this.innerScaling[0];
+        position[1] = Math.random() * this.innerScaling[1] - 0.5 * this.innerScaling[1];
+        position[2] = zonePicker < outerSidesSize - frontBackLidSize ? distance : -distance;
+      }
+      points.push(position);
+    }
+  }
+
+  @carbon.method
+  @impl.adapted
   RegisterForChanges(callback)
   {
     const id = this.#nextCallbackId++;

@@ -1113,6 +1113,17 @@ export class EveSpaceObject2 extends EveEntity
   }
 
   /**
+   * Gets the first locator list whose set has the requested Carbon name.
+   * The returned list remains owned by the locator set.
+   */
+  @carbon.method
+  @impl.implemented
+  GetLocatorsForSet(locatorSetName)
+  {
+    return this.#GetLocatorsForSet(locatorSetName);
+  }
+
+  /**
    * Gets the closest locator in a set to a world position, ignoring locator
    * facing. Returns -1 when the set is missing or empty.
    */

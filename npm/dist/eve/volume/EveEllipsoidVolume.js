@@ -15,7 +15,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveEllipsoidVolume",
         family: "eve/volume"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "innerShape"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "shape"], [[io, io.readwrite, type, type.boolean], 16, "debugShowIntersection"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterForChanges"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnregisterForChanges"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "position"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "innerShape"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "shape"], [[io, io.readwrite, type, type.boolean], 16, "debugShowIntersection"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "GeneratePointsInVolume"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterForChanges"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnregisterForChanges"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.noop], 18, "RenderDebugInfo"]], 0, void 0, CjsModel));
     }
     name = (_initProto(this), _init_name(this, ""));
     position = (_init_extra_name(this), _init_position(this, vec3.create()));
@@ -51,6 +51,33 @@ new class extends _identity {
       const span = outer - inner;
       const ratio = span > 0 ? (outer - distance) / span : 0;
       return ratio * ratio;
+    }
+    GeneratePointsInVolume(points, howManyToAdd, excludeInnerVolume, fallOffFactor) {
+      const count = Math.max(0, Math.trunc(howManyToAdd));
+      let innerSelectionChance = 0;
+      if (!excludeInnerVolume) {
+        innerSelectionChance = this.innerShape[0] * this.innerShape[1] * this.innerShape[2] / (this.shape[0] * this.shape[1] * this.shape[2]);
+        innerSelectionChance = 1 - Math.pow(1 - innerSelectionChance, 0.6 + 0.4 * fallOffFactor);
+      }
+      for (let i = 0; i < count; i++) {
+        const angle = Math.PI * 2 * Math.random();
+        const z = Math.random() * 2 - 1;
+        const radial = Math.sqrt(1 - z * z);
+        const direction = vec3.normalize(vec3.create(), vec3.fromValues(radial * Math.cos(angle), radial * Math.sin(angle), z));
+        const position = vec3.create();
+        if (Math.random() > innerSelectionChance) {
+          const distance = Math.pow(Math.random(), 0.75 * fallOffFactor);
+          for (let axis = 0; axis < 3; axis++) {
+            position[axis] = direction[axis] * (this.innerShape[axis] + (this.shape[axis] - this.innerShape[axis]) * distance);
+          }
+        } else {
+          const distance = Math.pow(Math.random(), 1 / 3);
+          for (let axis = 0; axis < 3; axis++) {
+            position[axis] = direction[axis] * this.innerShape[axis] * distance;
+          }
+        }
+        points.push(position);
+      }
     }
     RegisterForChanges(callback) {
       const id = this.#nextCallbackId++;

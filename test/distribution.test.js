@@ -1,13 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { EveBoxVolume } from "../npm/dist/eve/volume/EveBoxVolume.js";
+import { EveEllipsoidVolume } from "../npm/dist/eve/volume/EveEllipsoidVolume.js";
+import { EveSphereVolume } from "../npm/dist/eve/volume/EveSphereVolume.js";
+import { EveChildUpdateParams } from "../npm/dist/eve/EveChildUpdateParams.js";
+import { EveLocatorSets } from "../npm/dist/eve/EveLocatorSets.js";
 import { Locator } from "../npm/dist/eve/Locator.js";
 import { PlacementDataWithIdentifier } from "../npm/dist/eve/PlacementDataWithIdentifier.js";
+import { EveSpaceObject2 } from "../npm/dist/eve/spaceObject/EveSpaceObject2.js";
 import { EveBaseDistributionMethod } from "../npm/dist/generated/eve/distribution/EveBaseDistributionMethod.js";
 import { EveDistributionModifierProcessLifetime } from "../npm/dist/generated/eve/distribution/attributeModifiers/EveDistributionModifierProcessLifetime.js";
 import { EveDistributionModifierScaleBySpaceObjectParent } from "../npm/dist/generated/eve/distribution/attributeModifiers/EveDistributionModifierScaleBySpaceObjectParent.js";
 import { EveDistributionModifierTransformOffset } from "../npm/dist/generated/eve/distribution/attributeModifiers/EveDistributionModifierTransformOffset.js";
 import { EveDistributionPlacementGeneratorLocators } from "../npm/dist/generated/eve/distribution/placement/EveDistributionPlacementGeneratorLocators.js";
+import { EveDistributionPlacementGeneratorParentLocators } from "../npm/dist/generated/eve/distribution/placement/EveDistributionPlacementGeneratorParentLocators.js";
+import { EveDistributionPlacementGeneratorVolume } from "../npm/dist/generated/eve/distribution/placement/EveDistributionPlacementGeneratorVolume.js";
 import { EveDistributionSpawnModifierLifeTimeOffset } from "../npm/dist/generated/eve/distribution/spawnModifiers/EveDistributionSpawnModifierLifeTimeOffset.js";
 import { EveDistributionSpawnModifierRandomOffset } from "../npm/dist/generated/eve/distribution/spawnModifiers/EveDistributionSpawnModifierRandomOffset.js";
 import { EveDistributionSpawnModifierRandomRotation } from "../npm/dist/generated/eve/distribution/spawnModifiers/EveDistributionSpawnModifierRandomRotation.js";
@@ -15,6 +24,9 @@ import { EveDistributionSpawnModifierRandomScale } from "../npm/dist/generated/e
 import { EveDistributionSpawnerBurst } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerBurst.js";
 import { EveDistributionSpawnerControllerTrigger } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerControllerTrigger.js";
 import { EveDistributionSpawnerInterval } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerInterval.js";
+import { EveDistributionSpawnerTriggerPlane } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerTriggerPlane.js";
+import { EveDistributionSpawnerTriggerSnake } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerTriggerSnake.js";
+import { EveDistributionSpawnerTriggerSphere } from "../npm/dist/generated/eve/distribution/spawners/EveDistributionSpawnerTriggerSphere.js";
 
 
 test("locator distributions rebuild and consume Carbon placement pools", () =>
@@ -254,4 +266,250 @@ test("controller trigger spawners gate and restart their Carbon children", () =>
   trigger.invertTrigger = true;
   trigger.SetControllerVariable("Active", 1);
   assert.equal(trigger.isActive, false);
+});
+
+test("parent locator generators resolve and rebuild the Carbon locator-set contract", () =>
+{
+  const damage = new EveLocatorSets();
+  damage.name = "damage";
+  const first = new Locator();
+  first.position.set([1, 2, 3]);
+  damage.locators.push(first);
+
+  const weapon = new EveLocatorSets();
+  weapon.name = "weapon";
+  const second = new Locator();
+  second.position.set([4, 5, 6]);
+  weapon.locators.push(second);
+
+  const parent = new EveSpaceObject2();
+  parent.locatorSets.push(damage, weapon);
+  assert.equal(parent.GetLocatorsForSet("damage"), damage.locators);
+  assert.equal(parent.GetLocatorsForSet("missing"), null);
+
+  const generator = new EveDistributionPlacementGeneratorParentLocators();
+  const distribution = new EveBaseDistributionMethod();
+  distribution.placementGenerators.push(generator);
+  distribution.Initialize();
+  assert.equal(distribution.GetFreePlacementCount(), 0);
+
+  const params = new EveChildUpdateParams();
+  params.spaceObjectParent = parent;
+  const context = { GetDeltaT: () => 0 };
+  distribution.UpdateSyncronous(context, params);
+  assert.equal(distribution.GetFreePlacementCount(), 1);
+  assert.deepEqual(
+    Array.from(distribution.GetInitialPlacementData(0).initialTranslation),
+    [1, 2, 3]
+  );
+
+  generator.SetValues({ locatorSetName: "weapon" });
+  distribution.UpdateSyncronous(context, params);
+  assert.equal(distribution.GetFreePlacementCount(), 1);
+  assert.deepEqual(
+    Array.from(distribution.GetInitialPlacementData(0).initialTranslation),
+    [4, 5, 6]
+  );
+
+  const third = new Locator();
+  third.position.set([7, 8, 9]);
+  weapon.locators.push(third);
+  generator.OnStructureListModified(0, third, 1, weapon.locators);
+  distribution.UpdateSyncronous(context, params);
+  assert.equal(distribution.GetFreePlacementCount(), 2);
+  assert.equal(
+    CjsSchema.getMethod(EveDistributionPlacementGeneratorParentLocators, "GetInitialPlacements")?.impl?.status,
+    "adapted"
+  );
+});
+
+test("volume generators consume Carbon volume points and change callbacks", () =>
+{
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+  try
+  {
+    const sphere = new EveSphereVolume();
+    sphere.position.set([10, 20, 30]);
+    sphere.radius = 3;
+    sphere.innerRadius = 1;
+
+    const generator = new EveDistributionPlacementGeneratorVolume();
+    generator.volume = sphere;
+    generator.numGenerated = 1;
+    generator.hollowVolume = true;
+    const placements = [];
+    generator.GetInitialPlacements(placements, { value: 4 });
+
+    assert.equal(placements.length, 1);
+    assert.equal(placements[0].placement.uniqueID, 4);
+    assert.deepEqual(Array.from(placements[0].placement.initialTranslation), [10, 20, 29]);
+    assert.deepEqual(Array.from(placements[0].placement.initialScale), [1, 1, 1]);
+    assert.equal(placements[0].placement.boneIndex, -1);
+    const direction = vec3.transformQuat(
+      vec3.create(),
+      vec3.fromValues(0, 1, 0),
+      placements[0].placement.initialRotation
+    );
+    assert.ok(vec3.distance(direction, vec3.fromValues(0, 0, -1)) < 1e-6);
+    assert.equal(generator.IsRequestingRegeneration(), false);
+
+    sphere.SetValues({ radius: 4 });
+    assert.equal(generator.IsRequestingRegeneration(), true);
+    generator.GetInitialPlacements([], { value: 0 });
+    assert.equal(generator.IsRequestingRegeneration(), false);
+    generator.SetValues({ falloffFactor: 2 });
+    assert.equal(generator.IsRequestingRegeneration(), true);
+  }
+  finally
+  {
+    Math.random = originalRandom;
+  }
+
+  Math.random = () => 0.5;
+  try
+  {
+    const ellipsoid = new EveEllipsoidVolume();
+    ellipsoid.shape.set([2, 3, 4]);
+    const ellipsoidPoints = [];
+    ellipsoid.GeneratePointsInVolume(ellipsoidPoints, 2, true, 1);
+    assert.equal(ellipsoidPoints.length, 2);
+    assert.ok(Math.abs(ellipsoidPoints[0][0]) <= 2);
+    assert.ok(Math.abs(ellipsoidPoints[0][1]) <= 3);
+    assert.ok(Math.abs(ellipsoidPoints[0][2]) <= 4);
+
+    const box = new EveBoxVolume();
+    box.scaling.set([2, 4, 6]);
+    const boxPoints = [];
+    box.GeneratePointsInVolume(boxPoints, 1, true, 1);
+    assert.deepEqual(Array.from(boxPoints[0]), [-0.5, 0, 0]);
+  }
+  finally
+  {
+    Math.random = originalRandom;
+  }
+
+  assert.equal(
+    CjsSchema.getMethod(EveSphereVolume, "GeneratePointsInVolume")?.impl?.status,
+    "adapted"
+  );
+  assert.equal(
+    CjsSchema.getMethod(EveDistributionPlacementGeneratorVolume, "GetInitialPlacements")?.impl?.status,
+    "adapted"
+  );
+});
+
+test("sphere and plane trigger spawners follow Carbon sorted trigger progress", () =>
+{
+  const makePlacement = (uniqueID, position) =>
+  {
+    const placement = new PlacementDataWithIdentifier();
+    placement.uniqueID = uniqueID;
+    placement.initialTranslation.set(position);
+    return { placement, timeOutDuration: 0 };
+  };
+  const spherePlacements = [
+    makePlacement(10, [1, 0, 0]),
+    makePlacement(20, [3, 0, 0]),
+    makePlacement(30, [5, 0, 0])
+  ];
+  const planePlacements = [
+    makePlacement(10, [0, 0, 0]),
+    makePlacement(20, [0, 2, 0]),
+    makePlacement(30, [0, 4, 0])
+  ];
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+  try
+  {
+    const sphereCalls = [];
+    const sphere = new EveDistributionSpawnerTriggerSphere();
+    sphere.playDuration = 10;
+    sphere.delayBeforeActivation = 1;
+    sphere.Reset(spherePlacements);
+    const sphereOwner = { TriggerEntityByID: id => sphereCalls.push(id) };
+    sphere.UpdateSyncronous({ GetDeltaT: () => 0.5 }, {}, sphereOwner);
+    sphere.UpdateSyncronous({ GetDeltaT: () => 0.6 }, {}, sphereOwner);
+    sphere.UpdateSyncronous({ GetDeltaT: () => 5 }, {}, sphereOwner);
+    sphere.UpdateSyncronous({ GetDeltaT: () => 5 }, {}, sphereOwner);
+    assert.deepEqual(sphereCalls, [10, 20, 30]);
+
+    const planeCalls = [];
+    const plane = new EveDistributionSpawnerTriggerPlane();
+    plane.playDuration = 10;
+    plane.reversePlaneAnimation = true;
+    plane.Reset(planePlacements);
+    const planeOwner = { TriggerEntityByID: id => planeCalls.push(id) };
+    plane.UpdateSyncronous({ GetDeltaT: () => 1 }, {}, planeOwner);
+    plane.UpdateSyncronous({ GetDeltaT: () => 5 }, {}, planeOwner);
+    plane.UpdateSyncronous({ GetDeltaT: () => 5 }, {}, planeOwner);
+    assert.deepEqual(planeCalls, [30, 20, 10]);
+  }
+  finally
+  {
+    Math.random = originalRandom;
+  }
+
+  assert.equal(
+    CjsSchema.getMethod(EveDistributionSpawnerTriggerSphere, "UpdateSyncronous")?.impl?.status,
+    "adapted"
+  );
+  assert.equal(
+    CjsSchema.getMethod(EveDistributionSpawnerTriggerPlane, "UpdateSyncronous")?.impl?.status,
+    "adapted"
+  );
+});
+
+test("snake trigger spawners follow Carbon nearest-placement travel", () =>
+{
+  const makePlacement = (uniqueID, position) =>
+  {
+    const placement = new PlacementDataWithIdentifier();
+    placement.uniqueID = uniqueID;
+    placement.initialTranslation.set(position);
+    return { placement, timeOutDuration: 0 };
+  };
+  const placements = [
+    makePlacement(10, [0, 0, 0]),
+    makePlacement(20, [10, 0, 0]),
+    makePlacement(30, [20, 0, 0])
+  ];
+  const closest = [20, 30, -1];
+  const calls = [];
+  const owner = {
+    TriggerEntityByID: id => calls.push(id),
+    GetClosestFreePlacement: () => closest.shift() ?? -1,
+    GetInitialPlacementData: id => placements.find(value => value.placement.uniqueID === id)?.placement ?? null
+  };
+
+  const originalRandom = Math.random;
+  Math.random = () => 0;
+  try
+  {
+    const snake = new EveDistributionSpawnerTriggerSnake();
+    snake.totalDestinations = 1;
+    snake.minBaseTimeBetweenTriggers = 1;
+    snake.maxBaseTimeBetweenTriggers = 1;
+    snake.distanceToTravelTimeMultiplier = 10;
+    snake.Reset(placements);
+    snake.UpdateSyncronous({ GetDeltaT: () => 0 }, {}, owner);
+    assert.deepEqual(calls, [10]);
+    assert.equal(snake.destinationsReached, 0);
+    snake.UpdateSyncronous({ GetDeltaT: () => 1 }, {}, owner);
+    assert.equal(snake.travelProgress, 0.5);
+    snake.UpdateSyncronous({ GetDeltaT: () => 1 }, {}, owner);
+    assert.deepEqual(calls, [10, 20]);
+    assert.equal(snake.destinationsReached, 1);
+    snake.UpdateSyncronous({ GetDeltaT: () => 100 }, {}, owner);
+    assert.deepEqual(calls, [10, 20]);
+  }
+  finally
+  {
+    Math.random = originalRandom;
+  }
+
+  assert.equal(
+    CjsSchema.getMethod(EveDistributionSpawnerTriggerSnake, "UpdateSyncronous")?.impl?.status,
+    "adapted"
+  );
 });

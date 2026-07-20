@@ -68,6 +68,46 @@ export class EveSphereVolume extends CjsModel
 
   @carbon.method
   @impl.adapted
+  GeneratePointsInVolume(points, howManyToAdd, excludeInnerVolume, fallOffFactor)
+  {
+    const count = Math.max(0, Math.trunc(howManyToAdd));
+    const radiusRange = this.radius - this.innerRadius;
+    let innerSelectionChance = 0;
+    if (!excludeInnerVolume)
+    {
+      const adjustedOuterRadius = this.innerRadius + 0.5 * radiusRange;
+      innerSelectionChance = this.innerRadius ** 2 / adjustedOuterRadius ** 2;
+    }
+
+    for (let i = 0; i < count; i++)
+    {
+      let distance;
+      if (excludeInnerVolume)
+      {
+        distance = this.innerRadius + radiusRange * Math.pow(Math.random(), 1 / 3);
+      }
+      else if (Math.random() < innerSelectionChance)
+      {
+        distance = this.innerRadius * Math.pow(Math.random(), 1 / 3);
+      }
+      else
+      {
+        distance = this.innerRadius + radiusRange * Math.pow(Math.random(), fallOffFactor);
+      }
+
+      const angle = Math.PI * 2 * Math.random();
+      const z = Math.random() * 2 - 1;
+      const radial = Math.sqrt(1 - z * z);
+      points.push(vec3.fromValues(
+        radial * Math.cos(angle) * distance,
+        radial * Math.sin(angle) * distance,
+        z * distance
+      ));
+    }
+  }
+
+  @carbon.method
+  @impl.adapted
   RegisterForChanges(callback)
   {
     const id = this.#nextCallbackId++;

@@ -179,6 +179,21 @@ Maintained target/depth, clear, viewport, view, projection, resolve, copy,
 mipmap and presentation steps normalize Carbon arguments into this intent
 surface. They do not import WebGL/WebGPU APIs or decide pass boundaries.
 
+## Distribution CPU contract
+
+The Eve distribution family is maintained as browser-portable CPU/object-graph
+behavior. Locator, parent-locator, and volume placement generators build the
+Carbon initial-placement pool; spawn and lifetime modifiers transform those
+records; burst, interval, controller, sphere, plane, and snake spawners drive
+the same `IEveDistributionRulesParent` contract. Carbon's `uint32_t&`
+placement counter is represented by one explicit mutable `{ value }` object.
+
+Sphere, ellipsoid, and box volumes expose Carbon point generation and change
+callbacks without creating renderer resources. Parent-locator generation uses
+the public `EveSpaceObject2.GetLocatorsForSet` contract, and volume generation
+uses `IEveVolume.GeneratePointsInVolume` directly. These paths intentionally
+do not probe alternate method names or infer renderer capabilities.
+
 ## Post-process graph contract
 
 `Tr2PostProcess2` and `Tr2PostProcessAttributes` are device-free graph classes.
