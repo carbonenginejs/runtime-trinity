@@ -18,10 +18,10 @@ export class Tr2Sprite2dVertexBase extends CjsModel
 
   /** color (Color) */
   @type.color
-  color = vec4.create();
+  color = vec4.fromValues(1, 1, 1, 1);
 
   /** texCoord (Vector2) */
-  @type.vec2
-  texCoord = vec2.create();
+  @type.array("vec2")
+  texCoord = [vec2.create(), vec2.create()];
 
 }

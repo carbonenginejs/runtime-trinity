@@ -1,4 +1,5 @@
 export * from "./EveSpaceObject2.js";
+export * from "./EveEffectRoot2.js";
 export * from "./EveRootTransform.js";
 export * from "./EveTransform.js";
 export * from "./EveMissileWarhead.js";

@@ -14,7 +14,7 @@ class TriStepPythonCB extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepPythonCB",
       family: "renderJob"
-    })], [[type.rawStruct("BlueScriptCallback"), 0, "callback"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCallback"]], 0, void 0, _TriRenderStep));
+    })], [[type.rawStruct("BlueScriptCallback"), 0, "callback"], [[carbon, carbon.method, impl, impl.adapted], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetCallback"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -24,13 +24,28 @@ class TriStepPythonCB extends _TriRenderStep {
   callback = (_initProto(this), _init_callback(this, null));
 
   /** Carbon method __init__ -> SetCallback (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepPythonCB.__init__ is not implemented in CarbonEngineJS.");
+  __init__(callback = null) {
+    this.SetCallback(callback);
   }
 
   /** Carbon method SetCallback (MAP_METHOD_AND_WRAP). */
-  SetCallback(...args) {
-    throw new Error("TriStepPythonCB.SetCallback is not implemented in CarbonEngineJS.");
+  SetCallback(callback) {
+    if (callback != null && typeof callback !== "function" && typeof callback.CallVoid !== "function") {
+      throw new TypeError("callback must be a function, callback object, or null");
+    }
+    this.callback = callback;
+  }
+  Execute(_realTime, _simTime, executor) {
+    try {
+      if (typeof this.callback === "function") this.callback();else this.callback?.CallVoid?.();
+    } catch (error) {
+      executor?.ReportDiagnostic?.({
+        type: "callback-error",
+        step: this,
+        error
+      });
+    }
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

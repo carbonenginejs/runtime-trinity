@@ -4,11 +4,22 @@
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { vec4 } from "@carbonenginejs/core-math/vec4";
 
 /** EveLineSet (eve/ui) - generated from schema shapeHash c858d211.... */
 @type.define({ className: "EveLineSet", family: "eve/ui" })
 export class EveLineSet extends CjsModel
 {
+
+  /** Carbon's pending CPU line records. */
+  @type.list("EveLineData")
+  lines = [];
+
+  @type.uint32
+  maxCurrentLineCount = 0;
+
+  @type.uint32
+  currentSubmittedLineCount = 0;
 
   /** m_scaling (Vector3) [READWRITE, PERSIST] */
   @io.persist
@@ -48,58 +59,82 @@ export class EveLineSet extends CjsModel
 
   /** Carbon method AddLine (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  AddLine(...args)
+  @impl.adapted
+  AddLine(position1, color1, position2, color2)
   {
-    throw new Error("EveLineSet.AddLine is not implemented in CarbonEngineJS.");
+    this.lines.push({
+      position1: vec3.clone(position1),
+      color1: vec4.clone(color1),
+      position2: vec3.clone(position2),
+      color2: vec4.clone(color2)
+    });
+    return this.lines.length - 1;
   }
 
   /** Carbon method ChangeLineColor (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ChangeLineColor(...args)
+  @impl.adapted
+  ChangeLineColor(id, color1, color2)
   {
-    throw new Error("EveLineSet.ChangeLineColor is not implemented in CarbonEngineJS.");
+    const line = this.lines[id];
+    if (!line) return false;
+    vec4.copy(line.color1, color1);
+    vec4.copy(line.color2, color2);
+    return true;
   }
 
   /** Carbon method ChangeLine (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ChangeLine(...args)
+  @impl.adapted
+  ChangeLine(id, position1, color1, position2, color2)
   {
-    throw new Error("EveLineSet.ChangeLine is not implemented in CarbonEngineJS.");
+    const line = this.lines[id];
+    if (!line) return false;
+    vec3.copy(line.position1, position1);
+    vec4.copy(line.color1, color1);
+    vec3.copy(line.position2, position2);
+    vec4.copy(line.color2, color2);
+    return true;
   }
 
   /** Carbon method ChangeLinePosition (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ChangeLinePosition(...args)
+  @impl.adapted
+  ChangeLinePosition(id, position1, position2)
   {
-    throw new Error("EveLineSet.ChangeLinePosition is not implemented in CarbonEngineJS.");
+    const line = this.lines[id];
+    if (!line) return false;
+    vec3.copy(line.position1, position1);
+    vec3.copy(line.position2, position2);
+    return true;
   }
 
   /** Carbon method ClearLines (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ClearLines(...args)
+  @impl.implemented
+  ClearLines()
   {
-    throw new Error("EveLineSet.ClearLines is not implemented in CarbonEngineJS.");
+    this.lines.length = 0;
   }
 
   /** Carbon method RemoveLine (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  RemoveLine(...args)
+  @impl.adapted
+  RemoveLine(id)
   {
-    throw new Error("EveLineSet.RemoveLine is not implemented in CarbonEngineJS.");
+    if (!this.lines[id]) return false;
+    this.lines.splice(id, 1);
+    return true;
   }
 
   /** Carbon method SubmitChanges (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SubmitChanges(...args)
+  @impl.adapted
+  SubmitChanges()
   {
-    throw new Error("EveLineSet.SubmitChanges is not implemented in CarbonEngineJS.");
+    this.maxCurrentLineCount = Math.max(this.maxCurrentLineCount, this.lines.length);
+    this.currentSubmittedLineCount = this.lines.length;
+    return true;
   }
 
 }

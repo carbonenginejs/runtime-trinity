@@ -7,7 +7,6 @@ export { Tr2PostProcess2 } from './Tr2PostProcess2.js';
 export { Tr2PostProcess } from './Tr2PostProcess.js';
 export { Tr2PostProcessAttributes } from './Tr2PostProcessAttributes.js';
 export { BlurContext } from '../generated/postProcess/BlurContext.js';
-export { CASConstants } from '../generated/postProcess/CASConstants.js';
 export { GaussianData } from '../generated/postProcess/GaussianData.js';
 export { Tr2PPColorCorrectionEffect } from '../generated/postProcess/Tr2PPColorCorrectionEffect.js';
 export { Tr2PPDesaturateEffect } from '../generated/postProcess/Tr2PPDesaturateEffect.js';

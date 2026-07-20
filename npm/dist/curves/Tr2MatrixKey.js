@@ -13,7 +13,7 @@ class Tr2MatrixKey extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2MatrixKey",
       family: "curves"
-    })], [[[io, io.persist, type, type.unknown], 16, "time"], [[io, io.persist, type, type.unknown], 16, "value"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.float32], 16, "time"], [[io, io.persist, type, type.mat4], 16, "value"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

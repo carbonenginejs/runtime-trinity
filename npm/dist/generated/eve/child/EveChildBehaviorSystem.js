@@ -14,7 +14,7 @@ class EveChildBehaviorSystem extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildBehaviorSystem",
       family: "eve/child"
-    })], [[[io, io.notify, io, io.persist, void 0, type.list("SplineTunnelGroup")], 16, "splineTunnels"], [[io, io.persist, void 0, type.list("BehaviorGroup")], 16, "behaviorGroups"], [[io, io.read, type, type.uint32], 16, "instanceCount"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetVertexElementAddedThroughCode"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.notify, io, io.persist, void 0, type.list("SplineTunnelGroup")], 16, "splineTunnels"], [[io, io.persist, void 0, type.list("BehaviorGroup")], 16, "behaviorGroups"], [[io, io.read, type, type.uint32], 16, "instanceCount"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Returns Carbon's numeric Tr2VertexDefinition usage/index pairs without owning a renderer declaration.")], 18, "GetVertexElementAddedThroughCode"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -33,8 +33,8 @@ class EveChildBehaviorSystem extends _EveChildTransform {
   display = (_init_extra_instanceCount(this), _init_display(this, true));
 
   /** Carbon method GetVertexElementAddedThroughCode (MAP_METHOD_AND_WRAP). */
-  GetVertexElementAddedThroughCode(...args) {
-    throw new Error("EveChildBehaviorSystem.GetVertexElementAddedThroughCode is not implemented in CarbonEngineJS.");
+  GetVertexElementAddedThroughCode() {
+    return [[5, 8], [5, 9], [5, 10], [5, 11], [5, 12], [5, 13]];
   }
   static {
     _initClass();

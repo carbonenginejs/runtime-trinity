@@ -1,6 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { EveLocatorSets as _EveLocatorSets } from '../../../../eve/EveLocatorSets.js';
 
 let _initProto, _initClass, _init_behaviorPriority, _init_extra_behaviorPriority, _init_enabled, _init_extra_enabled, _init_locatorType, _init_extra_locatorType, _init_locatorSet, _init_extra_locatorSet, _init_arrivedRadius, _init_extra_arrivedRadius, _init_distFromOrigin, _init_extra_distFromOrigin, _init_slowDownRadius, _init_extra_slowDownRadius, _init_backAndForthWeight, _init_extra_backAndForthWeight, _init_fxBehavior, _init_extra_fxBehavior, _init_target, _init_extra_target, _init_parent, _init_extra_parent, _init_secondsToTurn, _init_extra_secondsToTurn, _init_locatorSetName, _init_extra_locatorSetName;
 
@@ -15,7 +16,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "BackAndForth",
         family: "eve/child/behaviors"
-      })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "enabled"], [[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("LocatorType")], 16, "locatorType"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSet"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, type, type.float32], 16, "backAndForthWeight"], [[io, io.persist, void 0, type.model("IBehavior")], 16, "fxBehavior"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "target"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "parent"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLocatorSet"]], 0, void 0, CjsModel));
+      })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "enabled"], [[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("LocatorType")], 16, "locatorType"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSet"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, type, type.float32], 16, "backAndForthWeight"], [[io, io.persist, void 0, type.model("IBehavior")], 16, "fxBehavior"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "target"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "parent"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLocatorSet"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
@@ -61,8 +62,12 @@ new class extends _identity {
     locatorSetName = (_init_extra_secondsToTurn(this), _init_locatorSetName(this, "damage"));
 
     /** Carbon method AddLocatorSet (MAP_METHOD_AND_WRAP). */
-    AddLocatorSet(...args) {
-      throw new Error("BackAndForth.AddLocatorSet is not implemented in CarbonEngineJS.");
+    AddLocatorSet() {
+      const seek = new _EveLocatorSets();
+      seek.SetName("seek");
+      const deliver = new _EveLocatorSets();
+      deliver.SetName("deliver");
+      this.locatorSet.push(seek, deliver);
     }
   }];
   LocatorType = Object.freeze({

@@ -147,6 +147,112 @@ new class extends _identity {
       });
       return true;
     }
+    RenderObject(renderable, options = {}) {
+      this.#intents.push({
+        type: "render-object",
+        renderable,
+        ...options
+      });
+      return true;
+    }
+    DrawEffect(effect, shaderBuffer = null, tlTexCoord = null, brTexCoord = null) {
+      this.#intents.push({
+        type: "draw-effect",
+        effect,
+        shaderBuffer,
+        tlTexCoord: tlTexCoord ? Array.from(tlTexCoord) : null,
+        brTexCoord: brTexCoord ? Array.from(brTexCoord) : null
+      });
+      return true;
+    }
+    DrawLineSet(lineSet) {
+      this.#intents.push({
+        type: "draw-line-set",
+        lineSet
+      });
+      return true;
+    }
+    ClearUav(buffer, value, clearWithFloat = false) {
+      this.#intents.push({
+        type: "clear-uav",
+        buffer,
+        value: Array.from(value),
+        clearWithFloat: !!clearWithFloat
+      });
+      return true;
+    }
+    RenderAtlas(step) {
+      this.#intents.push({
+        type: "render-atlas",
+        step
+      });
+      return true;
+    }
+    RenderLineGraphs(step) {
+      this.#intents.push({
+        type: "render-line-graphs",
+        step
+      });
+      return true;
+    }
+    RenderTexture(source, options = {}) {
+      this.#intents.push({
+        type: "render-texture",
+        source,
+        ...options
+      });
+      return true;
+    }
+    RenderDebug(debugStep) {
+      this.#intents.push({
+        type: "render-debug",
+        vertices: debugStep.lineSet.vertices.map(vertex => ({
+          position: Array.from(vertex.position),
+          color: vertex.color
+        })),
+        text2d: debugStep.text2d.map(entry => ({
+          ...entry
+        })),
+        text3d: debugStep.text3d.map(entry => ({
+          ...entry,
+          position: Array.from(entry.position)
+        }))
+      });
+      return true;
+    }
+    RunComputeShader(effect, groupDimX = 1, groupDimY = 1, groupDimZ = 1) {
+      this.#intents.push({
+        type: "run-compute-shader",
+        effect,
+        groupDimX,
+        groupDimY,
+        groupDimZ
+      });
+      return true;
+    }
+    RunComputeShaderIndirect(effect, indirectionBuffer, offsetForArgs = 0) {
+      this.#intents.push({
+        type: "run-compute-shader-indirect",
+        effect,
+        indirectionBuffer,
+        offsetForArgs
+      });
+      return true;
+    }
+    SetUpscalingContextID(upscalingContextID) {
+      this.#intents.push({
+        type: "set-upscaling-context-id",
+        upscalingContextID: Number(upscalingContextID) >>> 0
+      });
+      return true;
+    }
+    SetDebugRenderer(renderer) {
+      this.#intents.push({
+        type: "set-debug-renderer",
+        renderer: renderer ?? null
+      });
+      return true;
+    }
     PresentSwapChain(swapChain) {
       this.#intents.push({
         type: "present-swap-chain",

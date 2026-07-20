@@ -4,7 +4,6 @@ export * from "./Tr2StepExecuteRenderNode.js";
 export * from "./TriStepClearUav.js";
 export * from "./TriStepFilterVisibilityResults.js";
 export * from "./TriStepPythonCB.js";
-export * from "./TriStepRemoteSync.js";
 export * from "./TriStepRemoteUpdate.js";
 export * from "./TriStepRenderAtlas.js";
 export * from "./TriStepRenderDebug.js";

@@ -1,3 +1,4 @@
+export { GrannyBoneOffset } from './GrannyBoneOffset.js';
 export { Tr2ExpressionTermInfo } from './Tr2ExpressionTermInfo.js';
 export { Tr2DepthStencil } from './Tr2DepthStencil.js';
 export { Tr2DirectInstanceData } from './Tr2DirectInstanceData.js';
@@ -20,6 +21,7 @@ export { TriProjection } from './TriProjection.js';
 export { TriView } from './TriView.js';
 export { TriVariable } from './TriVariable.js';
 export { TriRect } from './TriRect.js';
+export { TriSettings } from './TriSettings.js';
 export { TriViewport } from './TriViewport.js';
 export { TriObserverLocal } from './TriObserverLocal.js';
 //# sourceMappingURL=index.js.map

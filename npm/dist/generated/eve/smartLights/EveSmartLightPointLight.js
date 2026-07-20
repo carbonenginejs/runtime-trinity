@@ -16,14 +16,14 @@ class EveSmartLightPointLight extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveSmartLightPointLight",
       family: "eve/smartLights"
-    })], [[[io, io.persist, type, type.unknown], 16, "flags"], [[io, io.read, void 0, type.objectRef("Tr2LightProfileRes")], 16, "lightProfile"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.unknown], 16, "innerRadius"], [[io, io.persist, type, type.unknown], 16, "brightness"], [[io, io.persist, type, type.unknown], 16, "radius"], [[io, io.notify, io, io.persist, type, type.string], 16, "lightProfilePath"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.persist, type, type.quat], 16, "staticOffsetRotation"]], 0, void 0, _EveEntity));
+    })], [[[io, io.persist, type, type.uint16], 16, "flags"], [[io, io.read, void 0, type.objectRef("Tr2LightProfileRes")], 16, "lightProfile"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "innerRadius"], [[io, io.persist, type, type.float32], 16, "brightness"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.notify, io, io.persist, type, type.string], 16, "lightProfilePath"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.persist, type, type.quat], 16, "staticOffsetRotation"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);
     _init_extra_staticOffsetRotation(this);
   }
   /** m_lightGroupData.flags (LightData) [READWRITE, PERSIST] */
-  flags = _init_flags(this, null);
+  flags = _init_flags(this, 1);
 
   /** m_lightProfile (Tr2LightProfileResPtr) [READ] */
   lightProfile = (_init_extra_flags(this), _init_lightProfile(this, null));
@@ -35,13 +35,13 @@ class EveSmartLightPointLight extends _EveEntity {
   display = (_init_extra_name(this), _init_display(this, true));
 
   /** m_lightGroupData.innerRadius (LightData) [READWRITE, PERSIST] */
-  innerRadius = (_init_extra_display(this), _init_innerRadius(this, null));
+  innerRadius = (_init_extra_display(this), _init_innerRadius(this, 0));
 
   /** m_lightGroupData.brightness (LightData) [READWRITE, PERSIST] */
-  brightness = (_init_extra_innerRadius(this), _init_brightness(this, null));
+  brightness = (_init_extra_innerRadius(this), _init_brightness(this, 1));
 
   /** m_lightGroupData.radius (LightData) [READWRITE, PERSIST] */
-  radius = (_init_extra_brightness(this), _init_radius(this, null));
+  radius = (_init_extra_brightness(this), _init_radius(this, 0));
 
   /** m_lightProfilePath (std::wstring) [READWRITE, PERSIST, NOTIFY] */
   lightProfilePath = (_init_extra_radius(this), _init_lightProfilePath(this, ""));

@@ -14,7 +14,7 @@ class Tr2DynamicBinding extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2DynamicBinding",
       family: "trinityCore"
-    })], [[[io, io.persist, type, type.int32], 16, "bindingDelay"], [[io, io.read, type, type.unknown], 16, "destination"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationObjectAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationObjectPath"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceObjectAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceObjectPath"], [[io, io.notify, io, io.persist, type, type.float32], 16, "scale"], [[io, io.read, type, type.unknown], 16, "source"], [[io, io.read, void 0, type.objectRef("TriValueBinding")], 16, "binding"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.int32], 16, "bindingDelay"], [[io, io.read, void 0, type.objectRef("IRoot")], 16, "destination"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationObjectAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "destinationObjectPath"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceObjectAttribute"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceObjectPath"], [[io, io.notify, io, io.persist, type, type.float32], 16, "scale"], [[io, io.read, void 0, type.objectRef("IRoot")], 16, "source"], [[io, io.read, void 0, type.objectRef("TriValueBinding")], 16, "binding"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

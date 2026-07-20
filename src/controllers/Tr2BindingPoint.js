@@ -38,10 +38,10 @@ export class Tr2BindingPoint extends CjsModel
   @type.string
   attribute = "";
 
-  @type.unknown
+  @type.objectRef("IRoot")
   resolvedObject = null;
 
-  @type.unknown
+  @type.objectRef("INotify")
   notifyPtr = null;
 
   @type.objectRef("Be::VarEntry")

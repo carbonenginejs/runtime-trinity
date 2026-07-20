@@ -9,6 +9,8 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class Tr2TextureAnimation extends CjsModel
 {
 
+  #channels = new Map();
+
   /** m_fps (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
@@ -47,18 +49,59 @@ export class Tr2TextureAnimation extends CjsModel
 
   /** Carbon method GetChannelNames (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetChannelNames(...args)
+  @impl.adapted
+  GetChannelNames()
   {
-    throw new Error("Tr2TextureAnimation.GetChannelNames is not implemented in CarbonEngineJS.");
+    return Array.from(this.#channels.keys());
   }
 
   /** Carbon method RestartAnimation (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  RestartAnimation(...args)
+  @impl.adapted
+  @impl.reason("The browser resets its CPU frame clock and delegates decoder rewind to attached channel adapters instead of Carbon's VTA worker thread.")
+  RestartAnimation()
   {
-    throw new Error("Tr2TextureAnimation.RestartAnimation is not implemented in CarbonEngineJS.");
+    this.frame = 0;
+    this.time = 0;
+    for (const channel of this.#channels.values())
+    {
+      if (typeof channel?.Restart === "function")
+      {
+        channel.Restart();
+      }
+      else
+      {
+        channel?.Reset?.();
+      }
+    }
+  }
+
+  /** Attaches already-decoded browser VTA channel adapters. */
+  @impl.adapted
+  SetChannels(channels)
+  {
+    this.#channels.clear();
+    if (channels instanceof Map)
+    {
+      for (const [name, channel] of channels)
+      {
+        this.#channels.set(String(name), channel);
+      }
+    }
+    else if (channels && typeof channels === "object")
+    {
+      for (const [name, channel] of Object.entries(channels))
+      {
+        this.#channels.set(name, channel);
+      }
+    }
+  }
+
+  @impl.adapted
+  GetTexture(channel)
+  {
+    const value = this.#channels.get(String(channel ?? ""));
+    return value?.texture ?? value ?? null;
   }
 
   static RestartState = Object.freeze({

@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2ScalarExprKeyCurve.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2ScalarExprKeyCurve.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { noise } from "@carbonenginejs/core-math/noise";
 import { CjsControllerExpressionProgram } from "../controllers/CjsControllerExpressionProgram.js";
 import { Tr2CurveInterpolation } from "./enums.js";
@@ -14,7 +14,8 @@ import { Tr2CurveInterpolation } from "./enums.js";
 export class Tr2ScalarExprKey extends CjsModel
 {
   @io.persist
-  @type.unknown
+  @type.uint32
+  @schema.enum("Tr2CurveInterpolation")
   interpolation = Tr2CurveInterpolation.LINEAR;
 
   @io.notify
@@ -39,12 +40,12 @@ export class Tr2ScalarExprKey extends CjsModel
 
   @io.notify
   @io.persist
-  @type.unknown
+  @type.float32
   time = 0;
 
   @io.notify
   @io.persist
-  @type.unknown
+  @type.float32
   value = 0;
 
   @io.notify
@@ -185,6 +186,8 @@ export class Tr2ScalarExprKey extends CjsModel
       prevKeyValue: this.prevKeyValue
     };
   }
+
+  static Tr2CurveInterpolation = Tr2CurveInterpolation;
 }
 const SCALAR_EXPR_KEY_FUNCTIONS = {
   perlin_simple: (_ctx, x = 0) => (noise.carbonPerlin1D(ToFiniteNumber(x), 1.1, 2, 3) + 1) * 0.5,

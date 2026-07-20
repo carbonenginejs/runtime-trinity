@@ -16,7 +16,7 @@ class SpawnDrones extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "SpawnDrones",
       family: "eve/child/behaviors"
-    })], [[[io, io.persist, type, type.vec3], 16, "gridSpacing"], [[io, io.notify, io, io.persist, type, type.float32], 16, "gridFullnessFactor"], [[io, io.readwrite, type, type.boolean], 16, "regenerateDrones"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.persist, type, type.float32], 16, "seconds"], [[io, io.persist, type, type.boolean], 16, "addOnGrid"], [[io, io.persist, type, type.boolean], 16, "addByCount"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[io, io.persist, type, type.float32], 16, "time"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "gridInfo"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "gridToggleReset"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.vec3], 16, "gridSpacing"], [[io, io.notify, io, io.persist, type, type.float32], 16, "gridFullnessFactor"], [[io, io.readwrite, type, type.boolean], 16, "regenerateDrones"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.persist, type, type.float32], 16, "seconds"], [[io, io.persist, type, type.boolean], 16, "addOnGrid"], [[io, io.persist, type, type.boolean], 16, "addByCount"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[io, io.persist, type, type.float32], 16, "time"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "gridInfo"], [[carbon, carbon.method, impl, impl.implemented], 18, "gridToggleReset"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -56,8 +56,8 @@ class SpawnDrones extends CjsModel {
   gridInfo = (_init_extra_spawnPosition(this), _init_gridInfo(this, vec4.fromValues(1, 1, 1, 10)));
 
   /** Carbon method gridToggleReset -> GridToggleReset (MAP_METHOD_AND_WRAP). */
-  gridToggleReset(...args) {
-    throw new Error("SpawnDrones.gridToggleReset is not implemented in CarbonEngineJS.");
+  gridToggleReset() {
+    this.regenerateDrones = true;
   }
   static {
     _initClass();

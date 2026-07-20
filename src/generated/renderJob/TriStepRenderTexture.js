@@ -47,10 +47,35 @@ export class TriStepRenderTexture extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.adapted
+  __init__(source = null)
   {
-    throw new Error("TriStepRenderTexture.__init__ is not implemented in CarbonEngineJS.");
+    this.texture = null;
+    this.renderTarget = null;
+    this.depthStencil = null;
+    const className = source?.constructor?.name ?? "";
+    if (className === "Tr2RenderTarget") this.renderTarget = source;
+    else if (className === "Tr2DepthStencil") this.depthStencil = source;
+    else this.texture = source;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    const source = this.renderTarget ?? this.depthStencil ?? this.texture;
+    if (source)
+    {
+      const width = Number(source.GetWidth?.() ?? source.width ?? 0);
+      const height = Number(source.GetHeight?.() ?? source.height ?? 0);
+      vec2.set(this.textureSize, width, height);
+      executor?.RenderTexture?.(source, {
+        tlTexCoord: this.tlTexCoord,
+        brTexCoord: this.brTexCoord,
+        failClearColor: this.failClearColor
+      });
+    }
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

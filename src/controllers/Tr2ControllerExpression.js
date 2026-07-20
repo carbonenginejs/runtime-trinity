@@ -23,15 +23,6 @@ export class Tr2ControllerExpression extends CjsModel
   @type.uint64
   variableMask = 0n;
 
-  @type.unknown
-  OWNER_BUFFER_INDEX = 1;
-
-  @type.unknown
-  STATE_MACHINE_BUFFER_INDEX = 2;
-
-  @type.unknown
-  EXTRA_BUFFER_INDEX = 3;
-
   #source = "";
 
   /**
@@ -159,4 +150,10 @@ export class Tr2ControllerExpression extends CjsModel
   {
     return !!value && typeof value === "object" && typeof value.GetController === "function";
   }
+
+  static OWNER_BUFFER_INDEX = 1;
+
+  static STATE_MACHINE_BUFFER_INDEX = 2;
+
+  static EXTRA_BUFFER_INDEX = 3;
 }

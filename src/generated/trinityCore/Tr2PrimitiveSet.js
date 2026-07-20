@@ -66,10 +66,9 @@ export class Tr2PrimitiveSet extends CjsModel
 
   /** Carbon method SetCurrentColor (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetCurrentColor(...args)
+  @impl.noop
+  SetCurrentColor(_color)
   {
-    throw new Error("Tr2PrimitiveSet.SetCurrentColor is not implemented in CarbonEngineJS.");
   }
 
   static GetBatchesReason = Object.freeze({

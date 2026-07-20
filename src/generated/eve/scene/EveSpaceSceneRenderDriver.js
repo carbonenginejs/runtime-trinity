@@ -140,8 +140,8 @@ export class EveSpaceSceneRenderDriver extends CjsModel
 
   /** m_depthPassTechnique (unknown) [READWRITE] */
   @io.readwrite
-  @type.unknown
-  depthPassTechnique = null;
+  @type.string
+  depthPassTechnique = "Depth";
 
   /** m_postProcess (Tr2PostProcessRendererPtr) [READ] */
   @io.read

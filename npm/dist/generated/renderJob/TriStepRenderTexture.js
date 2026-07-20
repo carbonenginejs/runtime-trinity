@@ -15,7 +15,7 @@ class TriStepRenderTexture extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderTexture",
       family: "renderJob"
-    })], [[[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, type, type.uint32], 16, "failClearColor"], [[io, io.read, type, type.vec2], 16, "textureSize"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "depthStencil"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "renderTarget"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "texture"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, type, type.uint32], 16, "failClearColor"], [[io, io.read, type, type.vec2], 16, "textureSize"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "depthStencil"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "renderTarget"], [[io, io.readwrite, void 0, type.objectRef("ITr2TextureProvider")], 16, "texture"], [[carbon, carbon.method, impl, impl.adapted], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -43,8 +43,26 @@ class TriStepRenderTexture extends _TriRenderStep {
   texture = (_init_extra_renderTarget(this), _init_texture(this, null));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD). */
-  __init__(...args) {
-    throw new Error("TriStepRenderTexture.__init__ is not implemented in CarbonEngineJS.");
+  __init__(source = null) {
+    this.texture = null;
+    this.renderTarget = null;
+    this.depthStencil = null;
+    const className = source?.constructor?.name ?? "";
+    if (className === "Tr2RenderTarget") this.renderTarget = source;else if (className === "Tr2DepthStencil") this.depthStencil = source;else this.texture = source;
+  }
+  Execute(_realTime, _simTime, executor) {
+    const source = this.renderTarget ?? this.depthStencil ?? this.texture;
+    if (source) {
+      const width = Number(source.GetWidth?.() ?? source.width ?? 0);
+      const height = Number(source.GetHeight?.() ?? source.height ?? 0);
+      vec2.set(this.textureSize, width, height);
+      executor?.RenderTexture?.(source, {
+        tlTexCoord: this.tlTexCoord,
+        brTexCoord: this.brTexCoord,
+        failClearColor: this.failClearColor
+      });
+    }
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

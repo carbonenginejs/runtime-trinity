@@ -1,10 +1,22 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat } from '@carbonenginejs/core-math/quat';
+import { quat, fromYawPitchRoll } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { Tr2CurveScalar as _Tr2CurveScalar } from '../../curves/Tr2CurveScalar.js';
+import { Tr2CurveInterpolation, Tr2CurveTangentType } from '../../curves/enums.js';
+import { TriProjection as _TriProjection } from '../../trinityCore/TriProjection.js';
+import { TriView as _TriView } from '../../trinityCore/TriView.js';
 
 let _initProto, _initClass, _init_errorHandler, _init_extra_errorHandler, _init_noiseScale, _init_extra_noiseScale, _init_audio2Listener, _init_extra_audio2Listener, _init_noise, _init_extra_noise, _init_centerOffset, _init_extra_centerOffset, _init_pitch, _init_extra_pitch, _init_yaw, _init_extra_yaw, _init_extraTranslation, _init_extra_extraTranslation, _init_idleSpeed, _init_extra_idleSpeed, _init_noiseDamp, _init_extra_noiseDamp, _init_pos, _init_extra_pos, _init_intr, _init_extra_intr, _init_viewVec, _init_extra_viewVec, _init_rightVec, _init_extra_rightVec, _init_upVec, _init_extra_upVec, _init_rotationAroundParent, _init_extra_rotationAroundParent, _init_interest, _init_extra_interest, _init_rotationOfInterest, _init_extra_rotationOfInterest, _init_fieldOfView, _init_extra_fieldOfView, _init_frontClip, _init_extra_frontClip, _init_backClip, _init_extra_backClip, _init_friction, _init_extra_friction, _init_noiseCurve, _init_extra_noiseCurve, _init_noiseScaleCurve, _init_extra_noiseScaleCurve, _init_noiseDampCurve, _init_extra_noiseDampCurve, _init_maxSpeed, _init_extra_maxSpeed, _init_update, _init_extra_update, _init_zoomCurve, _init_extra_zoomCurve, _init_translationFromParent, _init_extra_translationFromParent, _init_minPitch, _init_extra_minPitch, _init_maxPitch, _init_extra_maxPitch, _init_minYaw, _init_extra_minYaw, _init_maxYaw, _init_extra_maxYaw, _init_parent, _init_extra_parent, _init_idleScale, _init_extra_idleScale, _init_alignment, _init_extra_alignment, _init_useExtraTranslation, _init_extra_useExtraTranslation, _init_projectionMatrix, _init_extra_projectionMatrix, _init_viewMatrix, _init_extra_viewMatrix, _init_idleMove, _init_extra_idleMove;
+function createDefaultZoomCurve() {
+  const curve = new _Tr2CurveScalar();
+  curve.AddKey(0, Math.PI / 2, Tr2CurveInterpolation.HERMITE, 0, -11, Tr2CurveTangentType.FREE_SPLIT);
+  curve.AddKey(0.225, 0.8, Tr2CurveInterpolation.HERMITE, 0, -9, Tr2CurveTangentType.FREE_SPLIT);
+  curve.AddKey(0.45, 0.1, Tr2CurveInterpolation.HERMITE, 0, 20, Tr2CurveTangentType.FREE_SPLIT);
+  curve.AddKey(0.675, Math.PI / 2, Tr2CurveInterpolation.HERMITE, 0, 0, Tr2CurveTangentType.FREE_SPLIT);
+  return curve;
+}
 
 /** EveCamera (eve) - generated from schema shapeHash 4e547993.... */
 let _EveCamera;
@@ -16,14 +28,24 @@ class EveCamera extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveCamera",
       family: "eve"
-    })], [[[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "errorHandler"], [[io, io.persist, type, type.float32], 16, "noiseScale"], [[io, io.readwrite, void 0, type.objectRef("IBluePlacementObserver")], 16, "audio2Listener"], [[io, io.persist, type, type.boolean], 16, "noise"], [[io, io.readwrite, type, type.float32], 16, "centerOffset"], [[io, io.persist, type, type.float32], 16, "pitch"], [[io, io.persist, type, type.float32], 16, "yaw"], [[io, io.readwrite, type, type.vec3], 16, "extraTranslation"], [[io, io.persist, type, type.float32], 16, "idleSpeed"], [[io, io.persist, type, type.float32], 16, "noiseDamp"], [[io, io.persist, type, type.vec3], 16, "pos"], [[io, io.persist, type, type.vec3], 16, "intr"], [[io, io.read, type, type.vec3], 16, "viewVec"], [[io, io.read, type, type.vec3], 16, "rightVec"], [[io, io.read, type, type.vec3], 16, "upVec"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationAroundParent"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "interest"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationOfInterest"], [[io, io.persist, type, type.float32], 16, "fieldOfView"], [[io, io.persist, type, type.float32], 16, "frontClip"], [[io, io.persist, type, type.float32], 16, "backClip"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseScaleCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseDampCurve"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "zoomCurve"], [[io, io.persist, type, type.vec3], 16, "translationFromParent"], [[io, io.persist, type, type.float32], 16, "minPitch"], [[io, io.persist, type, type.float32], 16, "maxPitch"], [[io, io.persist, type, type.float32], 16, "minYaw"], [[io, io.persist, type, type.float32], 16, "maxYaw"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "parent"], [[io, io.persist, type, type.float32], 16, "idleScale"], [[io, io.persist, type, type.vec3], 16, "alignment"], [[io, io.readwrite, type, type.boolean], 16, "useExtraTranslation"], [[io, io.readwrite, void 0, type.objectRef("TriProjection")], 16, "projectionMatrix"], [[io, io.read, void 0, type.objectRef("TriView")], 16, "viewMatrix"], [[io, io.persist, type, type.boolean], 16, "idleMove"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Dolly"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "OrbitParent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RotateOnOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Zoom"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetStartTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetOrbit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetRotationOnOrbit"]], 0, void 0, CjsModel));
+    })], [[[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "errorHandler"], [[io, io.persist, type, type.float32], 16, "noiseScale"], [[io, io.readwrite, void 0, type.objectRef("IBluePlacementObserver")], 16, "audio2Listener"], [[io, io.persist, type, type.boolean], 16, "noise"], [[io, io.readwrite, type, type.float32], 16, "centerOffset"], [[io, io.persist, type, type.float32], 16, "pitch"], [[io, io.persist, type, type.float32], 16, "yaw"], [[io, io.readwrite, type, type.vec3], 16, "extraTranslation"], [[io, io.persist, type, type.float32], 16, "idleSpeed"], [[io, io.persist, type, type.float32], 16, "noiseDamp"], [[io, io.persist, type, type.vec3], 16, "pos"], [[io, io.persist, type, type.vec3], 16, "intr"], [[io, io.read, type, type.vec3], 16, "viewVec"], [[io, io.read, type, type.vec3], 16, "rightVec"], [[io, io.read, type, type.vec3], 16, "upVec"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationAroundParent"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "interest"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotationOfInterest"], [[io, io.persist, type, type.float32], 16, "fieldOfView"], [[io, io.persist, type, type.float32], 16, "frontClip"], [[io, io.persist, type, type.float32], 16, "backClip"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseScaleCurve"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "noiseDampCurve"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.model("ITriScalarFunction")], 16, "zoomCurve"], [[io, io.persist, type, type.vec3], 16, "translationFromParent"], [[io, io.persist, type, type.float32], 16, "minPitch"], [[io, io.persist, type, type.float32], 16, "maxPitch"], [[io, io.persist, type, type.float32], 16, "minYaw"], [[io, io.persist, type, type.float32], 16, "maxYaw"], [[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "parent"], [[io, io.persist, type, type.float32], 16, "idleScale"], [[io, io.persist, type, type.vec3], 16, "alignment"], [[io, io.readwrite, type, type.boolean], 16, "useExtraTranslation"], [[io, io.readwrite, void 0, type.objectRef("TriProjection")], 16, "projectionMatrix"], [[io, io.read, void 0, type.objectRef("TriView")], 16, "viewMatrix"], [[io, io.persist, type, type.boolean], 16, "idleMove"], [[carbon, carbon.method, impl, impl.implemented], 18, "Dolly"], [[carbon, carbon.method, impl, impl.implemented], 18, "OrbitParent"], [[carbon, carbon.method, impl, impl.implemented], 18, "RotateOnOrbit"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Uses the runtime curve's portable key list; invalid external keys fail closed instead of indexing native memory.")], 18, "Zoom"], [[carbon, carbon.method, impl, impl.implemented], 18, "ResetStartTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetOrbit"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetRotationOnOrbit"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_idleMove(this);
   }
+  #pitchInt = (_initProto(this), 0);
+  #pitchIntSpeed = 0;
+  #pitchSpeed = 0;
+  #startTime = 0;
+  #yawInt = 0;
+  #yawIntSpeed = 0;
+  #yawSpeed = 0;
+  #zoomKey = 0;
+  #zoomTime = 0;
+
   /** m_errorListener (IBlueEventListenerPtr) [READWRITE] */
-  errorHandler = (_initProto(this), _init_errorHandler(this, null));
+  errorHandler = _init_errorHandler(this, null);
 
   /** m_noiseScale (float) [READWRITE, PERSIST] */
   noiseScale = (_init_extra_errorHandler(this), _init_noiseScale(this, 1));
@@ -77,7 +99,7 @@ class EveCamera extends CjsModel {
   rotationOfInterest = (_init_extra_interest(this), _init_rotationOfInterest(this, quat.create()));
 
   /** m_fieldOfView (float) [READWRITE, PERSIST] */
-  fieldOfView = (_init_extra_rotationOfInterest(this), _init_fieldOfView(this, 0));
+  fieldOfView = (_init_extra_rotationOfInterest(this), _init_fieldOfView(this, Math.PI / 2));
 
   /** m_frontClip (float) [READWRITE, PERSIST] */
   frontClip = (_init_extra_fieldOfView(this), _init_frontClip(this, 10));
@@ -104,7 +126,7 @@ class EveCamera extends CjsModel {
   update = (_init_extra_maxSpeed(this), _init_update(this, true));
 
   /** m_zoomCurve (ITriScalarFunctionPtr) [READWRITE, PERSIST] */
-  zoomCurve = (_init_extra_update(this), _init_zoomCurve(this, null));
+  zoomCurve = (_init_extra_update(this), _init_zoomCurve(this, createDefaultZoomCurve()));
 
   /** m_translationFromParent.z (Vector3) [READWRITE, PERSIST] */
   translationFromParent = (_init_extra_zoomCurve(this), _init_translationFromParent(this, vec3.fromValues(0, 0, 20)));
@@ -134,47 +156,104 @@ class EveCamera extends CjsModel {
   useExtraTranslation = (_init_extra_alignment(this), _init_useExtraTranslation(this, false));
 
   /** m_projectionMatrix (TriProjectionPtr) [READWRITE] */
-  projectionMatrix = (_init_extra_useExtraTranslation(this), _init_projectionMatrix(this, null));
+  projectionMatrix = (_init_extra_useExtraTranslation(this), _init_projectionMatrix(this, new _TriProjection()));
 
   /** m_viewMatrix (TriViewPtr) [READ] */
-  viewMatrix = (_init_extra_projectionMatrix(this), _init_viewMatrix(this, null));
+  viewMatrix = (_init_extra_projectionMatrix(this), _init_viewMatrix(this, new _TriView()));
 
   /** m_idleMove (bool) [READWRITE, PERSIST] */
   idleMove = (_init_extra_viewMatrix(this), _init_idleMove(this, false));
 
   /** Carbon method Dolly (MAP_METHOD_AND_WRAP). */
-  Dolly(...args) {
-    throw new Error("EveCamera.Dolly is not implemented in CarbonEngineJS.");
+  Dolly(factor) {
+    this.translationFromParent[2] += factor;
   }
 
   /** Carbon method OrbitParent (MAP_METHOD_AND_WRAP). */
-  OrbitParent(...args) {
-    throw new Error("EveCamera.OrbitParent is not implemented in CarbonEngineJS.");
+  OrbitParent(horizontal, vertical) {
+    const oldYaw = this.#yawSpeed;
+    const oldPitch = this.#pitchSpeed;
+    this.#yawSpeed += this.maxSpeed * horizontal;
+    this.#pitchSpeed -= this.maxSpeed * vertical;
+    if (this.#pitchSpeed > this.maxPitch && this.#pitchSpeed - oldPitch < 0) {
+      this.#pitchSpeed = this.maxPitch;
+    } else if (this.#pitchSpeed < this.minPitch && oldPitch - this.#pitchSpeed < 0) {
+      this.#pitchSpeed = this.minPitch;
+    }
+    if (this.minYaw !== this.maxYaw) {
+      if (this.#yawSpeed > this.maxYaw && this.#yawSpeed - oldYaw < 0) {
+        this.#yawSpeed = this.maxYaw;
+      } else if (this.#yawSpeed < this.minYaw && oldYaw - this.#yawSpeed < 0) {
+        this.#yawSpeed = this.minYaw;
+      }
+    }
   }
 
   /** Carbon method RotateOnOrbit (MAP_METHOD_AND_WRAP). */
-  RotateOnOrbit(...args) {
-    throw new Error("EveCamera.RotateOnOrbit is not implemented in CarbonEngineJS.");
+  RotateOnOrbit(horizontal, vertical) {
+    const oldYaw = this.#yawIntSpeed;
+    const oldPitch = this.#pitchIntSpeed;
+    this.#yawIntSpeed += this.maxSpeed * horizontal;
+    this.#pitchIntSpeed -= this.maxSpeed * vertical;
+    if (this.#pitchIntSpeed > this.maxPitch && this.#pitchIntSpeed - oldPitch < 0) {
+      this.#pitchIntSpeed = this.maxPitch;
+    } else if (this.#pitchIntSpeed < this.minPitch && oldPitch - this.#pitchIntSpeed < 0) {
+      this.#pitchIntSpeed = this.minPitch;
+    }
+    if (this.minYaw !== this.maxYaw) {
+      if (this.#yawIntSpeed > this.maxYaw && this.#yawIntSpeed - oldYaw < 0) {
+        this.#yawIntSpeed = this.maxYaw;
+      } else if (this.#yawIntSpeed < this.minYaw && oldYaw - this.#yawIntSpeed < 0) {
+        this.#yawIntSpeed = this.minYaw;
+      }
+    }
+    fromYawPitchRoll(this.rotationOfInterest, this.#yawInt, this.#pitchInt, 0);
   }
 
   /** Carbon method Zoom (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  Zoom(...args) {
-    throw new Error("EveCamera.Zoom is not implemented in CarbonEngineJS.");
+  Zoom(key = -1) {
+    const keys = this.zoomCurve?.GetKeys?.() ?? this.zoomCurve?.keys;
+    if (!Array.isArray(keys) || keys.length < 1) {
+      return false;
+    }
+    if (key !== -1) {
+      this.#zoomKey = Math.trunc(key);
+    } else {
+      this.#zoomKey++;
+    }
+    if (this.#zoomKey >= keys.length - 1) {
+      this.#zoomKey = 0;
+    }
+    const selected = keys[this.#zoomKey];
+    if (!selected) {
+      return false;
+    }
+    this.#zoomTime = selected.time;
+    return true;
   }
 
   /** Carbon method ResetStartTime (MAP_METHOD_AND_WRAP). */
-  ResetStartTime(...args) {
-    throw new Error("EveCamera.ResetStartTime is not implemented in CarbonEngineJS.");
+  ResetStartTime() {
+    this.#startTime = 0;
   }
 
   /** Carbon method SetOrbit (MAP_METHOD_AND_WRAP). */
-  SetOrbit(...args) {
-    throw new Error("EveCamera.SetOrbit is not implemented in CarbonEngineJS.");
+  SetOrbit(yaw, pitch) {
+    this.yaw = yaw;
+    this.pitch = pitch;
+    this.#yawSpeed = this.yaw;
+    this.#pitchSpeed = this.pitch;
+    this.#yawSpeed %= Math.PI * 2;
+    this.yaw %= Math.PI * 2;
   }
 
   /** Carbon method SetRotationOnOrbit (MAP_METHOD_AND_WRAP). */
-  SetRotationOnOrbit(...args) {
-    throw new Error("EveCamera.SetRotationOnOrbit is not implemented in CarbonEngineJS.");
+  SetRotationOnOrbit(yaw, pitch) {
+    this.#yawInt = yaw;
+    this.#pitchInt = pitch;
+    this.#yawIntSpeed = yaw;
+    this.#pitchIntSpeed = pitch;
+    fromYawPitchRoll(this.rotationOfInterest, this.#yawInt, this.#pitchInt, 0);
   }
   static {
     _initClass();

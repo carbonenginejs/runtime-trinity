@@ -9,6 +9,8 @@ import { EveChildTransform } from "../../../eve/child/EveChildTransform.js";
 export class EveChildPlug extends EveChildTransform
 {
 
+  #controllerVariables = new Map();
+
   /** m_objects (PIEveSpaceObjectChildVector) [READ, PERSIST] */
   @io.persist
   @type.list("IEveSpaceObjectChild")
@@ -37,26 +39,30 @@ export class EveChildPlug extends EveChildTransform
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  HandleControllerEvent(...args)
+  @impl.implemented
+  HandleControllerEvent(name)
   {
-    throw new Error("EveChildPlug.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.HandleEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveChildPlug.SetControllerVariable is not implemented in CarbonEngineJS.");
+    const key = String(name);
+    const next = Number(value);
+    this.#controllerVariables.set(key, next);
+    for (const controller of this.controllers) controller?.SetVariable?.(key, next);
+    for (const object of this.objects) object?.SetControllerVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveChildPlug.StartControllers is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.Start?.();
   }
 
 }

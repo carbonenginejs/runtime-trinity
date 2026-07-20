@@ -15,7 +15,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2SSAO",
         family: "trinityCore"
-      })], [[[io, io.notify, io, io.readwrite, type, type.int32, void 0, schema.enum("SSAOQuality")], 16, "quality"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "cortaoBentNormal"], [[io, io.persist, type, type.float32], 16, "zoomLevel"], [[io, io.persist, type, type.unknown], 16, "shadowClamp"], [[io, io.persist, type, type.unknown], 16, "shadowPower"], [[io, io.persist, type, type.unknown], 16, "shadowMultiplier"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "cortaoBlur"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "cortaoEnabled"], [[io, io.persist, type, type.unknown], 16, "sharpness"], [[io, io.readwrite, type, type.boolean], 16, "enabled"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoMipBias"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoMaxBlockerSearchRadius"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoRadius"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoStrength"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "downsampled"], [[io, io.persist, type, type.float32], 16, "radius"]], 0, void 0, CjsModel));
+      })], [[[io, io.notify, io, io.readwrite, type, type.int32, void 0, schema.enum("SSAOQuality")], 16, "quality"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "cortaoBentNormal"], [[io, io.persist, type, type.float32], 16, "zoomLevel"], [[io, io.persist, type, type.float32], 16, "shadowClamp"], [[io, io.persist, type, type.float32], 16, "shadowPower"], [[io, io.persist, type, type.float32], 16, "shadowMultiplier"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "cortaoBlur"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "cortaoEnabled"], [[io, io.persist, type, type.float32], 16, "sharpness"], [[io, io.readwrite, type, type.boolean], 16, "enabled"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoMipBias"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoMaxBlockerSearchRadius"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoRadius"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "cortaoStrength"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "downsampled"], [[io, io.persist, type, type.float32], 16, "radius"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
@@ -25,49 +25,49 @@ new class extends _identity {
     quality = _init_quality(this, 0);
 
     /** m_cortaoBentNormal (bool) [READWRITE, NOTIFY, PERSIST] */
-    cortaoBentNormal = (_init_extra_quality(this), _init_cortaoBentNormal(this, false));
+    cortaoBentNormal = (_init_extra_quality(this), _init_cortaoBentNormal(this, true));
 
     /** m_detail.zoomLevel (float) [READWRITE, PERSIST] */
-    zoomLevel = (_init_extra_cortaoBentNormal(this), _init_zoomLevel(this, 0));
+    zoomLevel = (_init_extra_cortaoBentNormal(this), _init_zoomLevel(this, 5));
 
     /** m_detail.settings.shadowClamp (Layer) [READWRITE, PERSIST] */
-    shadowClamp = (_init_extra_zoomLevel(this), _init_shadowClamp(this, null));
+    shadowClamp = (_init_extra_zoomLevel(this), _init_shadowClamp(this, 0.98));
 
     /** m_detail.settings.shadowPower (Layer) [READWRITE, PERSIST] */
-    shadowPower = (_init_extra_shadowClamp(this), _init_shadowPower(this, null));
+    shadowPower = (_init_extra_shadowClamp(this), _init_shadowPower(this, 2.6));
 
     /** m_detail.settings.shadowMultiplier (Layer) [READWRITE, PERSIST] */
-    shadowMultiplier = (_init_extra_shadowPower(this), _init_shadowMultiplier(this, null));
+    shadowMultiplier = (_init_extra_shadowPower(this), _init_shadowMultiplier(this, 1));
 
     /** m_cortaoBlur (bool) [READWRITE, NOTIFY] */
-    cortaoBlur = (_init_extra_shadowMultiplier(this), _init_cortaoBlur(this, false));
+    cortaoBlur = (_init_extra_shadowMultiplier(this), _init_cortaoBlur(this, true));
 
     /** m_cortaoEnabled (bool) [READWRITE, NOTIFY, PERSIST] */
-    cortaoEnabled = (_init_extra_cortaoBlur(this), _init_cortaoEnabled(this, false));
+    cortaoEnabled = (_init_extra_cortaoBlur(this), _init_cortaoEnabled(this, true));
 
     /** m_detail.settings.sharpness (Layer) [READWRITE, PERSIST] */
-    sharpness = (_init_extra_cortaoEnabled(this), _init_sharpness(this, null));
+    sharpness = (_init_extra_cortaoEnabled(this), _init_sharpness(this, 0.5));
 
     /** m_detail.enabled (bool) [READWRITE] */
-    enabled = (_init_extra_sharpness(this), _init_enabled(this, false));
+    enabled = (_init_extra_sharpness(this), _init_enabled(this, true));
 
     /** m_cortaoMipBias (float) [READWRITE, NOTIFY] */
-    cortaoMipBias = (_init_extra_enabled(this), _init_cortaoMipBias(this, 0));
+    cortaoMipBias = (_init_extra_enabled(this), _init_cortaoMipBias(this, -4));
 
     /** m_cortaoMaxBlockerSearchRadius (float) [READWRITE, NOTIFY] */
-    cortaoMaxBlockerSearchRadius = (_init_extra_cortaoMipBias(this), _init_cortaoMaxBlockerSearchRadius(this, 0));
+    cortaoMaxBlockerSearchRadius = (_init_extra_cortaoMipBias(this), _init_cortaoMaxBlockerSearchRadius(this, 0.25));
 
     /** m_cortaoRadius (float) [READWRITE, NOTIFY] */
-    cortaoRadius = (_init_extra_cortaoMaxBlockerSearchRadius(this), _init_cortaoRadius(this, 0));
+    cortaoRadius = (_init_extra_cortaoMaxBlockerSearchRadius(this), _init_cortaoRadius(this, 1e10));
 
     /** m_cortaoStrength (float) [READWRITE, NOTIFY] */
-    cortaoStrength = (_init_extra_cortaoRadius(this), _init_cortaoStrength(this, 0));
+    cortaoStrength = (_init_extra_cortaoRadius(this), _init_cortaoStrength(this, 1));
 
     /** m_detail.downsampled (bool) [READWRITE, NOTIFY] */
     downsampled = (_init_extra_cortaoStrength(this), _init_downsampled(this, false));
 
     /** m_detail.settings.radius (float) [READWRITE, PERSIST] */
-    radius = (_init_extra_downsampled(this), _init_radius(this, 0));
+    radius = (_init_extra_downsampled(this), _init_radius(this, 6));
   }];
   SSAOQuality = Object.freeze({
     HIGHEST: 0,

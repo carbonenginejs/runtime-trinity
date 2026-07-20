@@ -1,0 +1,53 @@
+// Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
+//   trinity/trinity/Eve/UI/EveEllipseDefinition.h
+//   trinity/trinity/Eve/UI/EveEllipseDefinition.cpp
+import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { CjsModel } from "@carbonenginejs/core-types/model";
+import { io, type } from "@carbonenginejs/core-types/schema";
+
+
+@type.define({ className: "EveEllipseDefinition", family: "eve/ui" })
+export class EveEllipseDefinition extends CjsModel
+{
+  #dirtyFlag = null;
+
+  @io.notify
+  @io.persist
+  @type.vec3
+  center = vec3.create();
+
+  @io.notify
+  @io.persist
+  @type.vec3
+  planeNormal = vec3.fromValues(0, 1, 0);
+
+  @io.notify
+  @io.persist
+  @type.float32
+  rotationDegrees = 0;
+
+  @io.notify
+  @io.persist
+  @type.float32
+  semiMajor = 1;
+
+  @io.notify
+  @io.persist
+  @type.float32
+  semiMinor = 1;
+
+  OnModified(_value = null)
+  {
+    this.#dirtyFlag?.();
+    return true;
+  }
+
+  SetDirtyFlag(dirtyFlag)
+  {
+    if (dirtyFlag !== null && typeof dirtyFlag !== "function")
+    {
+      throw new TypeError("EveEllipseDefinition dirty flag must be a function or null");
+    }
+    this.#dirtyFlag = dirtyFlag;
+  }
+}

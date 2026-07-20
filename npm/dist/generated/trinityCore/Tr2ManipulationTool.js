@@ -1,29 +1,36 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
 
-let _initProto, _initClass, _init_captured, _init_extra_captured, _init_primitives, _init_extra_primitives, _init__userData, _init_extra__userData, _init_localTransform, _init_extra_localTransform, _init_pivot, _init_extra_pivot, _init_worldTransform, _init_extra_worldTransform;
+let _initProto, _initClass, _init_selectedAxis, _init_extra_selectedAxis, _init_moveCallback, _init_extra_moveCallback, _init_captured, _init_extra_captured, _init_primitives, _init_extra_primitives, _init__userData, _init_extra__userData, _init_localTransform, _init_extra_localTransform, _init_pivot, _init_extra_pivot, _init_worldTransform, _init_extra_worldTransform;
 
 /** Tr2ManipulationTool (trinityCore) - generated from schema shapeHash b67071e0.... */
 let _Tr2ManipulationTool;
 class Tr2ManipulationTool extends CjsModel {
   static {
     ({
-      e: [_init_captured, _init_extra_captured, _init_primitives, _init_extra_primitives, _init__userData, _init_extra__userData, _init_localTransform, _init_extra_localTransform, _init_pivot, _init_extra_pivot, _init_worldTransform, _init_extra_worldTransform, _initProto],
+      e: [_init_selectedAxis, _init_extra_selectedAxis, _init_moveCallback, _init_extra_moveCallback, _init_captured, _init_extra_captured, _init_primitives, _init_extra_primitives, _init__userData, _init_extra__userData, _init_localTransform, _init_extra_localTransform, _init_pivot, _init_extra_pivot, _init_worldTransform, _init_extra_worldTransform, _initProto],
       c: [_Tr2ManipulationTool, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ManipulationTool",
       family: "trinityCore"
-    })], [[[io, io.readwrite, type, type.boolean], 16, "captured"], [[io, io.read, void 0, type.list("Tr2PrimitiveSet")], 16, "primitives"], [[io, io.readwrite, void 0, type.objectRef("PyObject")], 16, "_userData"], [[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.readwrite, type, type.vec3], 16, "pivot"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetMoveCallback"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SelectAxis"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Init"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Move"]], 0, void 0, CjsModel));
+    })], [[[type, type.string], 16, "selectedAxis"], [type.rawStruct("BlueScriptCallback"), 0, "moveCallback"], [[io, io.readwrite, type, type.boolean], 16, "captured"], [[io, io.read, void 0, type.list("Tr2PrimitiveSet")], 16, "primitives"], [[io, io.readwrite, void 0, type.objectRef("PyObject")], 16, "_userData"], [[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.readwrite, type, type.vec3], 16, "pivot"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMoveCallback"], [[carbon, carbon.method, impl, impl.adapted], 18, "SelectAxis"], [[carbon, carbon.method, impl, impl.implemented], 18, "Init"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Move"], [[impl, impl.adapted], 18, "OnMoveCallback"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_worldTransform(this);
   }
+  /** Carbon's selected primitive/axis name. */
+  selectedAxis = (_initProto(this), _init_selectedAxis(this, ""));
+
+  /** Browser callback replacing BlueScriptCallback. */
+  moveCallback = (_init_extra_selectedAxis(this), _init_moveCallback(this, null));
+
   /** m_captured (bool) [READWRITE] */
-  captured = (_initProto(this), _init_captured(this, false));
+  captured = (_init_extra_moveCallback(this), _init_captured(this, false));
 
   /** m_primitives (PTr2PrimitiveSetVector) [READ] */
   primitives = (_init_extra_captured(this), _init_primitives(this, []));
@@ -41,23 +48,44 @@ class Tr2ManipulationTool extends CjsModel {
   worldTransform = (_init_extra_pivot(this), _init_worldTransform(this, mat4.create()));
 
   /** Carbon method SetMoveCallback (MAP_METHOD_AND_WRAP). */
-  SetMoveCallback(...args) {
-    throw new Error("Tr2ManipulationTool.SetMoveCallback is not implemented in CarbonEngineJS.");
+  SetMoveCallback(callback) {
+    this.moveCallback = callback ?? null;
   }
 
   /** Carbon method SelectAxis (MAP_METHOD_AND_WRAP). */
-  SelectAxis(...args) {
-    throw new Error("Tr2ManipulationTool.SelectAxis is not implemented in CarbonEngineJS.");
+  SelectAxis(axisName) {
+    const selected = this.primitives.filter(primitive => primitive?.name === axisName);
+    if (selected.length === 0) {
+      return false;
+    }
+    this.ResetPrimitiveColors?.();
+    const yellow = vec4.fromValues(1, 1, 0.01, 1);
+    for (const primitive of selected) {
+      primitive.SetCurrentColor?.(yellow);
+    }
+    this.selectedAxis = axisName;
+    return true;
   }
 
   /** Carbon method Init (MAP_METHOD_AND_WRAP). */
-  Init(...args) {
-    throw new Error("Tr2ManipulationTool.Init is not implemented in CarbonEngineJS.");
+  Init(initialTransform) {
+    mat4.copy(this.localTransform, initialTransform);
   }
 
   /** Carbon method Move -> PyMove (MAP_METHOD_AND_WRAP). */
   Move(...args) {
     throw new Error("Tr2ManipulationTool.Move is not implemented in CarbonEngineJS.");
+  }
+
+  /** Invokes Carbon's move veto callback with current and proposed transforms. */
+  OnMoveCallback(currentTransform, nextTransform) {
+    if (!this.moveCallback) {
+      return true;
+    }
+    if (typeof this.moveCallback === "function") {
+      return this.moveCallback(currentTransform, nextTransform) !== false;
+    }
+    return this.moveCallback.Call?.(currentTransform, nextTransform) !== false;
   }
   static {
     _initClass();

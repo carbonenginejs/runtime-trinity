@@ -14,7 +14,7 @@ class TriStepRenderObject extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderObject",
       family: "renderJob"
-    })], [[[io, io.persist, void 0, type.model("Tr2Material")], 16, "effectOverride"], [[io, io.persist, type, type.boolean], 16, "renderAdditive"], [[io, io.persist, type, type.boolean], 16, "renderDecal"], [[io, io.persist, type, type.boolean], 16, "renderOpaque"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.model("ITr2Renderable")], 16, "renderable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.persist, void 0, type.model("Tr2Material")], 16, "effectOverride"], [[io, io.persist, type, type.boolean], 16, "renderAdditive"], [[io, io.persist, type, type.boolean], 16, "renderDecal"], [[io, io.persist, type, type.boolean], 16, "renderOpaque"], [[io, io.persist, type, type.boolean], 16, "renderTransparent"], [[io, io.persist, void 0, type.model("ITr2Renderable")], 16, "renderable"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -24,23 +24,35 @@ class TriStepRenderObject extends _TriRenderStep {
   effectOverride = (_initProto(this), _init_effectOverride(this, null));
 
   /** m_typeEnabled[3] (bool) [READWRITE, PERSIST] */
-  renderAdditive = (_init_extra_effectOverride(this), _init_renderAdditive(this, false));
+  renderAdditive = (_init_extra_effectOverride(this), _init_renderAdditive(this, true));
 
   /** m_typeEnabled[1] (bool) [READWRITE, PERSIST] */
-  renderDecal = (_init_extra_renderAdditive(this), _init_renderDecal(this, false));
+  renderDecal = (_init_extra_renderAdditive(this), _init_renderDecal(this, true));
 
   /** m_typeEnabled[0] (bool) [READWRITE, PERSIST] */
-  renderOpaque = (_init_extra_renderDecal(this), _init_renderOpaque(this, false));
+  renderOpaque = (_init_extra_renderDecal(this), _init_renderOpaque(this, true));
 
   /** m_typeEnabled[2] (bool) [READWRITE, PERSIST] */
-  renderTransparent = (_init_extra_renderOpaque(this), _init_renderTransparent(this, false));
+  renderTransparent = (_init_extra_renderOpaque(this), _init_renderTransparent(this, true));
 
   /** m_renderable (ITr2RenderablePtr) [READWRITE, PERSIST] */
   renderable = (_init_extra_renderTransparent(this), _init_renderable(this, null));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRenderObject.__init__ is not implemented in CarbonEngineJS.");
+  __init__(renderable = null) {
+    this.renderable = renderable;
+  }
+  Execute(_realTime, _simTime, executor) {
+    if (this.renderable) {
+      executor?.RenderObject?.(this.renderable, {
+        effectOverride: this.effectOverride,
+        renderOpaque: this.renderOpaque,
+        renderDecal: this.renderDecal,
+        renderTransparent: this.renderTransparent,
+        renderAdditive: this.renderAdditive
+      });
+    }
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

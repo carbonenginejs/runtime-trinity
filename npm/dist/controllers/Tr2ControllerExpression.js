@@ -3,27 +3,24 @@ import { CjsModel } from '@carbonenginejs/core-types/model';
 import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsControllerExpressionProgram } from './CjsControllerExpressionProgram.js';
 
-let _initProto, _initClass, _init_program, _init_extra_program, _init_stateMachine, _init_extra_stateMachine, _init_controller, _init_extra_controller, _init_variableMask, _init_extra_variableMask, _init_OWNER_BUFFER_INDEX, _init_extra_OWNER_BUFFER_INDEX, _init_STATE_MACHINE_BUFFER_INDEX, _init_extra_STATE_MACHINE_BUFFER_INDEX, _init_EXTRA_BUFFER_INDEX, _init_extra_EXTRA_BUFFER_INDEX;
+let _initProto, _initClass, _init_program, _init_extra_program, _init_stateMachine, _init_extra_stateMachine, _init_controller, _init_extra_controller, _init_variableMask, _init_extra_variableMask;
 let _Tr2ControllerExpress;
 new class extends _identity {
   static [class Tr2ControllerExpression extends CjsModel {
     static {
       ({
-        e: [_init_program, _init_extra_program, _init_stateMachine, _init_extra_stateMachine, _init_controller, _init_extra_controller, _init_variableMask, _init_extra_variableMask, _init_OWNER_BUFFER_INDEX, _init_extra_OWNER_BUFFER_INDEX, _init_STATE_MACHINE_BUFFER_INDEX, _init_extra_STATE_MACHINE_BUFFER_INDEX, _init_EXTRA_BUFFER_INDEX, _init_extra_EXTRA_BUFFER_INDEX, _initProto],
+        e: [_init_program, _init_extra_program, _init_stateMachine, _init_extra_stateMachine, _init_controller, _init_extra_controller, _init_variableMask, _init_extra_variableMask, _initProto],
         c: [_Tr2ControllerExpress, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "Tr2ControllerExpression",
         family: "controllers"
-      })], [[type.rawStruct("CcpParser::Program"), 0, "program"], [type.objectRef("Tr2StateMachine"), 0, "stateMachine"], [type.objectRef("ITr2ActionController"), 0, "controller"], [[type, type.uint64], 16, "variableMask"], [[type, type.unknown], 16, "OWNER_BUFFER_INDEX"], [[type, type.unknown], 16, "STATE_MACHINE_BUFFER_INDEX"], [[type, type.unknown], 16, "EXTRA_BUFFER_INDEX"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetExpr"], [[carbon, carbon.method, impl, impl.adapted], 18, "Eval"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsExpressionValid"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetVariableMask"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetExpressionTermInfo"]], 0, void 0, CjsModel));
+      })], [[type.rawStruct("CcpParser::Program"), 0, "program"], [type.objectRef("Tr2StateMachine"), 0, "stateMachine"], [type.objectRef("ITr2ActionController"), 0, "controller"], [[type, type.uint64], 16, "variableMask"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetExpr"], [[carbon, carbon.method, impl, impl.adapted], 18, "Eval"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsExpressionValid"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetVariableMask"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetExpressionTermInfo"]], 0, void 0, CjsModel));
     }
     program = (_initProto(this), _init_program(this, null));
     stateMachine = (_init_extra_program(this), _init_stateMachine(this, null));
     controller = (_init_extra_stateMachine(this), _init_controller(this, null));
     variableMask = (_init_extra_controller(this), _init_variableMask(this, 0n));
-    OWNER_BUFFER_INDEX = (_init_extra_variableMask(this), _init_OWNER_BUFFER_INDEX(this, 1));
-    STATE_MACHINE_BUFFER_INDEX = (_init_extra_OWNER_BUFFER_INDEX(this), _init_STATE_MACHINE_BUFFER_INDEX(this, 2));
-    EXTRA_BUFFER_INDEX = (_init_extra_STATE_MACHINE_BUFFER_INDEX(this), _init_EXTRA_BUFFER_INDEX(this, 3));
-    #source = (_init_extra_EXTRA_BUFFER_INDEX(this), "");
+    #source = (_init_extra_variableMask(this), "");
 
     /**
      * Compiles an expression against a state machine or controller.
@@ -119,6 +116,9 @@ new class extends _identity {
   #isStateMachine(value) {
     return !!value && typeof value === "object" && typeof value.GetController === "function";
   }
+  OWNER_BUFFER_INDEX = 1;
+  STATE_MACHINE_BUFFER_INDEX = 2;
+  EXTRA_BUFFER_INDEX = 3;
   constructor() {
     super(_Tr2ControllerExpress), _initClass();
   }

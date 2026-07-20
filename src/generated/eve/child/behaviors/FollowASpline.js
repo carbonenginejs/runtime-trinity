@@ -9,6 +9,13 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class FollowASpline extends CjsModel
 {
 
+  /** Flattened CPU tunnel references used by the behavior system. */
+  @type.list("SplineTunnel")
+  privateTunnels = [];
+
+  @type.boolean
+  shouldReassignTunnelIDs = false;
+
   /** m_priority (int32_t) [READWRITE, PERSIST, NOTIFY, ENUM] */
   @io.notify
   @io.persist
@@ -48,10 +55,20 @@ export class FollowASpline extends CjsModel
 
   /** Carbon method remapTunnels -> UpdateTunnelRegistry (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  remapTunnels(...args)
+  @impl.adapted
+  remapTunnels()
   {
-    throw new Error("FollowASpline.remapTunnels is not implemented in CarbonEngineJS.");
+    this.privateTunnels.length = 0;
+    for (const group of this.splineTunnels)
+    {
+      const tunnels = group?.tunnels ?? group?.GetTunnels?.();
+      if (Array.isArray(tunnels))
+      {
+        this.privateTunnels.push(...tunnels);
+      }
+    }
+    this.shouldReassignTunnelIDs = true;
+    return this.privateTunnels;
   }
 
   static TunnelGroupType = Object.freeze({

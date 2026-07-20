@@ -1,28 +1,38 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveChildContainer as _EveChildContainer } from '../../../eve/child/EveChildContainer.js';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 
-let _initProto, _initClass, _init_generatedGlobalExplosions, _init_extra_generatedGlobalExplosions, _init_localScaling, _init_extra_localScaling, _init_globalScaling, _init_extra_globalScaling, _init_globalExplosion, _init_extra_globalExplosion, _init_localExplosion, _init_extra_localExplosion, _init_localExplosionShared, _init_extra_localExplosionShared, _init_globalExplosions, _init_extra_globalExplosions, _init_localExplosionIntervalFactor, _init_extra_localExplosionIntervalFactor, _init_localExplosionDelay, _init_extra_localExplosionDelay, _init_globalExplosionDelay, _init_extra_globalExplosionDelay, _init_totalDuration, _init_extra_totalDuration, _init_globalDuration, _init_extra_globalDuration, _init_isPlaying, _init_extra_isPlaying, _init_localExplosions, _init_extra_localExplosions, _init_localExplosionInterval, _init_extra_localExplosionInterval, _init_globalExplosionTime, _init_extra_globalExplosionTime, _init_wreckSwitchTime, _init_extra_wreckSwitchTime, _init_wreckSwitchOffsetFromGlobalStart, _init_extra_wreckSwitchOffsetFromGlobalStart, _init_playTime, _init_extra_playTime, _init_localDuration, _init_extra_localDuration;
+let _initProto, _initClass, _init_localExplosionTransforms, _init_extra_localExplosionTransforms, _init_globalExplosionOffset, _init_extra_globalExplosionOffset, _init_globalExplosionInstances, _init_extra_globalExplosionInstances, _init_generatedGlobalExplosions, _init_extra_generatedGlobalExplosions, _init_localScaling, _init_extra_localScaling, _init_globalScaling, _init_extra_globalScaling, _init_globalExplosion, _init_extra_globalExplosion, _init_localExplosion, _init_extra_localExplosion, _init_localExplosionShared, _init_extra_localExplosionShared, _init_globalExplosions, _init_extra_globalExplosions, _init_localExplosionIntervalFactor, _init_extra_localExplosionIntervalFactor, _init_localExplosionDelay, _init_extra_localExplosionDelay, _init_globalExplosionDelay, _init_extra_globalExplosionDelay, _init_totalDuration, _init_extra_totalDuration, _init_globalDuration, _init_extra_globalDuration, _init_isPlaying, _init_extra_isPlaying, _init_localExplosions, _init_extra_localExplosions, _init_localExplosionInterval, _init_extra_localExplosionInterval, _init_globalExplosionTime, _init_extra_globalExplosionTime, _init_wreckSwitchTime, _init_extra_wreckSwitchTime, _init_wreckSwitchOffsetFromGlobalStart, _init_extra_wreckSwitchOffsetFromGlobalStart, _init_playTime, _init_extra_playTime, _init_localDuration, _init_extra_localDuration;
 
 /** EveChildExplosion (eve/child) - generated from schema shapeHash e55548ba.... */
 let _EveChildExplosion;
 class EveChildExplosion extends _EveChildContainer {
   static {
     ({
-      e: [_init_generatedGlobalExplosions, _init_extra_generatedGlobalExplosions, _init_localScaling, _init_extra_localScaling, _init_globalScaling, _init_extra_globalScaling, _init_globalExplosion, _init_extra_globalExplosion, _init_localExplosion, _init_extra_localExplosion, _init_localExplosionShared, _init_extra_localExplosionShared, _init_globalExplosions, _init_extra_globalExplosions, _init_localExplosionIntervalFactor, _init_extra_localExplosionIntervalFactor, _init_localExplosionDelay, _init_extra_localExplosionDelay, _init_globalExplosionDelay, _init_extra_globalExplosionDelay, _init_totalDuration, _init_extra_totalDuration, _init_globalDuration, _init_extra_globalDuration, _init_isPlaying, _init_extra_isPlaying, _init_localExplosions, _init_extra_localExplosions, _init_localExplosionInterval, _init_extra_localExplosionInterval, _init_globalExplosionTime, _init_extra_globalExplosionTime, _init_wreckSwitchTime, _init_extra_wreckSwitchTime, _init_wreckSwitchOffsetFromGlobalStart, _init_extra_wreckSwitchOffsetFromGlobalStart, _init_playTime, _init_extra_playTime, _init_localDuration, _init_extra_localDuration, _initProto],
+      e: [_init_localExplosionTransforms, _init_extra_localExplosionTransforms, _init_globalExplosionOffset, _init_extra_globalExplosionOffset, _init_globalExplosionInstances, _init_extra_globalExplosionInstances, _init_generatedGlobalExplosions, _init_extra_generatedGlobalExplosions, _init_localScaling, _init_extra_localScaling, _init_globalScaling, _init_extra_globalScaling, _init_globalExplosion, _init_extra_globalExplosion, _init_localExplosion, _init_extra_localExplosion, _init_localExplosionShared, _init_extra_localExplosionShared, _init_globalExplosions, _init_extra_globalExplosions, _init_localExplosionIntervalFactor, _init_extra_localExplosionIntervalFactor, _init_localExplosionDelay, _init_extra_localExplosionDelay, _init_globalExplosionDelay, _init_extra_globalExplosionDelay, _init_totalDuration, _init_extra_totalDuration, _init_globalDuration, _init_extra_globalDuration, _init_isPlaying, _init_extra_isPlaying, _init_localExplosions, _init_extra_localExplosions, _init_localExplosionInterval, _init_extra_localExplosionInterval, _init_globalExplosionTime, _init_extra_globalExplosionTime, _init_wreckSwitchTime, _init_extra_wreckSwitchTime, _init_wreckSwitchOffsetFromGlobalStart, _init_extra_wreckSwitchOffsetFromGlobalStart, _init_playTime, _init_extra_playTime, _init_localDuration, _init_extra_localDuration, _initProto],
       c: [_EveChildExplosion, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "EveChildExplosion",
       family: "eve/child"
-    })], [[[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Play"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Stop"]], 0, void 0, _EveChildContainer));
+    })], [[type.array("mat4"), 0, "localExplosionTransforms"], [[type, type.vec3], 16, "globalExplosionOffset"], [type.list("IEveSpaceObjectChild"), 0, "globalExplosionInstances"], [[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.adapted], 18, "Play"], [[carbon, carbon.method, impl, impl.implemented], 18, "Stop"], [[impl, impl.adapted], 18, "UpdateSyncronous"]], 0, void 0, _EveChildContainer));
   }
   constructor(...args) {
     super(...args);
     _init_extra_localDuration(this);
   }
+  #countdownToGlobalExplosionStart = (_initProto(this), 0);
+  #localExplosionTimes = [];
+  #nextLocalExplosion = 0;
+  #nextLocalExplosionTime = 0;
+  localExplosionTransforms = _init_localExplosionTransforms(this, []);
+  globalExplosionOffset = (_init_extra_localExplosionTransforms(this), _init_globalExplosionOffset(this, vec3.create()));
+  globalExplosionInstances = (_init_extra_globalExplosionOffset(this), _init_globalExplosionInstances(this, []));
+
   /** m_globalExplosionContainer (EveChildContainerPtr) [READ] */
-  generatedGlobalExplosions = (_initProto(this), _init_generatedGlobalExplosions(this, null));
+  generatedGlobalExplosions = (_init_extra_globalExplosionInstances(this), _init_generatedGlobalExplosions(this, null));
 
   /** m_localExplosionScaling (Vector3) [READWRITE, PERSIST] */
   localScaling = (_init_extra_generatedGlobalExplosions(this), _init_localScaling(this, vec3.fromValues(1, 1, 1)));
@@ -82,23 +92,100 @@ class EveChildExplosion extends _EveChildContainer {
   localDuration = (_init_extra_playTime(this), _init_localDuration(this, 0));
 
   /** Carbon method SetLocalExplosionTransforms (MAP_METHOD_AND_WRAP). */
-  SetLocalExplosionTransforms(...args) {
-    throw new Error("EveChildExplosion.SetLocalExplosionTransforms is not implemented in CarbonEngineJS.");
+  SetLocalExplosionTransforms(transforms) {
+    this.localExplosionTransforms = Array.from(transforms ?? [], transform => mat4.clone(transform));
   }
 
   /** Carbon method SetGlobalExplosionOffset (MAP_METHOD_AND_WRAP). */
-  SetGlobalExplosionOffset(...args) {
-    throw new Error("EveChildExplosion.SetGlobalExplosionOffset is not implemented in CarbonEngineJS.");
+  SetGlobalExplosionOffset(offset) {
+    vec3.copy(this.globalExplosionOffset, offset);
+    this.globalExplosionOffset[0] /= this.scaling[0];
+    this.globalExplosionOffset[1] /= this.scaling[1];
+    this.globalExplosionOffset[2] /= this.scaling[2];
   }
 
   /** Carbon method Play (MAP_METHOD_AND_WRAP). */
-  Play(...args) {
-    throw new Error("EveChildExplosion.Play is not implemented in CarbonEngineJS.");
+  Play() {
+    this.Stop();
+    if (!this.localExplosion && !this.globalExplosion && !this.localExplosions.length && !this.globalExplosions.length) return false;
+    this.#nextLocalExplosionTime = this.localExplosionDelay;
+    this.#nextLocalExplosion = 0;
+    if (this.localExplosionShared) this.objects.push(this.localExplosionShared);
+    this.#CalculateExplosionTimes(this.localExplosionTransforms.length);
+    this.playTime = 0;
+    this.#countdownToGlobalExplosionStart = this.globalExplosionTime;
+    this.RebuildLocalTransform?.();
+    this.isPlaying = true;
+    return true;
   }
 
   /** Carbon method Stop (MAP_METHOD_AND_WRAP). */
-  Stop(...args) {
-    throw new Error("EveChildExplosion.Stop is not implemented in CarbonEngineJS.");
+  Stop() {
+    this.objects.length = 0;
+    this.isPlaying = false;
+    this.globalExplosionInstances.length = 0;
+    this.generatedGlobalExplosions = null;
+  }
+  UpdateSyncronous(updateContext, params = {}) {
+    if (!this.isPlaying) return;
+    const deltaTime = Number(updateContext?.GetDeltaT?.() ?? updateContext?.deltaTime ?? 0);
+    this.playTime += deltaTime;
+    if (this.localExplosion || this.localExplosions.length) {
+      if (this.wreckSwitchTime > 0 && this.playTime > this.wreckSwitchTime && this.globalDuration > 0) {
+        this.#nextLocalExplosion = this.localExplosionTransforms.length;
+        this.objects = this.objects.filter(object => object === this.generatedGlobalExplosions || object === this.localExplosionShared);
+      }
+      while (this.#nextLocalExplosionTime < deltaTime && this.#nextLocalExplosion < this.localExplosionTransforms.length) {
+        this.#SpawnLocalExplosion(this.localExplosionTransforms[this.#nextLocalExplosion]);
+        this.#nextLocalExplosion++;
+        if (this.#nextLocalExplosion < this.localExplosionTransforms.length) {
+          this.#nextLocalExplosionTime = this.#localExplosionTimes[this.#nextLocalExplosion];
+        }
+      }
+      this.#nextLocalExplosionTime -= deltaTime;
+    }
+    if (this.globalExplosion || this.globalExplosions.length) {
+      this.#countdownToGlobalExplosionStart -= deltaTime;
+      if (this.#countdownToGlobalExplosionStart < 0 && !this.globalExplosionInstances.length) this.#SpawnGlobalExplosions();
+    }
+    for (const object of this.objects) object?.UpdateSyncronous?.(updateContext, params);
+    if (this.playTime > this.totalDuration) this.Stop();
+  }
+  #CalculateExplosionTimes(localExplosionCount) {
+    this.#localExplosionTimes.length = 0;
+    let timeUntilLastLocalExplosion = localExplosionCount ? this.localExplosionDelay : 0;
+    this.globalExplosionTime = localExplosionCount ? this.globalExplosionDelay : 0;
+    for (let i = 0; i < localExplosionCount; i++) {
+      const explosionTime = this.localExplosionIntervalFactor ** i * this.localExplosionInterval * Math.random();
+      this.#localExplosionTimes.push(explosionTime);
+      timeUntilLastLocalExplosion += explosionTime;
+    }
+    this.globalExplosionTime += timeUntilLastLocalExplosion;
+    this.totalDuration = Math.max(this.localDuration + timeUntilLastLocalExplosion, this.globalExplosionTime + this.globalDuration);
+    this.wreckSwitchTime = this.globalExplosionTime + this.wreckSwitchOffsetFromGlobalStart;
+  }
+  #SpawnLocalExplosion(transform) {
+    const source = this.localExplosions.length ? this.localExplosions[Math.floor(Math.random() * this.localExplosions.length)] : this.localExplosion;
+    if (!source) return;
+    const instance = source.Clone?.() ?? source;
+    const scale = mat4.getScaling(vec3.create(), transform);
+    const rotation = mat4.getRotation(quat.create(), transform);
+    const position = mat4.getTranslation(vec3.create(), transform);
+    instance.Setup?.(scale, rotation, position, 0);
+    this.objects.push(instance);
+  }
+  #SpawnGlobalExplosions() {
+    const sources = this.globalExplosion ? [this.globalExplosion] : this.globalExplosions;
+    const container = new _EveChildContainer();
+    container.Setup(this.globalScaling, quat.create(), this.globalExplosionOffset, 0);
+    for (const source of sources) {
+      const instance = source?.Clone?.() ?? source;
+      if (!instance) continue;
+      container.objects.push(instance);
+      this.globalExplosionInstances.push(instance);
+    }
+    this.generatedGlobalExplosions = container;
+    this.objects.push(container);
   }
   static {
     _initClass();

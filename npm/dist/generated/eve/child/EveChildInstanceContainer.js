@@ -15,14 +15,16 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildInstanceContainer",
         family: "eve/child"
-      })], [[[io, io.notify, io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("EveChildInstanceTransform")], 16, "transforms"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.model("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.readwrite, type, type.boolean], 16, "reset"], [[io, io.read, void 0, type.list("IEveSpaceObjectChild")], 16, "instances"], [[io, io.notify, io, io.persist, type, type.string], 16, "locatorSet"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "source"], [[io, io.read, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.notify, io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("EveChildInstanceTransform")], 16, "transforms"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.model("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.readwrite, type, type.boolean], 16, "reset"], [[io, io.read, void 0, type.list("IEveSpaceObjectChild")], 16, "instances"], [[io, io.notify, io, io.persist, type, type.string], 16, "locatorSet"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "source"], [[io, io.read, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
     }
     constructor(...args) {
       super(...args);
       _init_extra_origin(this);
     }
+    #controllerVariables = (_initProto(this), new Map());
+
     /** m_transformModifiers (PIEveChildTransformModifierVector) [READ, PERSIST, NOTIFY] */
-    transformModifiers = (_initProto(this), _init_transformModifiers(this, []));
+    transformModifiers = _init_transformModifiers(this, []);
 
     /** m_transforms (PEveChildInstanceTransformStructureList) [READ, PERSIST] */
     transforms = (_init_extra_transformModifiers(this), _init_transforms(this, []));
@@ -55,18 +57,22 @@ new class extends _identity {
     origin = (_init_extra_source(this), _init_origin(this, 0));
 
     /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
-    HandleControllerEvent(...args) {
-      throw new Error("EveChildInstanceContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    HandleControllerEvent(name) {
+      for (const instance of this.instances) instance?.HandleControllerEvent?.(name);
     }
 
     /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
-    SetControllerVariable(...args) {
-      throw new Error("EveChildInstanceContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
+    SetControllerVariable(name, value) {
+      const key = String(name);
+      const next = Number(value);
+      this.source?.SetControllerVariable?.(key, next);
+      this.#controllerVariables.set(key, next);
+      for (const instance of this.instances) instance?.SetControllerVariable?.(key, next);
     }
 
     /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
-    StartControllers(...args) {
-      throw new Error("EveChildInstanceContainer.StartControllers is not implemented in CarbonEngineJS.");
+    StartControllers() {
+      for (const instance of this.instances) instance?.StartControllers?.();
     }
   }];
   Origin = Object.freeze({

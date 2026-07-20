@@ -4,11 +4,16 @@
 import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { vec4 } from "@carbonenginejs/core-math/vec4";
 
 /** Tr2DebugRenderer (trinityCore) - generated from schema shapeHash f23b5345.... */
 @type.define({ className: "Tr2DebugRenderer", family: "trinityCore" })
 export class Tr2DebugRenderer extends CjsModel
 {
+
+  #options = new Map();
+
+  #optionColors = new Map();
 
   /** m_position (Vector3) */
   @type.vec3
@@ -51,8 +56,8 @@ export class Tr2DebugRenderer extends CjsModel
   triangles = [];
 
   /** m_defaultOptions (Tr2DebugRendererOptions) */
-  @type.rawStruct("Tr2DebugRendererOptions")
-  defaultOptions = null;
+  @type.set("string")
+  defaultOptions = new Set();
 
   /** m_selectedObjects (std::set<Tr2DebugObjectReference>) */
   @type.set("Tr2DebugObjectReference")
@@ -60,58 +65,88 @@ export class Tr2DebugRenderer extends CjsModel
 
   /** Carbon method SetDefaultOptions (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetDefaultOptions(...args)
+  @impl.adapted
+  SetDefaultOptions(options)
   {
-    throw new Error("Tr2DebugRenderer.SetDefaultOptions is not implemented in CarbonEngineJS.");
+    this.defaultOptions = Tr2DebugRenderer.#ToOptionSet(options);
   }
 
   /** Carbon method SetSelectedObjects (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetSelectedObjects(...args)
+  @impl.adapted
+  SetSelectedObjects(objects)
   {
-    throw new Error("Tr2DebugRenderer.SetSelectedObjects is not implemented in CarbonEngineJS.");
+    this.selectedObjects.clear();
+    for (const value of objects ?? [])
+    {
+      const object = Array.isArray(value) ? value[0] : value?.object ?? value;
+      if (object) this.selectedObjects.add(object);
+    }
   }
 
   /** Carbon method SetOptions (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetOptions(...args)
+  @impl.adapted
+  SetOptions(owner, options)
   {
-    throw new Error("Tr2DebugRenderer.SetOptions is not implemented in CarbonEngineJS.");
+    const values = Tr2DebugRenderer.#ToOptionSet(options);
+    if (values.size) this.#options.set(owner, values);
+    else this.#options.delete(owner);
   }
 
   /** Carbon method GetColorForOption -> PyGetColorForOption (MAP_METHOD). */
   @carbon.method
-  @impl.notImplemented
-  GetColorForOption(...args)
+  @impl.adapted
+  GetColorForOption(option)
   {
-    throw new Error("Tr2DebugRenderer.GetColorForOption is not implemented in CarbonEngineJS.");
+    const color = this.#optionColors.get(String(option ?? ""));
+    return color ? vec4.clone(color) : null;
   }
 
   /** Carbon method GetOptions (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetOptions(...args)
+  @impl.adapted
+  GetOptions(owner)
   {
-    throw new Error("Tr2DebugRenderer.GetOptions is not implemented in CarbonEngineJS.");
+    return [...(this.#options.get(owner) ?? [])];
   }
 
   /** Carbon method GetDefaultOptions (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetDefaultOptions(...args)
+  @impl.adapted
+  GetDefaultOptions()
   {
-    throw new Error("Tr2DebugRenderer.GetDefaultOptions is not implemented in CarbonEngineJS.");
+    return [...this.defaultOptions];
   }
 
   /** Carbon method SetColorForOption (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetColorForOption(...args)
+  @impl.adapted
+  SetColorForOption(option, color)
   {
-    throw new Error("Tr2DebugRenderer.SetColorForOption is not implemented in CarbonEngineJS.");
+    if (!color || color.length < 4) throw new TypeError("color must contain four components");
+    this.#optionColors.set(String(option ?? ""), vec4.clone(color));
+  }
+
+  @impl.implemented
+  HasOption(owner, option)
+  {
+    const options = this.#options.get(owner);
+    return options ? options.has(String(option ?? "")) : this.defaultOptions.has(String(option ?? ""));
+  }
+
+  @impl.implemented
+  IsSelected(owner)
+  {
+    const object = owner?.object ?? owner;
+    return this.selectedObjects.has(object);
+  }
+
+  static #ToOptionSet(options)
+  {
+    if (options == null) return new Set();
+    if (typeof options === "string") return new Set([options]);
+    return new Set(Array.from(options, option => String(option)));
   }
 
 }

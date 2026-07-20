@@ -14,7 +14,7 @@ class TriStepRenderLineGraph extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderLineGraph",
       family: "renderJob"
-    })], [[[io, io.read, void 0, type.list("Tr2LineGraph")], 16, "lineGraphs"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "legendScale"], [[io, io.persist, type, type.boolean], 16, "autoScale"], [[io, io.persist, type, type.boolean], 16, "showLegend"], [[io, io.persist, type, type.float32], 16, "maxLegend"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "scaleChangeCallback"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.read, void 0, type.list("Tr2LineGraph")], 16, "lineGraphs"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "legendScale"], [[io, io.persist, type, type.boolean], 16, "autoScale"], [[io, io.persist, type, type.boolean], 16, "showLegend"], [[io, io.persist, type, type.float32], 16, "maxLegend"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "scaleChangeCallback"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -42,8 +42,37 @@ class TriStepRenderLineGraph extends _TriRenderStep {
   scaleChangeCallback = (_init_extra_maxLegend(this), _init_scaleChangeCallback(this, null));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRenderLineGraph.__init__ is not implemented in CarbonEngineJS.");
+  __init__(graphs = [], legendScale = undefined, scale = undefined, autoScale = undefined) {
+    this.lineGraphs.push(...graphs);
+    if (legendScale !== undefined) this.legendScale = Number(legendScale);
+    if (scale !== undefined) this.scale = Number(scale);
+    if (autoScale !== undefined) this.autoScale = !!autoScale;
+  }
+  Execute(_realTime, _simTime, executor) {
+    if (this.autoScale) {
+      let maxValue = 0;
+      for (const graph of this.lineGraphs) {
+        const value = graph?.GetMaxValue?.() ?? Math.max(0, ...(graph?.GetStatsHistory?.() ?? []));
+        if (value > maxValue) maxValue = value;
+      }
+      if (!maxValue) maxValue = 1;
+      maxValue *= 1.1;
+      if (maxValue > 1) {
+        maxValue = Math.ceil(maxValue / 10) * 10;
+      } else {
+        maxValue = 1 / maxValue / 10;
+        if (maxValue > 1) maxValue = Math.floor(maxValue);
+        maxValue = 1 / (maxValue * 10);
+      }
+      if (maxValue * this.legendScale > this.maxLegend) maxValue = this.maxLegend / this.legendScale;
+      const nextScale = 1 / maxValue;
+      if (nextScale !== this.scale) {
+        this.scale = nextScale;
+        if (typeof this.scaleChangeCallback === "function") this.scaleChangeCallback();else this.scaleChangeCallback?.CallVoid?.();
+      }
+    }
+    executor?.RenderLineGraphs?.(this);
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

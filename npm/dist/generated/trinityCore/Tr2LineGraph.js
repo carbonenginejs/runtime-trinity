@@ -15,31 +15,72 @@ class Tr2LineGraph extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2LineGraph",
       family: "trinityCore"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.color], 16, "color"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddMarker"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetStatsHistory"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetSize"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.color], 16, "color"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddMarker"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetStatsHistory"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetSize"], [[impl, impl.adapted], 18, "Add"], [[impl, impl.implemented], 18, "GetSize"], [[impl, impl.implemented], 18, "GetMaxValue"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_color(this);
   }
+  #currentIndex = (_initProto(this), 0);
+  #data = new Array(200).fill(0);
+  #markers = [];
+
   /** m_name (std::string) [READWRITE, PERSIST] */
-  name = (_initProto(this), _init_name(this, ""));
+  name = _init_name(this, "");
 
   /** m_color (Color) [READWRITE, PERSIST] */
   color = (_init_extra_name(this), _init_color(this, vec4.fromValues(1, 1, 1, 1)));
 
   /** Carbon method AddMarker (MAP_METHOD_AND_WRAP). */
-  AddMarker(...args) {
-    throw new Error("Tr2LineGraph.AddMarker is not implemented in CarbonEngineJS.");
+  AddMarker(name) {
+    const last = this.#markers.at(-1);
+    if (last?.index === this.#currentIndex) {
+      last.values.push(String(name));
+      return;
+    }
+    this.#markers.push({
+      index: this.#currentIndex,
+      ticksLeft: this.#data.length,
+      values: [String(name)]
+    });
   }
 
   /** Carbon method GetStatsHistory (MAP_METHOD_AND_WRAP). */
-  GetStatsHistory(...args) {
-    throw new Error("Tr2LineGraph.GetStatsHistory is not implemented in CarbonEngineJS.");
+  GetStatsHistory() {
+    return this.#data.slice(this.#currentIndex).concat(this.#data.slice(0, this.#currentIndex));
   }
 
   /** Carbon method SetSize (MAP_METHOD_AND_WRAP). */
-  SetSize(...args) {
-    throw new Error("Tr2LineGraph.SetSize is not implemented in CarbonEngineJS.");
+  SetSize(size) {
+    const length = Math.max(0, Math.trunc(Number(size)) || 0);
+    if (length < this.#data.length) {
+      this.#data.length = length;
+    } else {
+      while (this.#data.length < length) this.#data.push(0);
+    }
+    this.#currentIndex = 0;
+  }
+
+  /** Adds a sample through Carbon's ICcpStatisticsAccumulator interface. */
+  Add(value) {
+    if (!this.#data.length) return false;
+    for (let i = this.#markers.length - 1; i >= 0; i--) {
+      this.#markers[i].ticksLeft--;
+      if (!this.#markers[i].ticksLeft) this.#markers.splice(i, 1);
+    }
+    this.#data[this.#currentIndex] = Number(value);
+    this.#currentIndex = (this.#currentIndex + 1) % this.#data.length;
+    return true;
+  }
+  GetSize() {
+    return this.#data.length;
+  }
+  GetMaxValue() {
+    let maximum = 0;
+    for (const value of this.#data) {
+      if (value > maximum) maximum = value;
+    }
+    return maximum;
   }
   static {
     _initClass();

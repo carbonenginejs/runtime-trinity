@@ -15,14 +15,14 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "TriStepFilterVisibilityResults",
         family: "renderJob"
-      })], [[[io, io.persist, type, type.uint32], 16, "eventFilter"], [[io, io.persist, type, type.int32, void 0, schema.enum("FilterType")], 16, "filterType"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "inputResults"], [[io, io.persist, void 0, type.list("IRoot")], 16, "objects"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "outputResults"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+      })], [[[io, io.persist, type, type.uint32], 16, "eventFilter"], [[io, io.persist, type, type.int32, void 0, schema.enum("FilterType")], 16, "filterType"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "inputResults"], [[io, io.persist, void 0, type.list("IRoot")], 16, "objects"], [[io, io.persist, void 0, type.model("Tr2VisibilityResults")], 16, "outputResults"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
     }
     constructor(...args) {
       super(...args);
       _init_extra_outputResults(this);
     }
     /** m_eventFilter (uint32_t) [READWRITE, PERSIST] */
-    eventFilter = (_initProto(this), _init_eventFilter(this, -1));
+    eventFilter = (_initProto(this), _init_eventFilter(this, 0xffffffff));
 
     /** m_filterType (FilterType - enum FilterType) [READWRITE, PERSIST, ENUM] */
     filterType = (_init_extra_eventFilter(this), _init_filterType(this, 1));
@@ -37,8 +37,27 @@ new class extends _identity {
     outputResults = (_init_extra_objects(this), _init_outputResults(this, null));
 
     /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-    __init__(...args) {
-      throw new Error("TriStepFilterVisibilityResults.__init__ is not implemented in CarbonEngineJS.");
+    __init__(input = null, output = null, eventFilter = undefined, filter = undefined) {
+      this.inputResults = input;
+      this.outputResults = output;
+      if (eventFilter !== undefined) this.eventFilter = Number(eventFilter) >>> 0;
+      if (filter !== undefined) this.filterType = Number(filter) | 0;
+    }
+    Execute() {
+      if (this.inputResults && this.outputResults) {
+        this.outputResults.Clear?.();
+        for (const event of this.inputResults.GetEvents?.() ?? []) {
+          const eventType = Number(event?.eventType ?? event?.m_eventType ?? 0) >>> 0;
+          if (!(eventType & this.eventFilter)) continue;
+          const userData = event?.userData ?? event?.m_userData ?? null;
+          if (userData) {
+            const listed = this.objects.includes(userData);
+            if (this.filterType === _TriStepFilterVisibil.FilterType.EXCLUDE_OBJECTS_IN_LIST ? listed : !listed) continue;
+          }
+          this.outputResults.AddVisibilityEvent?.(event);
+        }
+      }
+      return _TriRenderStep.Result.RS_OK;
     }
   }];
   FilterType = Object.freeze({

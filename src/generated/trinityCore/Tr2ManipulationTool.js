@@ -5,11 +5,20 @@ import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { vec4 } from "@carbonenginejs/core-math/vec4";
 
 /** Tr2ManipulationTool (trinityCore) - generated from schema shapeHash b67071e0.... */
 @type.define({ className: "Tr2ManipulationTool", family: "trinityCore" })
 export class Tr2ManipulationTool extends CjsModel
 {
+
+  /** Carbon's selected primitive/axis name. */
+  @type.string
+  selectedAxis = "";
+
+  /** Browser callback replacing BlueScriptCallback. */
+  @type.rawStruct("BlueScriptCallback")
+  moveCallback = null;
 
   /** m_captured (bool) [READWRITE] */
   @io.readwrite
@@ -43,26 +52,38 @@ export class Tr2ManipulationTool extends CjsModel
 
   /** Carbon method SetMoveCallback (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetMoveCallback(...args)
+  @impl.adapted
+  SetMoveCallback(callback)
   {
-    throw new Error("Tr2ManipulationTool.SetMoveCallback is not implemented in CarbonEngineJS.");
+    this.moveCallback = callback ?? null;
   }
 
   /** Carbon method SelectAxis (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SelectAxis(...args)
+  @impl.adapted
+  SelectAxis(axisName)
   {
-    throw new Error("Tr2ManipulationTool.SelectAxis is not implemented in CarbonEngineJS.");
+    const selected = this.primitives.filter(primitive => primitive?.name === axisName);
+    if (selected.length === 0)
+    {
+      return false;
+    }
+    this.ResetPrimitiveColors?.();
+    const yellow = vec4.fromValues(1, 1, 0.01, 1);
+    for (const primitive of selected)
+    {
+      primitive.SetCurrentColor?.(yellow);
+    }
+    this.selectedAxis = axisName;
+    return true;
   }
 
   /** Carbon method Init (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  Init(...args)
+  @impl.implemented
+  Init(initialTransform)
   {
-    throw new Error("Tr2ManipulationTool.Init is not implemented in CarbonEngineJS.");
+    mat4.copy(this.localTransform, initialTransform);
   }
 
   /** Carbon method Move -> PyMove (MAP_METHOD_AND_WRAP). */
@@ -71,6 +92,21 @@ export class Tr2ManipulationTool extends CjsModel
   Move(...args)
   {
     throw new Error("Tr2ManipulationTool.Move is not implemented in CarbonEngineJS.");
+  }
+
+  /** Invokes Carbon's move veto callback with current and proposed transforms. */
+  @impl.adapted
+  OnMoveCallback(currentTransform, nextTransform)
+  {
+    if (!this.moveCallback)
+    {
+      return true;
+    }
+    if (typeof this.moveCallback === "function")
+    {
+      return this.moveCallback(currentTransform, nextTransform) !== false;
+    }
+    return this.moveCallback.Call?.(currentTransform, nextTransform) !== false;
   }
 
 }

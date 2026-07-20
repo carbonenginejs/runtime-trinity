@@ -15,14 +15,17 @@ class BehaviorGroup extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "BehaviorGroup",
       family: "eve/child/behaviors"
-    })], [[[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "maxVelocity"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMax"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMin"], [[io, io.read, type, type.float32], 16, "currentScreenSize"], [[io, io.persist, type, type.float32], 16, "renderThreshold"], [[io, io.readwrite, type, type.float32], 16, "debugIntensity"], [[io, io.readwrite, type, type.float32], 16, "debugLodLevel"], [[io, io.read, type, type.int32], 16, "actualCount"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.notify, io, io.persist, void 0, type.model("BehaviorGroupBooster")], 16, "boosters"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.readwrite, type, type.boolean], 16, "debugMode"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.list("IBehavior")], 16, "behaviors"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateAgentTree"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveAgent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetCount"]], 0, void 0, _EveEntity));
+    })], [[[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "maxVelocity"], [[io, io.persist, type, type.float32], 16, "scale"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMax"], [[io, io.persist, type, type.float32], 16, "blendScreenSizeMin"], [[io, io.read, type, type.float32], 16, "currentScreenSize"], [[io, io.persist, type, type.float32], 16, "renderThreshold"], [[io, io.readwrite, type, type.float32], 16, "debugIntensity"], [[io, io.readwrite, type, type.float32], 16, "debugLodLevel"], [[io, io.read, type, type.int32], 16, "actualCount"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.notify, io, io.persist, void 0, type.model("BehaviorGroupBooster")], 16, "boosters"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.readwrite, type, type.boolean], 16, "debugMode"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, void 0, type.list("IBehavior")], 16, "behaviors"], [[io, io.persist, type, type.vec3], 16, "spawnPosition"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Browser behavior groups retain a deterministic linear spatial snapshot; native KD-tree allocation is unnecessary until neighborhood queries are ported.")], 18, "CreateAgentTree"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddAgent"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Math.random replaces Carbon's TriRandInt when selecting the removed agent.")], 18, "RemoveAgent"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetCount"], [[impl, impl.adapted], 18, "GetAgents"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);
     _init_extra_spawnPosition(this);
   }
+  #agents = (_initProto(this), []);
+  #agentTree = [];
+
   /** m_display (bool) [READWRITE, PERSIST] */
-  display = (_initProto(this), _init_display(this, true));
+  display = _init_display(this, true);
 
   /** m_maxVelocity (float) [READWRITE, PERSIST] */
   maxVelocity = (_init_extra_display(this), _init_maxVelocity(this, 100));
@@ -79,23 +82,74 @@ class BehaviorGroup extends _EveEntity {
   spawnPosition = (_init_extra_behaviors(this), _init_spawnPosition(this, vec3.create()));
 
   /** Carbon method CreateAgentTree (MAP_METHOD_AND_WRAP). */
-  CreateAgentTree(...args) {
-    throw new Error("BehaviorGroup.CreateAgentTree is not implemented in CarbonEngineJS.");
+  CreateAgentTree() {
+    this.#agentTree = this.#agents.slice();
+    return this.#agentTree;
   }
 
   /** Carbon method AddAgent (MAP_METHOD_AND_WRAP). */
-  AddAgent(...args) {
-    throw new Error("BehaviorGroup.AddAgent is not implemented in CarbonEngineJS.");
+  AddAgent() {
+    this.#agents.push(this.#createAgent());
+    this.#onAgentCountChanged();
   }
 
   /** Carbon method RemoveAgent (MAP_METHOD_AND_WRAP). */
-  RemoveAgent(...args) {
-    throw new Error("BehaviorGroup.RemoveAgent is not implemented in CarbonEngineJS.");
+  RemoveAgent() {
+    if (this.#agents.length === 0) {
+      return;
+    }
+    const index = Math.floor(Math.random() * this.#agents.length);
+    this.#agents[index] = this.#agents[this.#agents.length - 1];
+    this.#agents.pop();
+    this.#onAgentCountChanged();
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
-  SetCount(...args) {
-    throw new Error("BehaviorGroup.SetCount is not implemented in CarbonEngineJS.");
+  SetCount(count) {
+    const value = Number(count);
+    const desired = Number.isFinite(value) ? Math.trunc(value) : -1;
+    if (desired < 0 || desired === this.#agents.length) {
+      return;
+    }
+    while (this.#agents.length < desired) {
+      this.#agents.push(this.#createAgent());
+    }
+    this.#agents.length = desired;
+    this.count = desired;
+    this.#onAgentCountChanged();
+  }
+
+  /** Returns the portable DroneAgent records in stable instance order. */
+  GetAgents() {
+    return this.#agents;
+  }
+  #createAgent() {
+    return {
+      closestAgentInGroup: null,
+      rotation: new Float32Array([0, 0, 0, 1]),
+      position: vec3.clone(this.spawnPosition),
+      acceleration: vec3.create(),
+      velocity: vec3.create(),
+      accelerationLength: 0,
+      velocityLength: 0,
+      target: vec3.create(),
+      targetDirection: vec3.create(),
+      id: Math.floor(Math.random() * 500),
+      lifetime: 0,
+      playFX: false,
+      fxStartTime: -1,
+      xfade: 0,
+      isVisible: false,
+      screenSize: 0
+    };
+  }
+  #onAgentCountChanged() {
+    this.actualCount = this.#agents.length;
+    this.#agentTree = [];
+    if (this.boosters) {
+      this.boosters.flareCount = this.actualCount;
+      this.boosters.RebuildFlareBuffer?.(this.actualCount);
+    }
   }
   static {
     _initClass();

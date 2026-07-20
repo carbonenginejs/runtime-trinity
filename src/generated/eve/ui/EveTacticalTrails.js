@@ -9,6 +9,9 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class EveTacticalTrails extends CjsModel
 {
 
+  @type.list("EveTacticalTrailTrackedObject")
+  trackedObjects = [];
+
   /** m_segmentCount (uint32_t) [READ] */
   @io.read
   @type.uint32
@@ -31,18 +34,25 @@ export class EveTacticalTrails extends CjsModel
 
   /** Carbon method RegisterObject (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  RegisterObject(...args)
+  @impl.adapted
+  RegisterObject(object)
   {
-    throw new Error("EveTacticalTrails.RegisterObject is not implemented in CarbonEngineJS.");
+    if (!object) return false;
+    const found = this.trackedObjects.some(entry => entry.ball?.deref?.() === object || entry.ball === object);
+    if (found) return false;
+    this.trackedObjects.push({ ball: typeof WeakRef === "function" ? new WeakRef(object) : object, positions: [] });
+    return true;
   }
 
   /** Carbon method UnregisterObject (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  UnregisterObject(...args)
+  @impl.adapted
+  UnregisterObject(object)
   {
-    throw new Error("EveTacticalTrails.UnregisterObject is not implemented in CarbonEngineJS.");
+    const found = this.trackedObjects.find(entry => entry.ball?.deref?.() === object || entry.ball === object);
+    if (!found) return false;
+    found.ball = null;
+    return true;
   }
 
 }

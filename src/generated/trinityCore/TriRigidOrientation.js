@@ -4,6 +4,7 @@
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
 
 /** TriRigidOrientation (trinityCore) - generated from schema shapeHash b6d79dfb.... */
 @type.define({ className: "TriRigidOrientation", family: "trinityCore" })
@@ -42,10 +43,30 @@ export class TriRigidOrientation extends CjsModel
 
   /** Carbon method Sort (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  Sort(...args)
+  @impl.implemented
+  Sort()
   {
-    throw new Error("TriRigidOrientation.Sort is not implemented in CarbonEngineJS.");
+    this.states.sort((a, b) => a.time - b.time);
+    const tau = vec3.create();
+    const converter = quat.create();
+    for (let i = 1; i < this.states.length; i++)
+    {
+      const current = this.states[i];
+      const previous = this.states[i - 1];
+      const elapsed = current.time - previous.time;
+      const decay = Math.exp(-this.drag * elapsed / this.I);
+      for (let axis = 0; axis < 3; axis++)
+      {
+        const acceleration = previous.torque[axis];
+        const velocity = previous.omega0[axis];
+        current.omega0[axis] = acceleration / this.drag + (velocity - acceleration / this.drag) * decay;
+        tau[axis] = acceleration * elapsed / this.drag + this.I * (velocity * this.drag - acceleration) / (this.drag * this.drag) * (1 - decay);
+      }
+      quat.set(converter, tau[0], tau[1], tau[2], 0);
+      quat.exp(converter, converter);
+      quat.multiply(current.rot0, previous.rot0, converter);
+    }
+    if (this.states.length) quat.copy(this.value, this.states[0].rot0);
   }
 
 }

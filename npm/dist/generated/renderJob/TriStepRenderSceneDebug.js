@@ -14,7 +14,7 @@ class TriStepRenderSceneDebug extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderSceneDebug",
       family: "renderJob"
-    })], [[[io, io.readwrite, void 0, type.objectRef("ITr2Scene")], 16, "scene"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, void 0, type.objectRef("ITr2Scene")], 16, "scene"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -24,8 +24,12 @@ class TriStepRenderSceneDebug extends _TriRenderStep {
   scene = (_initProto(this), _init_scene(this, null));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRenderSceneDebug.__init__ is not implemented in CarbonEngineJS.");
+  __init__(scene = null) {
+    this.scene = scene;
+  }
+  Execute(_realTime, _simTime, executor) {
+    this.scene?.RenderDebugInfo?.(executor);
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

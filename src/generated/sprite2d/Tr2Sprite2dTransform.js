@@ -42,10 +42,31 @@ export class Tr2Sprite2dTransform extends Tr2Sprite2dContainerBase
 
   /** Carbon method TransformPoint (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  TransformPoint(...args)
+  @impl.adapted
+  TransformPoint(x, y)
   {
-    throw new Error("Tr2Sprite2dTransform.TransformPoint is not implemented in CarbonEngineJS.");
+    const scalingCenterX = Math.floor(this.scalingCenter[0] * this.displayWidth + 0.5);
+    const scalingCenterY = Math.floor(this.scalingCenter[1] * this.displayHeight + 0.5);
+    const rotationCenterX = Math.floor(this.rotationCenter[0] * this.displayWidth + 0.5);
+    const rotationCenterY = Math.floor(this.rotationCenter[1] * this.displayHeight + 0.5);
+
+    let px = Number(x) - scalingCenterX;
+    let py = Number(y) - scalingCenterY;
+    [px, py] = Tr2Sprite2dTransform.#Rotate(px, py, -this.scalingRotation);
+    px *= this.scale[0];
+    py *= this.scale[1];
+    [px, py] = Tr2Sprite2dTransform.#Rotate(px, py, this.scalingRotation);
+    px += scalingCenterX - rotationCenterX;
+    py += scalingCenterY - rotationCenterY;
+    [px, py] = Tr2Sprite2dTransform.#Rotate(px, py, this.rotation);
+    return vec2.fromValues(px + rotationCenterX, py + rotationCenterY);
+  }
+
+  static #Rotate(x, y, angle)
+  {
+    const sine = Math.sin(angle);
+    const cosine = Math.cos(angle);
+    return [x * cosine - y * sine, x * sine + y * cosine];
   }
 
 }

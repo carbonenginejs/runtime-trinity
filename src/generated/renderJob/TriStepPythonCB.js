@@ -15,18 +15,38 @@ export class TriStepPythonCB extends TriRenderStep
 
   /** Carbon method __init__ -> SetCallback (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.adapted
+  __init__(callback = null)
   {
-    throw new Error("TriStepPythonCB.__init__ is not implemented in CarbonEngineJS.");
+    this.SetCallback(callback);
   }
 
   /** Carbon method SetCallback (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetCallback(...args)
+  @impl.adapted
+  SetCallback(callback)
   {
-    throw new Error("TriStepPythonCB.SetCallback is not implemented in CarbonEngineJS.");
+    if (callback != null && typeof callback !== "function" && typeof callback.CallVoid !== "function")
+    {
+      throw new TypeError("callback must be a function, callback object, or null");
+    }
+    this.callback = callback;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    try
+    {
+      if (typeof this.callback === "function") this.callback();
+      else this.callback?.CallVoid?.();
+    }
+    catch (error)
+    {
+      executor?.ReportDiagnostic?.({ type: "callback-error", step: this, error });
+    }
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

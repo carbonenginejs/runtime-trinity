@@ -87,12 +87,8 @@ export class Tr2RaytracingGeometry extends CjsModel
   usedResources = null;
 
   /** m_threadLocalUsedResources (Tr2EnumerableThreadSpecific<Tr2BindlessResourcesAL>) */
-  @type.unknown
+  @type.rawStruct("Tr2EnumerableThreadSpecific<Tr2BindlessResourcesAL>")
   threadLocalUsedResources = null;
-
-  /** INVALID_MATERIAL (static const uint32_t) */
-  @type.unknown
-  INVALID_MATERIAL = 4294967295;
 
   /** instanceCount (uint32_t) */
   @type.uint32
@@ -101,5 +97,8 @@ export class Tr2RaytracingGeometry extends CjsModel
   /** worldTransforms (const Float4x3*) */
   @type.objectRef("Float4x3")
   worldTransforms = null;
+
+  /** INVALID_MATERIAL (static const uint32_t) */
+  static INVALID_MATERIAL = 0xffffffff;
 
 }

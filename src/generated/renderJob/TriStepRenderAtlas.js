@@ -58,10 +58,19 @@ export class TriStepRenderAtlas extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(atlas = null, focus = null)
   {
-    throw new Error("TriStepRenderAtlas.__init__ is not implemented in CarbonEngineJS.");
+    this.atlas = atlas;
+    this.focus = focus;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    if (this.atlas) executor?.RenderAtlas?.(this);
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

@@ -9,8 +9,8 @@
 // artifacts (time / manager / ps / deltaT / originNow / originDelta - deltaT is
 // computed on demand in Carbon, and the origin temporaries are UpdateOrigin
 // locals) and left every scalar as @type.unknown; both are fixed here.
-// regenerate_generated.js skips this class automatically once a hand-maintained
-// source with the same name exists (see handSymbols).
+// Reviewed tools-core output copies skip this class because a hand-maintained
+// source with the same name already exists.
 //
 // Field types verified against Carbon EveUpdateContext.h. Per the engine field
 // rules: only reference fields (objectRef) default to null; scalars default to

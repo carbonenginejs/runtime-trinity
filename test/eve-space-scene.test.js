@@ -5,6 +5,8 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import {
   EveChildMesh,
   EveChildModifierCameraOrientedRotationConstrained,
+  EveComponentRegistry,
+  EveEntity,
   EveSpaceObject2,
   EveSpaceScene,
   Tr2RenderContext
@@ -44,6 +46,73 @@ test("EveSpaceScene.Update stamps the scene-owned frame context", () =>
   scene.Update(0, 9);
   assert.equal(scene.updateContext.GetTime(), 2.75);
   assert.equal(scene.updateTime, 2.75);
+});
+
+test("EveSpaceScene script helpers preserve Carbon's direct scene contracts", () =>
+{
+  const scene = new EveSpaceScene();
+  const clocks = [];
+  scene.curveSets.push({
+    Update(realTime, simTime)
+    {
+      clocks.push([realTime, simTime]);
+    }
+  });
+
+  scene.UpdateScene(4.5);
+  assert.deepEqual(clocks, [[4.5, 4.5]]);
+
+  const debugPayload = { name: "post-process-debug" };
+  scene.postProcessDebug = debugPayload;
+  assert.equal(scene.GetPostProcessDebug(), debugPayload);
+});
+
+test("Eve component registries retain Carbon's entity and component indices", () =>
+{
+  class RenderableEntity extends EveEntity
+  {
+    RegisterComponents()
+    {
+      this.registry.RegisterComponent("Renderable", this);
+    }
+  }
+
+  const registry = new EveComponentRegistry();
+  const first = new RenderableEntity();
+  const second = new RenderableEntity();
+  first.Register(registry);
+  second.Register(registry);
+
+  assert.deepEqual(registry.GetComponentInfo(), [["Renderable", 2]]);
+  assert.deepEqual(registry.GetComponents("Renderable"), [first, second]);
+
+  first.UnRegister(registry);
+  assert.deepEqual(registry.GetComponents("Renderable"), [second]);
+  assert.equal(second.indexInRegistry, 0);
+
+  registry.Clear();
+  assert.equal(second.IsInRegistry(), false);
+  assert.equal(second.indexInRegistry, -1);
+});
+
+test("EveSpaceScene re-registers Carbon entities through its owned registry", () =>
+{
+  class SceneEntity extends EveEntity
+  {
+    RegisterComponents()
+    {
+      this.registry.RegisterComponent("SceneEntity", this);
+    }
+  }
+
+  const scene = new EveSpaceScene();
+  const entity = new SceneEntity();
+  entity.Register(scene.componentRegistry);
+  scene.objects.push(entity);
+
+  scene.ReregisterEntities();
+  assert.equal(entity.GetComponentRegistry(), scene.componentRegistry);
+  assert.deepEqual(scene.componentRegistry.GetComponentInfo(), [["SceneEntity", 1]]);
 });
 
 test("EveSpaceScene.Update drives collections in Carbon's order and signatures", () =>

@@ -12,14 +12,22 @@ export class TriStepSetUpscalingContextID extends TriRenderStep
   /** m_upscalingContextID (uint32_t) [READ] */
   @io.read
   @type.uint32
-  upscalingContextID = 0;
+  upscalingContextID = 0xffffffff;
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(upscalingContextID = 0xffffffff)
   {
-    throw new Error("TriStepSetUpscalingContextID.__init__ is not implemented in CarbonEngineJS.");
+    this.upscalingContextID = Number(upscalingContextID) >>> 0;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    executor?.SetUpscalingContextID?.(this.upscalingContextID);
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

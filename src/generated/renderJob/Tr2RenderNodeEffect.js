@@ -9,6 +9,10 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class Tr2RenderNodeEffect extends CjsModel
 {
 
+  /** Carbon's grouped source/parameter bindings. */
+  @type.list("Tr2RenderNodeEffectSource")
+  sources = [];
+
   /** m_renderingMode (Tr2EffectStateManager::RenderingMode - enum RenderingMode) [READWRITE, ENUM] */
   @io.readwrite
   @type.int32
@@ -32,10 +36,34 @@ export class Tr2RenderNodeEffect extends CjsModel
 
   /** Carbon method AddSource (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  AddSource(...args)
+  @impl.adapted
+  AddSource(name, source, outputName = "")
   {
-    throw new Error("Tr2RenderNodeEffect.AddSource is not implemented in CarbonEngineJS.");
+    if (!source) return false;
+    let entry = this.sources.find(item => item.node === source);
+    if (!entry)
+    {
+      entry = { node: source, params: [], outputNames: [], outputs: [] };
+      this.sources.push(entry);
+    }
+    const normalizedOutput = String(outputName ?? "");
+    entry.params.push({ paramName: String(name), outputName: normalizedOutput, outputIndex: 0 });
+    entry.outputNames.length = 0;
+    entry.outputs.length = 0;
+    for (const parameter of entry.params)
+    {
+      if (!parameter.outputName) continue;
+      let outputIndex = entry.outputNames.indexOf(parameter.outputName);
+      if (outputIndex === -1)
+      {
+        outputIndex = entry.outputNames.length;
+        entry.outputNames.push(parameter.outputName);
+        entry.outputs.push({ name: parameter.outputName, texture: null });
+      }
+      parameter.outputIndex = outputIndex;
+    }
+    this.inputNodes.push(source);
+    return true;
   }
 
   static RenderingMode = Object.freeze({

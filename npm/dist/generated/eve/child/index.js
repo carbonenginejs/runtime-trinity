@@ -1,14 +1,11 @@
-export { EveChildAudio } from './EveChildAudio.js';
 export { EveChildBehaviorSystem } from './EveChildBehaviorSystem.js';
 export { EveChildBulletStorm } from './EveChildBulletStorm.js';
 export { EveChildCloud } from './EveChildCloud.js';
 export { EveChildCloud2 } from './EveChildCloud2.js';
 export { EveChildExplosion } from './EveChildExplosion.js';
-export { EveChildFogVolume } from './EveChildFogVolume.js';
 export { EveChildInstanceContainer } from './EveChildInstanceContainer.js';
 export { EveChildInstanceMeshRenderer } from './EveChildInstanceMeshRenderer.js';
 export { EveChildInstanceTransform } from './EveChildInstanceTransform.js';
-export { EveChildLightingOverride } from './EveChildLightingOverride.js';
 export { EveChildLineSet } from './EveChildLineSet.js';
 export { EveChildLink } from './EveChildLink.js';
 export { EveChildParticleSphere } from './EveChildParticleSphere.js';

@@ -14,14 +14,16 @@ class EveChildProceduralContainer extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildProceduralContainer",
       family: "eve/child/procedural"
-    })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
     _init_extra_selectionMethod(this);
   }
+  #proceduralContainerVariables = (_initProto(this), new Map());
+
   /** m_transformModifiers (PIEveChildTransformModifierVector) [READ, PERSIST] */
-  transformModifiers = (_initProto(this), _init_transformModifiers(this, []));
+  transformModifiers = _init_transformModifiers(this, []);
 
   /** m_selectedObject (IEveSpaceObjectChildPtr) [READ] */
   selectedObject = (_init_extra_transformModifiers(this), _init_selectedObject(this, null));
@@ -36,28 +38,31 @@ class EveChildProceduralContainer extends _EveChildTransform {
   selectionMethod = (_init_extra_display(this), _init_selectionMethod(this, null));
 
   /** Carbon method GetMethodVariableName (MAP_METHOD_AND_WRAP). */
-  GetMethodVariableName(...args) {
-    throw new Error("EveChildProceduralContainer.GetMethodVariableName is not implemented in CarbonEngineJS.");
+  GetMethodVariableName() {
+    return this.selectionMethod?.GetProceduralMethodVariable?.() ?? "methodUnassigned";
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
-  HandleControllerEvent(...args) {
-    throw new Error("EveChildProceduralContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
+  HandleControllerEvent(name) {
+    this.selectedObject?.HandleControllerEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
-  SetControllerVariable(...args) {
-    throw new Error("EveChildProceduralContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
+  SetControllerVariable(name, value) {
+    this.selectedObject?.SetControllerVariable?.(name, value);
   }
 
   /** Carbon method SetProceduralContainerVariable (MAP_METHOD_AND_WRAP). */
-  SetProceduralContainerVariable(...args) {
-    throw new Error("EveChildProceduralContainer.SetProceduralContainerVariable is not implemented in CarbonEngineJS.");
+  SetProceduralContainerVariable(name, value) {
+    const key = String(name);
+    const next = Number(value);
+    this.#proceduralContainerVariables.set(key, next);
+    this.selectionMethod?.SetProceduralMethodVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
-  StartControllers(...args) {
-    throw new Error("EveChildProceduralContainer.StartControllers is not implemented in CarbonEngineJS.");
+  StartControllers() {
+    this.selectedObject?.StartControllers?.();
   }
   static {
     _initClass();

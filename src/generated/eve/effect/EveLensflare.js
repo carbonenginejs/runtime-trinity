@@ -10,6 +10,8 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 export class EveLensflare extends CjsModel
 {
 
+  #controllerVariables = new Map();
+
   /** m_translationCurve (ITriVectorFunctionPtr) [READWRITE] */
   @io.readwrite
   @type.objectRef("ITriVectorFunction")
@@ -102,18 +104,21 @@ export class EveLensflare extends CjsModel
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveLensflare.SetControllerVariable is not implemented in CarbonEngineJS.");
+    const key = String(name);
+    const next = Number(value);
+    this.#controllerVariables.set(key, next);
+    for (const controller of this.controllers) controller?.SetVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveLensflare.StartControllers is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.Start?.();
   }
 
 }

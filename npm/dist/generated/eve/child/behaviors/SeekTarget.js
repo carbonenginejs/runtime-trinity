@@ -1,6 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { EveLocatorSets as _EveLocatorSets } from '../../../../eve/EveLocatorSets.js';
 
 let _initProto, _initClass, _init_behaviorPriority, _init_extra_behaviorPriority, _init_behaviorWeight, _init_extra_behaviorWeight, _init_distFromOrigin, _init_extra_distFromOrigin, _init_arrivedRadius, _init_extra_arrivedRadius, _init_slowDownRadius, _init_extra_slowDownRadius, _init_target, _init_extra_target, _init_firstSpawnAtRandomPlaces, _init_extra_firstSpawnAtRandomPlaces, _init_onFirstDroneArrivedCallback, _init_extra_onFirstDroneArrivedCallback, _init_totalRepairTime, _init_extra_totalRepairTime, _init_secondsToTurn, _init_extra_secondsToTurn, _init_locatorSetName, _init_extra_locatorSetName, _init_locatorSet, _init_extra_locatorSet, _init_exit, _init_extra_exit, _init_repair, _init_extra_repair, _init_enabled, _init_extra_enabled;
 
@@ -14,14 +16,21 @@ class SeekTarget extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "SeekTarget",
       family: "eve/child/behaviors"
-    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "target"], [[io, io.persist, type, type.boolean], 16, "firstSpawnAtRandomPlaces"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onFirstDroneArrivedCallback"], [[io, io.readwrite, type, type.float32], 16, "totalRepairTime"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[io, io.persist, void 0, type.model("EveLocatorSets")], 16, "locatorSet"], [[io, io.readwrite, type, type.boolean], 16, "exit"], [[io, io.readwrite, type, type.boolean], 16, "repair"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddLocatorSet"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTarget"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ResetBehavior"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetBehaviorWeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetExit"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetTotalRepairTime"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetupShipRepair"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SplitBoundingBox"]], 0, void 0, CjsModel));
+    })], [[[io, io.notify, io, io.persist, type, type.int32], 16, "behaviorPriority"], [[io, io.persist, type, type.float32], 16, "behaviorWeight"], [[io, io.persist, type, type.float32], 16, "distFromOrigin"], [[io, io.persist, type, type.float32], 16, "arrivedRadius"], [[io, io.persist, type, type.float32], 16, "slowDownRadius"], [[io, io.persist, void 0, type.model("EveSpaceObject2")], 16, "target"], [[io, io.persist, type, type.boolean], 16, "firstSpawnAtRandomPlaces"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onFirstDroneArrivedCallback"], [[io, io.readwrite, type, type.float32], 16, "totalRepairTime"], [[io, io.readwrite, type, type.float32], 16, "secondsToTurn"], [[io, io.persist, type, type.string], 16, "locatorSetName"], [[io, io.persist, void 0, type.model("EveLocatorSets")], 16, "locatorSet"], [[io, io.readwrite, type, type.boolean], 16, "exit"], [[io, io.readwrite, type, type.boolean], 16, "repair"], [[io, io.persist, type, type.boolean], 16, "enabled"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLocatorSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTarget"], [[carbon, carbon.method, impl, impl.implemented], 18, "ResetBehavior"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetBehaviorWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetExit"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTotalRepairTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetupShipRepair"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Uses EveSpaceObject2's portable bounds and locator query methods, and safely handles equal or degenerate box dimensions.")], 18, "SplitBoundingBox"], [[impl, impl.implemented], 18, "GetLocatorBucketIndices"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_enabled(this);
   }
+  #counter = (_initProto(this), 0);
+  #doneRepairing = true;
+  #droneArrived = false;
+  #boundingBoxes = [];
+  #locatorBucketIndices = [];
+  #sortedLocators = false;
+
   /** m_priority (int32_t) [READWRITE, PERSIST, NOTIFY, ENUM] */
-  behaviorPriority = (_initProto(this), _init_behaviorPriority(this, 0));
+  behaviorPriority = _init_behaviorPriority(this, 0);
 
   /** m_behaviorWeight (float) [READWRITE, PERSIST] */
   behaviorWeight = (_init_extra_behaviorPriority(this), _init_behaviorWeight(this, 1200));
@@ -66,43 +75,118 @@ class SeekTarget extends CjsModel {
   enabled = (_init_extra_repair(this), _init_enabled(this, true));
 
   /** Carbon method AddLocatorSet (MAP_METHOD_AND_WRAP). */
-  AddLocatorSet(...args) {
-    throw new Error("SeekTarget.AddLocatorSet is not implemented in CarbonEngineJS.");
+  AddLocatorSet() {
+    const locatorSet = new _EveLocatorSets();
+    locatorSet.SetName(this.locatorSetName);
+    this.locatorSet = locatorSet;
   }
 
   /** Carbon method SetTarget (MAP_METHOD_AND_WRAP). */
-  SetTarget(...args) {
-    throw new Error("SeekTarget.SetTarget is not implemented in CarbonEngineJS.");
+  SetTarget(target) {
+    this.target = target;
   }
 
   /** Carbon method ResetBehavior (MAP_METHOD_AND_WRAP). */
-  ResetBehavior(...args) {
-    throw new Error("SeekTarget.ResetBehavior is not implemented in CarbonEngineJS.");
+  ResetBehavior() {
+    this.#counter = 0;
+    this.exit = false;
+    this.repair = false;
+    this.#droneArrived = false;
+    this.#doneRepairing = true;
   }
 
   /** Carbon method SetBehaviorWeight (MAP_METHOD_AND_WRAP). */
-  SetBehaviorWeight(...args) {
-    throw new Error("SeekTarget.SetBehaviorWeight is not implemented in CarbonEngineJS.");
+  SetBehaviorWeight(value) {
+    this.behaviorWeight = value;
   }
 
   /** Carbon method SetExit (MAP_METHOD_AND_WRAP). */
-  SetExit(...args) {
-    throw new Error("SeekTarget.SetExit is not implemented in CarbonEngineJS.");
+  SetExit(value) {
+    this.exit = value;
   }
 
   /** Carbon method SetTotalRepairTime (MAP_METHOD_AND_WRAP). */
-  SetTotalRepairTime(...args) {
-    throw new Error("SeekTarget.SetTotalRepairTime is not implemented in CarbonEngineJS.");
+  SetTotalRepairTime(seconds) {
+    this.totalRepairTime = seconds;
   }
 
   /** Carbon method SetupShipRepair (MAP_METHOD_AND_WRAP). */
-  SetupShipRepair(...args) {
-    throw new Error("SeekTarget.SetupShipRepair is not implemented in CarbonEngineJS.");
+  SetupShipRepair() {
+    this.exit = false;
+    this.#droneArrived = false;
+    this.repair = true;
   }
 
   /** Carbon method SplitBoundingBox (MAP_METHOD_AND_WRAP). */
-  SplitBoundingBox(...args) {
-    throw new Error("SeekTarget.SplitBoundingBox is not implemented in CarbonEngineJS.");
+  SplitBoundingBox() {
+    this.#boundingBoxes.length = 0;
+    this.#locatorBucketIndices.length = 0;
+    this.#sortedLocators = false;
+    if (!this.target?.GetLocalBoundingBox) {
+      return false;
+    }
+    const min = vec3.create();
+    const max = vec3.create();
+    if (!this.target.GetLocalBoundingBox(min, max)) {
+      return false;
+    }
+    const dimensions = vec3.subtract(vec3.create(), max, min);
+    let maxIndex = 0;
+    for (let index = 1; index < 3; index++) {
+      if (dimensions[index] > dimensions[maxIndex]) {
+        maxIndex = index;
+      }
+    }
+    const largest = dimensions[maxIndex];
+    if (!Number.isFinite(largest) || largest <= 0) {
+      return false;
+    }
+    const otherDimensions = [dimensions[(maxIndex + 1) % 3], dimensions[(maxIndex + 2) % 3]];
+    const secondLargest = Math.max(...otherDimensions.filter(Number.isFinite), 0);
+    let desiredLength = largest;
+    if (secondLargest > 0) {
+      while (desiredLength > secondLargest) {
+        desiredLength *= 0.5;
+      }
+    }
+    const boxCount = secondLargest > 0 ? Math.max(1, Math.round(largest / desiredLength)) : 1;
+    for (let index = 0; index < boxCount; index++) {
+      const boxMin = vec3.clone(min);
+      const boxMax = vec3.clone(max);
+      boxMin[maxIndex] = min[maxIndex] + index * desiredLength;
+      boxMax[maxIndex] = index === boxCount - 1 ? max[maxIndex] : min[maxIndex] + (index + 1) * desiredLength;
+      this.#boundingBoxes.push({
+        min: boxMin,
+        max: boxMax
+      });
+      this.#locatorBucketIndices.push([]);
+    }
+    const locatorCount = Math.max(0, Number(this.target.GetLocatorCount?.(this.locatorSetName)) || 0);
+    const position = vec3.create();
+    for (let locatorIndex = 0; locatorIndex < locatorCount; locatorIndex++) {
+      const locatorPosition = this.target.GetLocatorPositionFromSet?.(locatorIndex, false, this.locatorSetName, position);
+      if (!locatorPosition) {
+        continue;
+      }
+      for (let bucketIndex = 0; bucketIndex < this.#boundingBoxes.length; bucketIndex++) {
+        const box = this.#boundingBoxes[bucketIndex];
+        if (locatorPosition[0] >= box.min[0] && locatorPosition[0] <= box.max[0] && locatorPosition[1] >= box.min[1] && locatorPosition[1] <= box.max[1] && locatorPosition[2] >= box.min[2] && locatorPosition[2] <= box.max[2]) {
+          this.#locatorBucketIndices[bucketIndex].push(locatorIndex);
+          break;
+        }
+      }
+    }
+    for (let index = this.#locatorBucketIndices.length - 1; index >= 0; index--) {
+      if (this.#locatorBucketIndices[index].length === 0) {
+        this.#locatorBucketIndices.splice(index, 1);
+        this.#boundingBoxes.splice(index, 1);
+      }
+    }
+    this.#sortedLocators = true;
+    return true;
+  }
+  GetLocatorBucketIndices() {
+    return this.#locatorBucketIndices.map(bucket => [...bucket]);
   }
   static {
     _initClass();

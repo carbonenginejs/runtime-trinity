@@ -12,7 +12,7 @@ import { ITr2ControllerAction } from "./ITr2ControllerAction.js";
 export class Tr2ActionSetExternalControllerVariable extends CjsModel
 {
   @io.read
-  @type.unknown
+  @type.objectRef("IRoot")
   destination = null;
 
   @io.notify

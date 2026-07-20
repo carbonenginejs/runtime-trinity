@@ -11,6 +11,8 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { EveEntity } from "../../generated/eve/EveEntity.js";
+import { EveComponentRegistry } from "../../generated/eve/scene/EveComponentRegistry.js";
 import { EveUpdateContext } from "../EveUpdateContext.js";
 
 
@@ -102,7 +104,15 @@ export class EveSpaceScene extends CjsModel
   /** m_componentRegistry (EveComponentRegistryPtr) [READ] */
   @io.read
   @type.objectRef("EveComponentRegistry")
-  componentRegistry = null;
+  componentRegistry = new EveComponentRegistry();
+
+  /** m_cameraAttachmentParent (EveEffectRoot2Ptr) - protected Carbon scene entity. */
+  @type.model("EveEffectRoot2")
+  cameraAttachmentParent = null;
+
+  /** m_postProcessDebug (BluePy) - protected Carbon debug payload. */
+  @type.rawStruct("BluePy")
+  postProcessDebug = null;
 
   /** m_curveSets (PTriCurveSetVector) [READ, PERSIST] */
   @io.persist
@@ -494,26 +504,39 @@ export class EveSpaceScene extends CjsModel
 
   /** Carbon method ReregisterEntities (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ReregisterEntities(...args)
+  @impl.implemented
+  ReregisterEntities()
   {
-    throw new Error("EveSpaceScene.ReregisterEntities is not implemented in CarbonEngineJS.");
+    for (const collection of [this.objects, this.backgroundObjects, this.planets])
+    {
+      for (const object of collection)
+      {
+        if (object instanceof EveEntity)
+        {
+          this.componentRegistry.ReRegister(object);
+        }
+      }
+    }
+    if (this.cameraAttachmentParent instanceof EveEntity)
+    {
+      this.componentRegistry.ReRegister(this.cameraAttachmentParent);
+    }
   }
 
   /** Carbon method GetPostProcessDebug (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetPostProcessDebug(...args)
+  @impl.implemented
+  GetPostProcessDebug()
   {
-    throw new Error("EveSpaceScene.GetPostProcessDebug is not implemented in CarbonEngineJS.");
+    return this.postProcessDebug;
   }
 
   /** Carbon method UpdateScene -> UpdateSceneFromScript (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  UpdateScene(...args)
+  @impl.implemented
+  UpdateScene(time)
   {
-    throw new Error("EveSpaceScene.UpdateScene is not implemented in CarbonEngineJS.");
+    return this.Update(time, time);
   }
 
   static EveVisualizeMethod = Object.freeze({

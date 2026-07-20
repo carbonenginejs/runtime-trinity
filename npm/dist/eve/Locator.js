@@ -22,8 +22,8 @@ class Locator extends CjsModel {
   }
   position = _init_position(this, vec3.create());
   direction = (_init_extra_position(this), _init_direction(this, quat.create()));
-  scale = (_init_extra_direction(this), _init_scale(this, vec3.create()));
-  boneIndex = (_init_extra_scale(this), _init_boneIndex(this, 0));
+  scale = (_init_extra_direction(this), _init_scale(this, vec3.fromValues(1, 1, 1)));
+  boneIndex = (_init_extra_scale(this), _init_boneIndex(this, -1));
   static {
     _initClass();
   }

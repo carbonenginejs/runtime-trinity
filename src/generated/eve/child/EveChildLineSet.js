@@ -90,10 +90,11 @@ export class EveChildLineSet extends EveChildTransform
 
   /** Carbon method GetVertexElementAddedThroughCode (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetVertexElementAddedThroughCode(...args)
+  @impl.adapted
+  @impl.reason("Returns Carbon's numeric Tr2VertexDefinition usage/index pairs without owning a renderer declaration.")
+  GetVertexElementAddedThroughCode()
   {
-    throw new Error("EveChildLineSet.GetVertexElementAddedThroughCode is not implemented in CarbonEngineJS.");
+    return [[5, 8], [5, 9], [5, 10]];
   }
 
   static lineSetType = Object.freeze({

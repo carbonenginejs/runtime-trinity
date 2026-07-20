@@ -1,8 +1,29 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat3 } from '@carbonenginejs/core-math/mat3';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { quat } from '@carbonenginejs/core-math/quat';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, impl, carbon } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { CjsGrannyCurves } from '../../curves/CjsGrannyCurves.js';
 
 let _initProto, _initClass, _init_resPath_, _init_extra_resPath_, _init_model_, _init_extra_model_, _init_grannyRes, _init_extra_grannyRes, _init_eventListener, _init_extra_eventListener, _init_animationEnabled, _init_extra_animationEnabled, _init_debugRenderJointNames, _init_extra_debugRenderJointNames, _init_debugRenderSkeleton, _init_extra_debugRenderSkeleton, _init_boneOffset, _init_extra_boneOffset;
+function createLayer(name = "", weight = 1, allBones = false) {
+  return {
+    name,
+    weight,
+    allBones,
+    bones: new Set(),
+    queue: [],
+    controlParam: 0,
+    controlParamTarget: 0,
+    controlParamEnabled: false,
+    controlParamSkewRate: 0
+  };
+}
+function getName(value) {
+  return String(value?.name ?? value?.Name ?? "");
+}
 
 /** Tr2GrannyAnimation (trinityCore) - generated from schema shapeHash 056bad2a.... */
 let _Tr2GrannyAnimation;
@@ -14,14 +35,28 @@ class Tr2GrannyAnimation extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2GrannyAnimation",
       family: "trinityCore"
-    })], [[[io, io.persistOnly, type, type.string], 16, "resPath_"], [[io, io.persistOnly, type, type.string], 16, "model_"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "grannyRes"], [[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "eventListener"], [[io, io.readwrite, type, type.boolean], 16, "animationEnabled"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderJointNames"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderSkeleton"], [[io, io.read, void 0, type.objectRef("GrannyBoneOffset")], 16, "boneOffset"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAnimationLayer"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAnimationLayerAllBones"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddAnimationLayerBone"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddSecondaryResPath"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AimBone"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "ClearAnimationLayers"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DisableAimBone"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLayerWeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetSecondaryAnimationName"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "PlayLayerAnimation"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RemoveAnimationLayerBone"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetAnimationNames"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLayerControlParam"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLayerControlParamSkewRate"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetLayerWeight"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "TogglePauseAnimations"]], 0, void 0, CjsModel));
+    })], [[[io, io.persistOnly, type, type.string], 16, "resPath_"], [[io, io.persistOnly, type, type.string], 16, "model_"], [[io, io.read, void 0, type.objectRef("TriGrannyRes")], 16, "grannyRes"], [[io, io.readwrite, void 0, type.objectRef("IBlueEventListener")], 16, "eventListener"], [[io, io.readwrite, type, type.boolean], 16, "animationEnabled"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderJointNames"], [[io, io.readwrite, type, type.boolean], 16, "debugRenderSkeleton"], [[io, io.read, void 0, type.objectRef("GrannyBoneOffset")], 16, "boneOffset"], [[impl, impl.adapted], 18, "Initialize"], [[impl, impl.adapted], 18, "SetGrannyResource"], [[impl, impl.adapted], 18, "RebuildCachedData"], [[impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayer"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerAllBones"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Resource loading stays runtime-resource-owned; registered decoded resources are attached synchronously when available.")], 18, "AddSecondaryResPath"], [[impl, impl.adapted], 18, "SetSecondaryGrannyResource"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser graph retains Carbon's aim request; final IK realization can be refined by an engine adapter.")], 18, "AimBone"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimationLayers"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisableAimBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLayerWeight"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetSecondaryAnimationName"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[impl, impl.adapted], 18, "PlayAnimationOnce"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayLayerAnimation"], [[impl, impl.adapted], 18, "PlayLayerAnimationByName"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveAnimationLayerBone"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAnimationNames"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAdditiveBlendMode"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParam"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerControlParamSkewRate"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLayerWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "TogglePauseAnimations"], [[impl, impl.implemented], 18, "IsInitialized"], [[impl, impl.adapted], 18, "GetMeshBoneMatrixList"], [[impl, impl.implemented], 18, "GetMeshBoneCount"], [[impl, impl.adapted], 18, "GetBoneWorldTransform"], [[impl, impl.adapted], 18, "GetBoneTransform"], [[impl, impl.adapted], 18, "GetBoneMatrix"], [[impl, impl.implemented], 18, "GetAnimationTransforms"], [[impl, impl.implemented], 18, "GetAnimationBoneList"], [[impl, impl.adapted], 18, "GetAimBoneState"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_boneOffset(this);
   }
+  #additiveMode = (_initProto(this), false);
+  #aimAxis = vec3.fromValues(0, 0, 1);
+  #aimBone = "";
+  #aimBoneOrientation = vec3.fromValues(0, 0, 1);
+  #aimingBone = false;
+  #baseLayer = createLayer("", 1, true);
+  #curveCache = new WeakMap();
+  #initialized = false;
+  #layers = new Map();
+  #meshBoneIndices = [];
+  #paused = false;
+  #runtimeModel = null;
+  #secondaryResources = new Map();
+
   /** m_resPath (std::string) [PERSISTONLY] */
-  resPath_ = (_initProto(this), _init_resPath_(this, ""));
+  resPath_ = _init_resPath_(this, "");
 
   /** m_model (std::string) [PERSISTONLY] */
   model_ = (_init_extra_resPath_(this), _init_model_(this, ""));
@@ -44,124 +79,587 @@ class Tr2GrannyAnimation extends CjsModel {
   /** m_boneOffset (PGrannyBoneOffset) [READ] */
   boneOffset = (_init_extra_debugRenderSkeleton(this), _init_boneOffset(this, null));
 
+  /** Resolves an authored resource path from the shared CPU Granny registry. */
+  Initialize() {
+    if (!this.grannyRes && this.resPath_) {
+      this.grannyRes = CjsGrannyCurves.resolveResource(this.resPath_);
+    }
+    return this.RebuildCachedData();
+  }
+
+  /** Attaches an already decoded TriGrannyRes-compatible resource. */
+  SetGrannyResource(resource) {
+    this.grannyRes = resource ?? null;
+    return this.RebuildCachedData();
+  }
+
+  /** Rebuilds browser bone state directly from format-gr2's stable payload. */
+  RebuildCachedData() {
+    const source = this.#getSource(this.grannyRes);
+    const models = this.#getArray(source, "models", "Models");
+    const model = models.find(item => getName(item) === this.model_) ?? models[0] ?? null;
+    const skeleton = model?.skeleton ?? model?.Skeleton ?? null;
+    const sourceBones = this.#getArray(skeleton, "bones", "Bones");
+    this.#runtimeModel = null;
+    this.#meshBoneIndices.length = 0;
+    this.#curveCache = new WeakMap();
+    if (!model || sourceBones.length === 0) {
+      this.#initialized = false;
+      return false;
+    }
+    const bones = sourceBones.map((sourceBone, index) => this.#createBone(sourceBone, index));
+    const boneByName = new Map(bones.map((bone, index) => [bone.name, index]));
+    this.#runtimeModel = {
+      source,
+      model,
+      skeleton,
+      bones,
+      boneByName
+    };
+    this.#rebuildRestTransforms();
+    this.#rebuildMeshBoneIndices();
+    this.#initialized = true;
+    this.Update(0);
+    return true;
+  }
+
+  /** Advances CPU animation controls and rebuilds browser bone matrices. */
+  Update(dt = 0) {
+    if (!this.#initialized || !this.animationEnabled) {
+      return false;
+    }
+    const deltaTime = this.#paused ? 0 : Math.max(0, Number(dt) || 0);
+    this.#advanceLayer(this.#baseLayer, deltaTime);
+    for (const layer of this.#layers.values()) {
+      this.#advanceLayer(layer, deltaTime);
+    }
+    this.#resetPose();
+    this.#sampleLayer(this.#baseLayer, false);
+    for (const layer of this.#layers.values()) {
+      this.#sampleLayer(layer, this.#additiveMode);
+    }
+    this.#composePose();
+    return true;
+  }
+
   /** Carbon method PlayAnimationEx (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  PlayAnimationEx(...args) {
-    throw new Error("Tr2GrannyAnimation.PlayAnimationEx is not implemented in CarbonEngineJS.");
+  PlayAnimationEx(animName, loopCount, delay, speed, clearWhenDone = true) {
+    return this.PlayAnimation(animName, true, loopCount, delay, speed, clearWhenDone);
   }
 
   /** Carbon method AddAnimationLayer (MAP_METHOD_AND_WRAP). */
-  AddAnimationLayer(...args) {
-    throw new Error("Tr2GrannyAnimation.AddAnimationLayer is not implemented in CarbonEngineJS.");
+  AddAnimationLayer(layerName, layerWeight = 1) {
+    const name = String(layerName ?? "");
+    if (!name || this.#layers.has(name)) {
+      return false;
+    }
+    this.#layers.set(name, createLayer(name, Number(layerWeight) || 0, false));
+    return true;
   }
 
   /** Carbon method AddAnimationLayerAllBones (MAP_METHOD_AND_WRAP). */
-  AddAnimationLayerAllBones(...args) {
-    throw new Error("Tr2GrannyAnimation.AddAnimationLayerAllBones is not implemented in CarbonEngineJS.");
+  AddAnimationLayerAllBones(layerName) {
+    const layer = this.#getLayer(layerName);
+    if (!layer) {
+      return false;
+    }
+    layer.allBones = true;
+    return true;
   }
 
   /** Carbon method AddAnimationLayerBone (MAP_METHOD_AND_WRAP). */
-  AddAnimationLayerBone(...args) {
-    throw new Error("Tr2GrannyAnimation.AddAnimationLayerBone is not implemented in CarbonEngineJS.");
+  AddAnimationLayerBone(layerName, boneName) {
+    const layer = this.#getLayer(layerName);
+    if (!layer) {
+      return false;
+    }
+    layer.bones.add(String(boneName ?? ""));
+    return true;
   }
 
   /** Carbon method AddSecondaryResPath (MAP_METHOD_AND_WRAP). */
-  AddSecondaryResPath(...args) {
-    throw new Error("Tr2GrannyAnimation.AddSecondaryResPath is not implemented in CarbonEngineJS.");
+  AddSecondaryResPath(resPath) {
+    const path = String(resPath ?? "");
+    if (!path || this.#secondaryResources.has(path)) {
+      return false;
+    }
+    this.#secondaryResources.set(path, CjsGrannyCurves.resolveResource(path));
+    return true;
+  }
+
+  /** Attaches a decoded secondary animation resource after async loading. */
+  SetSecondaryGrannyResource(resPath, resource) {
+    const path = String(resPath ?? "");
+    if (!path) {
+      return false;
+    }
+    this.#secondaryResources.set(path, resource ?? null);
+    return true;
   }
 
   /** Carbon method AimBone (MAP_METHOD_AND_WRAP). */
-  AimBone(...args) {
-    throw new Error("Tr2GrannyAnimation.AimBone is not implemented in CarbonEngineJS.");
+  AimBone(boneName, targetX, targetY, targetZ, axisX, axisY, axisZ) {
+    this.#aimingBone = true;
+    this.#aimBone = String(boneName ?? "");
+    vec3.set(this.#aimBoneOrientation, targetX, targetY, targetZ);
+    vec3.set(this.#aimAxis, axisX, axisY, axisZ);
   }
 
   /** Carbon method ChainAnimation (MAP_METHOD_AND_WRAP). */
-  ChainAnimation(...args) {
-    throw new Error("Tr2GrannyAnimation.ChainAnimation is not implemented in CarbonEngineJS.");
+  ChainAnimation(animName) {
+    return this.PlayAnimation(animName, false, 1, 0, 1, true);
   }
 
   /** Carbon method ChainAnimationEx (MAP_METHOD_AND_WRAP). */
-  ChainAnimationEx(...args) {
-    throw new Error("Tr2GrannyAnimation.ChainAnimationEx is not implemented in CarbonEngineJS.");
+  ChainAnimationEx(animName, loopCount, delay, speed) {
+    return this.PlayAnimation(animName, false, loopCount, delay, speed, true);
   }
 
   /** Carbon method ClearAnimations (MAP_METHOD_AND_WRAP). */
-  ClearAnimations(...args) {
-    throw new Error("Tr2GrannyAnimation.ClearAnimations is not implemented in CarbonEngineJS.");
+  ClearAnimations() {
+    this.#baseLayer.queue.length = 0;
   }
 
   /** Carbon method ClearAnimationLayers (MAP_METHOD_AND_WRAP). */
-  ClearAnimationLayers(...args) {
-    throw new Error("Tr2GrannyAnimation.ClearAnimationLayers is not implemented in CarbonEngineJS.");
+  ClearAnimationLayers() {
+    this.#layers.clear();
   }
 
   /** Carbon method DisableAimBone (MAP_METHOD_AND_WRAP). */
-  DisableAimBone(...args) {
-    throw new Error("Tr2GrannyAnimation.DisableAimBone is not implemented in CarbonEngineJS.");
+  DisableAimBone() {
+    this.#aimingBone = false;
   }
 
   /** Carbon method EndAnimation (MAP_METHOD_AND_WRAP). */
-  EndAnimation(...args) {
-    throw new Error("Tr2GrannyAnimation.EndAnimation is not implemented in CarbonEngineJS.");
+  EndAnimation() {
+    const request = this.#baseLayer.queue[0];
+    this.#baseLayer.queue.splice(1);
+    if (!request?.animation) {
+      return;
+    }
+    const duration = this.#getAnimationDuration(request.animation);
+    if (duration > 0) {
+      const localTime = Math.max(0, request.elapsed) * Math.abs(request.speed);
+      request.loopCount = Math.floor(localTime / duration) + 1;
+    }
   }
 
   /** Carbon method GetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
-  GetAdditiveBlendMode(...args) {
-    throw new Error("Tr2GrannyAnimation.GetAdditiveBlendMode is not implemented in CarbonEngineJS.");
+  GetAdditiveBlendMode() {
+    return this.#additiveMode;
   }
 
   /** Carbon method GetLayerWeight (MAP_METHOD_AND_WRAP). */
-  GetLayerWeight(...args) {
-    throw new Error("Tr2GrannyAnimation.GetLayerWeight is not implemented in CarbonEngineJS.");
+  GetLayerWeight(layerName) {
+    return this.#getLayer(layerName)?.weight ?? 0;
   }
 
   /** Carbon method GetSecondaryAnimationName (MAP_METHOD_AND_WRAP). */
-  GetSecondaryAnimationName(...args) {
-    throw new Error("Tr2GrannyAnimation.GetSecondaryAnimationName is not implemented in CarbonEngineJS.");
+  GetSecondaryAnimationName(resPath, index) {
+    const source = this.#getSource(this.#secondaryResources.get(String(resPath ?? "")));
+    return getName(CjsGrannyCurves.getAnimations(source)[Number(index) || 0]);
   }
 
   /** Carbon method PlayAnimation -> PlayAnimationOnce (MAP_METHOD_AND_WRAP). */
-  PlayAnimation(...args) {
-    throw new Error("Tr2GrannyAnimation.PlayAnimation is not implemented in CarbonEngineJS.");
+  PlayAnimation(animName, replace = true, loopCount = 1, delay = 0, speed = 1, clearWhenDone = true) {
+    return this.#playLayer("", animName, replace, loopCount, delay, speed, clearWhenDone);
+  }
+
+  /** Native-name alias retained for controller integrations. */
+  PlayAnimationOnce(animName) {
+    return this.PlayAnimation(animName, true, 1, 0, 1, true);
   }
 
   /** Carbon method PlayLayerAnimation -> PlayLayerAnimationByName (MAP_METHOD_AND_WRAP). */
-  PlayLayerAnimation(...args) {
-    throw new Error("Tr2GrannyAnimation.PlayLayerAnimation is not implemented in CarbonEngineJS.");
+  PlayLayerAnimation(layerName, animName, replace = true, loopCount = 1, delay = 0, speed = 1, clearWhenDone = true) {
+    return this.#playLayer(layerName, animName, replace, loopCount, delay, speed, clearWhenDone);
+  }
+
+  /** Alias used by Carbon controller actions. */
+  PlayLayerAnimationByName(...args) {
+    return this.PlayLayerAnimation(...args);
   }
 
   /** Carbon method RemoveAnimationLayerBone (MAP_METHOD_AND_WRAP). */
-  RemoveAnimationLayerBone(...args) {
-    throw new Error("Tr2GrannyAnimation.RemoveAnimationLayerBone is not implemented in CarbonEngineJS.");
+  RemoveAnimationLayerBone(layerName, boneName) {
+    const layer = this.#getLayer(layerName);
+    return layer ? layer.bones.delete(String(boneName ?? "")) : false;
   }
 
   /** Carbon method GetAnimationNames (MAP_METHOD_AND_WRAP). */
-  GetAnimationNames(...args) {
-    throw new Error("Tr2GrannyAnimation.GetAnimationNames is not implemented in CarbonEngineJS.");
+  GetAnimationNames() {
+    const names = [];
+    const append = resource => {
+      const source = this.#getSource(resource);
+      for (const animation of CjsGrannyCurves.getAnimations(source)) {
+        names.push(getName(animation));
+      }
+    };
+    append(this.grannyRes);
+    for (const resource of this.#secondaryResources.values()) {
+      append(resource);
+    }
+    return names;
   }
 
   /** Carbon method SetAdditiveBlendMode (MAP_METHOD_AND_WRAP). */
-  SetAdditiveBlendMode(...args) {
-    throw new Error("Tr2GrannyAnimation.SetAdditiveBlendMode is not implemented in CarbonEngineJS.");
+  SetAdditiveBlendMode(additive) {
+    this.#additiveMode = !!additive;
   }
 
   /** Carbon method SetLayerControlParam (MAP_METHOD_AND_WRAP). */
-  SetLayerControlParam(...args) {
-    throw new Error("Tr2GrannyAnimation.SetLayerControlParam is not implemented in CarbonEngineJS.");
+  SetLayerControlParam(layerName, controlParam) {
+    const layer = this.#getLayer(layerName);
+    if (!layer) {
+      return false;
+    }
+    layer.controlParamTarget = Number(controlParam) || 0;
+    layer.controlParamEnabled = true;
+    return true;
   }
 
   /** Carbon method SetLayerControlParamSkewRate (MAP_METHOD_AND_WRAP). */
-  SetLayerControlParamSkewRate(...args) {
-    throw new Error("Tr2GrannyAnimation.SetLayerControlParamSkewRate is not implemented in CarbonEngineJS.");
+  SetLayerControlParamSkewRate(layerName, skewRate) {
+    const layer = this.#getLayer(layerName);
+    if (!layer) {
+      return false;
+    }
+    layer.controlParamSkewRate = Number(skewRate) || 0;
+    return true;
   }
 
   /** Carbon method SetLayerWeight (MAP_METHOD_AND_WRAP). */
-  SetLayerWeight(...args) {
-    throw new Error("Tr2GrannyAnimation.SetLayerWeight is not implemented in CarbonEngineJS.");
+  SetLayerWeight(layerName, layerWeight) {
+    const layer = this.#getLayer(layerName);
+    if (!layer) {
+      return false;
+    }
+    layer.weight = Number(layerWeight) || 0;
+    return true;
   }
 
   /** Carbon method TogglePauseAnimations (MAP_METHOD_AND_WRAP). */
-  TogglePauseAnimations(...args) {
-    throw new Error("Tr2GrannyAnimation.TogglePauseAnimations is not implemented in CarbonEngineJS.");
+  TogglePauseAnimations(pause) {
+    this.#paused = !!pause;
+  }
+
+  /** Returns whether a model-bearing decoded Granny payload is ready. */
+  IsInitialized() {
+    return this.#initialized;
+  }
+
+  /** Returns the mesh-order browser bone matrices expected by Eve objects. */
+  GetMeshBoneMatrixList() {
+    const bones = this.#runtimeModel?.bones ?? [];
+    return this.#meshBoneIndices.map(index => bones[index]?.offsetTransform ?? mat4.create());
+  }
+  GetMeshBoneCount() {
+    return this.#meshBoneIndices.length;
+  }
+  GetBoneWorldTransform(boneName, out = mat4.create()) {
+    const index = this.#runtimeModel?.boneByName.get(String(boneName ?? ""));
+    if (index === undefined) {
+      return false;
+    }
+    mat4.copy(out, this.#runtimeModel.bones[index].worldTransform);
+    return out;
+  }
+  GetBoneTransform(index, out = mat4.create()) {
+    const bone = this.#runtimeModel?.bones[Number(index)];
+    if (!bone) {
+      return false;
+    }
+    mat4.copy(out, bone.worldTransform);
+    return out;
+  }
+  GetBoneMatrix(bone) {
+    if (typeof bone === "number") {
+      return this.GetBoneTransform(bone);
+    }
+    return this.GetBoneWorldTransform(bone);
+  }
+  GetAnimationTransforms() {
+    return this.#runtimeModel?.bones.map(bone => bone.worldTransform) ?? [];
+  }
+  GetAnimationBoneList() {
+    return this.#runtimeModel?.bones.map(bone => bone.name) ?? [];
+  }
+
+  /** Exposes retained aim state to an engine-side IK adapter. */
+  GetAimBoneState() {
+    return {
+      enabled: this.#aimingBone,
+      boneName: this.#aimBone,
+      target: vec3.clone(this.#aimBoneOrientation),
+      axis: vec3.clone(this.#aimAxis)
+    };
+  }
+  #advanceLayer(layer, dt) {
+    if (layer.controlParamEnabled) {
+      const difference = layer.controlParamTarget - layer.controlParam;
+      const increment = Math.abs(layer.controlParamSkewRate * dt);
+      if (increment === 0 || Math.abs(difference) <= increment) {
+        layer.controlParam = layer.controlParamTarget;
+      } else {
+        layer.controlParam += Math.sign(difference) * increment;
+      }
+    }
+    const request = layer.queue[0];
+    if (!request) {
+      return;
+    }
+    request.animation ??= this.#findAnimation(request.name);
+    if (!request.animation) {
+      return;
+    }
+    request.elapsed += dt;
+    const duration = this.#getAnimationDuration(request.animation);
+    const speed = Math.abs(request.speed);
+    if (duration <= 0 || request.elapsed < 0 || request.loopCount <= 0) {
+      return;
+    }
+    if (request.elapsed * speed < duration * request.loopCount) {
+      return;
+    }
+    if (layer.queue.length > 1 || request.clearWhenDone) {
+      layer.queue.shift();
+    } else {
+      request.elapsed = duration * request.loopCount / speed;
+      request.held = true;
+    }
+  }
+  #composePose() {
+    const rotationMatrix = mat4.create();
+    for (const bone of this.#runtimeModel.bones) {
+      mat4.fromMat3(bone.localTransform, bone.scaleShear);
+      mat4.multiply(bone.localTransform, bone.localTransform, mat4.fromQuat(rotationMatrix, bone.orientation));
+      bone.localTransform[12] = bone.position[0];
+      bone.localTransform[13] = bone.position[1];
+      bone.localTransform[14] = bone.position[2];
+      if (bone.parentIndex >= 0 && this.#runtimeModel.bones[bone.parentIndex]) {
+        mat4.multiply(bone.worldTransform, this.#runtimeModel.bones[bone.parentIndex].worldTransform, bone.localTransform);
+      } else {
+        mat4.copy(bone.worldTransform, bone.localTransform);
+      }
+      mat4.multiply(bone.offsetTransform, bone.worldTransform, bone.inverseRestTransform);
+    }
+  }
+  #createBone(source, index) {
+    const sourcePosition = source.position ?? source.Position ?? [0, 0, 0];
+    const sourceOrientation = source.orientation ?? source.Orientation ?? [0, 0, 0, 1];
+    const sourceScaleShear = source.scaleShear ?? source.ScaleShear ?? [1, 0, 0, 0, 1, 0, 0, 0, 1];
+    const parent = Number(source.parentIndex ?? source.ParentIndex ?? -1);
+    return {
+      index,
+      name: getName(source) || String(source.bone ?? source.Bone ?? ""),
+      parentIndex: parent === 255 ? -1 : parent,
+      restPosition: vec3.fromValues(sourcePosition[0] ?? 0, sourcePosition[1] ?? 0, sourcePosition[2] ?? 0),
+      restOrientation: quat.fromValues(sourceOrientation[0] ?? 0, sourceOrientation[1] ?? 0, sourceOrientation[2] ?? 0, sourceOrientation[3] ?? 1),
+      restScaleShear: mat3.fromValues(...sourceScaleShear),
+      position: vec3.create(),
+      orientation: quat.create(),
+      scaleShear: mat3.create(),
+      localTransform: mat4.create(),
+      worldTransform: mat4.create(),
+      inverseRestTransform: mat4.create(),
+      offsetTransform: mat4.create()
+    };
+  }
+  #decodeTrack(track) {
+    let value = this.#curveCache.get(track);
+    if (!value) {
+      value = {
+        position: CjsGrannyCurves.decodeGrannyCurve(track.position ?? track.Position, 3),
+        orientation: CjsGrannyCurves.decodeGrannyCurve(track.orientation ?? track.Orientation, 4),
+        scaleShear: CjsGrannyCurves.decodeGrannyCurve(track.scaleShear ?? track.ScaleShear, 9)
+      };
+      this.#curveCache.set(track, value);
+    }
+    return value;
+  }
+  #findAnimation(name) {
+    const target = String(name ?? "");
+    const find = resource => CjsGrannyCurves.getAnimations(this.#getSource(resource)).find(animation => getName(animation) === target);
+    let animation = find(this.grannyRes);
+    if (animation) {
+      return animation;
+    }
+    for (const resource of this.#secondaryResources.values()) {
+      animation = find(resource);
+      if (animation) {
+        return animation;
+      }
+    }
+    return null;
+  }
+  #getAnimationDuration(animation) {
+    return Math.max(0, CjsGrannyCurves.getAnimationDuration(animation));
+  }
+  #getArray(value, lowerName, upperName) {
+    return Array.isArray(value?.[lowerName]) ? value[lowerName] : Array.isArray(value?.[upperName]) ? value[upperName] : [];
+  }
+  #getLayer(layerName) {
+    const name = String(layerName ?? "");
+    return name ? this.#layers.get(name) ?? null : this.#baseLayer;
+  }
+  #getSource(resource) {
+    let value = resource?.GetPayload?.() ?? resource;
+    const seen = new Set();
+    while (value && typeof value === "object" && !seen.has(value)) {
+      seen.add(value);
+      if (Array.isArray(value.animations) || Array.isArray(value.Animations)) {
+        return value;
+      }
+      value = value.json ?? value.Json ?? value.data ?? value.Data ?? value.value ?? value.Value ?? value.source ?? value.Source ?? value.fileInfo ?? value.FileInfo;
+    }
+    return null;
+  }
+  #playLayer(layerName, animName, replace, loopCount, delay, speed, clearWhenDone) {
+    const layer = this.#getLayer(layerName);
+    const name = String(animName ?? "");
+    if (!layer || !name) {
+      return false;
+    }
+    const animation = this.#findAnimation(name);
+    if (!animation && this.#getSource(this.grannyRes)) {
+      return false;
+    }
+    if (replace) {
+      layer.queue.length = 0;
+    }
+    layer.queue.push({
+      name,
+      animation,
+      loopCount: Math.max(0, Math.trunc(Number(loopCount) || 0)),
+      elapsed: -Math.max(0, Number(delay) || 0),
+      speed: Number.isFinite(Number(speed)) ? Number(speed) : 1,
+      clearWhenDone: !!clearWhenDone,
+      held: false
+    });
+    return true;
+  }
+  #rebuildMeshBoneIndices() {
+    const {
+      source,
+      model,
+      bones,
+      boneByName
+    } = this.#runtimeModel;
+    const meshBindings = this.#getArray(model, "meshBindings", "MeshBindings");
+    const meshes = this.#getArray(source, "meshes", "Meshes");
+    const mesh = meshes[Number(meshBindings[0]) || 0];
+    const bindings = this.#getArray(mesh, "boneBindings", "BoneBindings");
+    this.#meshBoneIndices = bindings.map(binding => boneByName.get(getName(binding))).filter(index => index !== undefined);
+    if (this.#meshBoneIndices.length === 0) {
+      this.#meshBoneIndices = bones.map((_, index) => index);
+    }
+  }
+  #rebuildRestTransforms() {
+    const rotationMatrix = mat4.create();
+    for (const bone of this.#runtimeModel.bones) {
+      mat4.fromMat3(bone.localTransform, bone.restScaleShear);
+      mat4.multiply(bone.localTransform, bone.localTransform, mat4.fromQuat(rotationMatrix, bone.restOrientation));
+      bone.localTransform[12] = bone.restPosition[0];
+      bone.localTransform[13] = bone.restPosition[1];
+      bone.localTransform[14] = bone.restPosition[2];
+      if (bone.parentIndex >= 0 && this.#runtimeModel.bones[bone.parentIndex]) {
+        mat4.multiply(bone.worldTransform, this.#runtimeModel.bones[bone.parentIndex].worldTransform, bone.localTransform);
+      } else {
+        mat4.copy(bone.worldTransform, bone.localTransform);
+      }
+      if (!mat4.invert(bone.inverseRestTransform, bone.worldTransform)) {
+        mat4.identity(bone.inverseRestTransform);
+      }
+    }
+  }
+  #resetPose() {
+    for (const bone of this.#runtimeModel.bones) {
+      vec3.copy(bone.position, bone.restPosition);
+      quat.copy(bone.orientation, bone.restOrientation);
+      mat3.copy(bone.scaleShear, bone.restScaleShear);
+    }
+  }
+  #sampleLayer(layer, additive) {
+    const request = layer.queue[0];
+    const animation = request?.animation;
+    if (!animation || request.elapsed < 0) {
+      return;
+    }
+    const duration = this.#getAnimationDuration(animation);
+    const speed = Math.abs(request.speed);
+    let time = layer.controlParamEnabled ? layer.controlParam * duration : request.elapsed * speed;
+    if (duration > 0) {
+      const totalDuration = request.loopCount > 0 ? duration * request.loopCount : Infinity;
+      if (time >= totalDuration) {
+        time = request.speed < 0 ? 0 : duration;
+      } else {
+        time %= duration;
+        if (request.speed < 0) {
+          time = time === 0 ? duration : duration - time;
+        }
+      }
+    }
+    const trackGroups = CjsGrannyCurves.getTrackGroups(animation);
+    const modelName = getName(this.#runtimeModel.model);
+    const matchingGroups = trackGroups.filter(group => getName(group) === modelName);
+    for (const group of matchingGroups.length ? matchingGroups : trackGroups) {
+      const tracks = this.#getArray(group, "transformTracks", "TransformTracks");
+      for (const track of tracks) {
+        const boneIndex = this.#runtimeModel.boneByName.get(getName(track));
+        const bone = this.#runtimeModel.bones[boneIndex];
+        if (!bone || !layer.allBones && !layer.bones.has(bone.name)) {
+          continue;
+        }
+        this.#sampleTrack(bone, track, time, duration, layer.weight, additive);
+      }
+    }
+  }
+  #sampleTrack(bone, track, time, duration, weight, additive) {
+    const curves = this.#decodeTrack(track);
+    const position = vec3.clone(bone.restPosition);
+    const orientation = quat.clone(bone.restOrientation);
+    const scaleShear = mat3.clone(bone.restScaleShear);
+    if (curves.position) {
+      CjsGrannyCurves.sampleGrannyCurve(position, curves.position, time, false, duration);
+    }
+    if (curves.orientation) {
+      CjsGrannyCurves.sampleGrannyCurve(orientation, curves.orientation, time, false, duration);
+      quat.normalize(orientation, orientation);
+    }
+    if (curves.scaleShear) {
+      CjsGrannyCurves.sampleGrannyCurve(scaleShear, curves.scaleShear, time, false, duration);
+    }
+    const amount = Math.max(0, Number(weight) || 0);
+    if (!additive) {
+      vec3.lerp(bone.position, bone.position, position, Math.min(1, amount));
+      quat.slerp(bone.orientation, bone.orientation, orientation, Math.min(1, amount));
+      for (let index = 0; index < 9; index++) {
+        bone.scaleShear[index] += (scaleShear[index] - bone.scaleShear[index]) * Math.min(1, amount);
+      }
+      return;
+    }
+    const referencePosition = vec3.clone(bone.restPosition);
+    const referenceOrientation = quat.clone(bone.restOrientation);
+    const referenceScaleShear = mat3.clone(bone.restScaleShear);
+    if (curves.position) {
+      CjsGrannyCurves.sampleGrannyCurve(referencePosition, curves.position, 0, false, duration);
+    }
+    if (curves.orientation) {
+      CjsGrannyCurves.sampleGrannyCurve(referenceOrientation, curves.orientation, 0, false, duration);
+      quat.normalize(referenceOrientation, referenceOrientation);
+    }
+    if (curves.scaleShear) {
+      CjsGrannyCurves.sampleGrannyCurve(referenceScaleShear, curves.scaleShear, 0, false, duration);
+    }
+    vec3.scaleAndAdd(bone.position, bone.position, vec3.subtract(position, position, referencePosition), amount);
+    const inverseReference = quat.invert(quat.create(), referenceOrientation);
+    const delta = quat.multiply(quat.create(), orientation, inverseReference);
+    quat.slerp(delta, quat.create(), delta, Math.min(1, amount));
+    quat.multiply(bone.orientation, bone.orientation, delta);
+    quat.normalize(bone.orientation, bone.orientation);
+    for (let index = 0; index < 9; index++) {
+      bone.scaleShear[index] += (scaleShear[index] - referenceScaleShear[index]) * amount;
+    }
   }
   static {
     _initClass();

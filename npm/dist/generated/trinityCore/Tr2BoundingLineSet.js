@@ -15,7 +15,7 @@ class Tr2BoundingLineSet extends _Tr2LineSet {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2BoundingLineSet",
       family: "trinityCore"
-    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "maxBounds"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "minBounds"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateBounds"]], 0, void 0, _Tr2LineSet));
+    })], [[[io, io.notify, io, io.persist, type, type.vec3], 16, "maxBounds"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "minBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateBounds"]], 0, void 0, _Tr2LineSet));
   }
   constructor(...args) {
     super(...args);
@@ -28,8 +28,36 @@ class Tr2BoundingLineSet extends _Tr2LineSet {
   minBounds = (_init_extra_maxBounds(this), _init_minBounds(this, vec3.create()));
 
   /** Carbon method UpdateBounds (MAP_METHOD_AND_WRAP). */
-  UpdateBounds(...args) {
-    throw new Error("Tr2BoundingLineSet.UpdateBounds is not implemented in CarbonEngineJS.");
+  UpdateBounds(min, max) {
+    vec3.copy(this.minBounds, min);
+    vec3.copy(this.maxBounds, max);
+    this.ClearLines();
+    this.ClearPickingTriangles();
+    this.#AddBox(this.minBounds, this.maxBounds, this.color);
+    this.#AddPickingBox(this.minBounds, this.maxBounds);
+    return this.SubmitChanges();
+  }
+  #AddBox(min, max, color) {
+    const minA = vec3.fromValues(max[0], min[1], min[2]);
+    const minB = vec3.fromValues(min[0], max[1], min[2]);
+    const minC = vec3.fromValues(max[0], max[1], min[2]);
+    const maxA = vec3.fromValues(max[0], min[1], max[2]);
+    const maxB = vec3.fromValues(min[0], max[1], max[2]);
+    const maxC = vec3.fromValues(min[0], min[1], max[2]);
+    for (const [from, to] of [[min, minA], [min, minB], [minC, minB], [minA, minC], [max, maxA], [max, maxB], [maxC, maxB], [maxA, maxC], [min, maxC], [max, minC], [minB, maxB], [minA, maxA]]) {
+      this.AddLine(from, color, to, color);
+    }
+  }
+  #AddPickingBox(min, max) {
+    const minA = vec3.fromValues(max[0], min[1], min[2]);
+    const minB = vec3.fromValues(min[0], max[1], min[2]);
+    const minC = vec3.fromValues(max[0], max[1], min[2]);
+    const maxA = vec3.fromValues(max[0], min[1], max[2]);
+    const maxB = vec3.fromValues(min[0], max[1], max[2]);
+    const maxC = vec3.fromValues(min[0], min[1], max[2]);
+    for (const [a, b, c] of [[maxA, max, maxB], [maxA, maxB, maxC], [maxC, maxB, min], [min, maxB, minB], [min, minB, minA], [minA, minB, minC], [minA, minC, max], [minA, max, maxA], [maxA, min, minA], [maxA, maxC, min], [max, minC, minB], [max, minB, maxB]]) {
+      this.AddPickingTriangle(a, b, c);
+    }
   }
   static {
     _initClass();

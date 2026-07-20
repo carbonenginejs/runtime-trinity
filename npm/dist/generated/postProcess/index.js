@@ -1,5 +1,4 @@
 export { BlurContext } from './BlurContext.js';
-export { CASConstants } from './CASConstants.js';
 export { GaussianData } from './GaussianData.js';
 export { Tr2PPColorCorrectionEffect } from './Tr2PPColorCorrectionEffect.js';
 export { Tr2PPDesaturateEffect } from './Tr2PPDesaturateEffect.js';

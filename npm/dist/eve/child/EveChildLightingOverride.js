@@ -1,0 +1,146 @@
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
+import { EveChildTransform as _EveChildTransform } from './EveChildTransform.js';
+
+let _initProto, _initClass, _init_priority, _init_extra_priority, _init_name, _init_extra_name, _init_backgroundIntensity, _init_extra_backgroundIntensity, _init_intensity, _init_extra_intensity, _init_reflectionIntensity, _init_extra_reflectionIntensity, _init_sunIntensity, _init_extra_sunIntensity, _init_sunColor, _init_extra_sunColor, _init_volumes, _init_extra_volumes;
+let _EveChildLightingOver;
+new class extends _identity {
+  static [class EveChildLightingOverride extends _EveChildTransform {
+    static {
+      ({
+        e: [_init_priority, _init_extra_priority, _init_name, _init_extra_name, _init_backgroundIntensity, _init_extra_backgroundIntensity, _init_intensity, _init_extra_intensity, _init_reflectionIntensity, _init_extra_reflectionIntensity, _init_sunIntensity, _init_extra_sunIntensity, _init_sunColor, _init_extra_sunColor, _init_volumes, _init_extra_volumes, _initProto],
+        c: [_EveChildLightingOver, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "EveChildLightingOverride",
+        family: "eve/child"
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Priority")], 16, "priority"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "backgroundIntensity"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.float32], 16, "reflectionIntensity"], [[io, io.persist, type, type.float32], 16, "sunIntensity"], [[io, io.persist, type, type.color], 16, "sunColor"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[impl, impl.implemented], 18, "GetOverrides"], [[impl, impl.adapted], 18, "GetBoundingSphere"], [[impl, impl.adapted], 18, "UpdateAsyncronous"]], 0, void 0, _EveChildTransform));
+    }
+    constructor(...args) {
+      super(...args);
+      _init_extra_volumes(this);
+    }
+    #overrideIntensity = (_initProto(this), 0);
+    #boundingSphere = {
+      center: vec3.create(),
+      radius: 0,
+      initialized: false
+    };
+    priority = _init_priority(this, 2);
+    name = (_init_extra_priority(this), _init_name(this, ""));
+    backgroundIntensity = (_init_extra_name(this), _init_backgroundIntensity(this, 1));
+    intensity = (_init_extra_backgroundIntensity(this), _init_intensity(this, 1));
+    reflectionIntensity = (_init_extra_intensity(this), _init_reflectionIntensity(this, 1));
+    sunIntensity = (_init_extra_reflectionIntensity(this), _init_sunIntensity(this, 1));
+    sunColor = (_init_extra_sunIntensity(this), _init_sunColor(this, vec4.fromValues(1, 1, 1, 1)));
+    volumes = (_init_extra_sunColor(this), _init_volumes(this, []));
+    GetOverrides() {
+      return {
+        priority: this.priority,
+        intensity: this.#overrideIntensity,
+        value: {
+          sunColor: vec4.clone(this.sunColor),
+          sunIntensity: this.sunIntensity,
+          backgroundIntensity: this.backgroundIntensity,
+          reflectionIntensity: this.reflectionIntensity
+        }
+      };
+    }
+    GetName() {
+      return this.name;
+    }
+    SetName(name) {
+      this.name = String(name ?? "");
+    }
+    GetBoundingSphere(out = vec4.create()) {
+      vec4.set(out, this.#boundingSphere.center[0], this.#boundingSphere.center[1], this.#boundingSphere.center[2], this.#boundingSphere.radius);
+      return true;
+    }
+    UpdateSyncronous(_updateContext, _params) {}
+    UpdateAsyncronous(updateContext, params = {}) {
+      this.UpdateTransform(params.localToWorldTransform ?? mat4.create());
+      this.#RebuildBoundingSphere();
+      if (this.volumes.length === 0) {
+        this.#overrideIntensity = this.intensity;
+        return;
+      }
+      this.#overrideIntensity = 0;
+      const viewPosition = updateContext?.renderContext?.GetViewPosition?.();
+      const inverse = mat4.invert(mat4.create(), this.worldTransform);
+      if (!viewPosition || !inverse || !this.#boundingSphere.initialized) return;
+      const localView = vec3.transformMat4(vec3.create(), viewPosition, inverse);
+      if (vec3.distance(localView, this.#boundingSphere.center) > this.#boundingSphere.radius) return;
+      for (const volume of this.volumes) {
+        this.#overrideIntensity = Math.max(this.#overrideIntensity, Number(volume?.GetIntensity?.(localView)) || 0);
+        if (this.#overrideIntensity >= 1) break;
+      }
+      this.#overrideIntensity *= this.intensity;
+    }
+    GetLocalToWorldTransform(out = mat4.create()) {
+      return mat4.copy(out, this.worldTransform);
+    }
+    Setup(scale, rotation, translation, lowestLodVisible) {
+      return super.Setup(scale, rotation, translation, lowestLodVisible);
+    }
+    IsAlwaysOn() {
+      return true;
+    }
+    Initialize() {
+      this.#RebuildBoundingSphere();
+      return true;
+    }
+    UpdateVisibility(_updateContext, _parentTransform, _parentLod) {}
+    GetRenderables(_renderables) {}
+    ChangeLOD(_lod) {}
+    #RebuildBoundingSphere() {
+      const target = this.#boundingSphere;
+      vec3.set(target.center, 0, 0, 0);
+      target.radius = 0;
+      target.initialized = false;
+      for (const volume of this.volumes) {
+        const sphere = volume?.GetBoundingSphere?.();
+        if (!sphere?.center || !Number.isFinite(sphere.radius) || sphere.radius < 0) continue;
+        if (!target.initialized) {
+          vec3.copy(target.center, sphere.center);
+          target.radius = sphere.radius;
+          target.initialized = true;
+          continue;
+        }
+        _EveChildLightingOver.#UnionSphere(target, sphere);
+      }
+    }
+  }];
+  Priority = Object.freeze({
+    SCENE_DEFAULT_PRIORITY: 0,
+    LOW_PRIORITY: 1,
+    MEDIUM_PRIORITY: 2,
+    HIGH_PRIORITY: 3,
+    UI_PRIORITY: 4,
+    PRIORITY_COUNT: 5
+  });
+  #UnionSphere(target, sphere) {
+    const delta = vec3.subtract(vec3.create(), sphere.center, target.center);
+    const distance = vec3.length(delta);
+    if (distance + sphere.radius <= target.radius) return;
+    if (distance + target.radius <= sphere.radius) {
+      vec3.copy(target.center, sphere.center);
+      target.radius = sphere.radius;
+      return;
+    }
+    if (distance === 0) {
+      target.radius = Math.max(target.radius, sphere.radius);
+      return;
+    }
+    const radius = (target.radius + sphere.radius + distance) * 0.5;
+    vec3.scaleAndAdd(target.center, target.center, delta, (radius - target.radius) / distance);
+    target.radius = radius;
+  }
+  constructor() {
+    super(_EveChildLightingOver), _initClass();
+  }
+}();
+
+export { _EveChildLightingOver as EveChildLightingOverride };
+//# sourceMappingURL=EveChildLightingOverride.js.map

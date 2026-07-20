@@ -32,10 +32,22 @@ export class TriStepRenderEffect extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(effect = null, shaderBuffer = null)
   {
-    throw new Error("TriStepRenderEffect.__init__ is not implemented in CarbonEngineJS.");
+    this.effect = effect;
+    this.shaderBuffer = shaderBuffer;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    if (this.effect)
+    {
+      executor?.DrawEffect?.(this.effect, this.shaderBuffer, this.tlTexCoord, this.brTexCoord);
+    }
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

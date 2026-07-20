@@ -26,4 +26,5 @@ export { TriStepCopyRenderTarget } from './TriStepCopyRenderTarget.js';
 export { TriStepGenerateMipMaps } from './TriStepGenerateMipMaps.js';
 export { TriStepPresentSwapChain } from './TriStepPresentSwapChain.js';
 export { TriStepResolve } from './TriStepResolve.js';
+export { TriStepRemoteSync } from './TriStepRemoteSync.js';
 //# sourceMappingURL=index.js.map

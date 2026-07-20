@@ -14,7 +14,7 @@ class EveShip2 extends _EveMobile {
     } = _applyDecs2311(this, [type.define({
       className: "EveShip2",
       family: "eve/spaceObject"
-    })], [[[io, io.persistOnly, void 0, type.model("EveBoosterSet2")], 16, "boosters"], [[io, io.readwrite, type, type.uint32], 16, "displayKillCounterValue"], [[io, io.read, void 0, type.objectRef("TriFloat")], 16, "speed"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RebuildBoosterSet"]], 0, void 0, _EveMobile));
+    })], [[[io, io.persistOnly, void 0, type.model("EveBoosterSet2")], 16, "boosters"], [[io, io.readwrite, type, type.uint32], 16, "displayKillCounterValue"], [[io, io.read, void 0, type.objectRef("TriFloat")], 16, "speed"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoosterSet"]], 0, void 0, _EveMobile));
   }
   constructor(...args) {
     super(...args);
@@ -30,8 +30,19 @@ class EveShip2 extends _EveMobile {
   speed = (_init_extra_displayKillCounterValue(this), _init_speed(this, null));
 
   /** Carbon method RebuildBoosterSet (MAP_METHOD_AND_WRAP). */
-  RebuildBoosterSet(...args) {
-    throw new Error("EveShip2.RebuildBoosterSet is not implemented in CarbonEngineJS.");
+  RebuildBoosterSet() {
+    if (!this.boosters) return false;
+    this.boosters.Clear?.();
+    for (const locator of this.locators) {
+      const name = locator?.GetName?.() ?? locator?.name ?? "";
+      if (!name.startsWith("locator_booster")) continue;
+      const transform = locator.GetTransform?.() ?? locator.transform;
+      if (transform) this.boosters.Add?.(transform, [0, 1, 1, 1], true, 0, 0);
+    }
+    this.boosters.UpdateValues?.({
+      property: "items"
+    });
+    return true;
   }
   static {
     _initClass();

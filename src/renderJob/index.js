@@ -26,3 +26,4 @@ export * from "./TriStepCopyRenderTarget.js";
 export * from "./TriStepGenerateMipMaps.js";
 export * from "./TriStepPresentSwapChain.js";
 export * from "./TriStepResolve.js";
+export * from "./TriStepRemoteSync.js";

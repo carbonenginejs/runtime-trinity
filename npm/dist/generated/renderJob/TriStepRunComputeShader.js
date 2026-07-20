@@ -14,7 +14,7 @@ class TriStepRunComputeShader extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRunComputeShader",
       family: "renderJob"
-    })], [[[io, io.readwrite, type, type.uint32], 16, "groupDimX"], [[io, io.readwrite, type, type.uint32], 16, "groupDimY"], [[io, io.readwrite, type, type.uint32], 16, "groupDimZ"], [[io, io.readwrite, void 0, type.objectRef("Tr2Material")], 16, "effect"], [[io, io.readwrite, void 0, type.objectRef("ITr2GpuBuffer")], 16, "indirectionBuffer"], [[io, io.readwrite, type, type.uint32], 16, "offsetForArgs"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, type, type.uint32], 16, "groupDimX"], [[io, io.readwrite, type, type.uint32], 16, "groupDimY"], [[io, io.readwrite, type, type.uint32], 16, "groupDimZ"], [[io, io.readwrite, void 0, type.objectRef("Tr2Material")], 16, "effect"], [[io, io.readwrite, void 0, type.objectRef("ITr2GpuBuffer")], 16, "indirectionBuffer"], [[io, io.readwrite, type, type.uint32], 16, "offsetForArgs"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -39,8 +39,19 @@ class TriStepRunComputeShader extends _TriRenderStep {
   offsetForArgs = (_init_extra_indirectionBuffer(this), _init_offsetForArgs(this, 0));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRunComputeShader.__init__ is not implemented in CarbonEngineJS.");
+  __init__(effect = null, groupDimX = 1, groupDimY = 1, groupDimZ = 1) {
+    this.effect = effect;
+    this.groupDimX = Number(groupDimX) >>> 0;
+    this.groupDimY = Number(groupDimY) >>> 0;
+    this.groupDimZ = Number(groupDimZ) >>> 0;
+  }
+  Execute(_realTime, _simTime, executor) {
+    if (this.indirectionBuffer) {
+      executor?.RunComputeShaderIndirect?.(this.effect, this.indirectionBuffer, this.offsetForArgs);
+    } else {
+      executor?.RunComputeShader?.(this.effect, this.groupDimX, this.groupDimY, this.groupDimZ);
+    }
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

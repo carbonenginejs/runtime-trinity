@@ -9,6 +9,10 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class Tr2StaticEmitter extends CjsModel
 {
 
+  /** Carbon's internal one-shot spawn state. */
+  @type.boolean
+  hasSpawnedParticles = false;
+
   /** m_name (std::string) [READWRITE, PERSIST] */
   @io.persist
   @type.string
@@ -38,18 +42,55 @@ export class Tr2StaticEmitter extends CjsModel
 
   /** Carbon method Spawn (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  Spawn(...args)
+  @impl.implemented
+  Spawn()
   {
-    throw new Error("Tr2StaticEmitter.Spawn is not implemented in CarbonEngineJS.");
+    this.hasSpawnedParticles = false;
   }
 
   /** Carbon method ForceSpawn -> DoSpawn (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  ForceSpawn(...args)
+  @impl.adapted
+  @impl.reason("Accepts decoded particle rows or a host geometry SpawnParticles adapter; native CMF/Granny vertex-buffer mapping remains resource-owned.")
+  ForceSpawn()
   {
-    throw new Error("Tr2StaticEmitter.ForceSpawn is not implemented in CarbonEngineJS.");
+    if (!this.particleSystem?.isValid || !this.geometryResource)
+    {
+      return false;
+    }
+    if (typeof this.geometryResource.SpawnParticles === "function")
+    {
+      this.particleSystem.ClearParticles();
+      const result = this.geometryResource.SpawnParticles(this.particleSystem, this.meshIndex);
+      this.hasSpawnedParticles = result !== false;
+      return result;
+    }
+    const source = this.geometryResource.GetPayload?.() ?? this.geometryResource;
+    const meshes = source?.meshes ?? source?.Meshes ?? [];
+    const mesh = meshes[this.meshIndex] ?? null;
+    const particles = mesh?.particles ?? mesh?.Particles ?? source?.particles ?? source?.Particles;
+    if (!Array.isArray(particles))
+    {
+      return false;
+    }
+    this.particleSystem.ClearParticles();
+    let spawned = 0;
+    for (const particle of particles)
+    {
+      if (this.particleSystem.SpawnParticle?.(particle) === null)
+      {
+        break;
+      }
+      spawned++;
+    }
+    this.hasSpawnedParticles = true;
+    return spawned;
+  }
+
+  @impl.adapted
+  Update()
+  {
+    return this.hasSpawnedParticles ? false : this.ForceSpawn();
   }
 
 }

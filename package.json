@@ -32,10 +32,10 @@
     "@carbonenginejs/runtime-const": "file:../runtime-const"
   },
   "scripts": {
+    "audit:gaps": "node scripts/audit_implementation_gaps.js",
     "test": "npm run build:npm && node --test test/*.test.js",
     "lint": "node scripts/lint_source_style.js",
-    "build:npm": "npm run lint && node scripts/build_npm.js && rollup -c",
-    "generate": "node scripts/regenerate_generated.js"
+    "build:npm": "npm run lint && node scripts/build_npm.js && rollup -c"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

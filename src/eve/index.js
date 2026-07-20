@@ -56,3 +56,4 @@ export * from "./ui/index.js";
 export * from "./attachment/index.js";
 export * from "./renderable/index.js";
 export * from "./perObjectData/index.js";
+export * from "./AudioGameObject.js";

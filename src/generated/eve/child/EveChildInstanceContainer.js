@@ -9,6 +9,8 @@ import { EveChildTransform } from "../../../eve/child/EveChildTransform.js";
 export class EveChildInstanceContainer extends EveChildTransform
 {
 
+  #controllerVariables = new Map();
+
   /** m_transformModifiers (PIEveChildTransformModifierVector) [READ, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
@@ -70,26 +72,30 @@ export class EveChildInstanceContainer extends EveChildTransform
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  HandleControllerEvent(...args)
+  @impl.implemented
+  HandleControllerEvent(name)
   {
-    throw new Error("EveChildInstanceContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    for (const instance of this.instances) instance?.HandleControllerEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveChildInstanceContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
+    const key = String(name);
+    const next = Number(value);
+    this.source?.SetControllerVariable?.(key, next);
+    this.#controllerVariables.set(key, next);
+    for (const instance of this.instances) instance?.SetControllerVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveChildInstanceContainer.StartControllers is not implemented in CarbonEngineJS.");
+    for (const instance of this.instances) instance?.StartControllers?.();
   }
 
   static Origin = Object.freeze({

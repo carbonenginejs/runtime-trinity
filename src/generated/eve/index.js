@@ -1,4 +1,3 @@
-export * from "./AudioGameObject.js";
 export * from "./EveCamera.js";
 export * from "./EveEntity.js";
 export * from "./attachment/index.js";

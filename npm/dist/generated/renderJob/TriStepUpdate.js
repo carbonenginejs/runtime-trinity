@@ -14,7 +14,7 @@ class TriStepUpdate extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepUpdate",
       family: "renderJob"
-    })], [[[io, io.readwrite, void 0, type.objectRef("ITr2Updateable")], 16, "object"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, void 0, type.objectRef("ITr2Updateable")], 16, "object"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.implemented], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -24,8 +24,12 @@ class TriStepUpdate extends _TriRenderStep {
   object = (_initProto(this), _init_object(this, null));
 
   /** Carbon method __init__ -> SetUpdateable (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepUpdate.__init__ is not implemented in CarbonEngineJS.");
+  __init__(object = null) {
+    this.object = object;
+  }
+  Execute(realTime, simTime, _executor) {
+    this.object?.Update?.(realTime, simTime);
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

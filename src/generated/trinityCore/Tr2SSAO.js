@@ -20,73 +20,73 @@ export class Tr2SSAO extends CjsModel
   @io.notify
   @io.persist
   @type.boolean
-  cortaoBentNormal = false;
+  cortaoBentNormal = true;
 
   /** m_detail.zoomLevel (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  zoomLevel = 0;
+  zoomLevel = 5;
 
   /** m_detail.settings.shadowClamp (Layer) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  shadowClamp = null;
+  @type.float32
+  shadowClamp = 0.98;
 
   /** m_detail.settings.shadowPower (Layer) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  shadowPower = null;
+  @type.float32
+  shadowPower = 2.6;
 
   /** m_detail.settings.shadowMultiplier (Layer) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  shadowMultiplier = null;
+  @type.float32
+  shadowMultiplier = 1;
 
   /** m_cortaoBlur (bool) [READWRITE, NOTIFY] */
   @io.notify
   @io.readwrite
   @type.boolean
-  cortaoBlur = false;
+  cortaoBlur = true;
 
   /** m_cortaoEnabled (bool) [READWRITE, NOTIFY, PERSIST] */
   @io.notify
   @io.persist
   @type.boolean
-  cortaoEnabled = false;
+  cortaoEnabled = true;
 
   /** m_detail.settings.sharpness (Layer) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  sharpness = null;
+  @type.float32
+  sharpness = 0.5;
 
   /** m_detail.enabled (bool) [READWRITE] */
   @io.readwrite
   @type.boolean
-  enabled = false;
+  enabled = true;
 
   /** m_cortaoMipBias (float) [READWRITE, NOTIFY] */
   @io.notify
   @io.readwrite
   @type.float32
-  cortaoMipBias = 0;
+  cortaoMipBias = -4;
 
   /** m_cortaoMaxBlockerSearchRadius (float) [READWRITE, NOTIFY] */
   @io.notify
   @io.readwrite
   @type.float32
-  cortaoMaxBlockerSearchRadius = 0;
+  cortaoMaxBlockerSearchRadius = 0.25;
 
   /** m_cortaoRadius (float) [READWRITE, NOTIFY] */
   @io.notify
   @io.readwrite
   @type.float32
-  cortaoRadius = 0;
+  cortaoRadius = 1e10;
 
   /** m_cortaoStrength (float) [READWRITE, NOTIFY] */
   @io.notify
   @io.readwrite
   @type.float32
-  cortaoStrength = 0;
+  cortaoStrength = 1;
 
   /** m_detail.downsampled (bool) [READWRITE, NOTIFY] */
   @io.notify
@@ -97,7 +97,7 @@ export class Tr2SSAO extends CjsModel
   /** m_detail.settings.radius (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
-  radius = 0;
+  radius = 6;
 
   static SSAOQuality = Object.freeze({
     HIGHEST: 0,

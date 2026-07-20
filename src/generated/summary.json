@@ -1,7 +1,7 @@
 {
   "outRoot": "src/generated",
   "classes": {
-    "written": 309,
+    "written": 307,
     "skipped": 288
   },
   "enums": {
@@ -1694,8 +1694,8 @@
       "enumsFile": true
     },
     "trinityCore": {
-      "exports": 57,
-      "classes": 56,
+      "exports": 55,
+      "classes": 54,
       "enumsFile": true
     },
     "ui": {
@@ -1714,7 +1714,7 @@
     "outRoot": "src/generated",
     "scannedDocs": 1247,
     "relevantDocs": 893,
-    "generated": 597,
+    "generated": 595,
     "fallback": 120,
     "skippedSof": 97,
     "skippedInvalid": 1,
@@ -2101,7 +2101,7 @@
       },
       "trinityCore": {
         "docs": 99,
-        "generated": 83,
+        "generated": 81,
         "fallback": 7,
         "skippedSof": 0,
         "errors": 0
@@ -3822,6 +3822,18 @@
         "className": "Tr2DisplayMode",
         "schema": "trinityCore/Tr2DisplayMode.json",
         "reason": "owned by runtime-core"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2GStateAnimation",
+        "schema": "trinityCore/Tr2GStateAnimation.json",
+        "reason": "owned by runtime-character"
+      },
+      {
+        "family": "trinityCore",
+        "className": "Tr2GStateParameter",
+        "schema": "trinityCore/Tr2GStateParameter.json",
+        "reason": "owned by runtime-character"
       },
       {
         "family": "trinityCore",

@@ -5,8 +5,10 @@ import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schem
 import { EveEntity } from "../../generated/eve/EveEntity.js";
 import { EveChildUpdateParams } from "../EveChildUpdateParams.js";
 import { EveChildInheritProperties } from "../child/EveChildInheritProperties.js";
+import { box3 } from "@carbonenginejs/core-math/box3";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
+import { sph3 } from "@carbonenginejs/core-math/sph3";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
@@ -334,7 +336,20 @@ export class EveSpaceObject2 extends EveEntity
 
   // Carbon m_dynamicBoundingSphere: disabled while w is -1; a future animation
   // updater port publishes skinned bounds here.
-  #dynamicBoundingSphere = vec4.fromValues(0, 0, 0, -1);
+  #dynamicBoundingSphere = sph3.set(sph3.create(), 0, 0, 0, -1);
+
+  // Carbon keeps the realized world sphere separate from the authored local
+  // sphere. It is refreshed by UpdateWorldBounds after transform changes.
+  #boundingSphereWorldRadius = -1;
+
+  // Carbon visibility and mesh LOD state are runtime-only renderer results.
+  #isInFrustum = false;
+
+  #isMeshVisible = false;
+
+  #lodLevelWithChildren = Tr2Lod.TR2_LOD_UNSPECIFIED;
+
+  #meshScreenSize = 0;
 
   // Carbon m_localAabbMin/Max: cached so GetLocalBoundingBox can answer before
   // LOD selection assigns a mesh (at worst it lags one frame).
@@ -595,7 +610,37 @@ export class EveSpaceObject2 extends EveEntity
     {
       mat4.identity(this.inverseWorldTransform);
     }
+    this.UpdateWorldBounds();
     return true;
+  }
+
+  /**
+   * Refreshes Carbon's realized world-space sphere from the dynamic skinned
+   * sphere when available, otherwise from the authored local sphere.
+   */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The browser runtime refreshes the cache with world-transform updates instead of Carbon's renderer-side PrepareShaderData pass.")
+  UpdateWorldBounds()
+  {
+    const updater = this.animationUpdater;
+    if (this.dynamicBoundingSphereEnabled && updater?.IsInitialized?.())
+    {
+      updater.GetDynamicBounds?.(this.#dynamicBoundingSphere, this.#localAabbMin, this.#localAabbMax);
+      if (this.#dynamicBoundingSphere[3] > 0)
+      {
+        vec3.transformMat4(this.modelWorldPosition, this.#dynamicBoundingSphere, this.worldTransform);
+        this.#boundingSphereWorldRadius = this.modelScale * this.#dynamicBoundingSphere[3];
+        return true;
+      }
+    }
+    if (this.boundingSphereRadius > 0)
+    {
+      vec3.transformMat4(this.modelWorldPosition, this.boundingSphereCenter, this.worldTransform);
+      this.#boundingSphereWorldRadius = this.modelScale * this.boundingSphereRadius;
+      return true;
+    }
+    return false;
   }
 
   @carbon.method
@@ -700,6 +745,146 @@ export class EveSpaceObject2 extends EveEntity
 
     this.impactOverlay?.UpdateAsyncronous?.(updateContext, this);
     return frequency;
+  }
+
+  /**
+   * Updates Carbon's visibility, pixel-size, and mesh-LOD state, then forwards
+   * visibility to the explicitly owned visual branches.
+   */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Native impostor, raytracing, and audio-emitter realization remain engine-owned; graph visibility and LOD state are preserved.")
+  UpdateVisibility(updateContext = null, _parentTransform = EveSpaceObject2.#identityTransform)
+  {
+    this.isVisible = false;
+    this.#isMeshVisible = false;
+    this.#isInFrustum = false;
+    if (!this.display)
+    {
+      return false;
+    }
+
+    this.UpdateWorldBounds();
+    this.lodLevel = Tr2Lod.TR2_LOD_LOW;
+    this.#lodLevelWithChildren = Tr2Lod.TR2_LOD_LOW;
+    this.#impostorMode = false;
+
+    const frustum = updateContext?.GetFrustum?.() ?? updateContext?.frustum;
+    const lowThreshold = EveSpaceObject2.#GetContextValue(updateContext, "GetLowDetailThreshold", "lowDetailThreshold");
+    const mediumThreshold = EveSpaceObject2.#GetContextValue(updateContext, "GetMediumDetailThreshold", "mediumDetailThreshold");
+    const visibilityThreshold = EveSpaceObject2.#GetContextValue(updateContext, "GetVisibilityThreshold", "visibilityThreshold");
+    const lodFactor = EveSpaceObject2.#GetContextValue(updateContext, "GetLodFactor", "lodFactor") || 1;
+
+    if (this.boundingSphereRadius > 0 && this.#boundingSphereWorldRadius > 0)
+    {
+      EveSpaceObject2.#SetSphere(
+        EveSpaceObject2.#worldSphere,
+        this.modelWorldPosition,
+        this.#boundingSphereWorldRadius
+      );
+      if (frustum?.IsSphereVisible?.(EveSpaceObject2.#worldSphere) !== false)
+      {
+        this.EstimatePixelDiameter(frustum);
+        this.#isMeshVisible = true;
+      }
+    }
+
+    for (const attachment of this.attachments)
+    {
+      if (attachment?.UpdateVisibility?.(updateContext, this.worldTransform, null, 0))
+      {
+        this.#isMeshVisible = true;
+        this.isVisible = true;
+      }
+    }
+
+    if (this.DisplayChildren())
+    {
+      for (const child of this.children)
+      {
+        child?.UpdateVisibility?.(updateContext, this.worldTransform);
+      }
+    }
+
+    if (this.GetBoundingSphere(EveSpaceObject2.#worldSphere, 1))
+    {
+      this.#isInFrustum = frustum?.IsSphereVisible?.(EveSpaceObject2.#worldSphere) !== false;
+      this.estimatedPixelDiameterWithChildren = EveSpaceObject2.#GetPixelSize(frustum, EveSpaceObject2.#worldSphere);
+      if (this.#isInFrustum && this.estimatedPixelDiameterWithChildren >= visibilityThreshold)
+      {
+        this.isVisible = true;
+      }
+    }
+
+    if (this.isVisible)
+    {
+      if (this.estimatedPixelDiameter > mediumThreshold) this.lodLevel = Tr2Lod.TR2_LOD_HIGH;
+      else if (this.estimatedPixelDiameter > lowThreshold) this.lodLevel = Tr2Lod.TR2_LOD_MEDIUM;
+
+      if (this.estimatedPixelDiameterWithChildren > mediumThreshold) this.#lodLevelWithChildren = Tr2Lod.TR2_LOD_HIGH;
+      else if (this.estimatedPixelDiameterWithChildren > lowThreshold) this.#lodLevelWithChildren = Tr2Lod.TR2_LOD_MEDIUM;
+      else this.#lodLevelWithChildren = Tr2Lod.TR2_LOD_LOW;
+    }
+
+    for (const observer of this.observers)
+    {
+      const target = observer?.GetObserver?.() ?? observer?.observer;
+      target?.SetVisibility?.(this.isVisible);
+    }
+    for (const child of this.effectChildren)
+    {
+      child?.UpdateVisibility?.(updateContext, this.worldTransform, this.#lodLevelWithChildren);
+    }
+
+    if (this.mesh && this.#boundingSphereWorldRadius > 0)
+    {
+      EveSpaceObject2.#SetSphere(
+        EveSpaceObject2.#worldSphere,
+        this.modelWorldPosition,
+        this.#boundingSphereWorldRadius
+      );
+      this.#meshScreenSize = EveSpaceObject2.#GetEstimatedPixelSize(frustum, EveSpaceObject2.#worldSphere) * lodFactor;
+      if (!this.#allowLodSelection) this.#meshScreenSize = Infinity;
+      this.mesh.UseWithScreenSize?.(this.#meshScreenSize, this.#boundingSphereWorldRadius);
+    }
+    return this.isVisible;
+  }
+
+  /** Collects the hull and explicitly owned Carbon child/decal renderables. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Impostor submission and decal mesh caches are engine-owned; Trinity returns the backend-neutral renderable graph.")
+  GetRenderables(out = [])
+  {
+    if (!this.display || !this.isVisible) return out;
+    if (this.#allowLodSelection && this.#isMeshVisible)
+    {
+      this.mesh?.GetBoundingBox?.(this.#localAabbMin, this.#localAabbMax);
+    }
+    if (this.mesh && this.#isMeshVisible && this.mesh.IsLoading?.() !== true)
+    {
+      out.push(this);
+    }
+    if (this.DisplayChildren())
+    {
+      for (const child of this.children) child?.GetRenderables?.(out);
+    }
+    for (const child of this.effectChildren)
+    {
+      if (this.DisplayChildren() || child?.IsAlwaysOn?.()) child?.GetRenderables?.(out);
+    }
+    if (this.mesh && this.#isMeshVisible)
+    {
+      const geometryResource = this.mesh.GetGeometryResource?.();
+      if (geometryResource)
+      {
+        for (const decal of this.decals)
+        {
+          decal?.GetRenderables?.(out, null, geometryResource, this.#meshScreenSize);
+        }
+      }
+    }
+    return out;
   }
 
   @carbon.method
@@ -1343,6 +1528,25 @@ export class EveSpaceObject2 extends EveEntity
     return true;
   }
 
+  /** Sets Carbon's authored local bounding sphere from a sph3-compatible value. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Carbon's CcpMath::Sphere is represented by core-math sph3; object-shaped center/radius input is accepted at adapter boundaries.")
+  SetBoundingSphereInformation(sphere)
+  {
+    if (sphere?.center)
+    {
+      vec3.copy(this.boundingSphereCenter, sphere.center);
+      this.boundingSphereRadius = Number(sphere.radius);
+    }
+    else
+    {
+      this.boundingSphereRadius = sph3.extract(sphere, this.boundingSphereCenter);
+    }
+    this.UpdateWorldBounds();
+    return this;
+  }
+
   @carbon.method
   @impl.implemented
   GetControllerVariables()
@@ -1350,12 +1554,16 @@ export class EveSpaceObject2 extends EveEntity
     return Object.fromEntries(this.#controllerVariables);
   }
 
-  /** Carbon method GetLastUsedMeshLod (MAP_METHOD_AND_WRAP). */
+  /** Gets Carbon's most recently selected geometry LOD. */
   @carbon.method
-  @impl.notImplemented
-  GetLastUsedMeshLod(...args)
+  @impl.adapted
+  @impl.reason("Geometry resources without multi-LOD support expose their sole browser LOD as index zero.")
+  GetLastUsedMeshLod()
   {
-    throw new Error("EveSpaceObject2.GetLastUsedMeshLod is not implemented in CarbonEngineJS.");
+    const geometryResource = this.mesh?.GetGeometryResource?.();
+    if (!geometryResource) return -1;
+    if (!this.#allowLodSelection) return 0;
+    return geometryResource.GetLodIndexForScreenSize?.(this.mesh?.GetMeshIndex?.() ?? 0, this.#meshScreenSize) ?? 0;
   }
 
   /**
@@ -1426,6 +1634,82 @@ export class EveSpaceObject2 extends EveEntity
       return true;
     }
     return { min, max };
+  }
+
+  /** Gets Carbon's cached local box transformed into a world-axis-aligned box. */
+  @carbon.method
+  @impl.adapted
+  GetWorldBoundingBox(minBounds, maxBounds)
+  {
+    box3.fromBounds(EveSpaceObject2.#localBox, this.#localAabbMin, this.#localAabbMax);
+    EveSpaceObject2.#TransformBox(EveSpaceObject2.#worldBox, EveSpaceObject2.#localBox, this.worldTransform);
+    const min = minBounds ?? vec3.create();
+    const max = maxBounds ?? vec3.create();
+    vec3.set(min, EveSpaceObject2.#worldBox[0], EveSpaceObject2.#worldBox[1], EveSpaceObject2.#worldBox[2]);
+    vec3.set(max, EveSpaceObject2.#worldBox[3], EveSpaceObject2.#worldBox[4], EveSpaceObject2.#worldBox[5]);
+    return minBounds && maxBounds ? true : { min, max };
+  }
+
+  /** Reports whether the attached mesh has a ready geometry resource. */
+  @carbon.method
+  @impl.implemented
+  IsBoundingBoxReady()
+  {
+    const geometryResource = this.mesh?.GetGeometryResource?.();
+    return !!geometryResource?.IsGood?.();
+  }
+
+  /**
+   * Gets Carbon's realized world sphere, optionally accumulated with transform
+   * and effect children when query is EVE_BOUNDS_WITH_CHILDREN.
+   */
+  @carbon.method
+  @impl.adapted
+  GetBoundingSphere(out = sph3.create(), query = 0)
+  {
+    if (!this.UpdateWorldBounds()) return false;
+    EveSpaceObject2.#SetSphere(out, this.modelWorldPosition, this.#boundingSphereWorldRadius);
+    if (!query || !this.DisplayChildren()) return true;
+    for (const child of this.children)
+    {
+      if (child?.GetBoundingSphere?.(EveSpaceObject2.#childSphere, query))
+      {
+        sph3.union(out, out, EveSpaceObject2.#childSphere);
+      }
+    }
+    for (const child of this.effectChildren)
+    {
+      if (child?.GetBoundingSphere?.(EveSpaceObject2.#childSphere, query))
+      {
+        sph3.union(out, out, EveSpaceObject2.#childSphere);
+      }
+    }
+    return true;
+  }
+
+  /** Updates Carbon's geometry-derived on-screen pixel diameter. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("TriFrustum is supplied structurally by the active engine; both exact and estimated browser frustum methods are supported.")
+  EstimatePixelDiameter(frustum)
+  {
+    if (this.mesh?.GetBoundingBox?.(EveSpaceObject2.#boundsMin, EveSpaceObject2.#boundsMax))
+    {
+      vec3.copy(this.#localAabbMin, EveSpaceObject2.#boundsMin);
+      vec3.copy(this.#localAabbMax, EveSpaceObject2.#boundsMax);
+    }
+    sph3.fromBounds(EveSpaceObject2.#localSphere, this.#localAabbMin, this.#localAabbMax);
+    sph3.transformMat4(EveSpaceObject2.#worldSphere, EveSpaceObject2.#localSphere, this.worldTransform);
+    this.estimatedPixelDiameter = EveSpaceObject2.#GetPixelSize(frustum, EveSpaceObject2.#worldSphere);
+    return this.estimatedPixelDiameter;
+  }
+
+  /** Reports the result of the latest Carbon visibility update. */
+  @carbon.method
+  @impl.implemented
+  IsInFrustum()
+  {
+    return this.#isInFrustum;
   }
 
   /**
@@ -1767,8 +2051,8 @@ export class EveSpaceObject2 extends EveEntity
     return x * x + y * y + z * z <= 1;
   }
 
-  // Mesh bone matrices come from the (unported) animation updater; only
-  // mat4-shaped entries are usable.
+  // Mesh bone matrices come from the animation updater; only mat4-shaped
+  // entries are usable.
   static #GetBoneMatrix(updater, boneIndex)
   {
     const bones = updater.GetMeshBoneMatrixList?.();
@@ -1836,6 +2120,48 @@ export class EveSpaceObject2 extends EveEntity
     return 0;
   }
 
+  static #GetPixelSize(frustum, sphere)
+  {
+    const method = frustum?.GetPixelSizeAccross;
+    return Number(typeof method === "function" ? method.call(frustum, sphere) : 0) || 0;
+  }
+
+  static #GetEstimatedPixelSize(frustum, sphere)
+  {
+    const method = frustum?.GetPixelSizeAccrossEst ?? frustum?.GetPixelSizeAccross;
+    return Number(typeof method === "function" ? method.call(frustum, sphere) : 0) || 0;
+  }
+
+  static #SetSphere(out, center, radius)
+  {
+    return sph3.set(out, center[0], center[1], center[2], radius);
+  }
+
+  // Avoid box3.transformMat4's legacy all-components-sum empty sentinel: a
+  // valid symmetric box such as [-1,-1,-1,1,1,1] has that same sum.
+  static #TransformBox(out, bounds, transform)
+  {
+    out[0] = out[1] = out[2] = Infinity;
+    out[3] = out[4] = out[5] = -Infinity;
+    for (let index = 0; index < 8; index++)
+    {
+      vec3.set(
+        EveSpaceObject2.#boxCorner,
+        index & 1 ? bounds[3] : bounds[0],
+        index & 2 ? bounds[4] : bounds[1],
+        index & 4 ? bounds[5] : bounds[2]
+      );
+      vec3.transformMat4(EveSpaceObject2.#boxCorner, EveSpaceObject2.#boxCorner, transform);
+      out[0] = Math.min(out[0], EveSpaceObject2.#boxCorner[0]);
+      out[1] = Math.min(out[1], EveSpaceObject2.#boxCorner[1]);
+      out[2] = Math.min(out[2], EveSpaceObject2.#boxCorner[2]);
+      out[3] = Math.max(out[3], EveSpaceObject2.#boxCorner[0]);
+      out[4] = Math.max(out[4], EveSpaceObject2.#boxCorner[1]);
+      out[5] = Math.max(out[5], EveSpaceObject2.#boxCorner[2]);
+    }
+    return out;
+  }
+
   static #zero = Object.freeze([0, 0, 0]);
 
   static #unitY = Object.freeze([0, 1, 0]);
@@ -1853,8 +2179,16 @@ export class EveSpaceObject2 extends EveEntity
   static #ellipsoidRadii = vec3.create();
   static #boundsMin = vec3.create();
   static #boundsMax = vec3.create();
+  static #childSphere = sph3.create();
+  static #localSphere = sph3.create();
+  static #worldSphere = sph3.create();
+  static #localBox = box3.create();
+  static #worldBox = box3.create();
+  static #boxCorner = vec3.create();
 
   static #identityRotation = Object.freeze([0, 0, 0, 1]);
+
+  static #identityTransform = mat4.create();
 
   static #damageLocatorSetName = "damage";
 

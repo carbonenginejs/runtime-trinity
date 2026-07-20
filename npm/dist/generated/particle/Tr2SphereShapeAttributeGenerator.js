@@ -1,27 +1,31 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
 
-let _initClass, _init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_distributionExponent, _init_extra_distributionExponent, _init_controlPosition, _init_extra_controlPosition, _init_controlVelocity, _init_extra_controlVelocity, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid;
+let _initProto, _initClass, _init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_distributionExponent, _init_extra_distributionExponent, _init_controlPosition, _init_extra_controlPosition, _init_controlVelocity, _init_extra_controlVelocity, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid;
 
 /** Tr2SphereShapeAttributeGenerator (particle) - generated from schema shapeHash 8f3083b6.... */
 let _Tr2SphereShapeAttrib;
 class Tr2SphereShapeAttributeGenerator extends CjsModel {
   static {
     ({
-      e: [_init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_distributionExponent, _init_extra_distributionExponent, _init_controlPosition, _init_extra_controlPosition, _init_controlVelocity, _init_extra_controlVelocity, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid],
+      e: [_init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_distributionExponent, _init_extra_distributionExponent, _init_controlPosition, _init_extra_controlPosition, _init_controlVelocity, _init_extra_controlVelocity, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid, _initProto],
       c: [_Tr2SphereShapeAttrib, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "Tr2SphereShapeAttributeGenerator",
       family: "particle"
-    })], [[[io, io.persist, type, type.float32], 16, "minPhi"], [[io, io.persist, type, type.float32], 16, "maxPhi"], [[io, io.persist, type, type.float32], 16, "minTheta"], [[io, io.persist, type, type.float32], 16, "maxTheta"], [[io, io.persist, type, type.float32], 16, "distributionExponent"], [[io, io.persist, type, type.boolean], 16, "controlPosition"], [[io, io.persist, type, type.boolean], 16, "controlVelocity"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "parentVelocityFactor"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.float32], 16, "minSpeed"], [[io, io.persist, type, type.float32], 16, "maxRadius"], [[io, io.persist, type, type.float32], 16, "minRadius"], [[io, io.read, type, type.boolean], 16, "valid"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.float32], 16, "minPhi"], [[io, io.persist, type, type.float32], 16, "maxPhi"], [[io, io.persist, type, type.float32], 16, "minTheta"], [[io, io.persist, type, type.float32], 16, "maxTheta"], [[io, io.persist, type, type.float32], 16, "distributionExponent"], [[io, io.persist, type, type.boolean], 16, "controlPosition"], [[io, io.persist, type, type.boolean], 16, "controlVelocity"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, type, type.float32], 16, "parentVelocityFactor"], [[io, io.persist, type, type.float32], 16, "maxSpeed"], [[io, io.persist, type, type.float32], 16, "minSpeed"], [[io, io.persist, type, type.float32], 16, "maxRadius"], [[io, io.persist, type, type.float32], 16, "minRadius"], [[io, io.read, type, type.boolean], 16, "valid"], [[impl, impl.implemented], 18, "Bind"], [[impl, impl.adapted], 18, "Generate"], [[impl, impl.implemented], 18, "GetName"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_valid(this);
   }
+  #positionElement = (_initProto(this), null);
+  #velocityElement = null;
+
   /** m_minPhi (float) [READWRITE, PERSIST] */
   minPhi = _init_minPhi(this, 0);
 
@@ -66,6 +70,39 @@ class Tr2SphereShapeAttributeGenerator extends CjsModel {
 
   /** m_valid (bool) [READ] */
   valid = (_init_extra_minRadius(this), _init_valid(this, false));
+  Bind(particleSystem) {
+    this.#positionElement = this.controlPosition ? particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.POSITION) : null;
+    this.#velocityElement = this.controlVelocity ? particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.VELOCITY) : null;
+    this.valid = (!this.controlPosition || !!this.#positionElement) && (!this.controlVelocity || !!this.#velocityElement);
+    return this.valid;
+  }
+  Generate(parentPosition, parentVelocity, index) {
+    if (!this.valid || !this.controlPosition && !this.controlVelocity) {
+      return;
+    }
+    const phi = (this.minPhi + Math.random() * (this.maxPhi - this.minPhi)) * Math.PI / 180;
+    const theta = (this.minTheta + Math.random() * (this.maxTheta - this.minTheta)) * Math.PI / 180;
+    const direction = vec3.fromValues(Math.sin(phi) * Math.cos(theta), -Math.cos(phi), Math.sin(phi) * Math.sin(theta));
+    vec3.transformQuat(direction, direction, this.rotation);
+    if (this.#velocityElement) {
+      const speed = this.minSpeed + Math.random() * (this.maxSpeed - this.minSpeed);
+      const offset = this.#velocityElement.startOffset + index * this.#velocityElement.instanceStride;
+      for (let component = 0; component < 3; component++) {
+        this.#velocityElement.buffer[offset + component] = direction[component] * speed + (parentVelocity?.[component] ?? 0) * this.parentVelocityFactor;
+      }
+    }
+    if (this.#positionElement) {
+      const exponent = Number(this.distributionExponent) || 0;
+      const radius = this.minRadius + (this.maxRadius - this.minRadius) * Math.pow(Math.random(), exponent);
+      const offset = this.#positionElement.startOffset + index * this.#positionElement.instanceStride;
+      for (let component = 0; component < 3; component++) {
+        this.#positionElement.buffer[offset + component] = direction[component] * radius + this.position[component] + (parentPosition?.[component] ?? 0);
+      }
+    }
+  }
+  GetName() {
+    return this.controlPosition ? this.controlVelocity ? "POSITION + VELOCITY" : "POSITION" : this.controlVelocity ? "VELOCITY" : "NONE";
+  }
   static {
     _initClass();
   }

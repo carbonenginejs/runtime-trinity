@@ -194,9 +194,10 @@ export class EveMobile extends EveSpaceObject2
   @impl.implemented
   UpdateVisibility(context, _parentTransform = EveMobile.#identity)
   {
+    const visible = super.UpdateVisibility(context, _parentTransform);
     if (!this.display) return false;
     for (const turretSet of this.turretSets) turretSet?.UpdateVisibility?.(context);
-    return true;
+    return visible;
   }
 
   @carbon.method
@@ -204,6 +205,7 @@ export class EveMobile extends EveSpaceObject2
   GetRenderables(out = [])
   {
     if (!this.display) return out;
+    super.GetRenderables(out);
     for (const turretSet of this.turretSets) turretSet?.GetRenderables?.(out);
     return out;
   }

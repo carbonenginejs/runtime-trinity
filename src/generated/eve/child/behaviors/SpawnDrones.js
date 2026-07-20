@@ -70,10 +70,10 @@ export class SpawnDrones extends CjsModel
 
   /** Carbon method gridToggleReset -> GridToggleReset (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  gridToggleReset(...args)
+  @impl.implemented
+  gridToggleReset()
   {
-    throw new Error("SpawnDrones.gridToggleReset is not implemented in CarbonEngineJS.");
+    this.regenerateDrones = true;
   }
 
 }

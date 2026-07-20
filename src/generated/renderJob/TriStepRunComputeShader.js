@@ -41,10 +41,28 @@ export class TriStepRunComputeShader extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(effect = null, groupDimX = 1, groupDimY = 1, groupDimZ = 1)
   {
-    throw new Error("TriStepRunComputeShader.__init__ is not implemented in CarbonEngineJS.");
+    this.effect = effect;
+    this.groupDimX = Number(groupDimX) >>> 0;
+    this.groupDimY = Number(groupDimY) >>> 0;
+    this.groupDimZ = Number(groupDimZ) >>> 0;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    if (this.indirectionBuffer)
+    {
+      executor?.RunComputeShaderIndirect?.(this.effect, this.indirectionBuffer, this.offsetForArgs);
+    }
+    else
+    {
+      executor?.RunComputeShader?.(this.effect, this.groupDimX, this.groupDimY, this.groupDimZ);
+    }
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

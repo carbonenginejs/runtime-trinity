@@ -15,7 +15,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "TriStepRenderPass",
         family: "renderJob"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("PassType")], 16, "passType"], [[io, io.persist, void 0, type.model("ITr2MultiPassScene")], 16, "scene"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("PassType")], 16, "passType"], [[io, io.persist, void 0, type.model("ITr2MultiPassScene")], 16, "scene"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
     }
     constructor(...args) {
       super(...args);
@@ -28,8 +28,13 @@ new class extends _identity {
     scene = (_init_extra_passType(this), _init_scene(this, null));
 
     /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-    __init__(...args) {
-      throw new Error("TriStepRenderPass.__init__ is not implemented in CarbonEngineJS.");
+    __init__(scene = null, passType = 0) {
+      this.scene = scene;
+      this.passType = Number(passType) | 0;
+    }
+    Execute(_realTime, _simTime, executor) {
+      const result = this.scene?.RenderPass?.(this.passType, executor);
+      return result === 1 ? _TriRenderStep.Result.RS_TERMINATE : _TriRenderStep.Result.RS_OK;
     }
   }];
   PassType = Object.freeze({

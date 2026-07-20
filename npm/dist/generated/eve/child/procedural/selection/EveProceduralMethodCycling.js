@@ -14,14 +14,17 @@ class EveProceduralMethodCycling extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveProceduralMethodCycling",
       family: "eve/child/procedural/selection"
-    })], [[[io, io.persist, void 0, type.list("EveProceduralMethodCyclingParameter")], 16, "parameters"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "debugVolumes"], [[io, io.persist, type, type.float32], 16, "startTimeOffset"], [[io, io.persist, type, type.boolean], 16, "randomizeOrder"], [[io, io.read, type, type.int32], 16, "selectedChild"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "restart"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.list("EveProceduralMethodCyclingParameter")], 16, "parameters"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "debugVolumes"], [[io, io.persist, type, type.float32], 16, "startTimeOffset"], [[io, io.persist, type, type.boolean], 16, "randomizeOrder"], [[io, io.read, type, type.int32], 16, "selectedChild"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("An optional timestamp provides Carbon's current-frame clock deterministically in browser tests.")], 18, "restart"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_selectedChild(this);
   }
+  #selectedChildModified = (_initProto(this), false);
+  #startTime = 0;
+
   /** m_parameters (PEveProceduralMethodCyclingParameterVector) [READ, PERSIST] */
-  parameters = (_initProto(this), _init_parameters(this, []));
+  parameters = _init_parameters(this, []);
 
   /** m_debugVolumes (PIEveVolumeVector) [READ, PERSIST] */
   debugVolumes = (_init_extra_parameters(this), _init_debugVolumes(this, []));
@@ -36,8 +39,23 @@ class EveProceduralMethodCycling extends CjsModel {
   selectedChild = (_init_extra_randomizeOrder(this), _init_selectedChild(this, -1));
 
   /** Carbon method restart -> SelectParameter (MAP_METHOD_AND_WRAP). */
-  restart(...args) {
-    throw new Error("EveProceduralMethodCycling.restart is not implemented in CarbonEngineJS.");
+  restart(timestamp = Date.now() / 1000) {
+    const count = this.parameters.length;
+    if (count === 0) {
+      return false;
+    }
+    if (this.randomizeOrder && count > 2) {
+      const previous = this.selectedChild;
+      this.selectedChild = Math.floor(Math.random() * (count - 1));
+      if (this.selectedChild >= previous) {
+        this.selectedChild++;
+      }
+    } else {
+      this.selectedChild = (this.selectedChild + 1) % count;
+    }
+    this.#startTime = timestamp - this.startTimeOffset;
+    this.#selectedChildModified = true;
+    return true;
   }
   static {
     _initClass();

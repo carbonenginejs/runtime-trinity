@@ -9,6 +9,10 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class EveProceduralMethodCycling extends CjsModel
 {
 
+  #selectedChildModified = false;
+
+  #startTime = 0;
+
   /** m_parameters (PEveProceduralMethodCyclingParameterVector) [READ, PERSIST] */
   @io.persist
   @type.list("EveProceduralMethodCyclingParameter")
@@ -36,10 +40,33 @@ export class EveProceduralMethodCycling extends CjsModel
 
   /** Carbon method restart -> SelectParameter (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  restart(...args)
+  @impl.adapted
+  @impl.reason("An optional timestamp provides Carbon's current-frame clock deterministically in browser tests.")
+  restart(timestamp = Date.now() / 1000)
   {
-    throw new Error("EveProceduralMethodCycling.restart is not implemented in CarbonEngineJS.");
+    const count = this.parameters.length;
+    if (count === 0)
+    {
+      return false;
+    }
+
+    if (this.randomizeOrder && count > 2)
+    {
+      const previous = this.selectedChild;
+      this.selectedChild = Math.floor(Math.random() * (count - 1));
+      if (this.selectedChild >= previous)
+      {
+        this.selectedChild++;
+      }
+    }
+    else
+    {
+      this.selectedChild = (this.selectedChild + 1) % count;
+    }
+
+    this.#startTime = timestamp - this.startTimeOffset;
+    this.#selectedChildModified = true;
+    return true;
   }
 
 }

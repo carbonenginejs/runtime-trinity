@@ -15,14 +15,16 @@ class EveLensflare extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveLensflare",
       family: "eve/effect"
-    })], [[[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "backgroundOccluders"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "occluders"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToEdgeCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToCenterCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "radialAngleCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "xDistanceToCenter"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "yDistanceToCenter"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("ITr2ValueBinding")], 16, "bindings"], [[io, io.persist, type, type.float32], 16, "cameraFactor"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, void 0, type.list("EveTransform")], 16, "flares"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, CjsModel));
+    })], [[[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "backgroundOccluders"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "occluders"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToEdgeCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToCenterCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "radialAngleCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "xDistanceToCenter"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "yDistanceToCenter"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("ITr2ValueBinding")], 16, "bindings"], [[io, io.persist, type, type.float32], 16, "cameraFactor"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, void 0, type.list("EveTransform")], 16, "flares"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_display(this);
   }
+  #controllerVariables = (_initProto(this), new Map());
+
   /** m_translationCurve (ITriVectorFunctionPtr) [READWRITE] */
-  translationCurve = (_initProto(this), _init_translationCurve(this, null));
+  translationCurve = _init_translationCurve(this, null);
 
   /** m_mesh (Tr2MeshPtr) [READWRITE, PERSIST] */
   mesh = (_init_extra_translationCurve(this), _init_mesh(this, null));
@@ -76,13 +78,16 @@ class EveLensflare extends CjsModel {
   display = (_init_extra_update(this), _init_display(this, true));
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
-  SetControllerVariable(...args) {
-    throw new Error("EveLensflare.SetControllerVariable is not implemented in CarbonEngineJS.");
+  SetControllerVariable(name, value) {
+    const key = String(name);
+    const next = Number(value);
+    this.#controllerVariables.set(key, next);
+    for (const controller of this.controllers) controller?.SetVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
-  StartControllers(...args) {
-    throw new Error("EveLensflare.StartControllers is not implemented in CarbonEngineJS.");
+  StartControllers() {
+    for (const controller of this.controllers) controller?.Start?.();
   }
   static {
     _initClass();

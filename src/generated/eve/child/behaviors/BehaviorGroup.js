@@ -10,6 +10,10 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 export class BehaviorGroup extends EveEntity
 {
 
+  #agents = [];
+
+  #agentTree = [];
+
   /** m_display (bool) [READWRITE, PERSIST] */
   @io.persist
   @type.boolean
@@ -109,34 +113,97 @@ export class BehaviorGroup extends EveEntity
 
   /** Carbon method CreateAgentTree (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  CreateAgentTree(...args)
+  @impl.adapted
+  @impl.reason("Browser behavior groups retain a deterministic linear spatial snapshot; native KD-tree allocation is unnecessary until neighborhood queries are ported.")
+  CreateAgentTree()
   {
-    throw new Error("BehaviorGroup.CreateAgentTree is not implemented in CarbonEngineJS.");
+    this.#agentTree = this.#agents.slice();
+    return this.#agentTree;
   }
 
   /** Carbon method AddAgent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  AddAgent(...args)
+  @impl.adapted
+  AddAgent()
   {
-    throw new Error("BehaviorGroup.AddAgent is not implemented in CarbonEngineJS.");
+    this.#agents.push(this.#createAgent());
+    this.#onAgentCountChanged();
   }
 
   /** Carbon method RemoveAgent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  RemoveAgent(...args)
+  @impl.adapted
+  @impl.reason("Math.random replaces Carbon's TriRandInt when selecting the removed agent.")
+  RemoveAgent()
   {
-    throw new Error("BehaviorGroup.RemoveAgent is not implemented in CarbonEngineJS.");
+    if (this.#agents.length === 0)
+    {
+      return;
+    }
+    const index = Math.floor(Math.random() * this.#agents.length);
+    this.#agents[index] = this.#agents[this.#agents.length - 1];
+    this.#agents.pop();
+    this.#onAgentCountChanged();
   }
 
   /** Carbon method SetCount (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetCount(...args)
+  @impl.adapted
+  SetCount(count)
   {
-    throw new Error("BehaviorGroup.SetCount is not implemented in CarbonEngineJS.");
+    const value = Number(count);
+    const desired = Number.isFinite(value) ? Math.trunc(value) : -1;
+    if (desired < 0 || desired === this.#agents.length)
+    {
+      return;
+    }
+    while (this.#agents.length < desired)
+    {
+      this.#agents.push(this.#createAgent());
+    }
+    this.#agents.length = desired;
+    this.count = desired;
+    this.#onAgentCountChanged();
+  }
+
+  /** Returns the portable DroneAgent records in stable instance order. */
+  @impl.adapted
+  GetAgents()
+  {
+    return this.#agents;
+  }
+
+  #createAgent()
+  {
+    return {
+      closestAgentInGroup: null,
+      rotation: new Float32Array([0, 0, 0, 1]),
+      position: vec3.clone(this.spawnPosition),
+      acceleration: vec3.create(),
+      velocity: vec3.create(),
+      accelerationLength: 0,
+      velocityLength: 0,
+      target: vec3.create(),
+      targetDirection: vec3.create(),
+      id: Math.floor(Math.random() * 500),
+      lifetime: 0,
+      playFX: false,
+      fxStartTime: -1,
+      xfade: 0,
+      isVisible: false,
+      screenSize: 0
+    };
+  }
+
+  #onAgentCountChanged()
+  {
+    this.actualCount = this.#agents.length;
+    this.#agentTree = [];
+    if (this.boosters)
+    {
+      this.boosters.flareCount = this.actualCount;
+      this.boosters.RebuildFlareBuffer?.(this.actualCount);
+    }
   }
 
 }

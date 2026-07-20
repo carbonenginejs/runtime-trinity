@@ -1,27 +1,36 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
 
-let _initProto, _initClass, _init_targetObjects, _init_extra_targetObjects, _init_objectCount, _init_extra_objectCount, _init_clipSphere, _init_extra_clipSphere, _init_sourceRadius, _init_extra_sourceRadius, _init_sourceObject, _init_extra_sourceObject, _init_multiplier, _init_extra_multiplier, _init_speed, _init_extra_speed, _init_sourceLocatorSet, _init_extra_sourceLocatorSet, _init_name, _init_extra_name, _init_range, _init_extra_range, _init_display, _init_extra_display, _init_effect, _init_extra_effect;
+let _initProto, _initClass, _init_instances, _init_extra_instances, _init_targetBlobs, _init_extra_targetBlobs, _init_worldTransform, _init_extra_worldTransform, _init_targetObjects, _init_extra_targetObjects, _init_objectCount, _init_extra_objectCount, _init_clipSphere, _init_extra_clipSphere, _init_sourceRadius, _init_extra_sourceRadius, _init_sourceObject, _init_extra_sourceObject, _init_multiplier, _init_extra_multiplier, _init_speed, _init_extra_speed, _init_sourceLocatorSet, _init_extra_sourceLocatorSet, _init_name, _init_extra_name, _init_range, _init_extra_range, _init_display, _init_extra_display, _init_effect, _init_extra_effect;
 
 /** EveChildBulletStorm (eve/child) - generated from schema shapeHash 31dfe6d2.... */
 let _EveChildBulletStorm;
 class EveChildBulletStorm extends CjsModel {
   static {
     ({
-      e: [_init_targetObjects, _init_extra_targetObjects, _init_objectCount, _init_extra_objectCount, _init_clipSphere, _init_extra_clipSphere, _init_sourceRadius, _init_extra_sourceRadius, _init_sourceObject, _init_extra_sourceObject, _init_multiplier, _init_extra_multiplier, _init_speed, _init_extra_speed, _init_sourceLocatorSet, _init_extra_sourceLocatorSet, _init_name, _init_extra_name, _init_range, _init_extra_range, _init_display, _init_extra_display, _init_effect, _init_extra_effect, _initProto],
+      e: [_init_instances, _init_extra_instances, _init_targetBlobs, _init_extra_targetBlobs, _init_worldTransform, _init_extra_worldTransform, _init_targetObjects, _init_extra_targetObjects, _init_objectCount, _init_extra_objectCount, _init_clipSphere, _init_extra_clipSphere, _init_sourceRadius, _init_extra_sourceRadius, _init_sourceObject, _init_extra_sourceObject, _init_multiplier, _init_extra_multiplier, _init_speed, _init_extra_speed, _init_sourceLocatorSet, _init_extra_sourceLocatorSet, _init_name, _init_extra_name, _init_range, _init_extra_range, _init_display, _init_extra_display, _init_effect, _init_extra_effect, _initProto],
       c: [_EveChildBulletStorm, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "EveChildBulletStorm",
       family: "eve/child"
-    })], [[[io, io.notify, io, io.read, void 0, type.list("IEveSpaceObject2")], 16, "targetObjects"], [[io, io.read, type, type.uint32], 16, "objectCount"], [[io, io.read, type, type.float32], 16, "clipSphere"], [[io, io.read, type, type.float32], 16, "sourceRadius"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("EveSpaceObject2")], 16, "sourceObject"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiplier"], [[io, io.notify, io, io.persist, type, type.float32], 16, "speed"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceLocatorSet"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "range"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CanChangeState"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartEffect"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StopEffect"]], 0, void 0, CjsModel));
+    })], [[type.list("EveChildBulletStormInstance"), 0, "instances"], [type.array("vec4"), 0, "targetBlobs"], [[type, type.mat4], 16, "worldTransform"], [[io, io.notify, io, io.read, void 0, type.list("IEveSpaceObject2")], 16, "targetObjects"], [[io, io.read, type, type.uint32], 16, "objectCount"], [[io, io.read, type, type.float32], 16, "clipSphere"], [[io, io.read, type, type.float32], 16, "sourceRadius"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("EveSpaceObject2")], 16, "sourceObject"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiplier"], [[io, io.notify, io, io.persist, type, type.float32], 16, "speed"], [[io, io.notify, io, io.persist, type, type.string], 16, "sourceLocatorSet"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "range"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[carbon, carbon.method, impl, impl.implemented], 18, "CanChangeState"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopEffect"], [[impl, impl.adapted], 18, "UpdateAsyncronous"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_effect(this);
   }
+  #changingClipSphere = (_initProto(this), false);
+  #clipSphereMultiplier = 0;
+  instances = _init_instances(this, []);
+  targetBlobs = (_init_extra_instances(this), _init_targetBlobs(this, []));
+  worldTransform = (_init_extra_targetBlobs(this), _init_worldTransform(this, mat4.create()));
+
   /** m_targetObjects (PIEveSpaceObject2Vector) [READ, NOTIFY] */
-  targetObjects = (_initProto(this), _init_targetObjects(this, []));
+  targetObjects = (_init_extra_worldTransform(this), _init_targetObjects(this, []));
 
   /** m_objectCount (unsigned int) [READ] */
   objectCount = (_init_extra_targetObjects(this), _init_objectCount(this, 0));
@@ -57,23 +66,68 @@ class EveChildBulletStorm extends CjsModel {
   effect = (_init_extra_display(this), _init_effect(this, null));
 
   /** Carbon method CanChangeState (MAP_METHOD_AND_WRAP). */
-  CanChangeState(...args) {
-    throw new Error("EveChildBulletStorm.CanChangeState is not implemented in CarbonEngineJS.");
+  CanChangeState() {
+    return !this.#changingClipSphere;
   }
 
   /** Carbon method Rebuild (MAP_METHOD_AND_WRAP). */
-  Rebuild(...args) {
-    throw new Error("EveChildBulletStorm.Rebuild is not implemented in CarbonEngineJS.");
+  Rebuild() {
+    this.instances.length = 0;
+    this.objectCount = 0;
+    if (!this.sourceObject) return false;
+    const locators = this.sourceObject.GetLocatorsForSet?.(this.sourceLocatorSet) ?? this.sourceObject.locatorSets?.find(set => set?.HasName?.(this.sourceLocatorSet) || set?.name === this.sourceLocatorSet)?.GetLocators?.() ?? this.sourceObject.locatorSets?.find(set => set?.name === this.sourceLocatorSet)?.locators;
+    if (!locators) return false;
+    const count = Math.max(0, Number(this.multiplier) >>> 0);
+    for (const locator of locators) {
+      const direction = vec3.transformQuat(vec3.create(), vec3.fromValues(0, 1, 0), locator.direction);
+      const randomOffset = Math.random();
+      for (let i = 0; i < count; i++) {
+        this.instances.push({
+          sourcePositionOS: vec3.clone(locator.position),
+          sourceDirectionOS: vec3.clone(direction),
+          data: vec4.fromValues(Math.random(), Math.random(), Math.random(), (i + randomOffset) / count)
+        });
+      }
+    }
+    this.objectCount = this.instances.length;
+    return true;
   }
 
   /** Carbon method StartEffect (MAP_METHOD_AND_WRAP). */
-  StartEffect(...args) {
-    throw new Error("EveChildBulletStorm.StartEffect is not implemented in CarbonEngineJS.");
+  StartEffect() {
+    this.#clipSphereMultiplier = 1;
+    this.clipSphere = 0;
+    this.#changingClipSphere = true;
   }
 
   /** Carbon method StopEffect (MAP_METHOD_AND_WRAP). */
-  StopEffect(...args) {
-    throw new Error("EveChildBulletStorm.StopEffect is not implemented in CarbonEngineJS.");
+  StopEffect() {
+    this.#clipSphereMultiplier = -1;
+    this.clipSphere = 0;
+    this.#changingClipSphere = true;
+  }
+  UpdateAsyncronous(updateContext, params = {}) {
+    params.spaceObjectParent?.GetLocalToWorldTransform?.(this.worldTransform);
+    this.targetBlobs.length = 0;
+    for (const target of this.targetObjects.slice(0, 10)) {
+      const position = vec3.clone(target.modelWorldPosition ?? vec3.create());
+      const positionResult = target.GetModelCenterWorldPosition?.(position);
+      if (positionResult?.length >= 3) vec3.copy(position, positionResult);
+      const sphere = vec4.create();
+      const hasSphere = target.GetBoundingSphere?.(sphere);
+      this.targetBlobs.push(vec4.fromValues(position[0], position[1], position[2], Math.max(hasSphere === false ? 0 : sphere[3], 4050)));
+    }
+    if (this.sourceObject) {
+      const sphere = vec4.create();
+      if (this.sourceObject.GetBoundingSphere?.(sphere)) this.sourceRadius = sphere[3];
+    }
+    if (this.#changingClipSphere) {
+      const deltaTime = Number(updateContext?.GetDeltaT?.() ?? updateContext?.deltaTime ?? 0);
+      const denominator = this.sourceRadius + this.range;
+      if (denominator) this.clipSphere += this.#clipSphereMultiplier * this.speed * deltaTime / denominator;
+      this.clipSphere = Math.max(-1, Math.min(1, this.clipSphere));
+      this.#changingClipSphere = Math.abs(this.clipSphere) !== 1;
+    }
   }
   static {
     _initClass();

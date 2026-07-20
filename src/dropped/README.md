@@ -15,12 +15,18 @@ Every quarantined file has an explicit disposition:
 
 | File | Why it is not a runtime model | Replacement |
 |---|---|---|
+| `AreaBoundsInfo.js` | Native Granny extended-data record nested inside `MeshBoundsInfo`; it is neither Blue-exposed nor independently persisted. | Plain `{ bounds, vertexCount }` data owned by the GR2/geometry reader boundary. |
+| `BoundingBox.js` | Native `granny_real32[3]` min/max record used only while decoding Granny extended data; it is not a Blue graph class. | `@carbonenginejs/core-math/box3` or plain `{ min, max }` reader data. |
+| `CASConstants.js` | Native AMD sharpening constant struct nested in the post-process renderer; it is not Blue-exposed or independently persisted. | Plain pair of four-lane numeric/bit-pattern arrays produced by the renderer's CAS parameter builder. |
+| `EveInstancedMeshManager.js` | Native scene-owned instancing manager with GPU buffers, allocator state, picking state, and nested C++ records; it has no `BLUE_CLASS` declaration or persisted graph identity. | Engine-owned instancing realization fed by Trinity instance data and scene objects. |
+| `EveSpherePinIndexTree.js` | Native spherical geometry index with private pointer-backed `Face`/`TreeNode` storage; it is not Blue-exposed or serialized. | Engine/resource-side spatial index built from decoded geometry when sphere-pin picking needs it. |
 | `ITriColor.js` | Pure interface for the retired Blue/Python color wrapper; it has no independent graph state. | `@carbonenginejs/core-math/vec4` and schema `color` fields. |
 | `ITriDevice.js` | Pure device interface; the emitted `adapter` member was nested creation data, not interface state. | Maintained device-free `TriDevice` graph plus injected engine realization. |
 | `ITriEffectTextureParameter.js` | Pure interface; the emitted `UV_SET_MAX_COUNT` is a static constant, not instance state. | Concrete maintained texture-parameter graph classes. |
 | `ITriMatrix.js` | Pure interface for the Blue/Python matrix wrapper; it has no independent graph state. | `@carbonenginejs/core-math/mat4`; the concrete `TriMatrix` quarantine is owned by runtime-character. |
 | `ITriQuaternion.js` | Pure interface for the retired Blue/Python quaternion wrapper. | `@carbonenginejs/core-math/quat` and schema `quat` fields. |
 | `ITriVector.js` | Pure interface for the retired Blue/Python vector wrapper. | `@carbonenginejs/core-math/vec3` and schema vector fields. |
+| `MeshBoundsInfo.js` | Packed native Granny extended-data layout containing pointers and counts; it is reader implementation data, not a persisted Trinity object. | A detached plain record produced by the GR2/geometry reader, with arrays replacing native pointers/counts. |
 | `Point.js` | Native integer helper record, not a persisted Blue object. | Plain `{ x, y }` records at adapter boundaries. |
 | `Tr2CurveBase.js` | Generic C++ template whose emitted `KeyValue`/`Key` fields are unresolved template parameters. | Maintained concrete curve classes own concrete storage and behavior. |
 | `Tr2CurveRasterizeDestination.js` | Native method destination record, not a Blue graph class. | Plain destination records consumed by `Tr2CurveScalar.Rasterize`. |
@@ -28,11 +34,16 @@ Every quarantined file has an explicit disposition:
 | `Tr2DebugColor.js` | Native debug-renderer value struct, not persisted graph state. | Plain engine/debug-adapter record when a renderer needs it. |
 | `Tr2DebugObjectReference.js` | Native debug-renderer reference struct, not persisted graph state. | Plain engine/debug-adapter record when a renderer needs it. |
 | `Tr2Key.js` | Generic C++ key template with unresolved value type `T`. | Concrete maintained key classes such as `Tr2CurveScalarKey`. |
+| `Tr2OcclusionBuffer.js` | Native singleton `Tr2DeviceResource` that allocates GPU offsets and processes an effect-backed occlusion buffer; it is not a Blue graph class. | Renderer-owned occlusion-buffer service associated with scene graph objects outside persisted state. |
+| `Tr2ParticleStreamIterator.js` | Internal C++ template that advances typed pointers through particle buffers; the scanner exposed its stride local as model state. | Plain typed-array indexing inside maintained CPU particle simulation code. |
+| `Tr2RaytracingMeshArea.js` | Native per-area BLAS/cache helper with device acceleration structures; it has no `BLUE_CLASS` declaration and the emitted `true` field is a method literal. | Raytracing engine backend area state associated with the maintained graph/resource owner. |
 | `Tr2Rect.js` | Native integer rectangle record, not a persisted Blue object. | Plain `{ left, top, right, bottom }` records at adapter boundaries. |
 | `TriColor.js` | Blue/Python scripting wrapper around native color math. | `@carbonenginejs/core-math/vec4`. |
 | `TriPerlinNoise.js` | Real native seeded-noise utility, but not a Blue/persisted model; the scanner emitted only private constants and omitted its gradient state and behavior. | Source-backed deterministic `createPerlinNoise1D` and `carbonPerlin1D` in `@carbonenginejs/core-math/noise`; legacy ccpwgl `perlin1`/`perlin1D` remain separate. |
 | `TriQuaternion.js` | Blue/Python scripting wrapper around native quaternion math. | `@carbonenginejs/core-math/quat`. |
 | `TriVector.js` | Blue/Python scripting wrapper around native vector math. | `@carbonenginejs/core-math/vec3`. |
+| `Vector3d.js` | Native double-precision math value struct; scanner fields such as `d`, `dDiv`, and `norm` are constructor/operator locals, not instance state. | Three-element numeric/`Float64Array` values at double-precision boundaries; schema references remain structural `Vector3d` records. |
+| `Vector4d.js` | Native double-precision math value struct; scanner fields such as `d`, `dDiv`, and `f` are constructor/operator locals, not instance state. | Four-element numeric/`Float64Array` values at double-precision boundaries. |
 
 The 2026-07-19 generated-source placement audit added four groups that the
 scanner had incorrectly promoted to constructible `CjsModel` classes:
@@ -49,6 +60,11 @@ scanner had incorrectly promoted to constructible `CjsModel` classes:
 - Native utility/debug records `Point`, `Tr2Rect`, `Tr2DebugColor`,
   `Tr2DebugObjectReference`, and `TriPerlinNoise`. They are not persisted Blue
   model classes and their generated static/member shapes are misleading.
+- Native Granny extended-data records `BoundingBox`, `AreaBoundsInfo`, and
+  `MeshBoundsInfo`, plus the native double-precision value structs `Vector3d`
+  and `Vector4d`. Readers and math buffers own these shapes; registering them
+  as `CjsModel` constructors would turn array members, pointer/count pairs, and
+  operator locals into false serialized state.
 
 `ITr2InteriorLight` is deliberately not in this list: its type-only Carbon
 interface contract is owned by `runtime-character/src/trinity/interior`.
@@ -83,17 +99,16 @@ investigated on 2026-07-17 during the trinity CPU-completion pass:
 
 ## Mechanics
 
-- The regenerate script (`scripts/regenerate_generated.js`) treats any
-  non-`Cjs` class basename found under `src/` outside `src/generated/` as a
-  hand symbol and skips emitting it. Files in this folder therefore keep the
-  generator from recreating the stubs. `src/generated/summary.json` lists
-  them under `skipped` with reason "hand-maintained source exists" — for
-  these files read that as "deliberately quarantined here".
+- `tools-core` owns schema and class emission. Its output is reviewed before
+  being copied into this package; the copy review must exclude every basename
+  listed in this file and preserve its maintained or dropped owner.
+- `runtime-trinity` deliberately has no generator dependency on `tools-core`
+  and does not read a sibling workspace or scratch schema directory.
 - The files are kept verbatim as the generator last emitted them (provenance
   headers, Blue method mapping breadcrumbs, throwing `@impl.notImplemented`
   stubs) so that IF a future decision revives one, it starts from the exact
   generated surface: delete the file here, remove it from this README, and
-  rerun `npm run generate`.
+  include it during the next reviewed tools-core output copy.
 
 ## Do not
 

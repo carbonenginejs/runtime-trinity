@@ -21,9 +21,9 @@ export class Locator extends CjsModel
 
   @io.persist
   @type.vec3
-  scale = vec3.create();
+  scale = vec3.fromValues(1, 1, 1);
 
   @io.persist
   @type.int32
-  boneIndex = 0;
+  boneIndex = -1;
 }

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type } from '@carbonenginejs/core-types/schema';
-import { EveEffectRoot2 as _EveEffectRoot } from './EveEffectRoot2.js';
+import { EveEffectRoot2 as _EveEffectRoot } from '../../../eve/spaceObject/EveEffectRoot2.js';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 
 let _initClass, _init_zOnlyModel, _init_extra_zOnlyModel, _init_emissiveColor, _init_extra_emissiveColor, _init_minScreenSize, _init_extra_minScreenSize, _init_albedoColor, _init_extra_albedoColor, _init_estimatedPixelDiameter, _init_extra_estimatedPixelDiameter, _init_radius, _init_extra_radius;

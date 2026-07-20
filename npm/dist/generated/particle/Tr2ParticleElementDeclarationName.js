@@ -28,10 +28,11 @@ new class extends _identity {
     name = (_init_extra_type(this), _init_name(this, ""));
   }];
   Type = Object.freeze({
-    FLOAT: 0,
-    INTEGER: 1,
-    BOOLEAN: 2,
-    ENUM: 3
+    LIFETIME: 0,
+    POSITION: 1,
+    VELOCITY: 2,
+    MASS: 3,
+    CUSTOM: 4
   });
   constructor() {
     super(_Tr2ParticleElementDe), _initClass();

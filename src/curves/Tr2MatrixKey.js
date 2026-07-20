@@ -11,11 +11,11 @@ import { io, type } from "@carbonenginejs/core-types/schema";
 export class Tr2MatrixKey extends CjsModel
 {
   @io.persist
-  @type.unknown
+  @type.float32
   time = 0;
 
   @io.persist
-  @type.unknown
+  @type.mat4
   value = mat4.create();
 
 }

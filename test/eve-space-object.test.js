@@ -3,7 +3,17 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { EveEntity, EveLocatorSets, EveLocator2, EveRootTransform, EveSpaceObject2, TriObserverLocal } from "../npm/dist/index.js";
+import {
+  EveEffectRoot2,
+  EveEntity,
+  EveLocatorSets,
+  EveLocator2,
+  EvePlanet,
+  EveRootTransform,
+  EveSpaceObject2,
+  Tr2Lod,
+  TriObserverLocal
+} from "../npm/dist/index.js";
 import { EveChildInheritProperties } from "../npm/dist/eve/child/EveChildInheritProperties.js";
 
 
@@ -25,6 +35,272 @@ test("EveRootTransform returns its authored Carbon bounding radius", () =>
   assert.equal(root.GetBoundingSphereRadius(), 42.5);
   assert.equal(CjsSchema.GetConstructor("EveRootTransform"), EveRootTransform);
   assert.equal(existsSync(new URL("../src/generated/eve/spaceObject/EveRootTransform.js", import.meta.url)), false);
+});
+
+test("EveRootTransform evaluates detached curves and implements Carbon targetable behavior", () =>
+{
+  const root = new EveRootTransform();
+  root.boundingSphereRadius = 4;
+  root.translationCurve = {
+    Update(time, out)
+    {
+      assert.equal(time, 3);
+      out.set([10, 20, 30]);
+    }
+  };
+  root.modelTranslationCurve = {
+    Update(time, out)
+    {
+      assert.equal(time, 3);
+      out.set([1, 0, 0]);
+    }
+  };
+
+  assert.equal(root.UpdateSyncronous({ currentTime: 3, deltaTime: 0 }), true);
+  root.UpdateViewDependentData({});
+  assertVecNear(root.worldTransform.slice(12, 15), [11, 20, 30]);
+  assert.equal(root.GetDamageLocatorCount(), 0);
+  const target = new Float32Array(3);
+  assert.equal(root.GetDamageLocatorPosition(0, true, target), true);
+  assertVecNear(target, [11, 20, 30]);
+  assert.equal(root.GetDamageLocatorDirection(0, true, target), true);
+  assertVecNear(target, [0, 1, 0]);
+  assert.equal(root.GetImpactPosition(0, null, [11, 20, 30], 0.1, target), true);
+  assert.equal(root.GetRadius(), 4);
+  assert.equal(root.CreateImpact(0, [0, 1, 0], 1, 1), -1);
+  assert.equal(root.UpdateImpact(target, [0, 1, 0], 0), false);
+  assert.equal(root.HasImpactConfigurationShield(), false);
+  assertVecNear(root.GetMissPosition([11, 21, 30], [11, 21, 20], target), [11, 24.5, 30]);
+});
+
+test("EveEffectRoot2 owns Carbon effect transforms, lifecycle, LOD, and target surface", () =>
+{
+  const effect = new EveEffectRoot2();
+  const calls = [];
+  const controller = {
+    linked: false,
+    IsLinked()
+    {
+      return this.linked;
+    },
+    Link(owner)
+    {
+      this.linked = true;
+      calls.push(["link", owner]);
+    },
+    Update(frequency)
+    {
+      calls.push(["controller-update", frequency]);
+    },
+    SetVariable(name, value)
+    {
+      calls.push(["controller-variable", name, value]);
+    },
+    HandleEvent(name)
+    {
+      calls.push(["controller-event", name]);
+    },
+    Start()
+    {
+      calls.push(["controller-start"]);
+    }
+  };
+  const curveSet = {
+    name: "impact",
+    Update(realTime, simTime)
+    {
+      calls.push(["curve-update", realTime, simTime]);
+    },
+    Play()
+    {
+      calls.push(["curve-play"]);
+    },
+    Stop()
+    {
+      calls.push(["curve-stop"]);
+    },
+    ResetTimeRange()
+    {
+      calls.push(["curve-reset"]);
+    },
+    PlayTimeRange(name)
+    {
+      calls.push(["curve-range", name]);
+    },
+    GetName()
+    {
+      return this.name;
+    },
+    GetMaxCurveDuration()
+    {
+      return 3;
+    },
+    GetRangeDuration(name)
+    {
+      return name === "burst" ? 2 : 0;
+    }
+  };
+  const child = {
+    name: "visual",
+    UpdateSyncronous(context, params)
+    {
+      calls.push(["child-sync", context, params]);
+    },
+    UpdateAsyncronous(context, params)
+    {
+      calls.push(["child-async", context, params]);
+    },
+    UpdateVisibility(context, parentTransform, lod)
+    {
+      calls.push(["child-visibility", context, parentTransform, lod]);
+    },
+    ChangeLOD(lod)
+    {
+      calls.push(["child-lod", lod]);
+    },
+    GetRenderables(out)
+    {
+      out.push("visual");
+    },
+    SetControllerVariable(name, value)
+    {
+      calls.push(["child-variable", name, value]);
+    },
+    HandleControllerEvent(name)
+    {
+      calls.push(["child-event", name]);
+    },
+    StartControllers()
+    {
+      calls.push(["child-start"]);
+    },
+    SetProceduralContainerVariable(name, value)
+    {
+      calls.push(["child-procedural", name, value]);
+    },
+    PlayAllCurveSets()
+    {
+      calls.push(["child-play"]);
+    },
+    StopAllCurveSets()
+    {
+      calls.push(["child-stop"]);
+    },
+    PlayCurveSet(name, rangeName)
+    {
+      calls.push(["child-play-set", name, rangeName]);
+    },
+    StopCurveSet(name)
+    {
+      calls.push(["child-stop-set", name]);
+    },
+    UpdateCurveSet(name, time)
+    {
+      calls.push(["child-update-set", name, time]);
+    },
+    GetCurveSetDuration(name)
+    {
+      return name === "impact" ? 5 : 0;
+    },
+    GetRangeDuration(name, rangeName)
+    {
+      return name === "impact" && rangeName === "burst" ? 4 : 0;
+    }
+  };
+  effect.controllers.push(controller);
+  effect.curveSets.push(curveSet);
+  effect.effectChildren.push(child);
+  effect.observers.push({
+    Update(transform)
+    {
+      calls.push(["observer", Array.from(transform.slice(12, 15))]);
+    }
+  });
+  effect.translationCurve = {
+    Update(time, out)
+    {
+      assert.equal(time, 4);
+      out.set([10, 0, 0]);
+    }
+  };
+  effect.translation.set([0, 2, 0]);
+  effect.boundingSphereCenter.set([1, 0, 0]);
+  effect.boundingSphereRadius = 5;
+
+  assert.equal(effect.Initialize(), true);
+  assert.equal(calls[0][0], "link");
+  assert.equal(calls[0][1], effect);
+  const context = { currentTime: 4, highDetailThreshold: 100 };
+  assert.equal(effect.UpdateSyncronous(context), true);
+  const sync = calls.find(call => call[0] === "child-sync");
+  assert.equal(sync[1], context);
+  assert.equal(sync[2].spaceObjectParent, effect);
+  assertVecNear(sync[2].localToWorldTransform.slice(12, 15), [10, 2, 0]);
+  assert.equal(effect.UpdateAsyncronous(context), 0.5);
+  assert.deepEqual(calls.find(call => call[0] === "controller-update"), ["controller-update", 0.5]);
+  assert.deepEqual(calls.find(call => call[0] === "curve-update"), ["curve-update", 4, 4]);
+
+  effect.dynamicLOD = true;
+  const visibilityContext = {
+    mediumDetailThreshold: 40,
+    lowDetailThreshold: 10,
+    frustum: {
+      IsSphereVisible()
+      {
+        return true;
+      },
+      GetPixelSizeAccross()
+      {
+        return 50;
+      }
+    }
+  };
+  assert.equal(effect.UpdateVisibility(visibilityContext), true);
+  assert.equal(effect.lodLevel, Tr2Lod.TR2_LOD_HIGH);
+  const renderables = effect.GetRenderables([]);
+  assert.deepEqual(renderables, ["visual"]);
+  assert.deepEqual(calls.find(call => call[0] === "child-lod"), ["child-lod", Tr2Lod.TR2_LOD_HIGH]);
+
+  const sphere = new Float32Array(4);
+  assert.equal(effect.GetBoundingSphere(sphere), true);
+  assertVecNear(sphere, [1, 0, 0, 5]);
+  assertVecNear(effect.GetModelCenterWorldPosition(), [11, 2, 0]);
+  assertVecNear(effect.GetWorldPosition(), [10, 0, 0]);
+  assert.equal(effect.GetDamageLocatorPosition(0, true, new Float32Array(3)), true);
+  assert.equal(effect.GetImpactPosition(0, null, [10, 0, 0], 0.1), true);
+  assert.equal(effect.GetRadius(), 5);
+  assert.equal(effect.GetCurveSetDuration("impact"), 5);
+  assert.equal(effect.GetRangeDuration("impact", "burst"), 4);
+  const perObject = effect.GetPerObjectStructs();
+  perObject.vsData.boneOffsets[0] = 9;
+  perObject.psData.clipRadiusSq = 12;
+  perObject.vsData.shipData[0] = 7;
+  effect.GetPerObjectStructs(perObject.vsData, perObject.psData);
+  assert.equal(perObject.vsData.boneOffsets[0], 0);
+  assert.equal(perObject.psData.clipRadiusSq, 0);
+  assertVecNear(perObject.vsData.shipData, [0, 1, 0, 1]);
+  assertVecNear(perObject.psData.shipData, [0, 1, 0, 1]);
+
+  effect.Start();
+  effect.Stop();
+  effect.PlayCurveSet("impact", "burst");
+  effect.StopCurveSet("impact");
+  effect.UpdateCurveSet("impact", 6);
+  effect.SetControllerVariable("Intensity", 0.75);
+  effect.HandleControllerEvent("explode");
+  effect.StartControllers();
+  effect.SetProceduralContainerVariable("seed", 7);
+  assert.equal(effect.GetEffectChildByName("visual"), child);
+  assert.equal(calls.some(call => call[0] === "child-play"), true);
+  assert.equal(calls.some(call => call[0] === "child-variable" && call[1] === "Intensity" && call[2] === 0.75), true);
+  assert.equal(calls.some(call => call[0] === "child-event" && call[1] === "explode"), true);
+  assert.equal(calls.some(call => call[0] === "child-procedural" && call[1] === "seed" && call[2] === 7), true);
+
+  assert.equal(CjsSchema.GetConstructor("EveEffectRoot2"), EveEffectRoot2);
+  assert.equal(CjsSchema.getField(EveEffectRoot2, "boundingSphereCenter")?.type.kind, "vec3");
+  assert.equal(CjsSchema.getField(EveEffectRoot2, "boundingSphereRadius")?.type.kind, "float32");
+  assert.equal(existsSync(new URL("../src/generated/eve/spaceObject/EveEffectRoot2.js", import.meta.url)), false);
+  assert.equal(new EvePlanet() instanceof EveEffectRoot2, true);
 });
 
 test("EveChildInheritProperties owns Carbon's 44 enum-ordered color copies", () =>
@@ -623,6 +899,118 @@ test("EveSpaceObject2 bounds follow Carbon dynamic-sphere and cached-box rules",
   const shifted = object.CalculateSkinnedBoundingBoxFromTransform(mat4.fromTranslation(mat4.create(), [10, 0, 0]));
   assertVecNear(shifted.min, [9, -1, -1]);
   assertVecNear(shifted.max, [11, 1, 1]);
+});
+
+test("EveSpaceObject2 restores Carbon world bounds, visibility, renderables, and mesh LOD", () =>
+{
+  const object = new EveSpaceObject2();
+  const calls = [];
+  const geometryResource = {
+    IsGood()
+    {
+      return true;
+    },
+    GetLodIndexForScreenSize(meshIndex, screenSize)
+    {
+      calls.push(["lod", meshIndex, screenSize]);
+      return 2;
+    }
+  };
+  object.mesh = {
+    GetMeshIndex()
+    {
+      return 3;
+    },
+    GetGeometryResource()
+    {
+      return geometryResource;
+    },
+    GetBoundingBox(min, max)
+    {
+      min.set([-1, -2, -3]);
+      max.set([1, 2, 3]);
+      return true;
+    },
+    IsLoading()
+    {
+      return false;
+    },
+    UseWithScreenSize(size, radius)
+    {
+      calls.push(["screen", size, radius]);
+    }
+  };
+  object.modelScale = 2;
+  object.translationCurve = {
+    Update(_time, out)
+    {
+      out.set([10, 0, 0]);
+    }
+  };
+  object.SetBoundingSphereInformation(new Float32Array([1, 2, 3, 5]));
+  object.UpdateWorldTransform(1);
+
+  const sphere = new Float32Array(4);
+  assert.equal(object.GetBoundingSphere(sphere), true);
+  assertVecNear(sphere, [12, 4, 6, 10]);
+  assertVecNear(object.modelWorldPosition, [12, 4, 6]);
+  assert.equal(object.IsBoundingBoxReady(), true);
+
+  object.GetLocalBoundingBox();
+  const worldBounds = object.GetWorldBoundingBox();
+  assertVecNear(worldBounds.min, [8, -4, -6]);
+  assertVecNear(worldBounds.max, [12, 4, 6]);
+
+  const child = {
+    GetBoundingSphere(out)
+    {
+      out.set([20, 0, 0, 2]);
+      return true;
+    },
+    UpdateVisibility()
+    {
+      calls.push(["child-visibility"]);
+    },
+    GetRenderables(out)
+    {
+      out.push("child");
+    }
+  };
+  object.children.push(child);
+  assert.equal(object.GetBoundingSphere(sphere, 1), true);
+  assert.ok(sphere[3] > 10);
+
+  const frustum = {
+    IsSphereVisible()
+    {
+      return true;
+    },
+    GetPixelSizeAccross()
+    {
+      return 80;
+    },
+    GetPixelSizeAccrossEst()
+    {
+      return 75;
+    }
+  };
+  assert.equal(object.EstimatePixelDiameter(frustum), 80);
+  assert.equal(object.UpdateVisibility({
+    frustum,
+    visibilityThreshold: 1,
+    lowDetailThreshold: 20,
+    mediumDetailThreshold: 60,
+    lodFactor: 0.5
+  }), true);
+  assert.equal(object.IsInFrustum(), true);
+  assert.equal(object.lodLevel, Tr2Lod.TR2_LOD_HIGH);
+  assert.deepEqual(object.GetRenderables([]), [object, "child"]);
+  assert.deepEqual(calls.find(call => call[0] === "screen"), ["screen", 37.5, 10]);
+  assert.equal(object.GetLastUsedMeshLod(), 2);
+  assert.deepEqual(calls.find(call => call[0] === "lod"), ["lod", 3, 37.5]);
+
+  object.FreezeHighDetailMesh();
+  assert.equal(object.GetLastUsedMeshLod(), 0);
 });
 
 test("EveSpaceObject2 rebuilds the authored bounding sphere from ready geometry", () =>

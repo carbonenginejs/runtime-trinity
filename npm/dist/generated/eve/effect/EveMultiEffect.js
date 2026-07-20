@@ -14,7 +14,7 @@ class EveMultiEffect extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveMultiEffect",
       family: "eve/effect"
-    })], [[[io, io.persist, void 0, type.list("Tr2DynamicBinding")], 16, "bindings"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("EveMultiEffectParameter")], 16, "parameters"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Rebind"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetParameter"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, void 0, type.list("Tr2DynamicBinding")], 16, "bindings"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("EveMultiEffectParameter")], 16, "parameters"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebind"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetParameter"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -39,28 +39,41 @@ class EveMultiEffect extends CjsModel {
   name = (_init_extra_parameters(this), _init_name(this, ""));
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  Rebind(...args) {
-    throw new Error("EveMultiEffect.Rebind is not implemented in CarbonEngineJS.");
+  Rebind(onlyUpdateBindings = false) {
+    for (const binding of this.bindings) {
+      binding?.SetOwner?.(this);
+      binding?.Link?.();
+      binding?.Update?.(0);
+    }
+    if (!onlyUpdateBindings) {
+      for (const controller of this.controllers) controller?.Link?.(this);
+    }
+    return true;
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
-  HandleControllerEvent(...args) {
-    throw new Error("EveMultiEffect.HandleControllerEvent is not implemented in CarbonEngineJS.");
+  HandleControllerEvent(name) {
+    for (const controller of this.controllers) controller?.HandleEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
-  SetControllerVariable(...args) {
-    throw new Error("EveMultiEffect.SetControllerVariable is not implemented in CarbonEngineJS.");
+  SetControllerVariable(name, value) {
+    for (const controller of this.controllers) controller?.SetVariable?.(name, value);
   }
 
   /** Carbon method SetParameter (MAP_METHOD_AND_WRAP). */
-  SetParameter(...args) {
-    throw new Error("EveMultiEffect.SetParameter is not implemented in CarbonEngineJS.");
+  SetParameter(parameterName, object) {
+    const name = String(parameterName);
+    const parameter = this.parameters.find(item => (item?.GetName?.() ?? item?.name) === name);
+    if (!parameter) return false;
+    if (parameter.SetParameterObject) parameter.SetParameterObject(object);else parameter.object = object;
+    this.Rebind();
+    return true;
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
-  StartControllers(...args) {
-    throw new Error("EveMultiEffect.StartControllers is not implemented in CarbonEngineJS.");
+  StartControllers() {
+    for (const controller of this.controllers) controller?.Start?.();
   }
   static {
     _initClass();

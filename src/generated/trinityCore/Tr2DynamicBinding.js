@@ -16,7 +16,7 @@ export class Tr2DynamicBinding extends CjsModel
 
   /** m_destination (BlueWeakRef<IRoot>) [READ] */
   @io.read
-  @type.unknown
+  @type.objectRef("IRoot")
   destination = null;
 
   /** m_name (BlueSharedString) [READWRITE, PERSIST] */
@@ -56,7 +56,7 @@ export class Tr2DynamicBinding extends CjsModel
 
   /** m_source (BlueWeakRef<IRoot>) [READ] */
   @io.read
-  @type.unknown
+  @type.objectRef("IRoot")
   source = null;
 
   /** m_binding (TriValueBindingPtr) [READ] */

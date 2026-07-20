@@ -10,12 +10,10 @@ decorated for CarbonEngineJS schema metadata.
 ## Status
 
 Active Carbon-faithful ports cover generated schema classes plus handwritten
-controller, curve, Eve, particle, shader-model, and utility behavior. Generated
-files are refreshed from the installed `format-carbon` metadata with:
-
-```sh
-npm run generate
-```
+controller, curve, Eve, particle, shader-model, and utility behavior.
+`tools-core` owns Carbon scanning, schema generation, and class emission.
+Reviewed generated output is copied into `src/generated`; this package does
+not import `tools-core` or depend on its workspace or scratch directories.
 
 This runtime owns serializable CPU-side state and behavior. Geometry, texture,
 and effect resources are supplied by resource runtimes; WebGPU/WebGL device,
@@ -52,7 +50,6 @@ called.
 Baseline checks:
 
 ```sh
-npm run generate
 npm run build:npm
 npm test
 ```
@@ -75,11 +72,62 @@ stretch, and MIRV missile behavior:
   switching, impacts, explosion callbacks, particles, visibility, and dynamic
   MIRV bounds. `EveMissileWarheadPerObjectData` publishes the portable matrix
   and missile-size record.
+- `EveEffectRoot2` and `EveRootTransform` own detached effect placement,
+  controller/curve propagation, targetable sphere behavior, child update and
+  renderable traversal, and authored effect LOD. This makes effect-root impact
+  graphs executable without making Trinity responsible for their draw calls.
 
 Native animation-pose realization, geometry/resource loading, quad submission,
 draw batches, device buffers, and shader uploads remain renderer/runtime-engine
 responsibilities. Trinity exposes duck-typed pose, emitter, renderable, and
-constant-data seams without importing a browser graphics API.
+constant-data seams without importing a browser graphics API. A generated
+effect child remains data-only until its own maintained runtime behavior is
+implemented; root traversal does not invent missing child rendering behavior.
+
+Character GState ownership lives in `runtime-character`:
+`Tr2GStateAnimation` and `Tr2GStateParameter` are not Trinity exports. The
+generic `Tr2GrannyAnimation` graph remains here for non-character skinned
+geometry, while `Tr2GrannyStateRes` remains a runtime-resource class.
+
+## Implementation-gap audit
+
+Explicit generated and maintained implementation gaps can be inventoried with:
+
+```sh
+npm run audit:gaps
+```
+
+The command reports `@impl.notImplemented` methods and `@type.unknown`
+properties by class, family, source owner, and line. It excludes `src/dropped`
+by default because every quarantined file has a file-specific disposition in
+`src/dropped/README.md`; use `-- --include-dropped` only to inspect that
+quarantine. Marker output is a lower bound: maintained classes must also be
+checked against Carbon public headers, interfaces, implementations, and Blue
+exposure to find methods omitted rather than stubbed.
+
+As of 2026-07-20, the audited in-scope snapshot contains 129 explicit method
+gaps across 34 classes and no unknown properties, down from 389/106 and 85/34
+respectively. The completed wave covers Carbon's
+missing `EveSpaceObject2` bounds/frustum surface, CPU primitive and line
+collections, line graphs, render-debug accumulation and backend-neutral render
+intents, bullet-storm/explosion lifecycle behavior, child controller/resource
+forwarding, tactical trails, and ship booster-locator rebuilding. Remaining
+gaps are concentrated in coherent native, GPU, font, animation, bitmap/atlas,
+particle, scene-picking, and swarm families; they are intentionally still
+explicit until a browser owner or backend seam is established.
+
+The child reference/socket resource seam is synchronous and injected. Socket
+parameter auto-creation currently covers the emitted string parameter type;
+additional Carbon template types require corresponding `tools-core` emission
+before runtime-trinity can own them faithfully.
+
+Calculated whole-object bounds are planned as a separate lazy cache rather
+than a mutation of Carbon's authored culling bounds. The intended object-local
+box and sphere caches use `__state.flags` token `"bounds"`; only a successful
+`GetObjectBounding*` recomputation clears it. World AABBs derive from the local
+cache and current transform. Explicit visual ownership paths—not generic model
+graph traversal—decide which children, attachments, turrets, boosters, and
+dynamic effects contribute.
 
 ## Graph ownership and GPU realization
 

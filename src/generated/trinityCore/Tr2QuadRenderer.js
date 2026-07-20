@@ -71,11 +71,11 @@ export class Tr2QuadRenderer extends CjsModel
   definition = null;
 
   /** combinable (Tr2EnumerableThreadSpecific<PerThreadData>) */
-  @type.unknown
+  @type.rawStruct("Tr2EnumerableThreadSpecific<PerThreadData>")
   combinable = null;
 
   /** m_bufferSize (CcpAtomic<uint32_t>) */
-  @type.unknown
+  @type.uint32
   bufferSize = 0;
 
   /** m_quad (Tr2BufferAL) */

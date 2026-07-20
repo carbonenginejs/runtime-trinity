@@ -1,6 +1,6 @@
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
-import { BackAndForthData, CjsEveThrottleableState, DecalVSPerObjectData, EveBannerItem, EveBannerLight, EveBannerSet, EveBasicPerObjectData, EveBezierCurve, EveBoxVolume, EveChildModifierSRT, EveChildSpherePinPerObjectData, EveChildTransform, EveChildUpdateParams, EveCircle, EveCustomMask, EveDistanceField, EveEllipsoidVolume, EveHazeSet, EveHazeSetLight, EveImpactOverlay, EveLODHelper, EveLineData, EveLocator2, EveLocatorSets, EvePerObjectPSData, EvePerObjectVSData, EvePlaneLight, EvePlaneSet, EvePlaneSetItem, EveRemotePositionCurve, EveSpaceObjectDecal, EveSpaceObjectPSData, EveSpaceObjectVSData, EveSpacePerObjectData, EveSpherePinPerObjectData, EveSphereVolume, EveSpotlightLight, EveSpotlightSet, EveSpotlightSetItem, EveSpriteLight, EveSpriteLineSet, EveSpriteLineSetItem, EveSpriteSet, EveSpriteSetItem, EveThrottleable, EveVirtualCamera, EveVirtualCameraBehaviourFloatAdd, EveVirtualCameraBehaviourFloatBase, EveVirtualCameraBehaviourFloatDamping, EveVirtualCameraBehaviourFloatNoise, EveVirtualCameraBehaviourFloatSet, EveVirtualCameraBehaviourVector3Base, EveVirtualCameraBehaviourVector3Damping, EveVirtualCameraBehaviourVector3Inertia, EveVirtualCameraBehaviourVector3MoveBetween, EveVirtualCameraBehaviourVector3MoveForward, EveVirtualCameraBehaviourVector3MoveRight, EveVirtualCameraBehaviourVector3MoveUp, EveVirtualCameraBehaviourVector3Offset, EveVirtualCameraBehaviourVector3Orbit, EveVirtualCameraBehaviourVector3Shake, EveVirtualCameraSystem, EveVirtualCameraTransitionCut, EveVirtualCameraTransitionLerp, FollowASplineData, FormationData, InertiaData, LightData, Locator, LocatorData, PlacementDataWithIdentifier, PlayFXData, ProcessLifetimeData, SeekTargetData, Tr2CurveExtrapolation, Tr2Light, Tr2Lod, Tr2PointLight, Tr2ScalarFader, Tr2SpotLight, Tr2TexturedPointLight, TriPerlinCurve } from "../npm/dist/index.js";
+import { AudioGameObject, BackAndForthData, CjsEveThrottleableState, DecalVSPerObjectData, EveBannerItem, EveBannerLight, EveBannerSet, EveBasicPerObjectData, EveBezierCurve, EveBoxVolume, EveChildAudio, EveChildFogVolume, EveChildLightingOverride, EveChildModifierSRT, EveChildSpherePinPerObjectData, EveChildTransform, EveChildUpdateParams, EveCircle, EveCustomMask, EveDistanceField, EveEllipseDefinition, EveEllipseSet, EveEllipsoidVolume, EveHazeSet, EveHazeSetLight, EveImpactOverlay, EveLODHelper, EveLineData, EveLocator2, EveLocatorSets, EvePerObjectPSData, EvePerObjectVSData, EvePlaneLight, EvePlaneSet, EvePlaneSetItem, EveRemotePositionCurve, EveSpaceObjectDecal, EveSpaceObjectPSData, EveSpaceObjectVSData, EveSpacePerObjectData, EveSpherePinPerObjectData, EveSphereVolume, EveSpotlightLight, EveSpotlightSet, EveSpotlightSetItem, EveSpriteLight, EveSpriteLineSet, EveSpriteLineSetItem, EveSpriteSet, EveSpriteSetItem, EveThrottleable, EveVirtualCamera, EveVirtualCameraBehaviourFloatAdd, EveVirtualCameraBehaviourFloatBase, EveVirtualCameraBehaviourFloatDamping, EveVirtualCameraBehaviourFloatNoise, EveVirtualCameraBehaviourFloatSet, EveVirtualCameraBehaviourVector3Base, EveVirtualCameraBehaviourVector3Damping, EveVirtualCameraBehaviourVector3Inertia, EveVirtualCameraBehaviourVector3MoveBetween, EveVirtualCameraBehaviourVector3MoveForward, EveVirtualCameraBehaviourVector3MoveRight, EveVirtualCameraBehaviourVector3MoveUp, EveVirtualCameraBehaviourVector3Offset, EveVirtualCameraBehaviourVector3Orbit, EveVirtualCameraBehaviourVector3Shake, EveVirtualCameraSystem, EveVirtualCameraTransitionCut, EveVirtualCameraTransitionLerp, FollowASplineData, FormationData, InertiaData, LightData, Locator, LocatorData, PlacementDataWithIdentifier, PlayFXData, ProcessLifetimeData, SeekTargetData, Tr2CurveExtrapolation, Tr2Light, Tr2Lod, Tr2PointLight, Tr2ScalarFader, Tr2SpotLight, Tr2TexturedPointLight, TriPerlinCurve } from "../npm/dist/index.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
@@ -29,6 +29,134 @@ function assertAlmostEquals(actual, expected, epsilon = 1e-6)
     throw new Error(`expected ${expected}, got ${actual}`);
   }
 }
+
+test("ellipse definitions keep Carbon defaults and dirty their owning set", () =>
+{
+  const definition = new EveEllipseDefinition();
+  assertEquals(definition.center[0], 0);
+  assertEquals(definition.planeNormal[0], 0);
+  assertEquals(definition.planeNormal[1], 1);
+  assertEquals(definition.planeNormal[2], 0);
+  assertEquals(definition.semiMajor, 1);
+  assertEquals(definition.semiMinor, 1);
+  assertEquals(CjsSchema.getField(EveEllipseDefinition, "center")?.type.kind, "vec3");
+  assertEquals(CjsSchema.getField(EveEllipseDefinition, "planeNormal")?.type.kind, "vec3");
+
+  let dirtied = 0;
+  definition.SetDirtyFlag(() => dirtied++);
+  assertEquals(definition.OnModified(), true);
+  assertEquals(dirtied, 1);
+  definition.SetDirtyFlag(null);
+  definition.OnModified();
+  assertEquals(dirtied, 1);
+
+  const set = new EveEllipseSet();
+  assertEquals(set.AddEllipse([1, 2, 3], 4, 2, [0, 0, 1], 30), true);
+  assertEquals(set.ellipses.length, 1);
+  assertEquals(set.ellipses[0] instanceof EveEllipseDefinition, true);
+  assertEquals(set.ellipses[0].center[2], 3);
+  assertEquals(set.ellipses[0].planeNormal[2], 1);
+  set.ClearEllipses();
+  assertEquals(set.ellipses.length, 0);
+});
+
+test("scene audio wrappers delegate through an optional runtime-audio emitter", () =>
+{
+  const calls = [];
+  const emitter = {
+    Mute: () => calls.push("mute"),
+    Unmute: () => calls.push("unmute"),
+    SendEvent: name => { calls.push(`event:${name}`); return 42; },
+    SetName: name => calls.push(`name:${name}`),
+    SetPosition: (_front, _top, position) => calls.push(`position:${position.join(",")}`)
+  };
+
+  const object = new AudioGameObject();
+  object.audioEmitter = emitter;
+  vec3.set(object.translation, 1, 2, 3);
+  assertEquals(object.__init__(), true);
+  assertEquals(object.GetAudioEmitter(), emitter);
+  object.SetEmitterName("beacon");
+  assertEquals(object.PlayAudioEvent("play_beacon"), 42);
+  object.UpdateSyncronous({ time: 0 });
+  object.mute = true;
+  object.OnModified("mute");
+  assert(calls.includes("name:beacon"));
+  assert(calls.includes("event:play_beacon"));
+  assert(calls.includes("position:1,2,3"));
+  assert(calls.includes("mute"));
+
+  const child = new EveChildAudio();
+  child.audioEmitter = emitter;
+  child.SetEmitterName("child");
+  child.UpdateSyncronous(null, { localToWorldTransform: mat4.fromTranslation(mat4.create(), [4, 5, 6]) });
+  assert(calls.includes("name:child"));
+  assert(calls.includes("position:4,5,6"));
+  assertEquals(child.GetBoundingSphere(vec4.create()), false);
+});
+
+test("lighting overrides combine Carbon volume bounds and camera intensity", () =>
+{
+  const volume = new EveSphereVolume();
+  vec3.set(volume.position, 1, 0, 0);
+  volume.radius = 4;
+  volume.innerRadius = 2;
+
+  const override = new EveChildLightingOverride();
+  override.volumes.push(volume);
+  assertEquals(override.priority, EveChildLightingOverride.Priority.MEDIUM_PRIORITY);
+  assertEquals(override.Initialize(), true);
+  const sphere = vec4.create();
+  assertEquals(override.GetBoundingSphere(sphere), true);
+  assertEquals(sphere[0], 1);
+  assertEquals(sphere[3], 4);
+
+  override.UpdateAsyncronous({ renderContext: { GetViewPosition: () => [1, 0, 0] } }, { localToWorldTransform: mat4.create() });
+  const values = override.GetOverrides();
+  assertEquals(values.intensity, 1);
+  assertEquals(values.value.backgroundIntensity, 1);
+  assertEquals(values.value.sunColor[3], 1);
+  assertEquals(CjsSchema.getField(EveChildLightingOverride, "sunColor")?.type.kind, "color");
+
+  override.UpdateAsyncronous({ renderContext: { GetViewPosition: () => [20, 0, 0] } }, { localToWorldTransform: mat4.create() });
+  assertEquals(override.GetOverrides().intensity, 0);
+  assertEquals(override.IsAlwaysOn(), true);
+});
+
+test("fog volumes expose Carbon settings, bounds, and camera intensity", () =>
+{
+  const volume = new EveSphereVolume();
+  vec3.set(volume.position, 2, 0, 0);
+  volume.radius = 5;
+  volume.innerRadius = 1;
+
+  const fog = new EveChildFogVolume();
+  fog.volumes.push(volume);
+  fog.thickness = 3;
+  fog.thicknessEnabled = true;
+  assertEquals(fog.priority, EveChildFogVolume.Priority.MEDIUM_PRIORITY);
+  assertEquals(fog.Initialize(), true);
+
+  const sphere = vec4.create();
+  assertEquals(fog.GetBoundingSphere(sphere), true);
+  assertEquals(sphere[0], 2);
+  assertEquals(sphere[3], 5);
+  assertEquals(fog.boundingSphereCenter[0], 2);
+  assertEquals(fog.boundingSphereRadius, 5);
+
+  fog.UpdateAsyncronous({ renderContext: { GetViewPosition: () => [2, 0, 0] } }, { localToWorldTransform: mat4.create() });
+  let settings = fog.GetFroxelFogSettings();
+  assertEquals(settings.intensity, 1);
+  assertEquals(settings.thickness.value, 3);
+  assertEquals(settings.thickness.enabled, true);
+  assertEquals(settings.godRayNoiseFrequency.value, 15);
+
+  fog.UpdateAsyncronous({ renderContext: { GetViewPosition: () => [20, 0, 0] } }, { localToWorldTransform: mat4.create() });
+  settings = fog.GetFroxelFogSettings();
+  assertEquals(settings.intensity, 0);
+  assertEquals(CjsSchema.getField(EveChildFogVolume, "fogColor")?.type.kind, "color");
+});
+
 test("promoted Eve data classes expose source-backed metadata and defaults", async () =>
 {
   const backAndForth = new BackAndForthData();

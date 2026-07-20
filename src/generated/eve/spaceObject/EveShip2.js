@@ -26,10 +26,20 @@ export class EveShip2 extends EveMobile
 
   /** Carbon method RebuildBoosterSet (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  RebuildBoosterSet(...args)
+  @impl.adapted
+  RebuildBoosterSet()
   {
-    throw new Error("EveShip2.RebuildBoosterSet is not implemented in CarbonEngineJS.");
+    if (!this.boosters) return false;
+    this.boosters.Clear?.();
+    for (const locator of this.locators)
+    {
+      const name = locator?.GetName?.() ?? locator?.name ?? "";
+      if (!name.startsWith("locator_booster")) continue;
+      const transform = locator.GetTransform?.() ?? locator.transform;
+      if (transform) this.boosters.Add?.(transform, [0, 1, 1, 1], true, 0, 0);
+    }
+    this.boosters.UpdateValues?.({ property: "items" });
+    return true;
   }
 
 }

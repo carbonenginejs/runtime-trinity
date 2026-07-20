@@ -14,14 +14,16 @@ class EveChildPlug extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildPlug",
       family: "eve/child"
-    })], [[[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
     _init_extra_controllers(this);
   }
+  #controllerVariables = (_initProto(this), new Map());
+
   /** m_objects (PIEveSpaceObjectChildVector) [READ, PERSIST] */
-  objects = (_initProto(this), _init_objects(this, []));
+  objects = _init_objects(this, []);
 
   /** m_display (bool) [READWRITE, PERSIST, NOTIFY] */
   display = (_init_extra_objects(this), _init_display(this, true));
@@ -36,18 +38,22 @@ class EveChildPlug extends _EveChildTransform {
   controllers = (_init_extra_externalParameters(this), _init_controllers(this, []));
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
-  HandleControllerEvent(...args) {
-    throw new Error("EveChildPlug.HandleControllerEvent is not implemented in CarbonEngineJS.");
+  HandleControllerEvent(name) {
+    for (const controller of this.controllers) controller?.HandleEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
-  SetControllerVariable(...args) {
-    throw new Error("EveChildPlug.SetControllerVariable is not implemented in CarbonEngineJS.");
+  SetControllerVariable(name, value) {
+    const key = String(name);
+    const next = Number(value);
+    this.#controllerVariables.set(key, next);
+    for (const controller of this.controllers) controller?.SetVariable?.(key, next);
+    for (const object of this.objects) object?.SetControllerVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
-  StartControllers(...args) {
-    throw new Error("EveChildPlug.StartControllers is not implemented in CarbonEngineJS.");
+  StartControllers() {
+    for (const controller of this.controllers) controller?.Start?.();
   }
   static {
     _initClass();

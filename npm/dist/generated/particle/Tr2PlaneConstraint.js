@@ -1,26 +1,33 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
 
-let _initClass, _init_affectPosition, _init_extra_affectPosition, _init_affectVelocity, _init_extra_affectVelocity, _init_plane, _init_extra_plane, _init_elasticity, _init_extra_elasticity, _init_friction, _init_extra_friction, _init_isValid, _init_extra_isValid, _init_onCollisionEmitters, _init_extra_onCollisionEmitters, _init_generators, _init_extra_generators, _init_particleRadiusComponent, _init_extra_particleRadiusComponent, _init_reflectionNoise, _init_extra_reflectionNoise, _init_particleRadiusCoefficient, _init_extra_particleRadiusCoefficient;
+let _initProto, _initClass, _init_affectPosition, _init_extra_affectPosition, _init_affectVelocity, _init_extra_affectVelocity, _init_plane, _init_extra_plane, _init_elasticity, _init_extra_elasticity, _init_friction, _init_extra_friction, _init_isValid, _init_extra_isValid, _init_onCollisionEmitters, _init_extra_onCollisionEmitters, _init_generators, _init_extra_generators, _init_particleRadiusComponent, _init_extra_particleRadiusComponent, _init_reflectionNoise, _init_extra_reflectionNoise, _init_particleRadiusCoefficient, _init_extra_particleRadiusCoefficient;
 
 /** Tr2PlaneConstraint (particle) - generated from schema shapeHash bac6c545.... */
 let _Tr2PlaneConstraint;
 class Tr2PlaneConstraint extends CjsModel {
   static {
     ({
-      e: [_init_affectPosition, _init_extra_affectPosition, _init_affectVelocity, _init_extra_affectVelocity, _init_plane, _init_extra_plane, _init_elasticity, _init_extra_elasticity, _init_friction, _init_extra_friction, _init_isValid, _init_extra_isValid, _init_onCollisionEmitters, _init_extra_onCollisionEmitters, _init_generators, _init_extra_generators, _init_particleRadiusComponent, _init_extra_particleRadiusComponent, _init_reflectionNoise, _init_extra_reflectionNoise, _init_particleRadiusCoefficient, _init_extra_particleRadiusCoefficient],
+      e: [_init_affectPosition, _init_extra_affectPosition, _init_affectVelocity, _init_extra_affectVelocity, _init_plane, _init_extra_plane, _init_elasticity, _init_extra_elasticity, _init_friction, _init_extra_friction, _init_isValid, _init_extra_isValid, _init_onCollisionEmitters, _init_extra_onCollisionEmitters, _init_generators, _init_extra_generators, _init_particleRadiusComponent, _init_extra_particleRadiusComponent, _init_reflectionNoise, _init_extra_reflectionNoise, _init_particleRadiusCoefficient, _init_extra_particleRadiusCoefficient, _initProto],
       c: [_Tr2PlaneConstraint, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "Tr2PlaneConstraint",
       family: "particle"
-    })], [[[io, io.persist, type, type.boolean], 16, "affectPosition"], [[io, io.persist, type, type.boolean], 16, "affectVelocity"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "plane"], [[io, io.persist, type, type.float32], 16, "elasticity"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, void 0, type.list("ITr2GenericEmitter")], 16, "onCollisionEmitters"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.string], 16, "particleRadiusComponent"], [[io, io.persist, type, type.float32], 16, "reflectionNoise"], [[io, io.persist, type, type.vec4], 16, "particleRadiusCoefficient"]], 0, void 0, CjsModel));
+    })], [[[io, io.persist, type, type.boolean], 16, "affectPosition"], [[io, io.persist, type, type.boolean], 16, "affectVelocity"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "plane"], [[io, io.persist, type, type.float32], 16, "elasticity"], [[io, io.persist, type, type.float32], 16, "friction"], [[io, io.read, type, type.boolean], 16, "isValid"], [[io, io.persist, void 0, type.list("ITr2GenericEmitter")], 16, "onCollisionEmitters"], [[io, io.persist, void 0, type.list("ITr2AttributeGenerator")], 16, "generators"], [[io, io.persist, type, type.string], 16, "particleRadiusComponent"], [[io, io.persist, type, type.float32], 16, "reflectionNoise"], [[io, io.persist, type, type.vec4], 16, "particleRadiusCoefficient"], [[impl, impl.implemented], 18, "Initialize"], [[impl, impl.implemented], 18, "OnModified"], [[impl, impl.adapted], 18, "Bind"], [[impl, impl.adapted], 18, "ApplyConstraint"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
     _init_extra_particleRadiusCoefficient(this);
   }
+  #normalizedPlane = (_initProto(this), vec4.fromValues(0, 1, 0, 0));
+  #positionElement = null;
+  #velocityElement = null;
+  #radiusElement = null;
+
   /** m_affectPosition (bool) [READWRITE, PERSIST] */
   affectPosition = _init_affectPosition(this, true);
 
@@ -53,6 +60,104 @@ class Tr2PlaneConstraint extends CjsModel {
 
   /** m_particleRadiusCoefficient (Vector4) [READWRITE, PERSIST] */
   particleRadiusCoefficient = (_init_extra_reflectionNoise(this), _init_particleRadiusCoefficient(this, vec4.fromValues(1, 0, 0, 0)));
+  Initialize() {
+    this.#normalizePlane();
+    for (const emitter of this.onCollisionEmitters) {
+      emitter?.SetThreadSafeFlag?.();
+    }
+    return true;
+  }
+  OnModified(propertyName) {
+    if (!propertyName || propertyName === "plane") {
+      this.#normalizePlane();
+    }
+    return true;
+  }
+  Bind(particleSystem) {
+    this.isValid = false;
+    this.#positionElement = particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.POSITION) ?? null;
+    this.#velocityElement = particleSystem?.GetElement?.(_Tr2ParticleElementDe.Type.VELOCITY) ?? null;
+    this.#radiusElement = this.particleRadiusComponent ? particleSystem?.GetElement?.(this.particleRadiusComponent) ?? null : null;
+    if (!this.#positionElement || this.particleRadiusComponent && !this.#radiusElement) {
+      return false;
+    }
+    for (const generator of this.generators) {
+      if (generator?.Bind?.(particleSystem) === false) {
+        return false;
+      }
+    }
+    this.#normalizePlane();
+    this.isValid = true;
+    return true;
+  }
+  ApplyConstraint(_buffers, _strides, count) {
+    if (!this.isValid) {
+      return 0;
+    }
+    const normal = this.#normalizedPlane;
+    let collisions = 0;
+    for (let index = 0; index < count; index++) {
+      const position = this.#view(this.#positionElement, index);
+      const velocity = this.#velocityElement ? this.#view(this.#velocityElement, index) : null;
+      const radius = this.#radiusElement ? this.#dotRadius(this.#view(this.#radiusElement, index)) : 0;
+      const distance = normal[0] * position[0] + normal[1] * position[1] + normal[2] * position[2] + normal[3] - radius;
+      const velocityDot = velocity ? velocity[0] * normal[0] + velocity[1] * normal[1] + velocity[2] * normal[2] : -1;
+      if (distance > 0 || velocityDot >= 0) {
+        continue;
+      }
+      collisions++;
+      if (this.affectPosition) {
+        position[0] -= normal[0] * distance;
+        position[1] -= normal[1] * distance;
+        position[2] -= normal[2] * distance;
+      }
+      if (this.affectVelocity && velocity) {
+        const bounceScale = -velocityDot * this.elasticity;
+        const slideX = (velocity[0] - normal[0] * velocityDot) * this.friction;
+        const slideY = (velocity[1] - normal[1] * velocityDot) * this.friction;
+        const slideZ = (velocity[2] - normal[2] * velocityDot) * this.friction;
+        velocity[0] = normal[0] * bounceScale + slideX;
+        velocity[1] = normal[1] * bounceScale + slideY;
+        velocity[2] = normal[2] * bounceScale + slideZ;
+        this.#addReflectionNoise(velocity, normal);
+      }
+      for (const generator of this.generators) {
+        generator?.Generate?.(position, velocity, index);
+      }
+      for (const emitter of this.onCollisionEmitters) {
+        emitter?.SpawnParticles?.(position, velocity, 1);
+      }
+    }
+    return collisions;
+  }
+  #normalizePlane() {
+    const length = Math.hypot(this.plane[0], this.plane[1], this.plane[2]);
+    if (length > 0) {
+      vec4.scale(this.#normalizedPlane, this.plane, 1 / length);
+    } else {
+      vec4.set(this.#normalizedPlane, 0, 1, 0, 0);
+    }
+  }
+  #view(element, index) {
+    const offset = element.startOffset + index * element.instanceStride;
+    return element.buffer.subarray(offset, offset + element.dimension);
+  }
+  #dotRadius(value) {
+    let result = 0;
+    for (let component = 0; component < Math.min(4, value.length); component++) {
+      result += value[component] * this.particleRadiusCoefficient[component];
+    }
+    return result;
+  }
+  #addReflectionNoise(velocity, normal) {
+    if (this.reflectionNoise <= 0) {
+      return;
+    }
+    const noise = vec3.fromValues(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+    vec3.scale(noise, noise, this.reflectionNoise);
+    vec3.scaleAndAdd(noise, noise, normal, -vec3.dot(noise, normal));
+    vec3.scaleAndAdd(velocity, velocity, noise, vec3.length(velocity));
+  }
   static {
     _initClass();
   }

@@ -13,8 +13,8 @@ export class EveSmartLightPointLight extends EveEntity
 
   /** m_lightGroupData.flags (LightData) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  flags = null;
+  @type.uint16
+  flags = 1;
 
   /** m_lightProfile (Tr2LightProfileResPtr) [READ] */
   @io.read
@@ -33,18 +33,18 @@ export class EveSmartLightPointLight extends EveEntity
 
   /** m_lightGroupData.innerRadius (LightData) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  innerRadius = null;
+  @type.float32
+  innerRadius = 0;
 
   /** m_lightGroupData.brightness (LightData) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  brightness = null;
+  @type.float32
+  brightness = 1;
 
   /** m_lightGroupData.radius (LightData) [READWRITE, PERSIST] */
   @io.persist
-  @type.unknown
-  radius = null;
+  @type.float32
+  radius = 0;
 
   /** m_lightProfilePath (std::wstring) [READWRITE, PERSIST, NOTIFY] */
   @io.notify

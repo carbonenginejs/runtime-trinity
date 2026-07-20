@@ -8,7 +8,6 @@ export * from "./Tr2GpuParticleSystem.js";
 export * from "./Tr2ParticleElementData.js";
 export * from "./Tr2ParticleElementDeclaration.js";
 export * from "./Tr2ParticleElementDeclarationName.js";
-export * from "./Tr2ParticleStreamIterator.js";
 export * from "./Tr2ParticleSystem.js";
 export * from "./Tr2ParticleTurbulenceForce.js";
 export * from "./Tr2PlaneConstraint.js";

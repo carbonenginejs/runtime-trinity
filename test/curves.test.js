@@ -318,6 +318,7 @@ test("Granny JSON tracks bind the first matching group and sample values", () =>
   pathBound.UpdateValue(3.5);
   assertEquals(pathBound.value, 40);
   assertEquals(CjsSchema.getField(Tr2GrannyTrack, "grannyResPath")?.type.kind, "path");
+  assertEquals(CjsSchema.getField(Tr2GrannyTrack, "duration")?.type.kind, "float32");
   assertEquals(CjsGrannyCurves.resolveResource("res:/synthetic/test.gr2"), source);
   CjsGrannyCurves.unregisterResource("res:/synthetic/test.gr2");
   assertEquals(CjsGrannyCurves.resolveResource("res:/synthetic/test.gr2"), null);
@@ -523,6 +524,17 @@ test("expression curves expose Carbon term metadata and current-time inputs", ()
   }
   assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "interpolation"), null);
   assertEquals(CjsSchema.getField(Tr2MatrixKey, "interpolation"), null);
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "currentValue")?.type.kind, "mat4");
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "name")?.type.kind, "string");
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "length")?.type.kind, "float32");
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "cycle")?.type.kind, "boolean");
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "startValue")?.type.kind, "mat4");
+  assertEquals(CjsSchema.getField(Tr2BoneMatrixCurve, "keys")?.type.kind, "list");
+  assertEquals(CjsSchema.getField(Tr2MatrixKey, "time")?.type.kind, "float32");
+  assertEquals(CjsSchema.getField(Tr2MatrixKey, "value")?.type.kind, "mat4");
+  assertEquals(CjsSchema.getField(Tr2ScalarExprKey, "interpolation")?.type.kind, "uint32");
+  assertEquals(CjsSchema.getField(Tr2ScalarExprKey, "time")?.type.kind, "float32");
+  assertEquals(CjsSchema.getField(Tr2ScalarExprKey, "value")?.type.kind, "float32");
   const vector = new Tr2CurveVector3Expression();
   vector.inputs = [{
     Update: time => time * 2,
@@ -1264,6 +1276,7 @@ test("TriEventCurve sorts keys, fires forward events, and cycles", () =>
   cycling.UpdateValue(2.5);
   assertEquals(cycleEvents.join(","), "half,half");
   assertEquals(CjsSchema.getField(TriEventCurve, "keys")?.type.kind, "list");
+  assertEquals(CjsSchema.getField(TriEventCurve, "length")?.type.kind, "float32");
 });
 test("TriCurveSet plays, ranges, applies curves, and copies bindings", () =>
 {

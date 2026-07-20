@@ -22,10 +22,19 @@ export class TriStepRenderPass extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(scene = null, passType = 0)
   {
-    throw new Error("TriStepRenderPass.__init__ is not implemented in CarbonEngineJS.");
+    this.scene = scene;
+    this.passType = Number(passType) | 0;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    const result = this.scene?.RenderPass?.(this.passType, executor);
+    return result === 1 ? TriRenderStep.Result.RS_TERMINATE : TriRenderStep.Result.RS_OK;
   }
 
   static PassType = Object.freeze({

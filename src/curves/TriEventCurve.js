@@ -71,7 +71,7 @@ export class TriEventCurve extends CjsModel
   time = 0;
 
   @io.read
-  @type.unknown
+  @type.float32
   length = 0;
 
   @io.read

@@ -15,14 +15,16 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2TextureAnimation",
         family: "trinityCore"
-      })], [[[io, io.persist, type, type.float32], 16, "fps"], [[io, io.read, type, type.uint32], 16, "frame"], [[io, io.read, type, type.float32], 16, "time"], [[io, io.persist, type, type.boolean], 16, "paused"], [[io, io.persist, type, type.boolean], 16, "updateOnlyWhenRendered"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.persist, type, type.boolean], 16, "looped"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetChannelNames"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RestartAnimation"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.float32], 16, "fps"], [[io, io.read, type, type.uint32], 16, "frame"], [[io, io.read, type, type.float32], 16, "time"], [[io, io.persist, type, type.boolean], 16, "paused"], [[io, io.persist, type, type.boolean], 16, "updateOnlyWhenRendered"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.persist, type, type.boolean], 16, "looped"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetChannelNames"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser resets its CPU frame clock and delegates decoder rewind to attached channel adapters instead of Carbon's VTA worker thread.")], 18, "RestartAnimation"], [[impl, impl.adapted], 18, "SetChannels"], [[impl, impl.adapted], 18, "GetTexture"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
       _init_extra_looped(this);
     }
+    #channels = (_initProto(this), new Map());
+
     /** m_fps (float) [READWRITE, PERSIST] */
-    fps = (_initProto(this), _init_fps(this, 1));
+    fps = _init_fps(this, 1);
 
     /** m_frame (uint32_t) [READ] */
     frame = (_init_extra_fps(this), _init_frame(this, 0));
@@ -43,13 +45,39 @@ new class extends _identity {
     looped = (_init_extra_resPath(this), _init_looped(this, true));
 
     /** Carbon method GetChannelNames (MAP_METHOD_AND_WRAP). */
-    GetChannelNames(...args) {
-      throw new Error("Tr2TextureAnimation.GetChannelNames is not implemented in CarbonEngineJS.");
+    GetChannelNames() {
+      return Array.from(this.#channels.keys());
     }
 
     /** Carbon method RestartAnimation (MAP_METHOD_AND_WRAP). */
-    RestartAnimation(...args) {
-      throw new Error("Tr2TextureAnimation.RestartAnimation is not implemented in CarbonEngineJS.");
+    RestartAnimation() {
+      this.frame = 0;
+      this.time = 0;
+      for (const channel of this.#channels.values()) {
+        if (typeof channel?.Restart === "function") {
+          channel.Restart();
+        } else {
+          channel?.Reset?.();
+        }
+      }
+    }
+
+    /** Attaches already-decoded browser VTA channel adapters. */
+    SetChannels(channels) {
+      this.#channels.clear();
+      if (channels instanceof Map) {
+        for (const [name, channel] of channels) {
+          this.#channels.set(String(name), channel);
+        }
+      } else if (channels && typeof channels === "object") {
+        for (const [name, channel] of Object.entries(channels)) {
+          this.#channels.set(name, channel);
+        }
+      }
+    }
+    GetTexture(channel) {
+      const value = this.#channels.get(String(channel ?? ""));
+      return value?.texture ?? value ?? null;
     }
   }];
   RestartState = Object.freeze({

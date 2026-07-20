@@ -9,6 +9,10 @@ import { EveChildTransform } from "../../../eve/child/EveChildTransform.js";
 export class EveChildRef extends EveChildTransform
 {
 
+  /** Runtime resource-resolution seam supplied by an engine package. */
+  @type.objectRef("IEveChildResourceLoader")
+  resourceLoader = null;
+
   /** m_display (bool) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
   @io.persist
@@ -38,34 +42,38 @@ export class EveChildRef extends EveChildTransform
 
   /** Carbon method Reload (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  Reload(...args)
+  @impl.adapted
+  Reload(bypassAutoLoadBlocker = false)
   {
-    throw new Error("EveChildRef.Reload is not implemented in CarbonEngineJS.");
+    if (!this.loadChildAutomatically && !bypassAutoLoadBlocker) return false;
+    const next = this.resourceLoader?.LoadChild?.(this.resPath, this) ?? this.resourceLoader?.(this.resPath, this);
+    if (!next || typeof next.then === "function") return false;
+    this.child = next;
+    return true;
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  HandleControllerEvent(...args)
+  @impl.implemented
+  HandleControllerEvent(name)
   {
-    throw new Error("EveChildRef.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    this.child?.HandleControllerEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveChildRef.SetControllerVariable is not implemented in CarbonEngineJS.");
+    this.child?.SetControllerVariable?.(name, value);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveChildRef.StartControllers is not implemented in CarbonEngineJS.");
+    this.child?.StartControllers?.();
   }
 
 }

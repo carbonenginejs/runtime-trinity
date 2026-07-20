@@ -16,10 +16,18 @@ export class TriStepRenderScene extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.implemented
+  __init__(scene = null)
   {
-    throw new Error("TriStepRenderScene.__init__ is not implemented in CarbonEngineJS.");
+    this.scene = scene;
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    this.scene?.Render?.(executor);
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

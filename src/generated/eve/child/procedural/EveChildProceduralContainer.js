@@ -9,6 +9,8 @@ import { EveChildTransform } from "../../../../eve/child/EveChildTransform.js";
 export class EveChildProceduralContainer extends EveChildTransform
 {
 
+  #proceduralContainerVariables = new Map();
+
   /** m_transformModifiers (PIEveChildTransformModifierVector) [READ, PERSIST] */
   @io.persist
   @type.list("IEveChildTransformModifier")
@@ -36,42 +38,45 @@ export class EveChildProceduralContainer extends EveChildTransform
 
   /** Carbon method GetMethodVariableName (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  GetMethodVariableName(...args)
+  @impl.implemented
+  GetMethodVariableName()
   {
-    throw new Error("EveChildProceduralContainer.GetMethodVariableName is not implemented in CarbonEngineJS.");
+    return this.selectionMethod?.GetProceduralMethodVariable?.() ?? "methodUnassigned";
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  HandleControllerEvent(...args)
+  @impl.implemented
+  HandleControllerEvent(name)
   {
-    throw new Error("EveChildProceduralContainer.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    this.selectedObject?.HandleControllerEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveChildProceduralContainer.SetControllerVariable is not implemented in CarbonEngineJS.");
+    this.selectedObject?.SetControllerVariable?.(name, value);
   }
 
   /** Carbon method SetProceduralContainerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetProceduralContainerVariable(...args)
+  @impl.implemented
+  SetProceduralContainerVariable(name, value)
   {
-    throw new Error("EveChildProceduralContainer.SetProceduralContainerVariable is not implemented in CarbonEngineJS.");
+    const key = String(name);
+    const next = Number(value);
+    this.#proceduralContainerVariables.set(key, next);
+    this.selectionMethod?.SetProceduralMethodVariable?.(key, next);
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveChildProceduralContainer.StartControllers is not implemented in CarbonEngineJS.");
+    this.selectedObject?.StartControllers?.();
   }
 
 }

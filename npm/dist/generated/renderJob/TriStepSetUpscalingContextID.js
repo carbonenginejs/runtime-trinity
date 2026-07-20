@@ -14,18 +14,22 @@ class TriStepSetUpscalingContextID extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepSetUpscalingContextID",
       family: "renderJob"
-    })], [[[io, io.read, type, type.uint32], 16, "upscalingContextID"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.read, type, type.uint32], 16, "upscalingContextID"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
     _init_extra_upscalingContextID(this);
   }
   /** m_upscalingContextID (uint32_t) [READ] */
-  upscalingContextID = (_initProto(this), _init_upscalingContextID(this, 0));
+  upscalingContextID = (_initProto(this), _init_upscalingContextID(this, 0xffffffff));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepSetUpscalingContextID.__init__ is not implemented in CarbonEngineJS.");
+  __init__(upscalingContextID = 0xffffffff) {
+    this.upscalingContextID = Number(upscalingContextID) >>> 0;
+  }
+  Execute(_realTime, _simTime, executor) {
+    executor?.SetUpscalingContextID?.(this.upscalingContextID);
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

@@ -17,7 +17,7 @@ class Tr2Sprite2dVertexBase extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2Sprite2dVertexBase",
       family: "sprite2d"
-    })], [[[type, type.vec3], 16, "position"], [[type, type.color], 16, "color"], [[type, type.vec2], 16, "texCoord"]], 0, void 0, CjsModel));
+    })], [[[type, type.vec3], 16, "position"], [[type, type.color], 16, "color"], [type.array("vec2"), 0, "texCoord"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -27,10 +27,10 @@ class Tr2Sprite2dVertexBase extends CjsModel {
   position = _init_position(this, vec3.create());
 
   /** color (Color) */
-  color = (_init_extra_position(this), _init_color(this, vec4.create()));
+  color = (_init_extra_position(this), _init_color(this, vec4.fromValues(1, 1, 1, 1)));
 
   /** texCoord (Vector2) */
-  texCoord = (_init_extra_color(this), _init_texCoord(this, vec2.create()));
+  texCoord = (_init_extra_color(this), _init_texCoord(this, [vec2.create(), vec2.create()]));
   static {
     _initClass();
   }

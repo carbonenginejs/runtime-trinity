@@ -21,7 +21,7 @@ export class Tr2GrannyTrack extends CjsModel
   cycle = false;
 
   @io.read
-  @type.unknown
+  @type.float32
   duration = 0;
 
   @io.read

@@ -47,10 +47,39 @@ export class TriStepClearUav extends TriRenderStep
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD). */
   @carbon.method
-  @impl.notImplemented
-  __init__(...args)
+  @impl.adapted
+  __init__(buffer = null, values = null)
   {
-    throw new Error("TriStepClearUav.__init__ is not implemented in CarbonEngineJS.");
+    this.buffer = buffer;
+    if (values == null) return;
+    if (!Array.isArray(values) && !ArrayBuffer.isView(values)) throw new TypeError("clear values must be a four-component array");
+    if (values.length !== 4) throw new RangeError("clear values must contain four components");
+    this.clearWithFloat = values instanceof Float32Array || values.some(value => !Number.isInteger(value));
+    if (this.clearWithFloat)
+    {
+      vec4.set(this.floatValue, Number(values[0]), Number(values[1]), Number(values[2]), Number(values[3]));
+    }
+    else
+    {
+      this.bitValue0 = Number(values[0]) >>> 0;
+      this.bitValue1 = Number(values[1]) >>> 0;
+      this.bitValue2 = Number(values[2]) >>> 0;
+      this.bitValue3 = Number(values[3]) >>> 0;
+    }
+  }
+
+  @carbon.method
+  @impl.adapted
+  Execute(_realTime, _simTime, executor)
+  {
+    if (this.buffer)
+    {
+      const value = this.clearWithFloat
+        ? this.floatValue
+        : [this.bitValue0, this.bitValue1, this.bitValue2, this.bitValue3];
+      executor?.ClearUav?.(this.buffer, value, this.clearWithFloat);
+    }
+    return TriRenderStep.Result.RS_OK;
   }
 
 }

@@ -2,10 +2,22 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { Tr2DepthStencil, Tr2DirectInstanceData, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VisibilityResults, TriDevice, TriObserverLocal, TriProjection, TriRect, TriVariable, TriView, TriViewport } from "../npm/dist/trinityCore/index.js";
+import { GrannyBoneOffset, Tr2DepthStencil, Tr2DirectInstanceData, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VisibilityResults, TriDevice, TriObserverLocal, TriProjection, TriRect, TriSettings, TriVariable, TriView, TriViewport } from "../npm/dist/trinityCore/index.js";
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
 import { TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
+import { Tr2DebugRenderer } from "../npm/dist/generated/trinityCore/Tr2DebugRenderer.js";
+import { Tr2HostBitmap } from "../npm/dist/generated/trinityCore/Tr2HostBitmap.js";
+import { Tr2SSAO } from "../npm/dist/generated/trinityCore/Tr2SSAO.js";
+import { Tr2BoundingLineSet } from "../npm/dist/generated/trinityCore/Tr2BoundingLineSet.js";
+import { Tr2LineSet } from "../npm/dist/generated/trinityCore/Tr2LineSet.js";
+import { Tr2LineGraph } from "../npm/dist/generated/trinityCore/Tr2LineGraph.js";
+import { Tr2SolidSet } from "../npm/dist/generated/trinityCore/Tr2SolidSet.js";
+import { TriRigidOrientation } from "../npm/dist/generated/trinityCore/TriRigidOrientation.js";
+import { TriTorque } from "../npm/dist/generated/trinityCore/TriTorque.js";
+import { TriLineSet } from "../npm/dist/generated/trinityCore/TriLineSet.js";
 
 
 const { TermType } = Tr2ExpressionTermInfo;
@@ -36,6 +48,153 @@ function assertMatrixValues(actual, expected)
   }
 }
 
+test("generated Trinity value records use source-backed types, defaults, and accessors", () =>
+{
+  const ssao = new Tr2SSAO();
+  assertEquals(ssao.enabled, true);
+  assertEquals(ssao.zoomLevel, 5);
+  assertEquals(ssao.radius, 6);
+  assertEquals(ssao.shadowPower, 2.6);
+  assertEquals(ssao.cortaoMipBias, -4);
+  assertEquals(CjsSchema.getField(Tr2SSAO, "shadowClamp")?.type.kind, "float32");
+
+  const bitmap = new Tr2HostBitmap();
+  assertEquals(bitmap.width, 0);
+  assertEquals(bitmap.height, 0);
+  assertEquals(bitmap.imageType, Tr2HostBitmap.TextureType.TEX_TYPE_INVALID);
+  assertEquals(CjsSchema.getField(Tr2HostBitmap, "format")?.type.kind, "int32");
+});
+
+test("Tr2DebugRenderer stores Carbon option, selection, and color state", () =>
+{
+  const renderer = new Tr2DebugRenderer();
+  const owner = { name: "ship" };
+  renderer.SetDefaultOptions(["Bounds"]);
+  assertEquals(renderer.HasOption({}, "Bounds"), true);
+  renderer.SetOptions(owner, ["Volumes", "Normals"]);
+  assertEquals(renderer.GetOptions(owner).join(","), "Volumes,Normals");
+  assertEquals(renderer.HasOption(owner, "Volumes"), true);
+  assertEquals(renderer.HasOption(owner, "Bounds"), false);
+  renderer.SetSelectedObjects([[owner, 0]]);
+  assertEquals(renderer.IsSelected(owner), true);
+  renderer.SetColorForOption("Volumes", [0.25, 0.5, 0.75, 1]);
+  assertEquals(renderer.GetColorForOption("Volumes")[2], 0.75);
+  assertEquals(renderer.GetColorForOption("Missing"), null);
+  renderer.SetOptions(owner, []);
+  assertEquals(renderer.GetOptions(owner).length, 0);
+});
+
+test("generated primitive sets retain CPU geometry and submission state", () =>
+{
+  const red = vec4.fromValues(1, 0, 0, 1);
+  const green = vec4.fromValues(0, 1, 0, 1);
+  const blue = vec4.fromValues(0, 0, 1, 1);
+  const white = vec4.fromValues(1, 1, 1, 1);
+
+  const lines = new Tr2LineSet();
+  lines.AddLine(vec3.fromValues(0, 0, 0), red, vec3.fromValues(1, 0, 0), green);
+  lines.AddPickingTriangle(vec3.fromValues(0, 0, 0), vec3.fromValues(1, 0, 0), vec3.fromValues(0, 1, 0));
+  assertEquals(lines.SubmitChanges(), true);
+  assertEquals(lines.currentSubmittedLineCount, 1);
+  assertEquals(lines.currentSubmittedTriangleCount, 1);
+  lines.SetCurrentColor(white);
+  assert.deepEqual(Array.from(lines.lines[0].color1), Array.from(white));
+  assert.deepEqual(Array.from(lines.lines[0].color2), Array.from(white));
+  lines.ClearLines();
+  lines.ClearPickingTriangles();
+  lines.SubmitChanges();
+  assertEquals(lines.currentSubmittedLineCount, 0);
+  assertEquals(lines.currentSubmittedTriangleCount, 0);
+  assertEquals(lines.maxCurrentLineCount, 1);
+  assertEquals(lines.maxCurrentTriangleCount, 1);
+
+  const solids = new Tr2SolidSet();
+  solids.AddTriangle(
+    vec3.fromValues(0, 0, 0), red,
+    vec3.fromValues(1, 0, 0), green,
+    vec3.fromValues(0, 1, 0), blue
+  );
+  solids.SubmitChanges();
+  assertEquals(solids.currentSubmittedTriangleCount, 1);
+  assertAlmostEquals(solids.triangles[0].normal[0], 0);
+  assertAlmostEquals(solids.triangles[0].normal[1], 0);
+  assertAlmostEquals(solids.triangles[0].normal[2], 1);
+  assert.deepEqual(Array.from(solids.GetCenterOfMass()).map(value => Math.round(value * 1e6) / 1e6), [0.333333, 0.333333, 0]);
+  solids.SetCurrentColor(white);
+  assert.deepEqual(Array.from(solids.triangles[0].color3), Array.from(white));
+
+  const bounds = new Tr2BoundingLineSet();
+  bounds.UpdateBounds(vec3.fromValues(-1, -2, -3), vec3.fromValues(4, 5, 6));
+  assert.deepEqual(Array.from(bounds.minBounds), [-1, -2, -3]);
+  assert.deepEqual(Array.from(bounds.maxBounds), [4, 5, 6]);
+  assertEquals(bounds.lines.length, 12);
+  assertEquals(bounds.triangles.length, 12);
+  assertEquals(bounds.currentSubmittedLineCount, 12);
+  assertEquals(bounds.currentSubmittedTriangleCount, 12);
+});
+
+test("Tr2LineGraph preserves Carbon's circular statistics history", () =>
+{
+  const graph = new Tr2LineGraph();
+  assertEquals(graph.GetSize(), 200);
+  graph.SetSize(3);
+  graph.AddMarker("start");
+  assertEquals(graph.Add(1), true);
+  graph.Add(2);
+  graph.AddMarker("wrap");
+  graph.AddMarker("same sample");
+  graph.Add(3);
+  assert.deepEqual(graph.GetStatsHistory(), [1, 2, 3]);
+  graph.Add(4);
+  assert.deepEqual(graph.GetStatsHistory(), [2, 3, 4]);
+  graph.SetSize(0);
+  assert.deepEqual(graph.GetStatsHistory(), []);
+  assertEquals(graph.Add(5), false);
+});
+
+test("TriRigidOrientation sorts and integrates Carbon torque states", () =>
+{
+  const first = new TriTorque();
+  first.time = 0;
+  first.omega0[0] = 1;
+  const second = new TriTorque();
+  second.time = 1;
+  const orientation = new TriRigidOrientation();
+  orientation.states.push(second, first);
+  orientation.Sort();
+  assertEquals(orientation.states[0], first);
+  assertAlmostEquals(second.omega0[0], Math.exp(-1));
+  assertAlmostEquals(second.omega0[1], 0);
+  assertAlmostEquals(second.omega0[2], 0);
+  assertAlmostEquals(second.rot0[0], Math.sin(1 - Math.exp(-1)));
+  assertAlmostEquals(second.rot0[3], Math.cos(1 - Math.exp(-1)));
+  assert.deepEqual(Array.from(orientation.value), Array.from(first.rot0));
+});
+
+test("TriLineSet builds Carbon debug geometry and records render intent", () =>
+{
+  const lines = new TriLineSet();
+  lines.Add([0, 0, 0], 0x11223344, [1, 0, 0], 0x55667788);
+  assertEquals(lines.vertices.length, 2);
+  assertEquals(lines.vertices[0].color, 0x11443322);
+  assertEquals(lines.vertices[1].color, 0x55887766);
+  lines.SetCurrentColor(0xaabbccdd);
+  assertEquals(lines.vertices[0].color, 0xaaddccbb);
+  lines.SetDefaultColor(0x01020304);
+  lines.AddLines([[[0, 0, 0], [0, 1, 0]]]);
+  assertEquals(lines.vertices.at(-1).color, 0x01040302);
+  lines.AddBox([-1, -1, -1], [1, 1, 1]);
+  assertEquals(lines.vertices.length, 28);
+  lines.AddSphere([0, 0, 0], 1, 3);
+  assertEquals(lines.vertices.length, 156);
+  const context = new Tr2RenderContext();
+  assertEquals(lines.Render(context), true);
+  assertEquals(context.GetIntents().at(-1).type, "draw-line-set");
+  assertEquals(context.GetIntents().at(-1).lineSet, lines);
+  lines.Clear();
+  assertEquals(lines.Render(context), false);
+});
+
 test("Carbon device graph descriptions remain canonical runtime-trinity classes", () =>
 {
   const graphClasses = [
@@ -54,6 +213,50 @@ test("Carbon device graph descriptions remain canonical runtime-trinity classes"
     new Class();
     assertEquals(CjsSchema.GetConstructor(Class.name), Class);
   }
+});
+
+test("TriSettings adapts Carbon's registered native pointers to typed JavaScript values", () =>
+{
+  const settings = new TriSettings();
+  settings.RegisterSetting("enabled", true);
+  settings.RegisterSetting("quality", 2);
+  settings.RegisterSetting("effectPath", "res:/effect.fx");
+  assertEquals(settings.GetValue("quality"), 2);
+  assertEquals(settings.FindSetting("missing"), null);
+
+  settings.SetValue("quality", 3);
+  assertEquals(settings.GetValue("quality"), 3);
+  assert.throws(() => settings.SetValue("quality", "high"), TypeError);
+  assert.throws(() => settings.GetValue("missing"), RangeError);
+  assertEquals(settings.__repr__(), "{'effectPath':'res:/effect.fx', 'enabled':True, 'quality':3, }");
+  assertEquals(CjsSchema.GetConstructor("TriSettings"), TriSettings);
+  assertEquals(CjsSchema.getField(TriSettings, "entry"), null);
+  assertEquals(CjsSchema.getField(TriSettings, "map"), null);
+});
+
+test("GrannyBoneOffset stores, binds, and applies Carbon bone corrections", () =>
+{
+  const offsets = new GrannyBoneOffset();
+  assertEquals(offsets.Initialize(), true);
+  assertEquals(offsets.HaveTransforms(), false);
+  offsets.SetOffset("Head", 1, 2, 3);
+  assertEquals(offsets.HaveTransforms(), true);
+  assertEquals(offsets.NeedRebind(1), true);
+  offsets.BindToRig(["Head"]);
+  assertEquals(offsets.NeedRebind(1), false);
+
+  const result = mat4.create();
+  assertEquals(offsets.Apply(result, 0, mat4.create(), mat4.create()), true);
+  assertEquals(result[12], 1);
+  assertEquals(result[13], 2);
+  assertEquals(result[14], 3);
+  assertEquals(offsets.Apply(result, 1, mat4.create(), mat4.create()), false);
+
+  offsets.SetRotation("Head", 0, 0, 0, 1);
+  assertEquals(offsets.NeedRebind(1), true);
+  offsets.ClearTransforms();
+  assertEquals(offsets.HaveTransforms(), false);
+  assertEquals(CjsSchema.getField(GrannyBoneOffset, "riggedTransforms"), null);
 });
 
 test("device graph descriptions keep Carbon defaults without realizing a backend", () =>
@@ -674,9 +877,14 @@ test("dropped Blue and native scanner shapes stay quarantined", () =>
   const droppedByFamily = {
     trinityCore: ["TriVector", "TriQuaternion", "TriColor"],
     include: ["ITriVector", "ITriMatrix", "ITriQuaternion", "ITriColor", "ITriDevice", "ITriEffectTextureParameter", "Point", "Tr2CurveBase", "Tr2DebugColor", "Tr2DebugObjectReference", "Tr2Rect", "TriPerlinNoise"],
-    curves: ["Tr2CurveRasterizeDestination", "Tr2CurveScalarDefinition", "Tr2Key"]
+    curves: ["Tr2CurveRasterizeDestination", "Tr2CurveScalarDefinition", "Tr2Key"],
+    "eve/scene": ["EveInstancedMeshManager", "Tr2OcclusionBuffer"],
+    "eve/ui": ["EveSpherePinIndexTree"],
+    particle: ["Tr2ParticleStreamIterator"],
+    postProcess: ["CASConstants"],
+    raytracing: ["Tr2RaytracingMeshArea"],
+    utilities: ["AreaBoundsInfo", "BoundingBox", "MeshBoundsInfo", "Vector3d", "Vector4d"]
   };
-  const dropped = Object.values(droppedByFamily).flat();
   const droppedReadme = readFileSync(new URL("../src/dropped/README.md", import.meta.url), "utf8");
   for (const [family, names] of Object.entries(droppedByFamily))
   {
@@ -700,16 +908,13 @@ test("dropped Blue and native scanner shapes stay quarantined", () =>
       assert.equal(CjsSchema.GetConstructor(name), null, name);
     }
   }
-  // The generator records the quarantine as skipped hand symbols.
+  // The copied generator summary is provenance for its accepted upstream
+  // artifact, not runtime-trinity's later ownership/quarantine manifest.
   const summary = JSON.parse(readFileSync(new URL("../src/generated/summary.json", import.meta.url), "utf8"));
-  const skippedNames = summary.skipped.map(entry => entry.className);
-  for (const name of dropped)
-  {
-    assert.equal(skippedNames.includes(name), true, name);
-  }
   const characterMatrixSkip = summary.generation.skipped.find(entry => entry.className === "TriMatrix" && entry.reason === "owned by runtime-character");
   assert.ok(characterMatrixSkip, "TriMatrix must remain owned by runtime-character");
   for (const [owner, names] of Object.entries({
+    "runtime-character": ["Tr2GStateAnimation", "Tr2GStateParameter"],
     "runtime-core": ["Tr2DisplayMode", "Tr2PlatformInfo", "Tr2VideoAdapter", "Tr2VideoAdapters", "Tr2VideoDriver"],
     "runtime-input": ["Tr2MainWindow", "Tr2MainWindowState", "Tr2MouseCursor", "UIScancode"]
   }))
@@ -723,6 +928,8 @@ test("dropped Blue and native scanner shapes stay quarantined", () =>
   }
   assert.equal(existsSync(new URL("../src/generated/trinityCore/TriMatrix.js", import.meta.url)), false);
   assert.equal(CjsSchema.GetConstructor("TriMatrix"), null);
+  assert.equal(existsSync(new URL("../src/generated/trinityCore/Tr2GStateAnimation.js", import.meta.url)), false);
+  assert.equal(existsSync(new URL("../src/generated/trinityCore/Tr2GStateParameter.js", import.meta.url)), false);
   assert.equal(existsSync(new URL("../src/generated/eve/socket/_className.js", import.meta.url)), false);
   assert.equal(existsSync(new URL("../src/generated/include/ITr2InteriorLight.js", import.meta.url)), false);
 });

@@ -7,3 +7,6 @@ export * from "./EveChildTransform.js";
 export * from "./IEveSpaceObjectChild.js";
 export * from "./lineSetPaths/index.js";
 export * from "./modifiers/index.js";
+export * from "./EveChildAudio.js";
+export * from "./EveChildFogVolume.js";
+export * from "./EveChildLightingOverride.js";

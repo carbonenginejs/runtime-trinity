@@ -9,6 +9,12 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class Tr2DynamicEmitter extends CjsModel
 {
 
+  #accumulatedRate = 0;
+
+  #declarationHash = 0;
+
+  #emittedParticles = 0;
+
   /** m_name (std::string) [READWRITE, PERSIST] */
   @io.persist
   @type.string
@@ -42,18 +48,95 @@ export class Tr2DynamicEmitter extends CjsModel
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  Rebind(...args)
+  @impl.adapted
+  @impl.reason("Browser attribute generators bind directly to the CPU particle-system adapter rather than native declaration pointers.")
+  Rebind()
   {
-    throw new Error("Tr2DynamicEmitter.Rebind is not implemented in CarbonEngineJS.");
+    this.#emittedParticles = 0;
+    this.#accumulatedRate = 0;
+    this.isValid = false;
+    if (!this.particleSystem?.isValid)
+    {
+      return false;
+    }
+    for (const generator of this.generators)
+    {
+      if (typeof generator?.Bind === "function" && generator.Bind(this.particleSystem) === false)
+      {
+        return false;
+      }
+    }
+    this.#declarationHash = this.particleSystem.GetElementDeclarationHash?.() ?? 0;
+    this.isValid = true;
+    return true;
   }
 
   /** Carbon method UpdateSimulation (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  UpdateSimulation(...args)
+  @impl.adapted
+  UpdateSimulation(dt)
   {
-    throw new Error("Tr2DynamicEmitter.UpdateSimulation is not implemented in CarbonEngineJS.");
+    return this.SpawnParticles(null, null, Math.max(0, Number(dt) || 0));
+  }
+
+  @impl.implemented
+  Initialize()
+  {
+    return this.Rebind();
+  }
+
+  @impl.adapted
+  SpawnParticles(position, velocity, rateModifier = 1)
+  {
+    if (!this.isValid || !this.particleSystem)
+    {
+      return 0;
+    }
+    if ((this.particleSystem.GetElementDeclarationHash?.() ?? 0) !== this.#declarationHash)
+    {
+      this.isValid = false;
+      return 0;
+    }
+    if (this.rate <= 0)
+    {
+      return 0;
+    }
+    this.#accumulatedRate += this.rate * Math.max(0, Number(rateModifier) || 0);
+    let count = Math.floor(this.#accumulatedRate);
+    this.#accumulatedRate -= count;
+    if (this.maxParticles >= 0)
+    {
+      count = Math.max(0, Math.min(count, this.maxParticles - this.#emittedParticles));
+    }
+    let spawned = 0;
+    for (let index = 0; index < count; index++)
+    {
+      const particleIndex = this.particleSystem.BeginSpawnParticle?.();
+      if (particleIndex === null || particleIndex === undefined)
+      {
+        break;
+      }
+      for (const generator of this.generators)
+      {
+        generator?.Generate?.(position, velocity, particleIndex);
+      }
+      this.particleSystem.EndSpawnParticle?.();
+      spawned++;
+    }
+    this.#emittedParticles += spawned;
+    return spawned;
+  }
+
+  @impl.implemented
+  GetEmittedParticleCount()
+  {
+    return this.#emittedParticles;
+  }
+
+  @impl.implemented
+  ResetEmittedParticleCount()
+  {
+    this.#emittedParticles = 0;
   }
 
 }

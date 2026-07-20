@@ -15,7 +15,7 @@ class TriStepRenderEffect extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderEffect",
       family: "renderJob"
-    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2ShaderBuffer")], 16, "shaderBuffer"], [[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2ShaderBuffer")], 16, "shaderBuffer"], [[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -34,8 +34,15 @@ class TriStepRenderEffect extends _TriRenderStep {
   tlTexCoord = (_init_extra_effect(this), _init_tlTexCoord(this, vec2.create()));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRenderEffect.__init__ is not implemented in CarbonEngineJS.");
+  __init__(effect = null, shaderBuffer = null) {
+    this.effect = effect;
+    this.shaderBuffer = shaderBuffer;
+  }
+  Execute(_realTime, _simTime, executor) {
+    if (this.effect) {
+      executor?.DrawEffect?.(this.effect, this.shaderBuffer, this.tlTexCoord, this.brTexCoord);
+    }
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

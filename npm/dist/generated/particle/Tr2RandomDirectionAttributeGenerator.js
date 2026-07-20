@@ -1,31 +1,75 @@
-import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
+import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
 
-let _initClass, _init_valid, _init_extra_valid;
+let _initProto, _initClass, _init_elementType, _init_extra_elementType, _init_customName, _init_extra_customName, _init_valid, _init_extra_valid;
 
 /** Tr2RandomDirectionAttributeGenerator (particle) - generated from schema shapeHash b1a02c8e.... */
 let _Tr2RandomDirectionAt;
-class Tr2RandomDirectionAttributeGenerator extends CjsModel {
-  static {
-    ({
-      e: [_init_valid, _init_extra_valid],
-      c: [_Tr2RandomDirectionAt, _initClass]
-    } = _applyDecs2311(this, [type.define({
-      className: "Tr2RandomDirectionAttributeGenerator",
-      family: "particle"
-    })], [[[io, io.read, type, type.boolean], 16, "valid"]], 0, void 0, CjsModel));
+new class extends _identity {
+  static [class Tr2RandomDirectionAttributeGenerator extends CjsModel {
+    static {
+      ({
+        e: [_init_elementType, _init_extra_elementType, _init_customName, _init_extra_customName, _init_valid, _init_extra_valid, _initProto],
+        c: [_Tr2RandomDirectionAt, _initClass]
+      } = _applyDecs2311(this, [type.define({
+        className: "Tr2RandomDirectionAttributeGenerator",
+        family: "particle"
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Type")], 16, "elementType"], [[io, io.persist, type, type.string], 16, "customName"], [[io, io.read, type, type.boolean], 16, "valid"], [[impl, impl.implemented], 18, "Bind"], [[impl, impl.adapted], 18, "Generate"], [[impl, impl.implemented], 18, "GetDimension"], [[impl, impl.implemented], 18, "GetName"]], 0, void 0, CjsModel));
+    }
+    constructor(...args) {
+      super(...args);
+      _init_extra_valid(this);
+    }
+    #element = (_initProto(this), null);
+
+    /** m_name.m_type (Tr2ParticleElementDeclarationName::Type) [READWRITE, PERSIST, ENUM] */
+    elementType = _init_elementType(this, _Tr2ParticleElementDe.Type.CUSTOM);
+
+    /** m_name.m_name (std::string) [READWRITE, PERSIST] */
+    customName = (_init_extra_elementType(this), _init_customName(this, ""));
+
+    /** m_valid (bool) [READ] */
+    valid = (_init_extra_customName(this), _init_valid(this, false));
+    Bind(particleSystem) {
+      this.#element = this.elementType === _Tr2ParticleElementDe.Type.CUSTOM ? particleSystem?.GetElement?.(this.customName) : particleSystem?.GetElement?.(this.elementType);
+      this.valid = !!this.#element;
+      return this.valid;
+    }
+    Generate(position, velocity, index) {
+      if (!this.valid) {
+        return;
+      }
+      const value = new Float32Array(this.#element.dimension);
+      let lengthSquared = 0;
+      for (let component = 0; component < value.length; component++) {
+        value[component] = -1 + 2 * Math.random();
+        lengthSquared += value[component] * value[component];
+      }
+      if (lengthSquared === 0) {
+        value[0] = 1;
+      } else {
+        const inverseLength = 1 / Math.sqrt(lengthSquared);
+        for (let component = 0; component < value.length; component++) {
+          value[component] *= inverseLength;
+        }
+      }
+      const offset = this.#element.startOffset + index * this.#element.instanceStride;
+      this.#element.buffer.set(value, offset);
+    }
+    GetDimension() {
+      return this.valid ? this.#element.dimension : 0;
+    }
+    GetName() {
+      return this.elementType === _Tr2ParticleElementDe.Type.CUSTOM ? this.customName : Object.keys(_Tr2ParticleElementDe.Type).find(name => _Tr2ParticleElementDe.Type[name] === this.elementType) ?? "";
+    }
+  }];
+  Type = _Tr2ParticleElementDe.Type;
+  constructor() {
+    super(_Tr2RandomDirectionAt), _initClass();
   }
-  constructor(...args) {
-    super(...args);
-    _init_extra_valid(this);
-  }
-  /** m_valid (bool) [READ] */
-  valid = _init_valid(this, false);
-  static {
-    _initClass();
-  }
-}
+}();
 
 export { _Tr2RandomDirectionAt as Tr2RandomDirectionAttributeGenerator };
 //# sourceMappingURL=Tr2RandomDirectionAttributeGenerator.js.map

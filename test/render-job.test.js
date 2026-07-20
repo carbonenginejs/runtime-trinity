@@ -1,9 +1,28 @@
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { Tr2RenderContext } from "../npm/dist/trinityCore/index.js";
-import { Tr2RenderJobs, TriRenderJob, TriRenderStep, TriStepClear, TriStepCopyRenderTarget, TriStepEnableWireframeMode, TriStepGenerateMipMaps, TriStepPopDepthStencil, TriStepPopRenderTarget, TriStepPresentSwapChain, TriStepPushDepthStencil, TriStepPushRenderTarget, TriStepResolve, TriStepRunJob, TriStepSetDepthStencil, TriStepSetProjection, TriStepSetRenderState, TriStepSetRenderTarget, TriStepSetStdRndStates, TriStepSetView, TriStepSetViewport, TriStepSetVisualizationMode } from "../npm/dist/renderJob/index.js";
+import { Tr2RenderContext, Tr2VariableStore, Tr2VisibilityResults } from "../npm/dist/trinityCore/index.js";
+import { Tr2RenderJobs, TriRenderJob, TriRenderStep, TriStepClear, TriStepCopyRenderTarget, TriStepEnableWireframeMode, TriStepGenerateMipMaps, TriStepPopDepthStencil, TriStepPopRenderTarget, TriStepPresentSwapChain, TriStepPushDepthStencil, TriStepPushRenderTarget, TriStepRemoteSync, TriStepResolve, TriStepRunJob, TriStepSetDepthStencil, TriStepSetProjection, TriStepSetRenderState, TriStepSetRenderTarget, TriStepSetStdRndStates, TriStepSetView, TriStepSetViewport, TriStepSetVisualizationMode } from "../npm/dist/renderJob/index.js";
 import { TriStepFilterVisibilityResults } from "../npm/dist/generated/renderJob/TriStepFilterVisibilityResults.js";
+import { TriStepPythonCB } from "../npm/dist/generated/renderJob/TriStepPythonCB.js";
+import { TriStepRenderEffect } from "../npm/dist/generated/renderJob/TriStepRenderEffect.js";
+import { TriStepRenderObject } from "../npm/dist/generated/renderJob/TriStepRenderObject.js";
+import { TriStepRenderPass } from "../npm/dist/generated/renderJob/TriStepRenderPass.js";
+import { TriStepRenderScene } from "../npm/dist/generated/renderJob/TriStepRenderScene.js";
+import { TriStepRenderSceneDebug } from "../npm/dist/generated/renderJob/TriStepRenderSceneDebug.js";
+import { TriStepRunComputeShader } from "../npm/dist/generated/renderJob/TriStepRunComputeShader.js";
+import { TriStepSetUpscalingContextID } from "../npm/dist/generated/renderJob/TriStepSetUpscalingContextID.js";
+import { TriStepSetDebugRenderer } from "../npm/dist/generated/renderJob/TriStepSetDebugRenderer.js";
+import { TriStepSetVariableStore } from "../npm/dist/generated/renderJob/TriStepSetVariableStore.js";
+import { TriStepUpdate } from "../npm/dist/generated/renderJob/TriStepUpdate.js";
+import { Tr2RenderNodeEffect } from "../npm/dist/generated/renderJob/Tr2RenderNodeEffect.js";
+import { TriStepClearUav } from "../npm/dist/generated/renderJob/TriStepClearUav.js";
+import { TriStepRenderAtlas } from "../npm/dist/generated/renderJob/TriStepRenderAtlas.js";
+import { TriStepRenderLineGraph } from "../npm/dist/generated/renderJob/TriStepRenderLineGraph.js";
+import { TriStepRenderTexture } from "../npm/dist/generated/renderJob/TriStepRenderTexture.js";
+import { TriStepRenderDebug } from "../npm/dist/generated/renderJob/TriStepRenderDebug.js";
+import { TriStepToggleCubemap } from "../npm/dist/generated/renderJob/TriStepToggleCubemap.js";
+import { Tr2LineGraph } from "../npm/dist/generated/trinityCore/Tr2LineGraph.js";
 
 
 function assertEquals(actual, expected, message)
@@ -25,6 +44,210 @@ function step(name, execute, events = null)
 test("generated render steps enforce format-carbon inheritance through maintained parents", () =>
 {
   assertEquals(new TriStepFilterVisibilityResults() instanceof TriRenderStep, true);
+});
+
+test("TriStepToggleCubemap applies Carbon's interior scene toggle", () =>
+{
+  const calls = [];
+  const scene = {
+    SetRenderBackgroundCubeMap(value)
+    {
+      calls.push(value);
+    }
+  };
+  const toggle = new TriStepToggleCubemap();
+  toggle.__init__(false, scene);
+  assertEquals(toggle.m_showCubemap, false);
+  assertEquals(toggle.Execute(0, 0, null), TriRenderStep.RS_OK);
+  assertEquals(calls.join(","), "false");
+
+  toggle.__init__();
+  assertEquals(toggle.m_showCubemap, true);
+  assertEquals(toggle.Execute(0, 0, null), TriRenderStep.RS_OK);
+});
+
+test("TriStepRemoteSync preserves its graph identity and fails unsupported browser synchronization", () =>
+{
+  const remote = new TriStepRemoteSync();
+  remote.__init__(7);
+  assertEquals(remote.GetId(), 7);
+  assertEquals(remote.Execute(0, 0, null), TriRenderStep.RS_FAILED);
+  assertEquals(CjsSchema.getField(TriStepRemoteSync, "id"), null);
+  assertEquals(CjsSchema.GetConstructor("TriStepRemoteSync"), TriStepRemoteSync);
+});
+
+test("portable generated render steps initialize and emit backend-neutral work", () =>
+{
+  const context = new Tr2RenderContext();
+  const events = [];
+  const scene = {
+    Render: value => events.push(["scene", value]),
+    RenderDebugInfo: value => events.push(["debug", value]),
+    RenderPass: (pass, value) => { events.push(["pass", pass, value]); return 1; }
+  };
+
+  const renderScene = new TriStepRenderScene();
+  renderScene.__init__(scene);
+  assertEquals(renderScene.Execute(0, 0, context), TriRenderStep.RS_OK);
+
+  const renderDebug = new TriStepRenderSceneDebug();
+  renderDebug.__init__(scene);
+  assertEquals(renderDebug.Execute(0, 0, context), TriRenderStep.RS_OK);
+
+  const renderPass = new TriStepRenderPass();
+  renderPass.__init__(scene, TriStepRenderPass.PassType.RP_DEPTH_PASS);
+  assertEquals(renderPass.Execute(0, 0, context), TriRenderStep.RS_TERMINATE);
+
+  const renderObject = new TriStepRenderObject();
+  renderObject.__init__({ name: "renderable" });
+  assertEquals(renderObject.renderOpaque, true);
+  renderObject.Execute(0, 0, context);
+
+  const renderEffect = new TriStepRenderEffect();
+  renderEffect.__init__({ name: "effect" }, { name: "constants" });
+  renderEffect.Execute(0, 0, context);
+
+  const compute = new TriStepRunComputeShader();
+  compute.__init__({ name: "compute" }, 2, 3, 4);
+  compute.Execute(0, 0, context);
+
+  const update = new TriStepUpdate();
+  update.__init__({ Update: (realTime, simTime) => events.push(["update", realTime, simTime]) });
+  update.Execute(5, 6, context);
+
+  const upscaling = new TriStepSetUpscalingContextID();
+  upscaling.__init__();
+  assertEquals(upscaling.upscalingContextID, 0xffffffff);
+  upscaling.Execute(0, 0, context);
+
+  const intents = context.GetIntents();
+  assertEquals(intents.map(intent => intent.type).join(","), "render-object,draw-effect,run-compute-shader,set-upscaling-context-id");
+  assertEquals(events[0][0], "scene");
+  assertEquals(events.at(-1).join(","), "update,5,6");
+});
+
+test("Tr2RenderNodeEffect groups Carbon source bindings and named outputs", () =>
+{
+  const node = new Tr2RenderNodeEffect();
+  const source = {};
+  assertEquals(node.AddSource("MainMap", source), true);
+  assertEquals(node.AddSource("DepthMap", source, "Depth"), true);
+  assertEquals(node.AddSource("SecondDepthMap", source, "Depth"), true);
+  assertEquals(node.sources.length, 1);
+  assertEquals(node.sources[0].params.length, 3);
+  assertEquals(node.sources[0].outputNames.join(","), "Depth");
+  assertEquals(node.sources[0].outputs.length, 1);
+  assertEquals(node.sources[0].params[1].outputIndex, 0);
+  assertEquals(node.sources[0].params[2].outputIndex, 0);
+  assertEquals(node.inputNodes.length, 3);
+  assertEquals(node.AddSource("Invalid", null), false);
+});
+
+test("portable generated resource steps initialize and emit render intents", () =>
+{
+  const context = new Tr2RenderContext();
+  const buffer = {};
+  const clear = new TriStepClearUav();
+  clear.__init__(buffer, new Float32Array([0.25, 0.5, 0.75, 1]));
+  assertEquals(clear.clearWithFloat, true);
+  assertEquals(clear.Execute(0, 0, context), TriRenderStep.RS_OK);
+
+  const atlas = {};
+  const focus = {};
+  const renderAtlas = new TriStepRenderAtlas();
+  renderAtlas.__init__(atlas, focus);
+  renderAtlas.Execute(0, 0, context);
+  assertEquals(renderAtlas.atlas, atlas);
+  assertEquals(renderAtlas.focus, focus);
+
+  const graph = new Tr2LineGraph();
+  graph.SetSize(2);
+  graph.Add(12);
+  graph.Add(3);
+  let scaleChanges = 0;
+  const renderGraphs = new TriStepRenderLineGraph();
+  renderGraphs.__init__([graph]);
+  renderGraphs.scaleChangeCallback = () => scaleChanges++;
+  renderGraphs.Execute(0, 0, context);
+  assertEquals(renderGraphs.scale, 0.05);
+  assertEquals(scaleChanges, 1);
+
+  const texture = { width: 64, height: 32 };
+  const renderTexture = new TriStepRenderTexture();
+  renderTexture.__init__(texture);
+  renderTexture.Execute(0, 0, context);
+  assertEquals(renderTexture.textureSize[0], 64);
+  assertEquals(renderTexture.textureSize[1], 32);
+
+  assertEquals(context.GetIntents().map(intent => intent.type).join(","), "clear-uav,render-atlas,render-line-graphs,render-texture");
+});
+
+test("TriStepFilterVisibilityResults applies Carbon event and object masks", () =>
+{
+  const input = new Tr2VisibilityResults();
+  const output = new Tr2VisibilityResults();
+  const excluded = {};
+  const kept = {};
+  input.AddVisibilityEvent({ eventType: 1, userData: excluded });
+  input.AddVisibilityEvent({ eventType: 1, userData: kept });
+  input.AddVisibilityEvent({ eventType: 2, userData: null });
+  const filter = new TriStepFilterVisibilityResults();
+  filter.__init__(input, output, 1, TriStepFilterVisibilityResults.FilterType.EXCLUDE_OBJECTS_IN_LIST);
+  filter.objects.push(excluded);
+  assertEquals(filter.Execute(), TriRenderStep.RS_OK);
+  assertEquals(output.GetNumVisibilityEvents(), 1);
+  assertEquals(output.GetEvents()[0].userData, kept);
+
+  filter.filterType = TriStepFilterVisibilityResults.FilterType.ONLY_OBJECTS_IN_LIST;
+  filter.Execute();
+  assertEquals(output.GetNumVisibilityEvents(), 1);
+  assertEquals(output.GetEvents()[0].userData, excluded);
+});
+
+test("TriStepRenderDebug accumulates CPU commands and snapshots them on execute", () =>
+{
+  const debug = new TriStepRenderDebug();
+  debug.DrawLine([0, 0, 0], 0xffffffff, [1, 0, 0], 0xff00ff00);
+  debug.DrawBox([-1, -1, -1], [1, 1, 1], 0xffffffff);
+  debug.DrawCylinder([0, 0, 1], [0, 0, 0], 0.5, 4, 0xffffffff);
+  debug.DrawCone([0, 0, 1], [0, 0, 0], 0.5, 4, 0xffffffff);
+  debug.Print2D(10, 20, 0xffffffff, "screen");
+  debug.Print3D([1, 2, 3], 0xff0000ff, "world");
+  const context = new Tr2RenderContext();
+  assertEquals(debug.Execute(0, 0, context), TriRenderStep.RS_OK);
+  const intent = context.GetIntents().at(-1);
+  assertEquals(intent.type, "render-debug");
+  assertEquals(intent.vertices.length, 106);
+  assertEquals(intent.text2d[0].message, "screen");
+  assertEquals(intent.text3d[0].position.join(","), "1,2,3");
+  assertEquals(debug.lineSet.vertices.length, 0);
+  assertEquals(debug.text2d.length, 0);
+  assertEquals(debug.text3d.length, 0);
+});
+
+test("callback, debug-renderer, and variable-store steps preserve Carbon behavior", () =>
+{
+  const context = new Tr2RenderContext();
+  let callbackCount = 0;
+  const callback = new TriStepPythonCB();
+  callback.__init__(() => callbackCount++);
+  assertEquals(callback.Execute(0, 0, context), TriRenderStep.RS_OK);
+  assertEquals(callbackCount, 1);
+
+  const renderer = { name: "debug" };
+  const debug = new TriStepSetDebugRenderer();
+  debug.__init__(renderer);
+  debug.Execute(0, 0, context);
+  assertEquals(context.GetIntents().at(-1).type, "set-debug-renderer");
+  assertEquals(context.GetIntents().at(-1).renderer, renderer);
+
+  const variable = new TriStepSetVariableStore();
+  variable.__init__("renderStepTestValue", [1, 2, 3]);
+  const read = variable.GetValue();
+  read[0] = 9;
+  assertEquals(variable.GetValue()[0], 1);
+  assertEquals(variable.Execute(0, 0, context), TriRenderStep.RS_OK);
+  assertEquals(Tr2VariableStore.GlobalStore().FindVariable("renderStepTestValue").GetValue()[2], 3);
 });
 
 test("TriRenderJob exposes the ordered Carbon graph contract", () =>

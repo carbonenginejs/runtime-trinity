@@ -16,7 +16,7 @@ class TriStepRenderAtlas extends _TriRenderStep {
     } = _applyDecs2311(this, [type.define({
       className: "TriStepRenderAtlas",
       family: "renderJob"
-    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2AtlasTexture")], 16, "focus"], [[io, io.readwrite, void 0, type.objectRef("Tr2TextureAtlas")], 16, "atlas"], [[io, io.readwrite, type, type.vec4], 16, "focusColour"], [[io, io.readwrite, type, type.vec4], 16, "borderColour"], [[io, io.readwrite, type, type.vec4], 16, "freeColour"], [[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, type, type.boolean], 16, "showFree"], [[io, io.readwrite, type, type.boolean], 16, "showUsed"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "__init__"]], 0, void 0, _TriRenderStep));
+    })], [[[io, io.readwrite, void 0, type.objectRef("Tr2AtlasTexture")], 16, "focus"], [[io, io.readwrite, void 0, type.objectRef("Tr2TextureAtlas")], 16, "atlas"], [[io, io.readwrite, type, type.vec4], 16, "focusColour"], [[io, io.readwrite, type, type.vec4], 16, "borderColour"], [[io, io.readwrite, type, type.vec4], 16, "freeColour"], [[io, io.readwrite, type, type.vec2], 16, "brTexCoord"], [[io, io.readwrite, type, type.boolean], 16, "showFree"], [[io, io.readwrite, type, type.boolean], 16, "showUsed"], [[io, io.readwrite, type, type.vec2], 16, "tlTexCoord"], [[carbon, carbon.method, impl, impl.implemented], 18, "__init__"], [[carbon, carbon.method, impl, impl.adapted], 18, "Execute"]], 0, void 0, _TriRenderStep));
   }
   constructor(...args) {
     super(...args);
@@ -50,8 +50,13 @@ class TriStepRenderAtlas extends _TriRenderStep {
   tlTexCoord = (_init_extra_showUsed(this), _init_tlTexCoord(this, vec2.create()));
 
   /** Carbon method __init__ -> py__init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
-  __init__(...args) {
-    throw new Error("TriStepRenderAtlas.__init__ is not implemented in CarbonEngineJS.");
+  __init__(atlas = null, focus = null) {
+    this.atlas = atlas;
+    this.focus = focus;
+  }
+  Execute(_realTime, _simTime, executor) {
+    if (this.atlas) executor?.RenderAtlas?.(this);
+    return _TriRenderStep.Result.RS_OK;
   }
   static {
     _initClass();

@@ -41,42 +41,58 @@ export class EveMultiEffect extends CjsModel
 
   /** Carbon method Rebind (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
-  @impl.notImplemented
-  Rebind(...args)
+  @impl.adapted
+  Rebind(onlyUpdateBindings = false)
   {
-    throw new Error("EveMultiEffect.Rebind is not implemented in CarbonEngineJS.");
+    for (const binding of this.bindings)
+    {
+      binding?.SetOwner?.(this);
+      binding?.Link?.();
+      binding?.Update?.(0);
+    }
+    if (!onlyUpdateBindings)
+    {
+      for (const controller of this.controllers) controller?.Link?.(this);
+    }
+    return true;
   }
 
   /** Carbon method HandleControllerEvent (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  HandleControllerEvent(...args)
+  @impl.implemented
+  HandleControllerEvent(name)
   {
-    throw new Error("EveMultiEffect.HandleControllerEvent is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.HandleEvent?.(name);
   }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetControllerVariable(...args)
+  @impl.implemented
+  SetControllerVariable(name, value)
   {
-    throw new Error("EveMultiEffect.SetControllerVariable is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.SetVariable?.(name, value);
   }
 
   /** Carbon method SetParameter (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  SetParameter(...args)
+  @impl.adapted
+  SetParameter(parameterName, object)
   {
-    throw new Error("EveMultiEffect.SetParameter is not implemented in CarbonEngineJS.");
+    const name = String(parameterName);
+    const parameter = this.parameters.find(item => (item?.GetName?.() ?? item?.name) === name);
+    if (!parameter) return false;
+    if (parameter.SetParameterObject) parameter.SetParameterObject(object);
+    else parameter.object = object;
+    this.Rebind();
+    return true;
   }
 
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   @carbon.method
-  @impl.notImplemented
-  StartControllers(...args)
+  @impl.implemented
+  StartControllers()
   {
-    throw new Error("EveMultiEffect.StartControllers is not implemented in CarbonEngineJS.");
+    for (const controller of this.controllers) controller?.Start?.();
   }
 
 }

@@ -1,3 +1,4 @@
+export * from "./GrannyBoneOffset.js";
 export * from "./Tr2ExpressionTermInfo.js";
 export * from "./Tr2DepthStencil.js";
 export * from "./Tr2DirectInstanceData.js";
@@ -20,5 +21,6 @@ export * from "./TriProjection.js";
 export * from "./TriView.js";
 export * from "./TriVariable.js";
 export * from "./TriRect.js";
+export * from "./TriSettings.js";
 export * from "./TriViewport.js";
 export * from "./TriObserverLocal.js";

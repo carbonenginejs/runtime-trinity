@@ -16,31 +16,31 @@ export class Tr2BoneMatrixCurve extends CjsModel
   static #identityMatrix = mat4.create();
 
   @io.read
-  @type.unknown
+  @type.mat4
   currentValue = mat4.create();
 
   @io.persist
-  @type.unknown
+  @type.string
   name = "";
 
   @io.persist
-  @type.unknown
+  @type.float32
   length = 1;
 
   @io.persist
-  @type.unknown
+  @type.boolean
   cycle = true;
 
   @io.persist
-  @type.unknown
+  @type.boolean
   reversed = false;
 
   @io.persist
-  @type.unknown
+  @type.mat4
   startValue = mat4.create();
 
   @io.persist
-  @type.unknown
+  @type.mat4
   endValue = mat4.create();
 
   @io.readwrite
@@ -52,7 +52,7 @@ export class Tr2BoneMatrixCurve extends CjsModel
   transform = mat4.create();
 
   @io.persistOnly
-  @type.unknown
+  @type.list("Tr2MatrixKey")
   keys = [];
 
   #bone = "";
