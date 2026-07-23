@@ -1,6 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { PerLightShadowSetting } from '../../generated/eve/lights/enums.js';
 import { createCjsLightDataView, setCjsLightDataOwnerValues } from './CjsLightData.js';
@@ -16,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2Light",
         family: "eve/lights"
-      })], [[[type, type.string], 16, "name"], [[type, type.float64], 16, "startTime"], [[type, type.boolean], 16, "isDynamic"], [[type, type.float32], 16, "brightnessMultiplier"], [[type, type.mat4], 16, "boneTransform"], [type.objectRef("Tr2LightProfileRes"), 0, "lightProfile"], [[type, type.string], 16, "lightProfilePath"], [[type, type.int32, void 0, schema.enum("LIGHT_TYPE")], 16, "type"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetBrightnessMultiplier"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLightColor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBrightnessMultiplier"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"]], 0, void 0, CjsModel));
+      })], [[[type, type.string], 16, "name"], [[type, type.float64], 16, "startTime"], [[type, type.boolean], 16, "isDynamic"], [[type, type.float32], 16, "brightnessMultiplier"], [[type, type.mat4], 16, "boneTransform"], [type.objectRef("Tr2LightProfileRes"), 0, "lightProfile"], [[type, type.string], 16, "lightProfilePath"], [[type, type.int32, void 0, schema.enum("LIGHT_TYPE")], 16, "type"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetBrightnessMultiplier"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLightColor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLightData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBrightnessMultiplier"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The Perlin noise flicker (cpp:157-161) reads the global frame clock (BeOS GetCurrentFrameTime) - an engine seam; the base brightness is used until it lands.")], 18, "GetLight"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"]], 0, void 0, CjsModel));
     }
     name = (_initProto(this), _init_name(this, ""));
     startTime = (_init_extra_name(this), _init_startTime(this, 0));
@@ -61,6 +62,31 @@ new class extends _identity {
     }
     GetBrightnessMultiplier() {
       return this.brightnessMultiplier;
+    }
+
+    /** Carbon Tr2Light::GetLight (Tr2Light.cpp:152-163): position and radius
+     * straight from the light data, color = authored rgb * brightness. Carbon's
+     * three reference out-params become one out record (JS out-params go last
+     * and are returned). The color is the rgb triple - the alpha channel is
+     * unused by every Carbon consumer of this method (EveChildCloud2's light
+     * block takes GetXYZ). */
+    GetLight(out = {
+      position: vec3.create(),
+      radius: 0,
+      color: vec3.create()
+    }) {
+      const lightData = this.lightData;
+      const position = lightData.position;
+      if (position) {
+        vec3.copy(out.position, position);
+      }
+      out.radius = lightData.radius ?? 0;
+      const brightness = lightData.brightness ?? 0;
+      const color = lightData.color;
+      out.color[0] = (color?.[0] ?? 0) * brightness;
+      out.color[1] = (color?.[1] ?? 0) * brightness;
+      out.color[2] = (color?.[2] ?? 0) * brightness;
+      return out;
     }
     Initialize() {
       // Light-profile resolution is supplied by the resource/runtime adapter.
