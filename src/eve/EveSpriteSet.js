@@ -11,6 +11,7 @@ import { EveSpriteLight } from "./EveSpriteLight.js";
 @type.define({ className: "EveSpriteSet", family: "eve/attachment/sprites" })
 export class EveSpriteSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.notify
   @io.persist
   @type.list("EveSpriteSetItem")
@@ -20,11 +21,13 @@ export class EveSpriteSet extends EveEntity
   @type.string
   name = "";
 
+  @io.rebuild("packedGeometry")
   @io.notify
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   skinned = false;

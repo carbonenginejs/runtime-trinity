@@ -11,6 +11,7 @@ import { EveBannerLight } from "./EveBannerLight.js";
 @type.define({ className: "EveBannerSet", family: "eve/attachment/banners" })
 export class EveBannerSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.list("EveBannerItem")
   banners = [];
@@ -19,6 +20,7 @@ export class EveBannerSet extends EveEntity
   @type.string
   name = "";
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;

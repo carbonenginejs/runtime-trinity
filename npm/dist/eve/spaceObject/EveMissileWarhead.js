@@ -256,7 +256,10 @@ new class extends _identity {
     GetWarheadID() {
       return this.id;
     }
-    GetPerObjectData(out = new _EveMissileWarheadPer()) {
+    GetPerObjectData(accumulatorOrOut = new _EveMissileWarheadPer()) {
+      // Accepts the Carbon accumulator contract (Allocate) or a caller-owned
+      // output record (the earlier JS shape, kept for compatibility).
+      const out = typeof accumulatorOrOut?.Allocate === "function" ? accumulatorOrOut.Allocate(_EveMissileWarheadPer) : accumulatorOrOut;
       mat4.transpose(out.world, this.worldTransform);
       vec4.set(out.missileSize, this.warheadRadius, this.warheadLength, 0, 0);
       return out;

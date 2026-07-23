@@ -136,6 +136,7 @@ export class EveChildMesh extends EveChildTransform
   @schema.enum("Origin")
   origin = 0;
 
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.array("mat4")
   instanceTransforms = [];

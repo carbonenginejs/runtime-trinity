@@ -13,6 +13,7 @@ export class Tr2Mesh extends Tr2MeshBase
 
   #morphAnimations = new Map();
 
+  @io.rebuild("geometry")
   @io.notify
   @io.persist
   @type.string
@@ -27,6 +28,7 @@ export class Tr2Mesh extends Tr2MeshBase
   @type.boolean
   deferGeometryLoad = false;
 
+  @io.rebuild("geometry")
   @io.read
   @type.objectRef("TriGeometryRes")
   geometry = null;
@@ -71,6 +73,9 @@ export class Tr2Mesh extends Tr2MeshBase
   {
     this.geometryResPath = "";
     this.geometry = resource ?? null;
+    // Direct mutation bypasses SetValues, so schedule the declared consequence
+    // explicitly (kb section 8: class code may add rebuild tokens).
+    this.__state.rebuild.add("geometry");
     this.InitializeMorphTargets();
   }
 

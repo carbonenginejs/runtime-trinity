@@ -207,6 +207,23 @@ Maintained target/depth, clear, viewport, view, projection, resolve, copy,
 mipmap and presentation steps normalize Carbon arguments into this intent
 surface. They do not import WebGL/WebGPU APIs or decide pass boundaries.
 
+## Render-batch collection
+
+`src/trinityCore/` hosts the GPU-free render-batch collection layer mirroring
+Carbon's `TriRenderBatch`/`TriRenderBatchAccumulator`: `Tr2RenderBatch` (a neutral
+DATA struct — effect key, geometry source, per-object data, render mode, draw
+args, `groupCount`; no render method), `ITriRenderBatchAccumulator`/
+`TriRenderBatchAccumulator` (collect → sort → GDPR group-count), `TriRenderBatchMap`
+(one accumulator per `TriBatchType`, `GetBatchesFromRenderables`), `Tr2PerObjectData`,
+and `Tr2MeshBase.GetBatches`/`CreateGeometryBatch` (per-area builder emitting a
+deferred geometry descriptor).
+
+A batch is neutral CPU DATA; the engine realizes referenced resources and
+dispatches the finalized accumulators — runtime-trinity never holds GPU handles.
+The target architecture (library-level `CjsBatchManager`, pull-realize via
+`__state.rebuild` tokens, one CPU path for WebGL1/WebGL2/WebGPU) is
+`.agents/BATCH-PIPELINE-PLAN.md`.
+
 ## Distribution CPU contract
 
 The Eve distribution family is maintained as browser-portable CPU/object-graph

@@ -8,6 +8,7 @@ import { EvePlaneLight } from "./EvePlaneLight.js";
 @type.define({ className: "EvePlaneSet", family: "eve/attachment/planes" })
 export class EvePlaneSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.notify
   @io.persist
   @type.uint8
@@ -17,10 +18,12 @@ export class EvePlaneSet extends EveEntity
   @type.boolean
   hideOnLowQuality = false;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   skinned = false;
@@ -33,6 +36,7 @@ export class EvePlaneSet extends EveEntity
   @type.string
   name = "";
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.list("EvePlaneSetItem")
   planes = [];

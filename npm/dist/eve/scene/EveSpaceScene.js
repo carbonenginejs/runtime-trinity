@@ -322,6 +322,16 @@ new class extends _identity {
       throw new Error("EveSpaceScene.PickInfinity is not implemented in CarbonEngineJS.");
     }
 
+    /** Gathers batchable renderables from the scene's objects for the batch
+     * collection pass. Carbon gathers these inline in EveSpaceScene::GatherBatches
+     * (EveSpaceScene.cpp:1433-1514): objects self-filter on the visibility flags
+     * stamped by the update pass, so this aggregation stays GPU-free. */
+    GetRenderables(out = []) {
+      for (const object of this.objects) object?.GetRenderables?.(out);
+      this.cameraAttachmentParent?.GetRenderables?.(out);
+      return out;
+    }
+
     /** Carbon method ReregisterEntities (MAP_METHOD_AND_WRAP). */
     ReregisterEntities() {
       for (const collection of [this.objects, this.backgroundObjects, this.planets]) {

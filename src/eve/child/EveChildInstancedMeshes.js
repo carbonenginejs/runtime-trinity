@@ -10,18 +10,22 @@ import { EveEntity } from "../../generated/eve/EveEntity.js";
 @type.define({ className: "EveChildInstancedMeshArea", family: "eve/child" })
 export class EveChildInstancedMeshArea extends CjsModel
 {
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
 
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.uint32
   batchType = 0;
 
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.uint32
   areaIndex = 0;
 
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.uint32
   areaCount = 1;
@@ -35,10 +39,12 @@ export class EveChildInstancedMeshArea extends CjsModel
 @type.define({ className: "EveChildInstancedMeshInstance", family: "eve/child" })
 export class EveChildInstancedMeshInstance extends CjsModel
 {
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.mat4
   transform = mat4.create();
 
+  @io.rebuild("instanceBuffer")
   @io.persist
   @type.uint32
   sphereIndex = 0;

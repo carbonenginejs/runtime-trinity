@@ -8,6 +8,7 @@ import { EveHazeSetLight } from "./EveHazeSetLight.js";
 @type.define({ className: "EveHazeSet", family: "eve/attachment/haze" })
 export class EveHazeSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
@@ -20,6 +21,7 @@ export class EveHazeSet extends EveEntity
   @type.string
   name = "";
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.list("EveHazeSetItem")
   hazes = [];

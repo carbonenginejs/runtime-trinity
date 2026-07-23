@@ -13,7 +13,7 @@ class Tr2Mesh extends _Tr2MeshBase {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2Mesh",
       family: "trinityCore"
-    })], [[[io, io.notify, io, io.persist, type, type.string], 16, "geometryResPath"], [[io, io.persistOnly, void 0, type.list("Tr2SerializedMorphAnimation")], 16, "serializedMorphAnimations"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "deferGeometryLoad"], [[io, io.read, void 0, type.objectRef("TriGeometryRes")], 16, "geometry"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshResPath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryRes"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGeometryResPath"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAreasCount"], [[impl, impl.adapted], 18, "InitializeMorphTargets"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMorphTargetNames"], [[impl, impl.implemented], 18, "IsBakedMorph"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetMorphTargetWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMorphTargetWeight"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBakedMorphTarget"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBakedMorphTarget"], [[impl, impl.adapted], 18, "GetAllBakedMorphTargetStates"], [[impl, impl.adapted], 18, "GetMorphAnimations"]], 0, void 0, _Tr2MeshBase));
+    })], [[[void 0, io.rebuild("geometry"), io, io.notify, io, io.persist, type, type.string], 16, "geometryResPath"], [[io, io.persistOnly, void 0, type.list("Tr2SerializedMorphAnimation")], 16, "serializedMorphAnimations"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "deferGeometryLoad"], [[void 0, io.rebuild("geometry"), io, io.read, void 0, type.objectRef("TriGeometryRes")], 16, "geometry"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshResPath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryRes"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGeometryResPath"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAreasCount"], [[impl, impl.adapted], 18, "InitializeMorphTargets"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMorphTargetNames"], [[impl, impl.implemented], 18, "IsBakedMorph"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetMorphTargetWeight"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMorphTargetWeight"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBakedMorphTarget"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBakedMorphTarget"], [[impl, impl.adapted], 18, "GetAllBakedMorphTargetStates"], [[impl, impl.adapted], 18, "GetMorphAnimations"]], 0, void 0, _Tr2MeshBase));
   }
   constructor(...args) {
     super(...args);
@@ -46,6 +46,9 @@ class Tr2Mesh extends _Tr2MeshBase {
   SetGeometryRes(resource) {
     this.geometryResPath = "";
     this.geometry = resource ?? null;
+    // Direct mutation bypasses SetValues, so schedule the declared consequence
+    // explicitly (kb section 8: class code may add rebuild tokens).
+    this.__state.rebuild.add("geometry");
     this.InitializeMorphTargets();
   }
   GetGeometryResource() {

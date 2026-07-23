@@ -160,6 +160,7 @@ export class EveBoosterSet2 extends EveEntity
   effectFar = null;
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
@@ -253,6 +254,7 @@ export class EveBoosterSet2 extends EveEntity
   trails = null;
 
   @io.flag("items")
+  @io.rebuild("packedGeometry")
   @io.notify
   @io.persist
   @type.list("EveBoosterSet2Item")

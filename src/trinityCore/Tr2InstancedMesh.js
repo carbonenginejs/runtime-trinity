@@ -14,6 +14,7 @@ export class Tr2InstancedMesh extends Tr2Mesh
   @schema.enum("BoundsMethod")
   boundsMethod = 0;
 
+  @io.rebuild("instanceBuffer")
   @io.notify
   @io.persist
   @type.string
@@ -31,10 +32,12 @@ export class Tr2InstancedMesh extends Tr2Mesh
   @type.vec3
   minBounds = vec3.create();
 
+  @io.rebuild("instanceBuffer")
   @io.persistOnly
   @type.objectRef("ITr2InstanceData")
   instanceGeometryResource = null;
 
+  @io.rebuild("instanceBuffer")
   @io.notify
   @io.persist
   @type.int32

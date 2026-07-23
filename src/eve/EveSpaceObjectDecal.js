@@ -52,6 +52,7 @@ export class EveSpaceObjectDecal extends CjsModel
   @type.int32
   parentBoneIndex = -1;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   decalEffect = null;
@@ -62,6 +63,7 @@ export class EveSpaceObjectDecal extends CjsModel
 
   // SOF-authored per-LOD triangle indices; persisted so the values
   // interchange reproduces Carbon's hidden decal geometry selection.
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.array("unknown")
   staticIndexBuffers = [];

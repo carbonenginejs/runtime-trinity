@@ -11,23 +11,27 @@ export class Tr2SamplerOverride extends CjsModel
 {
 
   /** name (BlueSharedString) */
+  @io.rebuild("bindings")
   @io.persist
   @type.string
   name = "";
 
   /** addressU (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.rebuild("bindings")
   @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")
   addressU = 1;
 
   /** addressV (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.rebuild("bindings")
   @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")
   addressV = 1;
 
   /** addressW (Tr2RenderContextEnum::TextureAddressMode - enum Tr2RenderContextEnum) */
+  @io.rebuild("bindings")
   @io.persist
   @type.int32
   @schema.enum("TextureAddressMode")

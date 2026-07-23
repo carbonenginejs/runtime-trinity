@@ -27,12 +27,14 @@ export class Tr2Effect extends Tr2Material
 
   /** m_effectFilePath (std::string) [READWRITE, PERSIST, NOTIFY] */
   @io.notify
+  @io.rebuild("pipeline")
   @io.always
   @io.persist
   @type.string
   effectFilePath = "";
 
   /** m_options (PTr2ShaderOptionStructureList) [READ, PERSIST] */
+  @io.rebuild("pipeline")
   @io.persist
   @type.list("Tr2ShaderOption")
   options = [];
@@ -43,16 +45,19 @@ export class Tr2Effect extends Tr2Material
   name = "";
 
   /** m_constParameters (PTr2ConstantEffectParameterStructureList) [READ, PERSIST] */
+  @io.rebuild("bindings")
   @io.persist
   @type.list("Tr2ConstantEffectParameter")
   constParameters = [];
 
   /** m_parameters (EffectParameterList) [READ, PERSIST] */
+  @io.rebuild("bindings")
   @io.persist
   @type.list("EffectParameter")
   parameters = [];
 
   /** m_resources (EffectResourceList) [READ, PERSIST] */
+  @io.rebuild("bindings")
   @io.persist
   @type.list("EffectResource")
   resources = [];
@@ -68,6 +73,7 @@ export class Tr2Effect extends Tr2Material
   actualEffectFilePath = "";
 
   /** m_samplerOverrides (PTr2SamplerOverrideStructureList) [READ, PERSIST] */
+  @io.rebuild("bindings")
   @io.persist
   @type.list("Tr2SamplerOverride")
   samplerOverrides = [];

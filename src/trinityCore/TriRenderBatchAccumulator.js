@@ -1,0 +1,158 @@
+// Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
+//   trinity/TriRenderBatch.h (TriRenderBatchAccumulator<KeyGenerator>,
+//                             DefaultKeyGenerator, EffectKeyGenerator)
+//
+// GPU-free render-batch accumulator: collects committed batches into two vectors
+// (GDPR-eligible and plain), then sorts / group-counts them on Finalize. The
+// engine adapter reads GetGdprBatches()/GetBatches()/IsChainedByEffect() from a
+// finalized accumulator and issues the actual draws.
+import { RenderingMode } from "@carbonenginejs/runtime-const/graphics";
+import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-const/d3d";
+import { RenderBatchSortType } from "../generated/trinityCore/enums.js";
+import { ITriRenderBatchAccumulator } from "./ITriRenderBatchAccumulator.js";
+import { CanBeBinned, OrderOf, Tr2GdprBatchFullPartition } from "./Tr2RenderBatch.js";
+
+
+// Unsorted, order-preserving, single vector, no GDPR. Used for transparent /
+// order-dependent passes (which are pre-sorted by object distance CPU-side).
+export const DefaultKeyGenerator = {
+  ALLOW_GDPR: false,
+
+  Less(_batch1, _batch2)
+  {
+    return false;
+  },
+
+  GetSortType()
+  {
+    return RenderBatchSortType.RENDERBATCHSORTTYPE_NONE;
+  }
+};
+
+// Effect-sorted (shader, then vertex declaration); GDPR-enabled. Used for
+// opaque / decal / depth / additive / shadow passes.
+export const EffectKeyGenerator = {
+  ALLOW_GDPR: true,
+
+  Less(batch1, batch2)
+  {
+    const shaderOrder = OrderOf(batch1.shader) - OrderOf(batch2.shader);
+    if (shaderOrder !== 0) return shaderOrder < 0;
+    return batch1.vertexDeclaration < batch2.vertexDeclaration;
+  },
+
+  GetSortType()
+  {
+    return RenderBatchSortType.RENDERBATCHSORTTYPE_SORT;
+  }
+};
+
+export class TriRenderBatchAccumulator extends ITriRenderBatchAccumulator
+{
+  constructor(keyGenerator = EffectKeyGenerator)
+  {
+    super();
+    this.keyGenerator = keyGenerator;
+
+    this.gdprBatches = [];
+
+    this.batches = [];
+  }
+
+  Clear()
+  {
+    this.userData = 0;
+    this.renderingMode = RenderingMode.RM_ANY;
+    this.gdprBatches.length = 0;
+    this.batches.length = 0;
+  }
+
+  // Collects a batch. Invalid batches (no shader) are dropped. GDPR-eligible
+  // batches (allowed by the key generator, GDR-compatible material, triangle
+  // topology, indexed) go to the GDPR vector; the rest to the plain vector. The
+  // batch's rendering mode is overwritten with the accumulator's mode (faithful
+  // to Carbon). Commit takes ownership of the batch; do not reuse it afterwards.
+  // Returns whether the batch was accepted (JS addition; Carbon returns void).
+  Commit(batch)
+  {
+    if (!batch.IsValid()) return false;
+
+    if (this.keyGenerator.ALLOW_GDPR
+      && batch.material?.CompatibleWithGdr?.()
+      && batch.topology === D3dPrimitiveTopology.TRIANGLELIST
+      && batch.indexBuffer)
+    {
+      this.gdprBatches.push(batch);
+    }
+    else
+    {
+      this.batches.push(batch);
+    }
+    batch.renderingMode = this.renderingMode;
+    return true;
+  }
+
+  // Folds another accumulator's batches into this one, then clears the source.
+  // Mirrors Carbon TransferFrom (per-thread accumulator merge).
+  TransferFrom(source)
+  {
+    const sourceGdpr = source.GetGdprBatches();
+    const sourceBatches = source.GetBatches();
+
+    if (this.keyGenerator.ALLOW_GDPR)
+    {
+      for (const batch of sourceGdpr) this.gdprBatches.push(batch);
+    }
+    else
+    {
+      for (const batch of sourceGdpr) this.batches.push(batch);
+    }
+    for (const batch of sourceBatches) this.batches.push(batch);
+
+    source.Clear();
+  }
+
+  GetGdprBatches()
+  {
+    return this.gdprBatches;
+  }
+
+  GetBatches()
+  {
+    return this.batches;
+  }
+
+  // Sorts and group-counts the collected batches. No-op for the order-preserving
+  // key generator; effect/GDPR generators sort both vectors and stamp each
+  // bin-run's length onto its leading batch's groupCount.
+  Finalize()
+  {
+    const sortType = this.keyGenerator.GetSortType();
+    if (sortType === RenderBatchSortType.RENDERBATCHSORTTYPE_NONE) return;
+
+    if (this.keyGenerator.ALLOW_GDPR)
+    {
+      Tr2GdprBatchFullPartition(this.gdprBatches);
+      Tr2GdprBatchFullPartition(this.batches);
+      return;
+    }
+
+    const keyGenerator = this.keyGenerator;
+    this.batches.sort((batch1, batch2) =>
+    {
+      if (keyGenerator.Less(batch1, batch2)) return -1;
+      if (keyGenerator.Less(batch2, batch1)) return 1;
+      return 0;
+    });
+  }
+
+  GetBatchCount()
+  {
+    return this.gdprBatches.length + this.batches.length;
+  }
+
+  IsChainedByEffect()
+  {
+    return this.keyGenerator.GetSortType() !== RenderBatchSortType.RENDERBATCHSORTTYPE_NONE;
+  }
+}

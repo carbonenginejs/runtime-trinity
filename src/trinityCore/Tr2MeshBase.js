@@ -3,6 +3,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshBase_Blue.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { Tr2RenderBatch, TriRenderBatchAreaBlock, TriRenderBatchAreaBlocksWithSharedMaterial } from "./Tr2RenderBatch.js";
 
 
 @type.define({ className: "Tr2MeshBase", family: "trinityCore" })
@@ -16,64 +18,79 @@ export class Tr2MeshBase extends CjsModel
   @type.boolean
   display = true;
 
+  @io.rebuild("batches")
   @io.notify
   @io.persist
   @type.int32
   meshIndex = 0;
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   opaqueAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   decalAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   depthAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   transparentAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   additiveAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   pickableAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   mirrorAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   decalNormalAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   depthNormalAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   opaquePrepassAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   decalPrepassAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   geometryEraserAreas = [];
 
+  @io.rebuild("batches")
   @io.persist
   @type.list("Tr2MeshArea")
   distortionAreas = [];
 
   // Carbon routes TRIBATCHTYPE_FLARE but does not expose this list to Blue.
+  @io.rebuild("batches")
   flareAreas = [];
 
   @io.read
@@ -158,6 +175,103 @@ export class Tr2MeshBase extends CjsModel
   GetGeometryResPath()
   {
     return "";
+  }
+
+  // Emits one batch per displayed area into the accumulator. `areas` may be a
+  // TriBatchType (resolved via GetAreas) or an already-resolved area list, so the
+  // scene collector can drive a mesh directly and a transform can pass a
+  // pre-fetched vector (Carbon Tr2Transform::GetBatches passes GetAreas(type)).
+  // Returns whether any batch was committed (JS addition; Carbon returns void).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("GPU-free descriptor batches: geometry buffers and final draw args are resolved by the engine at dispatch")
+  GetBatches(accumulator, areas, perObjectData, _reason)
+  {
+    if (this.display === false) return false;
+
+    const areaList = Array.isArray(areas) ? areas : this.GetAreas(areas);
+    if (!areaList) return false;
+
+    let committed = false;
+    const geometry = this.GetGeometryResource?.() ?? null;
+    for (const area of areaList)
+    {
+      const batch = this.CreateGeometryBatch(geometry, area, perObjectData);
+      if (batch) committed = accumulator.Commit(batch) || committed;
+    }
+    return committed;
+  }
+
+  // Builds a single GPU-free batch for one mesh area: the area's effect is the
+  // material/shader key, and the geometry + area range are recorded as a source
+  // descriptor for the engine to realize. Returns null for a hidden or
+  // material-less area (Carbon returns an invalid batch in those cases).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("GPU-free: emits a geometry source descriptor instead of realized Tr2BufferAL allocations")
+  CreateGeometryBatch(geometry, area, perObjectData)
+  {
+    if (!area || area.GetDisplay() === false) return null;
+
+    const effect = area.GetMaterialInterface();
+    if (!effect) return null;
+
+    const batch = new Tr2RenderBatch();
+    batch.SetMaterial(effect);
+    if (!batch.IsValid()) return null;
+
+    batch.SetGeometrySource(geometry, this.meshIndex, area.GetIndex(), area.GetCount(), area.GetReversed());
+    batch.SetPerObjectData(perObjectData ?? null);
+    batch.SetPickingData(this.meshIndex, area.GetIndex());
+    return batch;
+  }
+
+  // Appends one (startIndex, count) block per area of the requested type.
+  // Carbon deliberately skips non-shadow-casting OPAQUE areas here too (overlay
+  // rendering over e.g. scaffolding build effects causes problems).
+  @carbon.method
+  @impl.implemented
+  CollectAreaBlocks(collector, areaType)
+  {
+    const areas = this.GetAreas(areaType);
+    if (!areas) return collector;
+
+    for (const area of areas)
+    {
+      if (areaType === TriBatchType.TRIBATCHTYPE_OPAQUE && !area.IsCastingShadows()) continue;
+      collector.push(new TriRenderBatchAreaBlock(
+        Math.max(0, area.GetIndex()), Math.max(0, area.GetCount())));
+    }
+    return collector;
+  }
+
+  // Appends blocks grouped by shared area material (the shadow path). Skips
+  // non-shadow-casting OPAQUE and DECAL areas. Faithfully does NOT clamp
+  // negative index/count (Carbon asymmetry with CollectAreaBlocks).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Material grouping uses reference identity in place of Carbon's effect hash values.")
+  CollectAreaBlocksWithSharedMaterials(collectors, areaType)
+  {
+    const areas = this.GetAreas(areaType);
+    if (!areas) return collectors;
+
+    for (const area of areas)
+    {
+      if (areaType === TriBatchType.TRIBATCHTYPE_OPAQUE && !area.IsCastingShadows()) continue;
+      if (areaType === TriBatchType.TRIBATCHTYPE_DECAL && !area.IsCastingShadows()) continue;
+
+      const material = area.GetMaterialInterface();
+      let entry = collectors.find(candidate => candidate.shaderMaterial === material);
+      if (!entry)
+      {
+        entry = new TriRenderBatchAreaBlocksWithSharedMaterial();
+        entry.shaderMaterial = material;
+        collectors.push(entry);
+      }
+      entry.areaBlockVector.push(new TriRenderBatchAreaBlock(area.GetIndex(), area.GetCount()));
+    }
+    return collectors;
   }
 
   static #areaProperties = Object.freeze([

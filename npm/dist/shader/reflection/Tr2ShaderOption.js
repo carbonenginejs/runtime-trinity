@@ -14,7 +14,7 @@ class Tr2ShaderOption extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ShaderOption",
       family: "shader"
-    })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.string], 16, "value"]], 0, void 0, CjsModel));
+    })], [[[void 0, io.rebuild("pipeline"), io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("pipeline"), io, io.persist, type, type.string], 16, "value"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

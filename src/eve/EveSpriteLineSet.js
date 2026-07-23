@@ -8,10 +8,12 @@ import { EveSpriteLight } from "./EveSpriteLight.js";
 @type.define({ className: "EveSpriteLineSet", family: "eve/attachment/sprites" })
 export class EveSpriteLineSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.list("EveSpriteLineSetItem")
   spriteLines = [];
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   skinned = false;
@@ -20,6 +22,7 @@ export class EveSpriteLineSet extends EveEntity
   @type.uint32
   effectHash = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;

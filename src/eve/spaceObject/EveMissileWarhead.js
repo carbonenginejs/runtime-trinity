@@ -346,8 +346,13 @@ export class EveMissileWarhead extends EveTransform
   @carbon.method
   @impl.adapted
   @impl.reason("Persistent device buffers are engine-owned; Trinity publishes their exact CPU value record.")
-  GetPerObjectData(out = new EveMissileWarheadPerObjectData())
+  GetPerObjectData(accumulatorOrOut = new EveMissileWarheadPerObjectData())
   {
+    // Accepts the Carbon accumulator contract (Allocate) or a caller-owned
+    // output record (the earlier JS shape, kept for compatibility).
+    const out = typeof accumulatorOrOut?.Allocate === "function"
+      ? accumulatorOrOut.Allocate(EveMissileWarheadPerObjectData)
+      : accumulatorOrOut;
     mat4.transpose(out.world, this.worldTransform);
     vec4.set(out.missileSize, this.warheadRadius, this.warheadLength, 0, 0);
     return out;

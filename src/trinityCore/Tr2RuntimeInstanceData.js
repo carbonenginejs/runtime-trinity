@@ -19,12 +19,14 @@ export class Tr2RuntimeInstanceData extends CjsModel
   particleSystem = null;
 
   @io.flag("cpuData")
+  @io.rebuild("instanceBuffer")
   @io.notify
   @io.persist
   @type.array("unknown")
   layout = [];
 
   @io.flag("cpuData")
+  @io.rebuild("instanceBuffer")
   @io.notify
   @io.persist
   @type.array("unknown")

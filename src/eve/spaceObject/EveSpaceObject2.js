@@ -14,6 +14,19 @@ import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
 import { ImpactConfiguration } from "../../generated/include/enums.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
+import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { Tr2PerObjectData } from "../../trinityCore/Tr2PerObjectData.js";
+import { Tr2RenderBatch, TriRenderBatchAreaBlock } from "../../trinityCore/Tr2RenderBatch.js";
+
+// Static scratch for the sorted-transparent area pass (allocation rules: hot
+// per-frame path, copy-into, never allocate per call).
+const TRANSPARENT_AABB_MIN = vec3.create();
+const TRANSPARENT_AABB_MAX = vec3.create();
+const TRANSPARENT_CENTER = vec3.create();
+
+// Carbon EveMeshOverlayEffect::OverlayType (EveMeshOverlayEffect.h:35-41).
+const OVERLAY_TYPE_OPAQUEONLY = 0;
+const OVERLAY_TYPE_ALL = 1;
 
 @type.define({ className: "EveSpaceObject2", family: "eve/spaceObject" })
 export class EveSpaceObject2 extends EveEntity
@@ -350,6 +363,12 @@ export class EveSpaceObject2 extends EveEntity
   #lodLevelWithChildren = Tr2Lod.TR2_LOD_UNSPECIFIED;
 
   #meshScreenSize = 0;
+
+  #overlayMeshAreaBlocks = [ [], [] ];
+
+  #shadowMeshOpaqueAreas = [];
+
+  #cachedAreaBlocksBuilt = false;
 
   // Carbon m_localAabbMin/Max: cached so GetLocalBoundingBox can answer before
   // LOD selection assigns a mesh (at worst it lags one frame).
@@ -885,6 +904,300 @@ export class EveSpaceObject2 extends EveEntity
       }
     }
     return out;
+  }
+
+  /** Carbon ITr2Renderable contract (EveSpaceObject2.cpp:1097-1140): activated
+   * attachments recurse, the impact overlay contributes, the hull mesh delegates
+   * per batch type, and TRANSPARENT routes through the distance-sorted area
+   * path. GetBatchesFromOverlayVector (precomputed overlay area blocks) is
+   * deferred with the overlay realization work. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Overlay area-block batches are deferred; the view position arrives via the appended render-context argument instead of Carbon's renderer global.")
+  GetBatches(batches, batchType, perObjectData, reason, renderContext = null)
+  {
+    if (!this.mesh) return false;
+    if (this.mesh.display === false) return false;
+
+    // Returns whether any batch was committed (JS addition; Carbon returns
+    // void). The O(1) accumulator count makes the delta check free.
+    const committedBefore = batches.GetBatchCount?.() ?? 0;
+
+    if (this.activationStrength !== 0)
+    {
+      for (const attachment of this.attachments)
+      {
+        attachment?.GetBatches?.(batches, batchType, perObjectData, reason);
+      }
+    }
+
+    this.impactOverlay?.GetBatches?.(batches, batchType, perObjectData, this.#meshScreenSize);
+
+    const areas = this.mesh.GetAreas?.(batchType);
+    if (areas)
+    {
+      if (batchType !== TriBatchType.TRIBATCHTYPE_TRANSPARENT)
+      {
+        this.mesh.GetBatches(batches, areas, perObjectData);
+      }
+      else
+      {
+        this.#GetSortedTransparentBatches(areas, batches, perObjectData, renderContext);
+      }
+    }
+
+    // add overlay effect batches (Carbon calls this for every batch type)
+    this.GetBatchesFromOverlayVector(batches, perObjectData, batchType, this.mesh);
+
+    return (batches.GetBatchCount?.() ?? 0) > committedBefore;
+  }
+
+  // Carbon GetSortedBatchesFromMeshAreaVector (EveSpaceObject2.cpp:57-121):
+  // object-space area bounding-box centers -> world space -> squared distance to
+  // the view position, sorted back-to-front (descending), committed in that
+  // order into the order-preserving TRANSPARENT accumulator. Bounding boxes come
+  // from the geometry resource when it exposes them; a failed lookup keeps
+  // Carbon's origin-center fallback.
+  #GetSortedTransparentBatches(areas, batches, perObjectData, renderContext)
+  {
+    const geometry = this.mesh.GetGeometryResource?.() ?? null;
+    const viewPosition = renderContext?.GetViewPosition?.();
+    const meshIndex = this.mesh.meshIndex ?? 0;
+
+    const sorted = [];
+    for (const area of areas)
+    {
+      if (!area || area.GetDisplay?.() === false) continue;
+
+      vec3.set(TRANSPARENT_CENTER, 0, 0, 0);
+      if (geometry?.GetAreaBoundingBox?.(meshIndex, area.GetIndex(), TRANSPARENT_AABB_MIN, TRANSPARENT_AABB_MAX))
+      {
+        vec3.add(TRANSPARENT_CENTER, TRANSPARENT_AABB_MIN, TRANSPARENT_AABB_MAX);
+        vec3.scale(TRANSPARENT_CENTER, TRANSPARENT_CENTER, 0.5);
+      }
+      vec3.transformMat4(TRANSPARENT_CENTER, TRANSPARENT_CENTER, this.worldTransform);
+
+      const dx = (viewPosition?.[0] ?? 0) - TRANSPARENT_CENTER[0];
+      const dy = (viewPosition?.[1] ?? 0) - TRANSPARENT_CENTER[1];
+      const dz = (viewPosition?.[2] ?? 0) - TRANSPARENT_CENTER[2];
+      sorted.push({ area, distance: dx * dx + dy * dy + dz * dz });
+    }
+
+    sorted.sort((a, b) => b.distance - a.distance);
+
+    for (const entry of sorted)
+    {
+      const area = entry.area;
+      if (!area.GetMaterialInterface?.()) continue;
+      const batch = this.mesh.CreateGeometryBatch(geometry, area, perObjectData);
+      if (batch) batches.Commit(batch);
+    }
+  }
+
+  /** Rebuilds the cached overlay/shadow area-block lists from the current mesh
+   * (Carbon RebuildCachedData, EveSpaceObject2.cpp:2077-2097, triggered there by
+   * the geometry-resource load callback). TYPE_ALL = shadow-casting OPAQUE +
+   * TRANSPARENT + DECAL areas; TYPE_OPAQUEONLY = shadow-casting OPAQUE; the
+   * shadow list groups OPAQUE areas by shared material. All coalesced. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Carbon rebuilds from the geometry-resource notify callback; the GPU-free port rebuilds lazily on first batch use from the mesh areas alone.")
+  RebuildCachedData()
+  {
+    this.ReleaseCachedData();
+    if (!this.mesh) return;
+
+    const all = this.#overlayMeshAreaBlocks[OVERLAY_TYPE_ALL];
+    this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_OPAQUE);
+    this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_TRANSPARENT);
+    this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_DECAL);
+    this.mesh.CollectAreaBlocks(
+      this.#overlayMeshAreaBlocks[OVERLAY_TYPE_OPAQUEONLY], TriBatchType.TRIBATCHTYPE_OPAQUE);
+    for (const blocks of this.#overlayMeshAreaBlocks)
+    {
+      TriRenderBatchAreaBlock.Optimize(blocks);
+    }
+
+    this.mesh.CollectAreaBlocksWithSharedMaterials(
+      this.#shadowMeshOpaqueAreas, TriBatchType.TRIBATCHTYPE_OPAQUE);
+    for (const collector of this.#shadowMeshOpaqueAreas)
+    {
+      collector.Optimize();
+    }
+    this.#cachedAreaBlocksBuilt = true;
+  }
+
+  @carbon.method
+  @impl.implemented
+  ReleaseCachedData()
+  {
+    for (const blocks of this.#overlayMeshAreaBlocks)
+    {
+      blocks.length = 0;
+    }
+    this.#shadowMeshOpaqueAreas.length = 0;
+    this.#cachedAreaBlocksBuilt = false;
+  }
+
+  #EnsureCachedAreaBlocks()
+  {
+    if (!this.#cachedAreaBlocksBuilt && this.mesh) this.RebuildCachedData();
+  }
+
+  /** Carbon GetShadowBatches (EveSpaceObject2.cpp:1143-1184): one batch per
+   * cached shared-material OPAQUE area block, using the area's own material.
+   * Carbon bakes realized-LOD draw args; the GPU-free port defers them to the
+   * engine via the geometry source descriptor, so shadowPixelSize travels unused
+   * until engine LOD selection consumes it. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Realized-LOD draw args are engine-resolved from the geometry source descriptor; primitive-count gating happens at realization.")
+  GetShadowBatches(batches, perObjectData, _shadowPixelSize)
+  {
+    if (!this.mesh || this.mesh.display === false) return false;
+    this.#EnsureCachedAreaBlocks();
+
+    const geometry = this.mesh.GetGeometryResource?.() ?? null;
+    const meshIndex = this.mesh.meshIndex ?? 0;
+
+    let committed = false;
+    for (const collector of this.#shadowMeshOpaqueAreas)
+    {
+      const material = collector.shaderMaterial;
+      if (!material) continue;
+      for (const block of collector.areaBlockVector)
+      {
+        const batch = new Tr2RenderBatch();
+        batch.SetMaterial(material);
+        if (!batch.IsValid()) continue;
+        batch.SetGeometrySource(geometry, meshIndex, block.startIndex, block.count, false);
+        batch.SetPerObjectData(perObjectData ?? null);
+        committed = batches.Commit(batch) || committed;
+      }
+    }
+    return committed;
+  }
+
+  /** Carbon GetBatchesFromOverlayVector (EveSpaceObject2.cpp:1199-1285): the
+   * impact overlay's armor-damage shader draws over the TYPE_ALL blocks at
+   * maximum priority; each displayed overlay effect draws its per-batch-type
+   * effects over its overlay-type blocks (OPAQUE -> TYPE_OPAQUEONLY, everything
+   * else -> TYPE_ALL). */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Generated EveMeshOverlayEffect has no method surface yet, so the per-batch-type effect selection reads its fields here until the class is promoted; realized-LOD draw args defer to the engine.")
+  GetBatchesFromOverlayVector(batches, perObjectData, batchType, mesh)
+  {
+    const impactEffect = this.impactOverlay?.GetArmorDamageShader?.(batchType) ?? null;
+    if (!impactEffect && !this.overlayEffects.length) return false;
+    if (!mesh) return false;
+    this.#EnsureCachedAreaBlocks();
+
+    const committedBefore = batches.GetBatchCount?.() ?? 0;
+
+    const geometry = mesh.GetGeometryResource?.() ?? null;
+    const meshIndex = mesh.meshIndex ?? 0;
+
+    if (impactEffect)
+    {
+      for (const block of this.#overlayMeshAreaBlocks[OVERLAY_TYPE_ALL])
+      {
+        this.#CommitBlockBatch(batches, impactEffect, geometry, meshIndex, block, perObjectData, 0xFFFFFFFF);
+      }
+    }
+
+    for (const overlay of this.overlayEffects)
+    {
+      const effects = this.#OverlayEffectsFor(overlay, batchType);
+      if (!effects) continue;
+
+      const overlayType = batchType === TriBatchType.TRIBATCHTYPE_OPAQUE
+        ? OVERLAY_TYPE_OPAQUEONLY
+        : OVERLAY_TYPE_ALL;
+      const blocks = this.#overlayMeshAreaBlocks[overlayType];
+      for (const effect of effects)
+      {
+        for (const block of blocks)
+        {
+          this.#CommitBlockBatch(batches, effect, geometry, meshIndex, block, perObjectData, 0);
+        }
+      }
+    }
+
+    return (batches.GetBatchCount?.() ?? 0) > committedBefore;
+  }
+
+  #CommitBlockBatch(batches, material, geometry, meshIndex, block, perObjectData, priority)
+  {
+    const batch = new Tr2RenderBatch();
+    batch.SetMaterial(material);
+    if (!batch.IsValid()) return;
+    if (priority !== 0) batch.SetPriority(priority);
+    batch.SetGeometrySource(geometry, meshIndex, block.startIndex, block.count, false);
+    batch.SetPerObjectData(perObjectData ?? null);
+    batches.Commit(batch);
+  }
+
+  // EveMeshOverlayEffect::GetEffects (display-gated, per batch type). Prefers a
+  // promoted method surface; falls back to the generated class's fields.
+  #OverlayEffectsFor(overlay, batchType)
+  {
+    if (!overlay) return null;
+    if (typeof overlay.GetEffects === "function") return overlay.GetEffects(batchType) ?? null;
+    if (overlay.display === false) return null;
+
+    switch (batchType)
+    {
+      case TriBatchType.TRIBATCHTYPE_OPAQUE: return overlay.opaqueEffects ?? null;
+      case TriBatchType.TRIBATCHTYPE_DECAL: return overlay.decalEffects ?? null;
+      case TriBatchType.TRIBATCHTYPE_TRANSPARENT: return overlay.transparentEffects ?? null;
+      case TriBatchType.TRIBATCHTYPE_ADDITIVE: return overlay.additiveEffects ?? null;
+      case TriBatchType.TRIBATCHTYPE_DISTORTION: return overlay.distortionEffects ?? null;
+      default: return null;
+    }
+  }
+
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The overlay HasTransparentArea predicate reads the generated class's transparentEffects field until the class is promoted.")
+  HasTransparentBatches()
+  {
+    if (!this.mesh) return false;
+    if ((this.mesh.GetAreas?.(TriBatchType.TRIBATCHTYPE_TRANSPARENT)?.length ?? 0) > 0) return true;
+
+    for (const overlay of this.overlayEffects)
+    {
+      if (overlay?.HasTransparentArea?.() ?? ((overlay?.transparentEffects?.length ?? 0) > 0)) return true;
+    }
+    return false;
+  }
+
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Carbon reads the Tr2Renderer view-position global; the relocated camera state arrives via the threaded render context.")
+  GetSortValue(renderContext = null)
+  {
+    const viewPosition = renderContext?.GetViewPosition?.();
+    const x = (viewPosition?.[0] ?? 0) - this.worldTransform[12];
+    const y = (viewPosition?.[1] ?? 0) - this.worldTransform[13];
+    const z = (viewPosition?.[2] ?? 0) - this.worldTransform[14];
+    return Math.hypot(x, y, z);
+  }
+
+  /** Carbon allocates Tr2PerObjectDataWithPersistentBuffers<EveSpaceObject2>,
+   * which calls back into the object at upload time; the GPU-free record carries
+   * the same live object reference for the engine serializer (the space-object
+   * Main profile) to pull current values at realization. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Persistent VS/PS device buffers are engine-owned; the record carries the object reference the engine serializer consumes.")
+  GetPerObjectData(accumulator = null)
+  {
+    const data = typeof accumulator?.Allocate === "function"
+      ? accumulator.Allocate(Tr2PerObjectData)
+      : new Tr2PerObjectData();
+    data.object = this;
+    return data;
   }
 
   @carbon.method

@@ -20,11 +20,13 @@ export class EveTrailsSet extends CjsModel
   fadeSpeed = 1;
 
   /** m_effect (Tr2EffectPtr) [READWRITE, PERSIST] */
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   effect = null;
 
   /** m_geometryResPath (std::string) [READWRITE, PERSIST, NOTIFY] */
+  @io.rebuild("geometry")
   @io.notify
   @io.persist
   @type.string

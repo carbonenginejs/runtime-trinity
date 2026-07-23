@@ -12,8 +12,21 @@ import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { ReflectionMode } from '../../generated/eve/enums.js';
 import { ImpactConfiguration } from '../../generated/include/enums.js';
 import { Tr2Lod, EveLODHelper } from '../EveLODHelper.js';
+import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { Tr2PerObjectData } from '../../trinityCore/Tr2PerObjectData.js';
+import { TriRenderBatchAreaBlock, Tr2RenderBatch } from '../../trinityCore/Tr2RenderBatch.js';
 
 let _initProto, _initClass, _init_reflectionMode, _init_extra_reflectionMode, _init_effectChildren, _init_extra_effectChildren, _init_children, _init_extra_children, _init_name, _init_extra_name, _init_mute, _init_extra_mute, _init_inheritProperties, _init_extra_inheritProperties, _init_customMasks, _init_extra_customMasks, _init_overlayEffects, _init_extra_overlayEffects, _init_positionDelta, _init_extra_positionDelta, _init_lodLevel, _init_extra_lodLevel, _init_curveSets, _init_extra_curveSets, _init_isPickable, _init_extra_isPickable, _init_estimatedPixelDiameter, _init_extra_estimatedPixelDiameter, _init_estimatedPixelDiameterWithChildren, _init_extra_estimatedPixelDiameterWithChildren, _init_generatedShapeEllipsoidCenter, _init_extra_generatedShapeEllipsoidCenter, _init_generatedShapeEllipsoidRadius, _init_extra_generatedShapeEllipsoidRadius, _init_animationUpdater, _init_extra_animationUpdater, _init_dna, _init_extra_dna, _init_castShadow, _init_extra_castShadow, _init_isAnimated, _init_extra_isAnimated, _init_dynamicBoundingSphereEnabled, _init_extra_dynamicBoundingSphereEnabled, _init_attachments, _init_extra_attachments, _init_decals, _init_extra_decals, _init_lights, _init_extra_lights, _init_externalParameters, _init_extra_externalParameters, _init_controllers, _init_extra_controllers, _init_locators, _init_extra_locators, _init_mesh, _init_extra_mesh, _init_impactOverlay, _init_extra_impactOverlay, _init_clipSphereCenter, _init_extra_clipSphereCenter, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2, _init_observers, _init_extra_observers, _init_worldPosition, _init_extra_worldPosition, _init_rotationCurve, _init_extra_rotationCurve, _init_worldRotation, _init_extra_worldRotation, _init_modelScale, _init_extra_modelScale, _init_locatorSets, _init_extra_locatorSets, _init_activationStrength, _init_extra_activationStrength, _init_albedoColor, _init_extra_albedoColor, _init_display, _init_extra_display, _init_update, _init_extra_update, _init_secondaryLightingSphereRadius, _init_extra_secondaryLightingSphereRadius, _init_boundingSphereCenter, _init_extra_boundingSphereCenter, _init_dirtLevel, _init_extra_dirtLevel, _init_lastDamageLocatorHit, _init_extra_lastDamageLocatorHit, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_modelWorldPosition, _init_extra_modelWorldPosition, _init_modelTranslationCurve, _init_extra_modelTranslationCurve, _init_modelRotationCurve, _init_extra_modelRotationCurve, _init_shapeEllipsoidCenter, _init_extra_shapeEllipsoidCenter, _init_shapeEllipsoidRadius, _init_extra_shapeEllipsoidRadius, _init_translationCurve, _init_extra_translationCurve, _init_worldTransform, _init_extra_worldTransform, _init_inverseWorldTransform, _init_extra_inverseWorldTransform, _init_lastWorldTransform, _init_extra_lastWorldTransform, _init_worldVelocity, _init_extra_worldVelocity, _init_audioGeometry, _init_extra_audioGeometry, _init_isVisible, _init_extra_isVisible;
+
+// Static scratch for the sorted-transparent area pass (allocation rules: hot
+// per-frame path, copy-into, never allocate per call).
+const TRANSPARENT_AABB_MIN = vec3.create();
+const TRANSPARENT_AABB_MAX = vec3.create();
+const TRANSPARENT_CENTER = vec3.create();
+
+// Carbon EveMeshOverlayEffect::OverlayType (EveMeshOverlayEffect.h:35-41).
+const OVERLAY_TYPE_OPAQUEONLY = 0;
+const OVERLAY_TYPE_ALL = 1;
 let _EveSpaceObject;
 new class extends _identity {
   static [class EveSpaceObject2 extends _EveEntity {
@@ -24,7 +37,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveSpaceObject2",
         family: "eve/spaceObject"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser runtime refreshes the cache with world-transform updates instead of Carbon's renderer-side PrepareShaderData pass.")], 18, "UpdateWorldBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Native impostor, raytracing, and audio-emitter realization remain engine-owned; graph visibility and LOD state are preserved.")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Impostor submission and decal mesh caches are engine-owned; Trinity returns the backend-neutral renderable graph.")], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorsForSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS keeps output parameters last and returns a validity flag for targetable callers.")], 18, "GetDamageLocatorPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetClosestDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("TriRand is represented by Math.random; all locator scoring remains source-faithful.")], 18, "GetGoodDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRadius"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMissPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetImpactConfiguration"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasImpactConfigurationShield"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS uses an out-last signature; the ellipsoid intersection is otherwise source-faithful CPU math.")], 18, "GetImpactPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's CcpMath::Sphere is represented by core-math sph3; object-shaped center/radius input is accepted at adapter boundaries.")], 18, "SetBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Geometry resources without multi-LOD support expose their sole browser LOD as index zero.")], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetWorldBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsBoundingBoxReady"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("TriFrustum is supplied structurally by the active engine; both exact and estimated browser frustum methods are supported.")], 18, "EstimatePixelDiameter"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsInFrustum"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.adapted], 18, "TransformLocators"]], 0, void 0, _EveEntity));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "effectChildren"], [[io, io.persist, void 0, type.list("IEveTransform")], 16, "children"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.readwrite, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, void 0, type.list("EveCustomMask")], 16, "customMasks"], [[io, io.persist, void 0, type.list("EveMeshOverlayEffect")], 16, "overlayEffects"], [[io, io.read, void 0, type.objectRef("Tr2BindingVector3")], 16, "positionDelta"], [[io, io.read, type, type.int32, void 0, schema.enum("Tr2Lod")], 16, "lodLevel"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.readwrite, type, type.boolean], 16, "isPickable"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameter"], [[io, io.read, type, type.float32], 16, "estimatedPixelDiameterWithChildren"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidCenter"], [[io, io.read, type, type.vec3], 16, "generatedShapeEllipsoidRadius"], [[io, io.read, void 0, type.objectRef("Tr2GrannyAnimation")], 16, "animationUpdater"], [[io, io.persist, type, type.string], 16, "dna"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "castShadow"], [[io, io.persist, type, type.boolean], 16, "isAnimated"], [[io, io.persist, type, type.boolean], 16, "dynamicBoundingSphereEnabled"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("EveSpaceObjectDecal")], 16, "decals"], [[io, io.notify, io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("EveLocator2")], 16, "locators"], [[io, io.persist, void 0, type.objectRef("Tr2MeshBase")], 16, "mesh"], [[io, io.persist, void 0, type.objectRef("EveImpactOverlay")], 16, "impactOverlay"], [[io, io.persist, type, type.vec3], 16, "clipSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor2"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "clipSphereFactor"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.read, type, type.vec3], 16, "worldPosition"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "rotationCurve"], [[io, io.read, type, type.quat], 16, "worldRotation"], [[io, io.persist, type, type.float32], 16, "modelScale"], [[io, io.persist, void 0, type.list("EveLocatorSets")], 16, "locatorSets"], [[io, io.readwrite, type, type.float32], 16, "activationStrength"], [[io, io.readwrite, type, type.color], 16, "albedoColor"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.read, type, type.float32], 16, "secondaryLightingSphereRadius"], [[io, io.persist, type, type.vec3], 16, "boundingSphereCenter"], [[io, io.notify, io, io.readwrite, type, type.float32], 16, "dirtLevel"], [[io, io.read, type, type.int32], 16, "lastDamageLocatorHit"], [[io, io.persist, type, type.float32], 16, "boundingSphereRadius"], [[io, io.read, type, type.vec3], 16, "modelWorldPosition"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "modelTranslationCurve"], [[io, io.persist, void 0, type.objectRef("ITriQuaternionFunction")], 16, "modelRotationCurve"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidCenter"], [[io, io.persist, type, type.vec3], 16, "shapeEllipsoidRadius"], [[io, io.persist, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.mat4], 16, "inverseWorldTransform"], [[io, io.read, type, type.mat4], 16, "lastWorldTransform"], [[io, io.read, type, type.vec3], 16, "worldVelocity"], [[io, io.readwrite, void 0, type.objectRef("ITr2AudGeometry")], 16, "audioGeometry"], [[type, type.boolean], 16, "isVisible"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddLight"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelRotationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetModelTranslationCurve"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateWorldTransform"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser runtime refreshes the cache with world-transform updates instead of Carbon's renderer-side PrepareShaderData pass.")], 18, "UpdateWorldBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Native impostor, raytracing, and audio-emitter realization remain engine-owned; graph visibility and LOD state are preserved.")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Impostor submission and decal mesh caches are engine-owned; Trinity returns the backend-neutral renderable graph.")], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Overlay area-block batches are deferred; the view position arrives via the appended render-context argument instead of Carbon's renderer global.")], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon rebuilds from the geometry-resource notify callback; the GPU-free port rebuilds lazily on first batch use from the mesh areas alone.")], 18, "RebuildCachedData"], [[carbon, carbon.method, impl, impl.implemented], 18, "ReleaseCachedData"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Realized-LOD draw args are engine-resolved from the geometry source descriptor; primitive-count gating happens at realization.")], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Generated EveMeshOverlayEffect has no method surface yet, so the per-batch-type effect selection reads its fields here until the class is promoted; realized-LOD draw args defer to the engine.")], 18, "GetBatchesFromOverlayVector"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The overlay HasTransparentArea predicate reads the generated class's transparentEffects field until the class is promoted.")], 18, "HasTransparentBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon reads the Tr2Renderer view-position global; the relocated camera state arrives via the threaded render context.")], 18, "GetSortValue"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Persistent VS/PS device buffers are engine-owned; the record carries the object reference the engine serializer consumes.")], 18, "GetPerObjectData"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetObserverTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldRotation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMute"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingBoxFromTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateSkinnedBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearImpactDamage"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAnimations"], [[carbon, carbon.method, impl, impl.implemented], 18, "CreateImpactFromPosition"], [[carbon, carbon.method, impl, impl.adapted], 18, "CreateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "FreezeHighDetailMesh"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorsForSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCloseLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetGoodLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDamageLocatorDirection"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS keeps output parameters last and returns a validity flag for targetable callers.")], 18, "GetDamageLocatorPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetClosestDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("TriRand is represented by Math.random; all locator scoring remains source-faithful.")], 18, "GetGoodDamageLocatorIndex"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRadius"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMissPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetImpactConfiguration"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasImpactConfigurationShield"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS uses an out-last signature; the ellipsoid intersection is otherwise source-faithful CPU math.")], 18, "GetImpactPosition"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateImpact"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDamageLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTransformedDamageLocator"], [[carbon, carbon.method, impl, impl.adapted], 18, "IsImpostor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorPositionFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocatorRotationFromSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "PlayAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChainAnimationEx"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's CcpMath::Sphere is represented by core-math sph3; object-shaped center/radius input is accepted at adapter boundaries.")], 18, "SetBoundingSphereInformation"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetControllerVariables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Geometry resources without multi-LOD support expose their sole browser LOD as index zero.")], 18, "GetLastUsedMeshLod"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocatorTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetWorldBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsBoundingBoxReady"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("TriFrustum is supplied structurally by the active engine; both exact and estimated browser frustum methods are supported.")], 18, "EstimatePixelDiameter"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsInFrustum"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereCenter"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphereRadius"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoneCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetImpactDamageState"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetImpactAnimation"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.adapted], 18, "TransformLocators"]], 0, void 0, _EveEntity));
     }
     /** m_reflectionMode (EntityComponents::ReflectionMode - enum ReflectionMode) [READWRITE, PERSIST, NOTIFY, ENUM] */
     reflectionMode = (_initProto(this), _init_reflectionMode(this, 3));
@@ -210,6 +223,9 @@ new class extends _identity {
     #isMeshVisible = false;
     #lodLevelWithChildren = Tr2Lod.TR2_LOD_UNSPECIFIED;
     #meshScreenSize = 0;
+    #overlayMeshAreaBlocks = [[], []];
+    #shadowMeshOpaqueAreas = [];
+    #cachedAreaBlocksBuilt = false;
 
     // Carbon m_localAabbMin/Max: cached so GetLocalBoundingBox can answer before
     // LOD selection assigns a mesh (at worst it lags one frame).
@@ -559,6 +575,221 @@ new class extends _identity {
         }
       }
       return out;
+    }
+
+    /** Carbon ITr2Renderable contract (EveSpaceObject2.cpp:1097-1140): activated
+     * attachments recurse, the impact overlay contributes, the hull mesh delegates
+     * per batch type, and TRANSPARENT routes through the distance-sorted area
+     * path. GetBatchesFromOverlayVector (precomputed overlay area blocks) is
+     * deferred with the overlay realization work. */
+    GetBatches(batches, batchType, perObjectData, reason, renderContext = null) {
+      if (!this.mesh) return false;
+      if (this.mesh.display === false) return false;
+
+      // Returns whether any batch was committed (JS addition; Carbon returns
+      // void). The O(1) accumulator count makes the delta check free.
+      const committedBefore = batches.GetBatchCount?.() ?? 0;
+      if (this.activationStrength !== 0) {
+        for (const attachment of this.attachments) {
+          attachment?.GetBatches?.(batches, batchType, perObjectData, reason);
+        }
+      }
+      this.impactOverlay?.GetBatches?.(batches, batchType, perObjectData, this.#meshScreenSize);
+      const areas = this.mesh.GetAreas?.(batchType);
+      if (areas) {
+        if (batchType !== TriBatchType.TRIBATCHTYPE_TRANSPARENT) {
+          this.mesh.GetBatches(batches, areas, perObjectData);
+        } else {
+          this.#GetSortedTransparentBatches(areas, batches, perObjectData, renderContext);
+        }
+      }
+
+      // add overlay effect batches (Carbon calls this for every batch type)
+      this.GetBatchesFromOverlayVector(batches, perObjectData, batchType, this.mesh);
+      return (batches.GetBatchCount?.() ?? 0) > committedBefore;
+    }
+
+    // Carbon GetSortedBatchesFromMeshAreaVector (EveSpaceObject2.cpp:57-121):
+    // object-space area bounding-box centers -> world space -> squared distance to
+    // the view position, sorted back-to-front (descending), committed in that
+    // order into the order-preserving TRANSPARENT accumulator. Bounding boxes come
+    // from the geometry resource when it exposes them; a failed lookup keeps
+    // Carbon's origin-center fallback.
+    #GetSortedTransparentBatches(areas, batches, perObjectData, renderContext) {
+      const geometry = this.mesh.GetGeometryResource?.() ?? null;
+      const viewPosition = renderContext?.GetViewPosition?.();
+      const meshIndex = this.mesh.meshIndex ?? 0;
+      const sorted = [];
+      for (const area of areas) {
+        if (!area || area.GetDisplay?.() === false) continue;
+        vec3.set(TRANSPARENT_CENTER, 0, 0, 0);
+        if (geometry?.GetAreaBoundingBox?.(meshIndex, area.GetIndex(), TRANSPARENT_AABB_MIN, TRANSPARENT_AABB_MAX)) {
+          vec3.add(TRANSPARENT_CENTER, TRANSPARENT_AABB_MIN, TRANSPARENT_AABB_MAX);
+          vec3.scale(TRANSPARENT_CENTER, TRANSPARENT_CENTER, 0.5);
+        }
+        vec3.transformMat4(TRANSPARENT_CENTER, TRANSPARENT_CENTER, this.worldTransform);
+        const dx = (viewPosition?.[0] ?? 0) - TRANSPARENT_CENTER[0];
+        const dy = (viewPosition?.[1] ?? 0) - TRANSPARENT_CENTER[1];
+        const dz = (viewPosition?.[2] ?? 0) - TRANSPARENT_CENTER[2];
+        sorted.push({
+          area,
+          distance: dx * dx + dy * dy + dz * dz
+        });
+      }
+      sorted.sort((a, b) => b.distance - a.distance);
+      for (const entry of sorted) {
+        const area = entry.area;
+        if (!area.GetMaterialInterface?.()) continue;
+        const batch = this.mesh.CreateGeometryBatch(geometry, area, perObjectData);
+        if (batch) batches.Commit(batch);
+      }
+    }
+
+    /** Rebuilds the cached overlay/shadow area-block lists from the current mesh
+     * (Carbon RebuildCachedData, EveSpaceObject2.cpp:2077-2097, triggered there by
+     * the geometry-resource load callback). TYPE_ALL = shadow-casting OPAQUE +
+     * TRANSPARENT + DECAL areas; TYPE_OPAQUEONLY = shadow-casting OPAQUE; the
+     * shadow list groups OPAQUE areas by shared material. All coalesced. */
+    RebuildCachedData() {
+      this.ReleaseCachedData();
+      if (!this.mesh) return;
+      const all = this.#overlayMeshAreaBlocks[OVERLAY_TYPE_ALL];
+      this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_OPAQUE);
+      this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_TRANSPARENT);
+      this.mesh.CollectAreaBlocks(all, TriBatchType.TRIBATCHTYPE_DECAL);
+      this.mesh.CollectAreaBlocks(this.#overlayMeshAreaBlocks[OVERLAY_TYPE_OPAQUEONLY], TriBatchType.TRIBATCHTYPE_OPAQUE);
+      for (const blocks of this.#overlayMeshAreaBlocks) {
+        TriRenderBatchAreaBlock.Optimize(blocks);
+      }
+      this.mesh.CollectAreaBlocksWithSharedMaterials(this.#shadowMeshOpaqueAreas, TriBatchType.TRIBATCHTYPE_OPAQUE);
+      for (const collector of this.#shadowMeshOpaqueAreas) {
+        collector.Optimize();
+      }
+      this.#cachedAreaBlocksBuilt = true;
+    }
+    ReleaseCachedData() {
+      for (const blocks of this.#overlayMeshAreaBlocks) {
+        blocks.length = 0;
+      }
+      this.#shadowMeshOpaqueAreas.length = 0;
+      this.#cachedAreaBlocksBuilt = false;
+    }
+    #EnsureCachedAreaBlocks() {
+      if (!this.#cachedAreaBlocksBuilt && this.mesh) this.RebuildCachedData();
+    }
+
+    /** Carbon GetShadowBatches (EveSpaceObject2.cpp:1143-1184): one batch per
+     * cached shared-material OPAQUE area block, using the area's own material.
+     * Carbon bakes realized-LOD draw args; the GPU-free port defers them to the
+     * engine via the geometry source descriptor, so shadowPixelSize travels unused
+     * until engine LOD selection consumes it. */
+    GetShadowBatches(batches, perObjectData, _shadowPixelSize) {
+      if (!this.mesh || this.mesh.display === false) return false;
+      this.#EnsureCachedAreaBlocks();
+      const geometry = this.mesh.GetGeometryResource?.() ?? null;
+      const meshIndex = this.mesh.meshIndex ?? 0;
+      let committed = false;
+      for (const collector of this.#shadowMeshOpaqueAreas) {
+        const material = collector.shaderMaterial;
+        if (!material) continue;
+        for (const block of collector.areaBlockVector) {
+          const batch = new Tr2RenderBatch();
+          batch.SetMaterial(material);
+          if (!batch.IsValid()) continue;
+          batch.SetGeometrySource(geometry, meshIndex, block.startIndex, block.count, false);
+          batch.SetPerObjectData(perObjectData ?? null);
+          committed = batches.Commit(batch) || committed;
+        }
+      }
+      return committed;
+    }
+
+    /** Carbon GetBatchesFromOverlayVector (EveSpaceObject2.cpp:1199-1285): the
+     * impact overlay's armor-damage shader draws over the TYPE_ALL blocks at
+     * maximum priority; each displayed overlay effect draws its per-batch-type
+     * effects over its overlay-type blocks (OPAQUE -> TYPE_OPAQUEONLY, everything
+     * else -> TYPE_ALL). */
+    GetBatchesFromOverlayVector(batches, perObjectData, batchType, mesh) {
+      const impactEffect = this.impactOverlay?.GetArmorDamageShader?.(batchType) ?? null;
+      if (!impactEffect && !this.overlayEffects.length) return false;
+      if (!mesh) return false;
+      this.#EnsureCachedAreaBlocks();
+      const committedBefore = batches.GetBatchCount?.() ?? 0;
+      const geometry = mesh.GetGeometryResource?.() ?? null;
+      const meshIndex = mesh.meshIndex ?? 0;
+      if (impactEffect) {
+        for (const block of this.#overlayMeshAreaBlocks[OVERLAY_TYPE_ALL]) {
+          this.#CommitBlockBatch(batches, impactEffect, geometry, meshIndex, block, perObjectData, 0xFFFFFFFF);
+        }
+      }
+      for (const overlay of this.overlayEffects) {
+        const effects = this.#OverlayEffectsFor(overlay, batchType);
+        if (!effects) continue;
+        const overlayType = batchType === TriBatchType.TRIBATCHTYPE_OPAQUE ? OVERLAY_TYPE_OPAQUEONLY : OVERLAY_TYPE_ALL;
+        const blocks = this.#overlayMeshAreaBlocks[overlayType];
+        for (const effect of effects) {
+          for (const block of blocks) {
+            this.#CommitBlockBatch(batches, effect, geometry, meshIndex, block, perObjectData, 0);
+          }
+        }
+      }
+      return (batches.GetBatchCount?.() ?? 0) > committedBefore;
+    }
+    #CommitBlockBatch(batches, material, geometry, meshIndex, block, perObjectData, priority) {
+      const batch = new Tr2RenderBatch();
+      batch.SetMaterial(material);
+      if (!batch.IsValid()) return;
+      if (priority !== 0) batch.SetPriority(priority);
+      batch.SetGeometrySource(geometry, meshIndex, block.startIndex, block.count, false);
+      batch.SetPerObjectData(perObjectData ?? null);
+      batches.Commit(batch);
+    }
+
+    // EveMeshOverlayEffect::GetEffects (display-gated, per batch type). Prefers a
+    // promoted method surface; falls back to the generated class's fields.
+    #OverlayEffectsFor(overlay, batchType) {
+      if (!overlay) return null;
+      if (typeof overlay.GetEffects === "function") return overlay.GetEffects(batchType) ?? null;
+      if (overlay.display === false) return null;
+      switch (batchType) {
+        case TriBatchType.TRIBATCHTYPE_OPAQUE:
+          return overlay.opaqueEffects ?? null;
+        case TriBatchType.TRIBATCHTYPE_DECAL:
+          return overlay.decalEffects ?? null;
+        case TriBatchType.TRIBATCHTYPE_TRANSPARENT:
+          return overlay.transparentEffects ?? null;
+        case TriBatchType.TRIBATCHTYPE_ADDITIVE:
+          return overlay.additiveEffects ?? null;
+        case TriBatchType.TRIBATCHTYPE_DISTORTION:
+          return overlay.distortionEffects ?? null;
+        default:
+          return null;
+      }
+    }
+    HasTransparentBatches() {
+      if (!this.mesh) return false;
+      if ((this.mesh.GetAreas?.(TriBatchType.TRIBATCHTYPE_TRANSPARENT)?.length ?? 0) > 0) return true;
+      for (const overlay of this.overlayEffects) {
+        if (overlay?.HasTransparentArea?.() ?? (overlay?.transparentEffects?.length ?? 0) > 0) return true;
+      }
+      return false;
+    }
+    GetSortValue(renderContext = null) {
+      const viewPosition = renderContext?.GetViewPosition?.();
+      const x = (viewPosition?.[0] ?? 0) - this.worldTransform[12];
+      const y = (viewPosition?.[1] ?? 0) - this.worldTransform[13];
+      const z = (viewPosition?.[2] ?? 0) - this.worldTransform[14];
+      return Math.hypot(x, y, z);
+    }
+
+    /** Carbon allocates Tr2PerObjectDataWithPersistentBuffers<EveSpaceObject2>,
+     * which calls back into the object at upload time; the GPU-free record carries
+     * the same live object reference for the engine serializer (the space-object
+     * Main profile) to pull current values at realization. */
+    GetPerObjectData(accumulator = null) {
+      const data = typeof accumulator?.Allocate === "function" ? accumulator.Allocate(Tr2PerObjectData) : new Tr2PerObjectData();
+      data.object = this;
+      return data;
     }
     DisplayChildren() {
       return true;

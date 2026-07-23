@@ -57,6 +57,14 @@ export class Tr2RenderContext extends CjsModel
 
   #hasViewMatrix = false;
 
+  #viewportStack = [];
+
+  #projectionStack = [];
+
+  #viewTransformStack = [];
+
+  #intentCursor = 0;
+
   static TextureFilter = Object.freeze({
     TF_NONE: 0,
     TF_POINT: 1,
@@ -317,6 +325,29 @@ export class Tr2RenderContext extends CjsModel
     return this.#viewport;
   }
 
+  // Save/restore stack for the current viewport (Carbon Push/PopViewport). The
+  // step calls these with no argument: push saves the current viewport, pop
+  // restores it and re-records the set-viewport intent so realization sees the
+  // restored value. Independent of the RT/DS balance-guard stacks.
+  PushViewport()
+  {
+    this.#viewportStack.push(this.#viewport);
+    return true;
+  }
+
+  PopViewport()
+  {
+    if (!this.#viewportStack.length) return false;
+    this.#viewport = this.#viewportStack.pop();
+    this.#intents.push({ type: "set-viewport", viewport: this.#viewport });
+    return true;
+  }
+
+  GetStackSizeViewport()
+  {
+    return this.#viewportStack.length;
+  }
+
   SetView(view, camera = null, simTime = 0)
   {
     this.#view = { view: view ?? null, camera: camera ?? null, simTime };
@@ -392,6 +423,45 @@ export class Tr2RenderContext extends CjsModel
     return this.#hasViewMatrix;
   }
 
+  // Save/restore stack for the cached view transform (Carbon Push/PopViewTransform).
+  // Push snapshots the current view object, its matrix, and the has-matrix flag;
+  // pop restores them and re-derives the inverse/eye-position via ApplyViewMatrix.
+  PushViewTransform()
+  {
+    this.#viewTransformStack.push({
+      view: this.#view,
+      hasViewMatrix: this.#hasViewMatrix,
+      transform: this.#hasViewMatrix ? mat4.copy(mat4.create(), this.#viewTransform) : null
+    });
+    return true;
+  }
+
+  PopViewTransform()
+  {
+    if (!this.#viewTransformStack.length) return false;
+
+    const saved = this.#viewTransformStack.pop();
+    this.#view = saved.view;
+    if (saved.transform)
+    {
+      this.#ApplyViewMatrix(saved.transform);
+    }
+    else
+    {
+      mat4.identity(this.#viewTransform);
+      mat4.identity(this.#inverseViewTransform);
+      vec3.set(this.#viewPosition, 0, 0, 0);
+      this.#hasViewMatrix = false;
+    }
+    this.#intents.push({ type: "set-view-transform", ...(this.#view ?? {}) });
+    return true;
+  }
+
+  GetStackSizeViewTransform()
+  {
+    return this.#viewTransformStack.length;
+  }
+
   SetProjection(projection)
   {
     this.#projection = projection ?? null;
@@ -422,14 +492,57 @@ export class Tr2RenderContext extends CjsModel
     return this.#projection;
   }
 
+  // Save/restore stack for the current projection (Carbon Push/PopProjection).
+  PushProjection()
+  {
+    this.#projectionStack.push(this.#projection);
+    return true;
+  }
+
+  PopProjection()
+  {
+    if (!this.#projectionStack.length) return false;
+    this.#projection = this.#projectionStack.pop();
+    this.#intents.push({ type: "set-projection", projection: this.#projection });
+    return true;
+  }
+
+  GetStackSizeProjection()
+  {
+    return this.#projectionStack.length;
+  }
+
   GetIntents()
   {
     return this.#intents.slice();
   }
 
+  // Incremental exactly-once consumption for a per-step/per-batch executor:
+  // returns the intents recorded since the previous TakeIntents/ClearIntents and
+  // advances the cursor. Unlike GetIntents (a full copy), the same intent is
+  // never returned twice, so nested jobs cannot realize an intent more than once.
+  TakeIntents()
+  {
+    const taken = this.#intents.slice(this.#intentCursor);
+    this.#intentCursor = this.#intents.length;
+    return taken;
+  }
+
+  // Peek at the intents since the cursor without advancing it.
+  PeekIntents()
+  {
+    return this.#intents.slice(this.#intentCursor);
+  }
+
+  GetIntentCursor()
+  {
+    return this.#intentCursor;
+  }
+
   ClearIntents()
   {
     this.#intents.length = 0;
+    this.#intentCursor = 0;
   }
 
   AddDiagnostic(diagnostic)

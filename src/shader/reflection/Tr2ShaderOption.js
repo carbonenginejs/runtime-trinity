@@ -10,11 +10,13 @@ export class Tr2ShaderOption extends CjsModel
 {
 
   /** name (BlueSharedString) */
+  @io.rebuild("pipeline")
   @io.persist
   @type.string
   name = "";
 
   /** value (BlueSharedString) */
+  @io.rebuild("pipeline")
   @io.persist
   @type.string
   value = "";

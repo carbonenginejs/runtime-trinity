@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
+import { type, io } from '@carbonenginejs/core-types/schema';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { CjsParameter } from './CjsParameter.js';
 
@@ -15,7 +15,7 @@ class Tr2ConstantEffectParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ConstantEffectParameter",
       family: "shader"
-    })], [[[type, type.string], 16, "name"], [[type, type.vec4], 16, "value"]], 0, void 0, CjsParameter));
+    })], [[[void 0, io.rebuild("bindings"), type, type.string], 16, "name"], [[void 0, io.rebuild("bindings"), type, type.vec4], 16, "value"]], 0, void 0, CjsParameter));
   }
   constructor(...args) {
     super(...args);

@@ -14,7 +14,7 @@ class EveChildInstancedMeshArea extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildInstancedMeshArea",
       family: "eve/child"
-    })], [[[io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.uint32], 16, "batchType"], [[io, io.persist, type, type.uint32], 16, "areaIndex"], [[io, io.persist, type, type.uint32], 16, "areaCount"], [[io, io.read, type, type.float32], 16, "effectHash"]], 0, void 0, CjsModel));
+    })], [[[void 0, io.rebuild("instanceBuffer"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "batchType"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "areaIndex"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "areaCount"], [[io, io.read, type, type.float32], 16, "effectHash"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);
@@ -38,7 +38,7 @@ class EveChildInstancedMeshInstance extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildInstancedMeshInstance",
       family: "eve/child"
-    })], [[[io, io.persist, type, type.mat4], 16, "transform"], [[io, io.persist, type, type.uint32], 16, "sphereIndex"]], 0, void 0, CjsModel));
+    })], [[[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.mat4], 16, "transform"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "sphereIndex"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

@@ -8,6 +8,7 @@ import { EveSpotlightLight } from "./EveSpotlightLight.js";
 @type.define({ className: "EveSpotlightSet", family: "eve/attachment/spotlights" })
 export class EveSpotlightSet extends EveEntity
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.list("EveSpotlightSetItem")
   spotlightItems = [];
@@ -20,14 +21,17 @@ export class EveSpotlightSet extends EveEntity
   @type.boolean
   display = true;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   coneEffect = null;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.objectRef("Tr2Effect")
   glowEffect = null;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   skinned = false;

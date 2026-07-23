@@ -6,9 +6,14 @@ import { sph3 } from "@carbonenginejs/core-math/sph3";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
 import { Tr2Transform } from "../../generated/trinityCore/Tr2Transform.js";
 import { EveBasicPerObjectData } from "../EveBasicPerObjectData.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
+
+// Static scratch for the singular-world patch fixup (allocation rules: hot
+// per-object path, copy-into, never allocate per call).
+const INVERSE_PATCH_SCRATCH = mat4.create();
 
 
 @type.define({ className: "EveTransform", family: "eve/spaceObject" })
@@ -189,19 +194,77 @@ export class EveTransform extends Tr2Transform
     for (const system of this.particleSystems) system?.SortParticles?.();
     if (this.#isVisible && this.mesh) out.push(this);
     for (const child of this.children) child?.GetRenderables?.(out);
-    this.spriteSet?.GetRenderables?.(out);
     return out;
+  }
+
+  // Accepts either an accumulator (the Carbon ITr2Renderable contract - the
+  // record is allocated through accumulator.Allocate) or a caller-owned output
+  // record (the earlier JS shape, kept for compatibility).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Constant-buffer allocation is engine-owned; Trinity publishes the same backend-neutral matrix record.")
+  GetPerObjectData(accumulatorOrOut = new EveBasicPerObjectData())
+  {
+    const out = typeof accumulatorOrOut?.Allocate === "function"
+      ? accumulatorOrOut.Allocate(EveBasicPerObjectData)
+      : accumulatorOrOut;
+
+    mat4.transpose(out.world, this.worldTransform);
+    mat4.transpose(out.worldLast, this.#lastWorldTransform);
+    if (!mat4.invert(out.worldInverse, out.world))
+    {
+      // Carbon fixup (EveTransform.cpp:63-75): patch the first all-zero basis
+      // row's diagonal with 0.1 and invert that patched matrix instead.
+      const patched = INVERSE_PATCH_SCRATCH;
+      mat4.copy(patched, out.world);
+      if (patched[0] === 0 && patched[4] === 0 && patched[8] === 0) patched[0] = 0.1;
+      else if (patched[1] === 0 && patched[5] === 0 && patched[9] === 0) patched[5] = 0.1;
+      else if (patched[2] === 0 && patched[6] === 0 && patched[10] === 0) patched[10] = 0.1;
+      if (!mat4.invert(out.worldInverse, patched)) mat4.identity(out.worldInverse);
+    }
+    return out;
+  }
+
+  /** Carbon declares the renderable batch contract on Tr2Transform
+   * (Tr2Transform.cpp:250-276); the generated base stays data-only, so the
+   * maintained renderable carries the behavior. */
+  // Returns whether any batch was committed (JS addition; Carbon returns void).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Declared on Tr2Transform in Carbon; the generated base class stays data-only.")
+  GetBatches(batches, batchType, perObjectData, _reason)
+  {
+    if (this.display && this.mesh)
+    {
+      return this.mesh.GetBatches(batches, this.mesh.GetAreas(batchType), perObjectData) === true;
+    }
+    return false;
   }
 
   @carbon.method
   @impl.adapted
-  @impl.reason("Constant-buffer allocation is engine-owned; Trinity publishes the same backend-neutral matrix record.")
-  GetPerObjectData(out = new EveBasicPerObjectData())
+  @impl.reason("Declared on Tr2Transform in Carbon; the generated base class stays data-only.")
+  HasTransparentBatches()
   {
-    mat4.transpose(out.world, this.worldTransform);
-    mat4.transpose(out.worldLast, this.#lastWorldTransform);
-    if (!mat4.invert(out.worldInverse, out.world)) mat4.identity(out.worldInverse);
-    return out;
+    if (this.display && this.mesh)
+    {
+      return (this.mesh.GetAreas(TriBatchType.TRIBATCHTYPE_TRANSPARENT)?.length ?? 0) > 0;
+    }
+    return false;
+  }
+
+  // Distance from the view position to the world translation, scaled by the
+  // authored multiplier (used to order transparent renderables back-to-front).
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Carbon reads the Tr2Renderer view-position global; the relocated camera state arrives via the threaded render context.")
+  GetSortValue(renderContext = null)
+  {
+    const viewPosition = renderContext?.GetViewPosition?.();
+    const x = (viewPosition?.[0] ?? 0) - this.worldTransform[12];
+    const y = (viewPosition?.[1] ?? 0) - this.worldTransform[13];
+    const z = (viewPosition?.[2] ?? 0) - this.worldTransform[14];
+    return Math.hypot(x, y, z) * this.sortValueMultiplier;
   }
 
   @carbon.method

@@ -16,22 +16,27 @@ export class Tr2MeshArea extends CjsModel
   @type.boolean
   display = true;
 
+  @io.rebuild("batches")
   @io.persist
   @type.int32
   index = 0;
 
+  @io.rebuild("batches")
   @io.persist
   @type.int32
   count = 1;
 
-  @io.persist
+  @io.rebuild("batches")
+  @io.persistOnly
   @type.boolean
   reversed = false;
 
+  @io.rebuild("batches")
   @io.persist
   @type.boolean
   useSHLighting = false;
 
+  @io.rebuild("batches")
   @io.notify
   @io.persist
   @type.objectRef("Tr2Effect")
