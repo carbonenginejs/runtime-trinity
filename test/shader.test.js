@@ -453,6 +453,23 @@ test("promoted variable, transform, and shader buffer classes expose graph behav
   assertAlmostEquals(copied[3], 1);
   assertAlmostEquals(copied[7], 2);
   assertAlmostEquals(copied[11], 3);
+
+  // Carbon's 6-arg TransformationMatrix (math Matrix.cpp:66-143) scales about
+  // the TRUE origin and rotates about m_rotationCenter: translation bytes are
+  // t + rc - R*rc with rc UNSCALED. gl's fromRotationTranslationScaleOrigin
+  // (which scales the center too: t + rc - R*(S*rc)) must NOT be used. With
+  // R = 90deg about Z, rc = (1,0,0), s = (2,3,4), t = 0: Carbon gives
+  // (1,-1,0); the wrong helper gives (1,-2,0).
+  const pivoted = new TriTransformParameter();
+  pivoted.rotationCenter = vec3.fromValues(1, 0, 0);
+  pivoted.scaling = vec3.fromValues(2, 3, 4);
+  pivoted.rotation[2] = Math.SQRT1_2;
+  pivoted.rotation[3] = Math.SQRT1_2;
+  const pivotedCopy = new Float32Array(16);
+  pivoted.CopyValueToEffect(0, pivotedCopy, 64);
+  assertAlmostEquals(pivotedCopy[3], 1);
+  assertAlmostEquals(pivotedCopy[7], -1);
+  assertAlmostEquals(pivotedCopy[11], 0);
   const buffer = new Tr2ShaderBuffer();
   buffer.SetData(new Uint8Array([1, 2, 3, 4]));
   assertEquals(buffer.size, 4);

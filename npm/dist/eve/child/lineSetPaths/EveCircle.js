@@ -19,7 +19,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveCircle",
         family: "eve/child/lineSetPaths"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "translation"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.read, type, type.boolean], 16, "isVisible"], [[io, io.notify, io, io.persist, type, type.float32], 16, "circleRadius"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "circleDistort"], [[io, io.notify, io, io.persist, type, type.float32], 16, "numSegments"], [[io, io.notify, io, io.persist, type, type.float32], 16, "completeness"], [[io, io.notify, io, io.persist, type, type.float32], 16, "startPoint"], [[io, io.notify, io, io.persist, type, type.float32], 16, "lineWidth"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "scaleSegmentsByCompleteness"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "scaleEndpoints"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "billboardObjects"], [[io, io.persist, type, type.vec3], 16, "objectScale"], [[io, io.persist, type, type.float32], 16, "movementSpeed"], [[io, io.read, type, type.float32], 16, "animValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "GeneratePoints"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetPointCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLinesToSet"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "translation"], [[io, io.notify, io, io.persist, type, type.quat], 16, "rotation"], [[io, io.notify, io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.read, type, type.boolean], 16, "isVisible"], [[io, io.notify, io, io.persist, type, type.float32], 16, "circleRadius"], [[io, io.notify, io, io.persist, type, type.vec4], 16, "circleDistort"], [[io, io.notify, io, io.persist, type, type.float32], 16, "numSegments"], [[io, io.notify, io, io.persist, type, type.float32], 16, "completeness"], [[io, io.notify, io, io.persist, type, type.float32], 16, "startPoint"], [[io, io.notify, io, io.persist, type, type.float32], 16, "lineWidth"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "scaleSegmentsByCompleteness"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "scaleEndpoints"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "billboardObjects"], [[io, io.persist, type, type.vec3], 16, "objectScale"], [[io, io.persist, type, type.float32], 16, "movementSpeed"], [[io, io.read, type, type.float32], 16, "animValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "GeneratePoints"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetPointCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "CalculateBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLinesToSet"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateBuffer"]], 0, void 0, _EveChildTransform));
     }
     name = (_initProto(this), _init_name(this, ""));
     display = (_init_extra_name(this), _init_display(this, true));
@@ -144,6 +144,17 @@ new class extends _identity {
     #getSegmentCount() {
       const completenessScale = 1 - Math.abs(this.completeness - 1);
       return Math.trunc(this.scaleSegmentsByCompleteness ? (this.numSegments + 0.5) * completenessScale : this.numSegments + 0.5);
+    }
+
+    /** Carbon EveCircle::UpdateBuffer (EveCircle.cpp:209-266, pure-virtual on
+     * IEveLineSetPath.h:10): fills the billboard-object instance buffer. The
+     * body carries real compositions - TransformationMatrix(sizeMod *
+     * objectScale, objRot, translation) * m_localTransform,
+     * Decompose(m_localTransform * systemLocation), TransformCoord with an
+     * inverse rotation, and a 12-float transposed pack - EVERY one of which
+     * must swap operands per the carbon-math conventions when this is ported. */
+    UpdateBuffer(..._args) {
+      throw new Error("EveCircle.UpdateBuffer is not implemented in CarbonEngineJS.");
     }
   }];
   #identityMatrix = mat4.create();

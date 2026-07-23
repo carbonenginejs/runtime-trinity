@@ -613,6 +613,11 @@ export class EveSpaceObject2 extends EveEntity
     mat4.fromQuat(this.worldTransform, rotation);
     if (this.modelScale !== 1)
     {
+      // Carbon (row-vector): m_worldTransform * scaleMatrix - scale LAST
+      // (cpp:2711-2716). gl mat4.scale builds W*S = scale FIRST; equivalent
+      // ONLY because modelScale is strictly uniform (a uniform scale commutes
+      // with the pure rotation here). If modelScale ever becomes a vec3 this
+      // must become mat4.multiply(w, S, w) per the swap rule.
       mat4.scale(this.worldTransform, this.worldTransform, [this.modelScale, this.modelScale, this.modelScale]);
     }
 

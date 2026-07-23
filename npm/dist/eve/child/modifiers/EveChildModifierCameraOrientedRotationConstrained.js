@@ -26,7 +26,8 @@ new class extends _identity {
     /**
      * Axis-angle rotation matrix in the column-major flat layout, reproducing
      * Carbon RotationMatrix(const Vector3& axis, float angle) (Matrix_inline.h).
-     * Carbon's row-major element _(r+1)(c+1) maps to this mat4 at index c*4 + r.
+     * Carbon's row-major element _(r+1)(c+1) maps to this mat4 at index r*4 + c
+     * (the shared byte layout - row i occupies flat [i*4 .. i*4+3]).
      * @param {Float32Array} out
      * @param {Float32Array} axis - normalized internally
      * @param {Number} angle - radians

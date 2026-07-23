@@ -279,6 +279,18 @@ export class EveBezierCurve extends EveChildTransform
     return Math.trunc(this.scaleSegmentsByCompleteness ? (this.segments + 0.5) * completenessScale : this.segments + 0.5);
   }
 
+  /** Carbon EveBezierCurve::UpdateBuffer (EveBezierCurve.cpp:207+,
+   * pure-virtual on IEveLineSetPath.h:10): fills the billboard-object
+   * instance buffer. The body carries real compositions (see the EveCircle
+   * twin) - every one must swap operands per the carbon-math conventions
+   * when this is ported. */
+  @carbon.method
+  @impl.notImplemented
+  UpdateBuffer(..._args)
+  {
+    throw new Error("EveBezierCurve.UpdateBuffer is not implemented in CarbonEngineJS.");
+  }
+
   static #identityMatrix = mat4.create();
 
   static #getDeltaT(context)

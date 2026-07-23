@@ -71,12 +71,32 @@ export class TriTransformParameter extends CjsParameter
     return CjsParameter.hashFnv1String(this.name, startingHash);
   }
 
+  /** Carbon TriTransformParameter::CopyValueToEffect
+   * (TriTransformParameter.cpp:30-66) builds the 6-arg TransformationMatrix
+   * (math Matrix.cpp:66-143, scalingCenter NULL): row-vector
+   * S * T(-rotationCenter) * R * T(rotationCenter + translation) - the scale
+   * is about the TRUE ORIGIN while only the rotation pivots on
+   * m_rotationCenter (translation bytes: t + rc - R*rc, rc UNSCALED). NOT
+   * gl-matrix's fromRotationTranslationScaleOrigin, which scales about the
+   * origin point too (t + o - R*(S*o)) - the two differ whenever
+   * scaling != 1 and rotationCenter != 0. gl column order:
+   * T(rc + t) * R * T(-rc) * S. NOTE: Carbon's TRITB_OBJECT branch
+   * (cpp:48-66) additionally multiplies in the object world matrix - an
+   * unported composition (the JS treats every non-FIXED base as the zeroed
+   * inverse view only); when ported it must swap per the convention. */
   @carbon.method
   @impl.adapted
   CopyValueToEffect(_inputType, dest, size = 64, context = null)
   {
     const transform = mat4.create();
-    mat4.fromRotationTranslationScaleOrigin(transform, this.rotation, this.translation, this.scaling, this.rotationCenter);
+    const rotationCenter = this.rotationCenter;
+    // gl column build of T(rc + t) * R * T(-rc) * S, right-to-left:
+    mat4.fromQuat(transform, this.rotation);
+    mat4.translate(transform, transform, [-rotationCenter[0], -rotationCenter[1], -rotationCenter[2]]);
+    mat4.scale(transform, transform, this.scaling);
+    transform[12] += rotationCenter[0] + this.translation[0];
+    transform[13] += rotationCenter[1] + this.translation[1];
+    transform[14] += rotationCenter[2] + this.translation[2];
     const base = context?.inverseViewTransform ?? context?.GetInverseViewTransform?.() ?? null;
     if (base && this.transformBase !== 0)
     {

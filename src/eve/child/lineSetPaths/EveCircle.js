@@ -267,6 +267,20 @@ export class EveCircle extends EveChildTransform
     return Math.trunc(this.scaleSegmentsByCompleteness ? (this.numSegments + 0.5) * completenessScale : this.numSegments + 0.5);
   }
 
+  /** Carbon EveCircle::UpdateBuffer (EveCircle.cpp:209-266, pure-virtual on
+   * IEveLineSetPath.h:10): fills the billboard-object instance buffer. The
+   * body carries real compositions - TransformationMatrix(sizeMod *
+   * objectScale, objRot, translation) * m_localTransform,
+   * Decompose(m_localTransform * systemLocation), TransformCoord with an
+   * inverse rotation, and a 12-float transposed pack - EVERY one of which
+   * must swap operands per the carbon-math conventions when this is ported. */
+  @carbon.method
+  @impl.notImplemented
+  UpdateBuffer(..._args)
+  {
+    throw new Error("EveCircle.UpdateBuffer is not implemented in CarbonEngineJS.");
+  }
+
   static #identityMatrix = mat4.create();
 
   static #getDeltaT(context)
