@@ -43,7 +43,8 @@ class EveDistributionModifierTransformOffset extends CjsModel {
     return true;
   }
   ProcessDistributionModifier(placement, _deltaTime, _params) {
-    const combinedRotation = quat.multiply(quat.create(), placement.initialRotation, placement.additionalRotation);
+    // Carbon (row-vector): initialRotation * additionalRotation - initial first.
+    const combinedRotation = quat.multiply(quat.create(), placement.additionalRotation, placement.initialRotation);
     const translation = vec3.create();
     if (this.translationCurve) {
       this.translationCurve.GetValueAt(placement.lifeTime, translation);
@@ -58,7 +59,8 @@ class EveDistributionModifierTransformOffset extends CjsModel {
     } else {
       quat.copy(rotation, this.rotation);
     }
-    quat.multiply(placement.additionalRotation, placement.additionalRotation, rotation);
+    // Carbon (row-vector): additionalRotation *= rotation - additional first.
+    quat.multiply(placement.additionalRotation, rotation, placement.additionalRotation);
     const scale = vec3.create();
     if (this.scaleCurve) {
       this.scaleCurve.GetValueAt(placement.lifeTime, scale);

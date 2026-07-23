@@ -21,6 +21,16 @@ export class Tr2DirectInstanceData extends CjsModel
   @type.vec3
   aabbMin = vec3.create();
 
+  /** GetCount (MAP_PROPERTY_READONLY "count") - number of instances. */
+  @io.read
+  @type.uint32
+  count = 0;
+
+  /** m_layout (Tr2VertexDefinition) - CPU metadata for the direct GPU stream. */
+  #layout = Object.freeze([]);
+
+  #stride = 0;
+
   /**
    * Assigns the CPU-side instance bounds without realizing a GPU buffer.
    * Accepts the JavaScript `{ min, max }` box representation; a two-vector
@@ -38,6 +48,61 @@ export class Tr2DirectInstanceData extends CjsModel
     }
     vec3.copy(this.aabbMin, min);
     vec3.copy(this.aabbMax, max);
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetCount()
+  {
+    return this.count;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetStride()
+  {
+    return this.#stride;
+  }
+
+  /**
+   * Records the CPU vertex-layout metadata. Carbon computes the stride as
+   * max(offset + elementSize); the direct GPU buffer itself is realized by
+   * the engine (GetData/UpdateData/DestroyData are engine-owned).
+   */
+  @carbon.method
+  @impl.adapted
+  SetLayout(layout)
+  {
+    if (!Array.isArray(layout))
+    {
+      throw new TypeError("Layout must be an array of element descriptors");
+    }
+    let stride = 0;
+    for (const element of layout)
+    {
+      const offset = Number(element?.offset) || 0;
+      const byteSize = Number(element?.byteSize) || 0;
+      stride = Math.max(stride, offset + byteSize);
+    }
+    this.#layout = Object.freeze(layout.slice());
+    this.#stride = stride;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetLayout()
+  {
+    return this.#layout;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetInstanceBufferBoundingBox(_bufferIndex = 0)
+  {
+    return {
+      min: vec3.clone(this.aabbMin),
+      max: vec3.clone(this.aabbMax)
+    };
   }
 
 }

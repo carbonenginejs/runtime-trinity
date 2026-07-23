@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveSpaceObject2.h
 import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { type } from "@carbonenginejs/core-types/schema";
@@ -16,6 +17,28 @@ export class EveSpacePerObjectData extends CjsModel
   static BONE_OFFSET_COUNT = 4;
 
   static SH_COEFFICIENT_COUNT = 7;
+
+  @type.mat4
+  worldTransform = mat4.create();
+
+  @type.mat4
+  worldTransformLast = mat4.create();
+
+  @type.mat4
+  invWorldTransform = mat4.create();
+
+  @type.vec4
+  shipData = vec4.create();
+
+  @type.vec3
+  clipSphereCenter = vec3.create();
+
+  /** Carbon's field name (sic) - "ellpsoid" matches the source struct. */
+  @type.vec4
+  ellpsoidRadii = vec4.create();
+
+  @type.vec4
+  ellpsoidCenter = vec4.create();
 
   @type.array("uint32")
   boneOffsets = Array(EveSpacePerObjectData.BONE_OFFSET_COUNT).fill(0);

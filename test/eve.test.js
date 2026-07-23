@@ -1192,7 +1192,7 @@ test("EveVirtualCameraSystem owns Carbon camera selection and transitions", () =
   assertEquals(CjsSchema.getField(EveVirtualCameraSystem, "cameras")?.type.kind, "list");
 });
 
-test("EveChildModifierSRT pre-multiplies Carbon scale, rotation, and translation", () =>
+test("EveChildModifierSRT applies Carbon scale, rotation, and translation before the child transform", () =>
 {
   const modifier = new EveChildModifierSRT();
   assertMat4(modifier.ApplyTransform(null, mat4.create(), 0, null, mat4.create()), mat4.create());
@@ -1202,8 +1202,10 @@ test("EveChildModifierSRT pre-multiplies Carbon scale, rotation, and translation
   const source = mat4.fromTranslation(mat4.create(), vec3.fromValues(1, 0, 0));
   const out = mat4.create();
   assertEquals(modifier.ApplyTransform(null, source, 0, null, out), out);
-  assertAlmostEquals(out[12], 3);
-  assertAlmostEquals(out[13], 6);
+  // Carbon (row-vector): SRT * transform - the SRT applies FIRST, so the
+  // origin lands at T(3,4,5), then the source translation adds (1,0,0).
+  assertAlmostEquals(out[12], 4);
+  assertAlmostEquals(out[13], 4);
   assertAlmostEquals(out[14], 5);
   assertEquals(CjsSchema.getField(EveChildModifierSRT, "scaling")?.type.kind, "vec3");
 });
@@ -1230,7 +1232,9 @@ test("EveChildTransform rebuilds SRT and composes Carbon child transforms", () =
     vec3.fromValues(3, 3, 3)
   );
   assertEquals(child.UpdateTransform(parent), child.worldTransform);
-  assertMat4(child.worldTransform, mat4.multiply(mat4.create(), expectedLocal, parent));
+  // Carbon (row-vector): world = local * parent - local first, which is
+  // mat4.multiply(world, parent, local) in gl-matrix.
+  assertMat4(child.worldTransform, mat4.multiply(mat4.create(), parent, expectedLocal));
 
   child.Setup(null, null, vec3.fromValues(8, 9, 10));
   assertVec3(child.scaling, scaling);
@@ -1249,14 +1253,14 @@ test("EveChildTransform strips selected parent components and honors static tran
   staticRotation.SetupWithStaticRotation(null, null, vec3.fromValues(1, 0, 0));
   const noRotationParent = mat4.fromRotationTranslationScale(mat4.create(), quat.create(), parentTranslation, parentScale);
   staticRotation.UpdateTransform(parent);
-  assertMat4(staticRotation.worldTransform, mat4.multiply(mat4.create(), staticRotation.localTransform, noRotationParent));
+  assertMat4(staticRotation.worldTransform, mat4.multiply(mat4.create(), noRotationParent, staticRotation.localTransform));
 
   const staticScale = new EveChildTransform();
   staticScale.useStaticScale = true;
   staticScale.Setup(null, null, vec3.fromValues(1, 0, 0));
   const noScaleParent = mat4.fromRotationTranslationScale(mat4.create(), parentRotation, parentTranslation, vec3.fromValues(1, 1, 1));
   staticScale.UpdateTransform(parent);
-  assertMat4(staticScale.worldTransform, mat4.multiply(mat4.create(), staticScale.localTransform, noScaleParent));
+  assertMat4(staticScale.worldTransform, mat4.multiply(mat4.create(), noScaleParent, staticScale.localTransform));
 
   const staticTransform = new EveChildTransform();
   staticTransform.SetupWithStaticTransform(null, null, vec3.fromValues(1, 2, 3));
@@ -1264,7 +1268,7 @@ test("EveChildTransform strips selected parent components and honors static tran
   staticTransform.translation[0] = 99;
   staticTransform.UpdateTransform(parent);
   assertMat4(staticTransform.localTransform, frozenLocal);
-  assertMat4(staticTransform.worldTransform, mat4.multiply(mat4.create(), frozenLocal, parent));
+  assertMat4(staticTransform.worldTransform, mat4.multiply(mat4.create(), parent, frozenLocal));
 
   const matrixOwned = new EveChildTransform();
   matrixOwned.useSRT = false;
@@ -1272,7 +1276,7 @@ test("EveChildTransform strips selected parent components and honors static tran
   matrixOwned.Setup(vec3.fromValues(9, 9, 9), null, null);
   matrixOwned.UpdateTransform(parent);
   assertVec3(matrixOwned.scaling, [1, 1, 1]);
-  assertMat4(matrixOwned.worldTransform, mat4.multiply(mat4.create(), matrixOwned.localTransform, parent));
+  assertMat4(matrixOwned.worldTransform, mat4.multiply(mat4.create(), parent, matrixOwned.localTransform));
 });
 
 test("EveCircle generates Carbon half-step circle points and line descriptions", () =>

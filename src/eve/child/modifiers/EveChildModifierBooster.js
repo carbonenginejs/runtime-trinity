@@ -60,10 +60,12 @@ export class EveChildModifierBooster extends CjsModel
     vec3.set(transVec, 0, 0, trans);
     mat4.fromTranslation(translationTransform, transVec);
 
-    // return translationTransform * alignMat * scalingTransform * transform
-    mat4.multiply(out, scalingTransform, transform);
-    mat4.multiply(out, alignMat, out);
-    mat4.multiply(out, translationTransform, out);
+    // Carbon (row-vector): translationTransform * alignMat * scalingTransform
+    // * transform - T applied first, transform last. In gl-matrix that is
+    // out = transform . scaling . align . translation.
+    mat4.multiply(out, transform, scalingTransform);
+    mat4.multiply(out, out, alignMat);
+    mat4.multiply(out, out, translationTransform);
     return out;
   }
 }

@@ -49,6 +49,18 @@ export class Tr2GeometryBufferParameter extends CjsParameter
     return this.name;
   }
 
+  /** Content hash: resource path (when set) then name. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    if (this.resourcePath)
+    {
+      startingHash = CjsParameter.hashFnv1String(this.resourcePath, startingHash);
+    }
+    return CjsParameter.hashFnv1String(this.name, startingHash);
+  }
+
   @carbon.method
   @impl.adapted
   Initialize()

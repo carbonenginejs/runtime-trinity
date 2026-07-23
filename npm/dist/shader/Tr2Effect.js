@@ -6,6 +6,7 @@ import { Tr2ConstantEffectParameter as _Tr2ConstantEffectPar } from './parameter
 import { Tr2FloatParameter as _Tr2FloatParameter } from './parameter/Tr2FloatParameter.js';
 import { Tr2GeometryBufferParameter as _Tr2GeometryBufferPar } from './parameter/Tr2GeometryBufferParameter.js';
 import { Tr2Matrix4Parameter as _Tr2Matrix4Parameter } from './parameter/Tr2Matrix4Parameter.js';
+import { Tr2EffectConstant as _Tr2EffectConstant } from './reflection/Tr2EffectConstant.js';
 import { Tr2ShaderOption as _Tr2ShaderOption } from './reflection/Tr2ShaderOption.js';
 import { Tr2SamplerOverride as _Tr2SamplerOverride } from './sampler/Tr2SamplerOverride.js';
 import { Tr2Vector2Parameter as _Tr2Vector2Parameter } from './parameter/Tr2Vector2Parameter.js';
@@ -31,7 +32,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2Effect",
         family: "shader"
-      })], [[[io, io.notify, void 0, io.rebuild("pipeline"), io, io.always, io, io.persist, type, type.string], 16, "effectFilePath"], [[void 0, io.rebuild("pipeline"), io, io.persist, void 0, type.list("Tr2ShaderOption")], 16, "options"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("Tr2ConstantEffectParameter")], 16, "constParameters"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("EffectParameter")], 16, "parameters"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("EffectResource")], 16, "resources"], [[io, io.read, void 0, type.objectRef("Tr2EffectRes")], 16, "effectResource"], [[io, io.read, type, type.string], 16, "actualEffectFilePath"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("Tr2SamplerOverride")], 16, "samplerOverrides"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildCachedData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterAnnotations"], [[carbon, carbon.method, impl, impl.adapted], 18, "PopulateParameters"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndUpdate"], [[carbon, carbon.method, impl, impl.adapted], 18, "PruneParameters"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsParameterUsedByTechnique"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartUpdate"]], 0, void 0, _Tr2Material));
+      })], [[[io, io.notify, void 0, io.rebuild("pipeline"), io, io.always, io, io.persist, type, type.string], 16, "effectFilePath"], [[void 0, io.rebuild("pipeline"), io, io.persist, void 0, type.list("Tr2ShaderOption")], 16, "options"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("Tr2ConstantEffectParameter")], 16, "constParameters"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("EffectParameter")], 16, "parameters"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("EffectResource")], 16, "resources"], [[io, io.read, void 0, type.objectRef("Tr2EffectRes")], 16, "effectResource"], [[io, io.read, type, type.string], 16, "actualEffectFilePath"], [[void 0, io.rebuild("bindings"), io, io.persist, void 0, type.list("Tr2SamplerOverride")], 16, "samplerOverrides"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildCachedData"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildCachedDataAsync"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetVariableStore"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVariableStore"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetConstParameters"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterAnnotations"], [[carbon, carbon.method, impl, impl.adapted], 18, "PopulateParameters"], [[carbon, carbon.method, impl, impl.implemented], 18, "EndUpdate"], [[carbon, carbon.method, impl, impl.adapted], 18, "PruneParameters"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsParameterUsedByTechnique"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartUpdate"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetResourceTexture2D"]], 0, void 0, _Tr2Material));
     }
     /** m_effectFilePath (std::string) [READWRITE, PERSIST, NOTIFY] */
     effectFilePath = (_initProto(this), _init_effectFilePath(this, ""));
@@ -61,12 +62,70 @@ new class extends _identity {
     samplerOverrides = (_init_extra_actualEffectFilePath(this), _init_samplerOverrides(this, []));
     parameterHash = (_init_extra_samplerOverrides(this), 0xffffffff);
     display = true;
-    variableStore = CjsVariableStore.GetGlobalStore();
+
+    /**
+     * Carbon keeps m_variableStore null and falls back to the GLOBAL store at
+     * call time, so a later global-store swap is seen by existing effects.
+     * Read through GetVariableStore(); never capture the global eagerly.
+     */
+    variableStore = null;
     insideStartUpdate = false;
 
     /** Carbon method RebuildCachedData -> RebuildCachedDataInternal (MAP_METHOD_AND_WRAP). */
     RebuildCachedData() {
       this.RebuildCachedDataInternal();
+    }
+
+    /**
+     * The resource-arrival overload: Carbon temporarily clears
+     * insideStartUpdate so a shader arriving during a batched Start/EndUpdate
+     * still rebuilds immediately.
+     */
+    RebuildCachedDataAsync() {
+      const wasInsideStartUpdate = this.insideStartUpdate;
+      this.insideStartUpdate = false;
+      this.RebuildCachedDataInternal();
+      this.insideStartUpdate = wasInsideStartUpdate;
+    }
+    SetVariableStore(store) {
+      this.variableStore = store ?? null;
+    }
+
+    /** The effect's store, falling back to the global store at call time. */
+    GetVariableStore() {
+      return this.variableStore ?? CjsVariableStore.GetGlobalStore();
+    }
+    GetConstParameters() {
+      return this.constParameters;
+    }
+
+    /**
+     * Content hash over the shader path, options, constant parameters, and
+     * every parameter/resource - Carbon's effect dedup/batching key. Only
+     * hashes authored content; values coming from a variable store are not
+     * included. Not lightweight - do not call every frame.
+     */
+    GetHashValue() {
+      let hash = 0;
+      const path = this.actualEffectFilePath || this.effectFilePath;
+      if (path) {
+        hash = CjsParameter.hashFnv1String(path);
+      }
+      for (const option of this.options) {
+        hash = CjsParameter.hashFnv1String(option?.name ?? "", hash);
+        hash = CjsParameter.hashFnv1String(option?.value ?? "", hash);
+      }
+      for (const parameter of this.constParameters) {
+        hash = CjsParameter.hashFnv1String(parameter?.name ?? "", hash);
+        hash = CjsParameter.hashFnv1Floats(parameter?.value ?? [0, 0, 0, 0], hash);
+      }
+      for (const parameter of this.parameters) {
+        hash = parameter?.GetHashValue?.(hash) ?? hash;
+      }
+      for (const resource of this.resources) {
+        hash = resource?.GetHashValue?.(hash) ?? hash;
+      }
+      return hash >>> 0;
     }
 
     /** Carbon method GetParameterAnnotations -> PyGetParameterAnnotations (MAP_METHOD). */
@@ -168,7 +227,7 @@ new class extends _identity {
       this.compatibleWithGdr = true;
       for (const parameter of this.parameters) {
         if (parameter instanceof _TriVariableParameter) {
-          parameter.Initialize(this.variableStore);
+          parameter.Initialize(this.GetVariableStore());
         }
         parameter?.RebuildEffectHandles?.(this.shader);
       }
@@ -220,6 +279,18 @@ new class extends _identity {
       parameter.SetParameterName?.(name);
       parameter.SetResourcePath?.(resourcePath);
       return this.AddResource(parameter);
+    }
+
+    /**
+     * Carbon's SetResourceTexture2D - assigns the texture path on the named
+     * resource, creating the TriTextureParameter when absent.
+     */
+    SetResourceTexture2D(name, resourcePath = "") {
+      const updated = this.#setNamedTexture(name, resourcePath);
+      if (updated) {
+        this.RebuildCachedDataInternal();
+      }
+      return updated;
     }
     AddSamplerOverride(name, addressU = 1, addressV = addressU) {
       if (this.HasSamplerOverride(name)) {
@@ -613,6 +684,12 @@ new class extends _identity {
       return Boolean(annotation.boolValue ?? annotation.value ?? annotation.booleanValue ?? defaultValue);
     }
     static convertEffectConstant(constant, constantValues) {
+      // Carbon only populates parameters for FLOAT constants; INT/UINT/BOOL
+      // constants are skipped. String types accepted for pre-enum reflection data.
+      const constantType = constant?.type;
+      if (constantType !== undefined && constantType !== null && constantType !== _Tr2EffectConstant.Type.FLOAT && constantType !== "FLOAT") {
+        return null;
+      }
       const name = constant.name ?? "";
       const dimension = Number(constant.dimension ?? 1);
       const elements = Number(constant.elements ?? 1);
@@ -638,16 +715,19 @@ new class extends _identity {
       if (dimension === 16) {
         const parameter = new _Tr2Matrix4Parameter();
         parameter.name = name;
+        _Tr2Effect.readComponents(parameter.value, constant, constantValues, 16);
         return parameter;
       }
       if (dimension === 2) {
         const parameter = new _Tr2Vector2Parameter();
         parameter.name = name;
+        _Tr2Effect.readComponents(parameter.value, constant, constantValues, 2);
         return parameter;
       }
       if (dimension === 3) {
         const parameter = new _Tr2Vector3Parameter();
         parameter.name = name;
+        _Tr2Effect.readComponents(parameter.value, constant, constantValues, 3);
         return parameter;
       }
       if (dimension > 1) {
@@ -676,7 +756,9 @@ new class extends _identity {
       if (typeof type === "string") {
         return type.includes("TEXTURE") && !type.includes("BUFFER");
       }
-      return Number(type) >= 0 && Number(type) <= 4;
+      // Tr2EffectResource texture types are TEXTURE_1D(1)..TEXTURE_TYPELESS(5);
+      // Carbon routes TYPELESS to TriTextureParameter too. Buffers start at 6.
+      return Number(type) >= 1 && Number(type) <= 5;
     }
     static readScalar(constant, values) {
       if (typeof constant.value === "number") {
@@ -689,6 +771,30 @@ new class extends _identity {
         }
       }
       return 0;
+    }
+
+    /**
+     * Reads the shader-authored default components for a constant into the
+     * parameter's value slot (Carbon reads them straight from constantValues
+     * at the constant's offset). Missing data leaves the class default.
+     */
+    static readComponents(out, constant, values, count) {
+      if (constant.value && typeof constant.value.length === "number") {
+        for (let i = 0; i < count; i++) {
+          out[i] = Number(constant.value[i]) || 0;
+        }
+        return out;
+      }
+      if (ArrayBuffer.isView(values)) {
+        const view = new DataView(values.buffer, values.byteOffset, values.byteLength);
+        const offset = Number(constant.offset ?? 0);
+        if (offset >= 0 && offset + count * 4 <= values.byteLength) {
+          for (let i = 0; i < count; i++) {
+            out[i] = view.getFloat32(offset + i * 4, true);
+          }
+        }
+      }
+      return out;
     }
     static readVector4(constant, values, element) {
       if (constant.value && typeof constant.value.length === "number") {

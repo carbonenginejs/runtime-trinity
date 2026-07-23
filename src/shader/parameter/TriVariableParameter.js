@@ -47,6 +47,14 @@ export class TriVariableParameter extends CjsParameter
     return this.name;
   }
 
+  /** Content hash: name only - the variable's value comes from the store. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    return CjsParameter.hashFnv1String(this.name, startingHash);
+  }
+
   @carbon.method
   @impl.adapted
   Initialize(variableStore = null)

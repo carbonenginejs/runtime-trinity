@@ -4,7 +4,7 @@
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { Tr2ParticleElementDeclaration } from "../generated/particle/Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../particle/Tr2ParticleElementDeclaration.js";
 
 
 @type.define({ className: "Tr2RuntimeInstanceData", family: "trinityCore" })
@@ -18,6 +18,12 @@ export class Tr2RuntimeInstanceData extends CjsModel
   @type.objectRef("Tr2ParticleSystem")
   particleSystem = null;
 
+  // DIVERGENCE (deliberate): Carbon only Blue-persists name/particleSystem and
+  // exposes aabbMin/aabbMax as Be::READ; layout/rows/explicitBoundingBox are
+  // private, fed at runtime via SetElementLayout/SetData/SetBoundingBox.
+  // The JS port persists the whole quintet so instance data authored in JS can
+  // round-trip without Carbon's Python/CMF side channels. Carbon-authored
+  // .black files never populate these fields.
   @io.flag("cpuData")
   @io.rebuild("instanceBuffer")
   @io.notify
@@ -332,6 +338,36 @@ export class Tr2RuntimeInstanceData extends CjsModel
       }
       particleSystem.EndSpawnParticle();
     }
+  }
+
+  /**
+   * Implements ITr2GenericEmitter. Does nothing as this emitter only emits
+   * particles on demand (Spawn).
+   */
+  @carbon.method
+  @impl.implemented
+  Update(_arguments)
+  {
+  }
+
+  /**
+   * Implements ITr2GenericEmitter. Does nothing as this emitter only emits
+   * particles on demand (Spawn); both Carbon overloads are deliberate no-ops.
+   */
+  @carbon.method
+  @impl.implemented
+  SpawnParticles(..._args)
+  {
+  }
+
+  /**
+   * Implements ITr2GenericEmitter. Nothing to prepare - this emitter never
+   * spawns from the threaded particle update.
+   */
+  @carbon.method
+  @impl.implemented
+  SetThreadSafeFlag()
+  {
   }
 
   /** Carbon's CMF writer requires the native resource-path and file encoder. */

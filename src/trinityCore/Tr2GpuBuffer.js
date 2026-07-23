@@ -35,6 +35,22 @@ export class Tr2GpuBuffer extends CjsModel
   @type.boolean
   isValid = false;
 
+  /** m_name - debug label; not Blue-exposed. */
+  #name = "";
+
+  @carbon.method
+  @impl.implemented
+  SetName(name)
+  {
+    this.#name = String(name ?? "");
+  }
+
+  /** JS accessor for the debug label; Carbon keeps m_name private with no getter. */
+  GetName()
+  {
+    return this.#name;
+  }
+
   /** Carbon method __init__ (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
   @impl.notImplemented

@@ -39,11 +39,107 @@ export class Tr2Vector4Parameter extends CjsVectorParameter
 
   #reroutedValue = null;
 
+  /** Blue MAP_PROPERTY "x"/"v1" - refreshes from the rerouted value on read. */
+  get x()
+  {
+    this.GetValue();
+    return this.value[0];
+  }
+
+  set x(component)
+  {
+    this.#setComponent(0, component);
+  }
+
+  /** Blue MAP_PROPERTY "y"/"v2". */
+  get y()
+  {
+    this.GetValue();
+    return this.value[1];
+  }
+
+  set y(component)
+  {
+    this.#setComponent(1, component);
+  }
+
+  /** Blue MAP_PROPERTY "z"/"v3". */
+  get z()
+  {
+    this.GetValue();
+    return this.value[2];
+  }
+
+  set z(component)
+  {
+    this.#setComponent(2, component);
+  }
+
+  /** Blue MAP_PROPERTY "w"/"v4". */
+  get w()
+  {
+    this.GetValue();
+    return this.value[3];
+  }
+
+  set w(component)
+  {
+    this.#setComponent(3, component);
+  }
+
+  get v1()
+  {
+    return this.x;
+  }
+
+  set v1(component)
+  {
+    this.x = component;
+  }
+
+  get v2()
+  {
+    return this.y;
+  }
+
+  set v2(component)
+  {
+    this.y = component;
+  }
+
+  get v3()
+  {
+    return this.z;
+  }
+
+  set v3(component)
+  {
+    this.z = component;
+  }
+
+  get v4()
+  {
+    return this.w;
+  }
+
+  set v4(component)
+  {
+    this.w = component;
+  }
+
   @carbon.method
   @impl.implemented
   GetParameterName()
   {
     return this.name;
+  }
+
+  /** Content hash: authored value bytes then name. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsVectorParameter.FNV1_INITIAL)
+  {
+    return CjsVectorParameter.hashFnv1String(this.name, CjsVectorParameter.hashFnv1Floats(this.value, startingHash));
   }
 
   @carbon.method
@@ -169,6 +265,12 @@ export class Tr2Vector4Parameter extends CjsVectorParameter
     this.linearValue[1] = num.gammaToLinear(this.value[1]);
     this.linearValue[2] = num.gammaToLinear(this.value[2]);
     this.linearValue[3] = this.value[3];
+  }
+
+  #setComponent(index, component)
+  {
+    this.value[index] = Number(component);
+    this.SetValue(this.value);
   }
 
   /** JS convenience: raw values this parameter class claims for map-form inference. */

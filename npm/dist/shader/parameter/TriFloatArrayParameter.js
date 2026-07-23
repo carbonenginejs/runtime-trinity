@@ -12,7 +12,7 @@ class TriFloatArrayParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "TriFloatArrayParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, void 0, type.list("TriVector4")], 16, "value"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
+    })], [[[io, io.notify, io, io.persist, void 0, type.list("TriVector4")], 16, "value"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
   }
   value = (_initProto(this), _init_value(this, []));
   usedByCurrentTechnique = (_init_extra_value(this), _init_usedByCurrentTechnique(this, false));
@@ -21,6 +21,14 @@ class TriFloatArrayParameter extends CjsParameter {
   #cachedEffect = (_init_extra_name(this), null);
   GetParameterName() {
     return this.name;
+  }
+
+  /** Content hash: each row's vec4 bytes, then name. */
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL) {
+    for (const row of this.value) {
+      startingHash = CjsParameter.hashFnv1Floats(row?.data ?? [0, 0, 0, 0], startingHash);
+    }
+    return CjsParameter.hashFnv1String(this.name, startingHash);
   }
   Initialize() {
     return true;

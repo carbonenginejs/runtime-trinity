@@ -4,7 +4,7 @@
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2ParticleSystem (particle) - generated from schema shapeHash 4394134e.... */
 @type.define({ className: "Tr2ParticleSystem", family: "particle" })

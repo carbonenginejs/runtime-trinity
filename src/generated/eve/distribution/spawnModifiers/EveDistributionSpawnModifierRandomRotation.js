@@ -61,7 +61,9 @@ export class EveDistributionSpawnModifierRandomRotation extends CjsModel
     }
     else
     {
-      quat.multiply(placement.initialRotation, rotation, placement.initialRotation);
+      // Carbon (row-vector): rotation * initialRotation - the random rotation
+      // applies first.
+      quat.multiply(placement.initialRotation, placement.initialRotation, rotation);
     }
   }
 

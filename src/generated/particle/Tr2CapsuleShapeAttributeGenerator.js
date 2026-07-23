@@ -6,7 +6,7 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { bindParticleElement } from "../../particle/particleElementBinding.js";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2CapsuleShapeAttributeGenerator (particle) - generated from schema shapeHash e27fdce8.... */
 @type.define({ className: "Tr2CapsuleShapeAttributeGenerator", family: "particle" })

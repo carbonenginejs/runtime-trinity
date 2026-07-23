@@ -142,6 +142,77 @@ export class Tr2InstancedMesh extends Tr2Mesh
     return { min: minBounds, max: maxBounds };
   }
 
+  /**
+   * Overrides Tr2Mesh - loading state also waits on the instance geometry.
+   * Carbon combines the terms with &&, so a ready base mesh reports loaded
+   * even while instance data settles; ported verbatim.
+   */
+  get isLoading()
+  {
+    return super.isLoading &&
+      !!this.GetInstanceGeometryResource() &&
+      !(this.GetInstanceGeometryResource().IsInstanceDataReady?.() ?? false);
+  }
+
+  /** Overrides Tr2MeshBase - instanced areas share the whole-mesh bounds. */
+  @carbon.method
+  @impl.implemented
+  GetAreaBounds(_areaIndex, _boneTransforms)
+  {
+    return this.GetBounds();
+  }
+
+  /** Bounding box of a single instance - the mesh's own geometry bounds. */
+  @carbon.method
+  @impl.adapted
+  GetInstanceBounds()
+  {
+    const bounds = this.GetGeometryResource()?.GetBoundingBox?.(this.meshIndex);
+    if (!bounds)
+    {
+      return Tr2InstancedMesh.#cloneBounds(Tr2InstancedMesh.#zero, Tr2InstancedMesh.#zero);
+    }
+    return {
+      min: vec3.clone(bounds.min ?? bounds.minBounds ?? Tr2InstancedMesh.#zero),
+      max: vec3.clone(bounds.max ?? bounds.maxBounds ?? Tr2InstancedMesh.#zero)
+    };
+  }
+
+  /**
+   * Sphere of the instance nearest to the given point: shrinks the outer
+   * bounds by the instance size and clamps the point into the result.
+   * Returns null for the STATIC bounds method, matching Carbon's empty
+   * sphere.
+   */
+  @carbon.method
+  @impl.adapted
+  GetInstanceBoundsClosestToPoint(point)
+  {
+    let instanceSize = this.maxInstanceSize;
+    switch (this.boundsMethod)
+    {
+      case Tr2InstancedMesh.BoundsMethod.DYNAMIC:
+        break;
+      case Tr2InstancedMesh.BoundsMethod.DYNAMIC_SCALED:
+        instanceSize *= Tr2InstancedMesh.#getGeometryRadius(this.GetGeometryResource(), this.meshIndex);
+        break;
+      default:
+        return null;
+    }
+
+    const outer = this.GetBounds();
+    const minBounds = outer.min;
+    const maxBounds = outer.max;
+    const center = vec3.create();
+    for (let index = 0; index < 3; index++)
+    {
+      minBounds[index] += instanceSize;
+      maxBounds[index] -= instanceSize;
+      center[index] = Math.min(Math.max(Number(point[index]) || 0, minBounds[index]), maxBounds[index]);
+    }
+    return { center, radius: instanceSize };
+  }
+
   static #cloneBounds(minBounds, maxBounds)
   {
     return {

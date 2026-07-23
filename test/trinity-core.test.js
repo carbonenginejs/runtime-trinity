@@ -9,7 +9,7 @@ import { GrannyBoneOffset, Tr2DepthStencil, Tr2DirectInstanceData, Tr2Expression
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
 import { TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";
 import { Tr2DebugRenderer } from "../npm/dist/generated/trinityCore/Tr2DebugRenderer.js";
-import { Tr2ParticleElementDeclaration } from "../npm/dist/generated/particle/Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../npm/dist/particle/Tr2ParticleElementDeclaration.js";
 import { Tr2ParticleSystem } from "../npm/dist/generated/particle/Tr2ParticleSystem.js";
 import { Tr2HostBitmap } from "../npm/dist/generated/trinityCore/Tr2HostBitmap.js";
 import { Tr2SSAO } from "../npm/dist/generated/trinityCore/Tr2SSAO.js";
@@ -18,7 +18,7 @@ import { Tr2LineSet } from "../npm/dist/generated/trinityCore/Tr2LineSet.js";
 import { Tr2LineGraph } from "../npm/dist/generated/trinityCore/Tr2LineGraph.js";
 import { Tr2SolidSet } from "../npm/dist/generated/trinityCore/Tr2SolidSet.js";
 import { TriRigidOrientation } from "../npm/dist/generated/trinityCore/TriRigidOrientation.js";
-import { TriTorque } from "../npm/dist/generated/trinityCore/TriTorque.js";
+import { TriTorque } from "../npm/dist/trinityCore/TriTorque.js";
 import { TriLineSet } from "../npm/dist/generated/trinityCore/TriLineSet.js";
 
 

@@ -36,6 +36,18 @@ export class TriFloatArrayParameter extends CjsParameter
   {
     return this.name;
   }
+
+  /** Content hash: each row's vec4 bytes, then name. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    for (const row of this.value)
+    {
+      startingHash = CjsParameter.hashFnv1Floats(row?.data ?? [0, 0, 0, 0], startingHash);
+    }
+    return CjsParameter.hashFnv1String(this.name, startingHash);
+  }
   @carbon.method
   @impl.implemented
   Initialize()

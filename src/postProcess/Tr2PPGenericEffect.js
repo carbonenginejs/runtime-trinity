@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPGenericEffect.h
 import { io, schema, type } from "@carbonenginejs/core-types/schema";
-import { Tr2PPEffect } from "../generated/postProcess/Tr2PPEffect.js";
+import { Tr2PPEffect } from "./Tr2PPEffect.js";
 import { Quality } from "../generated/postProcess/enums.js";
 
 

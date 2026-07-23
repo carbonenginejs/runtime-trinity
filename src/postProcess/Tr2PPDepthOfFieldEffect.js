@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPDepthOfFieldEffect.h
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPDepthOfFieldEffect.cpp
 import { io, schema, type } from "@carbonenginejs/core-types/schema";
-import { Tr2PPEffect } from "../generated/postProcess/Tr2PPEffect.js";
+import { Tr2PPEffect } from "./Tr2PPEffect.js";
 
 
 @type.define({ className: "Tr2PPDepthOfFieldEffect", family: "postProcess" })

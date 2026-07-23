@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPBloomEffect.h
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { io, type } from "@carbonenginejs/core-types/schema";
-import { Tr2PPEffect } from "../generated/postProcess/Tr2PPEffect.js";
+import { Tr2PPEffect } from "./Tr2PPEffect.js";
 
 
 @type.define({ className: "Tr2PPBloomEffect", family: "postProcess" })

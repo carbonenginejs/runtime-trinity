@@ -1,8 +1,36 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, schema } from '@carbonenginejs/core-types/schema';
+import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { Tr2RenderBatch } from '../../trinityCore/Tr2RenderBatch.js';
 
-let _initClass, _init_quadIB, _init_extra_quadIB, _init_vertexBuffer, _init_extra_vertexBuffer, _init_vertexBufferOffset, _init_extra_vertexBufferOffset, _init_lastInstanceDataSize, _init_extra_lastInstanceDataSize, _init_bufferAlignment, _init_extra_bufferAlignment, _init_buffer, _init_extra_buffer, _init_addedSize, _init_extra_addedSize, _init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_instanceSize, _init_extra_instanceSize, _init_vertexDeclHandle, _init_extra_vertexDeclHandle, _init_bufferOffset, _init_extra_bufferOffset, _init_count, _init_extra_count, _init_quadCount, _init_extra_quadCount, _init_definition, _init_extra_definition, _init_combinable, _init_extra_combinable, _init_bufferSize, _init_extra_bufferSize, _init_quad, _init_extra_quad;
+let _initProto, _initClass, _init_vertexBufferOffset, _init_extra_vertexBufferOffset, _init_lastInstanceDataSize, _init_extra_lastInstanceDataSize, _init_bufferAlignment, _init_extra_bufferAlignment, _init_bufferSize, _init_extra_bufferSize;
+
+/** One registered quad effect (Carbon Tr2QuadRenderer::EffectRecord). */
+class Tr2QuadRendererEffectRecord {
+  effect = null;
+  batchType = 0;
+
+  /** Size of one instance vertex in BYTES. */
+  instanceSize = 0;
+
+  /** Number of quads to render per instance. */
+  quadCount = 0;
+
+  /** Vertex definition (engine resolves the declaration handle from it). */
+  definition = null;
+
+  /** Byte offset of this record's instances in the merged buffer. */
+  bufferOffset = 0;
+
+  /** Number of instances merged this frame. */
+  count = 0;
+
+  /** Per-frame accumulation (Carbon's per-thread TLS collapses to one list). */
+  pending = [];
+
+  /** Bytes accumulated in pending. */
+  addedSize = 0;
+}
 
 /** Tr2QuadRenderer (trinityCore) - generated from schema shapeHash 3d8b0e71.... */
 let _Tr2QuadRenderer;
@@ -10,71 +38,197 @@ new class extends _identity {
   static [class Tr2QuadRenderer extends CjsModel {
     static {
       ({
-        e: [_init_quadIB, _init_extra_quadIB, _init_vertexBuffer, _init_extra_vertexBuffer, _init_vertexBufferOffset, _init_extra_vertexBufferOffset, _init_lastInstanceDataSize, _init_extra_lastInstanceDataSize, _init_bufferAlignment, _init_extra_bufferAlignment, _init_buffer, _init_extra_buffer, _init_addedSize, _init_extra_addedSize, _init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_instanceSize, _init_extra_instanceSize, _init_vertexDeclHandle, _init_extra_vertexDeclHandle, _init_bufferOffset, _init_extra_bufferOffset, _init_count, _init_extra_count, _init_quadCount, _init_extra_quadCount, _init_definition, _init_extra_definition, _init_combinable, _init_extra_combinable, _init_bufferSize, _init_extra_bufferSize, _init_quad, _init_extra_quad],
+        e: [_init_vertexBufferOffset, _init_extra_vertexBufferOffset, _init_lastInstanceDataSize, _init_extra_lastInstanceDataSize, _init_bufferAlignment, _init_extra_bufferAlignment, _init_bufferSize, _init_extra_bufferSize, _initProto],
         c: [_Tr2QuadRenderer, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "Tr2QuadRenderer",
         family: "trinityCore"
-      })], [[type.rawStruct("Tr2BufferAL"), 0, "quadIB"], [type.rawStruct("Tr2RingVertexBuffer"), 0, "vertexBuffer"], [[type, type.uint32], 16, "vertexBufferOffset"], [[type, type.uint32], 16, "lastInstanceDataSize"], [[type, type.uint32], 16, "bufferAlignment"], [type.rawStruct("CcpMallocBuffer"), 0, "buffer"], [[type, type.uint32], 16, "addedSize"], [type.objectRef("Tr2Material"), 0, "effect"], [[type, type.int32, void 0, schema.enum("TriBatchType")], 16, "batchType"], [[type, type.uint32], 16, "instanceSize"], [[type, type.uint32], 16, "vertexDeclHandle"], [[type, type.uint32], 16, "bufferOffset"], [[type, type.uint32], 16, "count"], [[type, type.uint32], 16, "quadCount"], [type.rawStruct("Tr2VertexDefinition"), 0, "definition"], [type.rawStruct("Tr2EnumerableThreadSpecific<PerThreadData>"), 0, "combinable"], [[type, type.uint32], 16, "bufferSize"], [type.rawStruct("Tr2BufferAL"), 0, "quad"]], 0, void 0, CjsModel));
+      })], [[[type, type.uint32], 16, "vertexBufferOffset"], [[type, type.uint32], 16, "lastInstanceDataSize"], [[type, type.uint32], 16, "bufferAlignment"], [[type, type.uint32], 16, "bufferSize"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnregisterEffect"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Single-threaded JS collapses the per-thread TLS buffers to one pending list; bytes stay float32-typed.")], 18, "AddQuads"], [[carbon, carbon.method, impl, impl.implemented], 18, "MergeBuffers"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("UpdateInstanceBuffer/RecreateQuadBuffers/PrepareResources are GPU realization; the merged CPU state is exposed for the engine.")], 18, "BeginRendering"], [[carbon, carbon.method, impl, impl.implemented], 18, "DoneRendering"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Quad and ring buffers become deferred descriptors the engine realizes; Carbon binds live AL buffers here.")], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceDataSize"]], 0, void 0, CjsModel));
     }
-    constructor(...args) {
-      super(...args);
-      _init_extra_quad(this);
-    }
-    /** m_quadIB (Tr2BufferAL) */
-    quadIB = _init_quadIB(this, null);
-
-    /** m_vertexBuffer (Tr2RingVertexBuffer) */
-    vertexBuffer = (_init_extra_quadIB(this), _init_vertexBuffer(this, null));
-
-    /** m_vertexBufferOffset (uint32_t) */
-    vertexBufferOffset = (_init_extra_vertexBuffer(this), _init_vertexBufferOffset(this, -1));
+    /** m_vertexBufferOffset (uint32_t) - ring offset; engine stamps the real one. */
+    vertexBufferOffset = (_initProto(this), _init_vertexBufferOffset(this, 0));
 
     /** m_lastInstanceDataSize (uint32_t) */
     lastInstanceDataSize = (_init_extra_vertexBufferOffset(this), _init_lastInstanceDataSize(this, 0));
 
-    /** m_bufferAlignment (uint32_t) */
+    /** m_bufferAlignment (uint32_t) - lcm of registered instance sizes. */
     bufferAlignment = (_init_extra_lastInstanceDataSize(this), _init_bufferAlignment(this, 4));
 
-    /** buffer (CcpMallocBuffer) */
-    buffer = (_init_extra_bufferAlignment(this), _init_buffer(this, null));
+    /** m_bufferSize - bytes accumulated this frame across all records. */
+    bufferSize = (_init_extra_bufferAlignment(this), _init_bufferSize(this, 0));
 
-    /** addedSize (uint32_t) */
-    addedSize = (_init_extra_buffer(this), _init_addedSize(this, 0));
+    /** m_effects - EffectKey -> Tr2QuadRendererEffectRecord. */
+    #effects = (_init_extra_bufferSize(this), new Map());
 
-    /** effect (Tr2MaterialPtr) */
-    effect = (_init_extra_addedSize(this), _init_effect(this, null));
+    /** The merged CPU instance buffer for the frame (Float32Array). */
+    #mergedData = null;
 
-    /** batchType (TriBatchType - enum TriBatchType) */
-    batchType = (_init_extra_effect(this), _init_batchType(this, 0));
+    /** Largest quadCount among records with instances (RecreateQuadBuffers input). */
+    #maxQuadCount = 0;
 
-    /** instanceSize (uint32_t) */
-    instanceSize = (_init_extra_batchType(this), _init_instanceSize(this, 0));
+    /**
+     * Registers a quad effect once per key (Carbon Tr2QuadRenderer.cpp:30-53).
+     * instanceSize is in bytes; the buffer alignment grows to the lcm of all
+     * registered instance sizes.
+     */
+    RegisterEffect(key, batchType, instanceSize, quadCount, definition, effect) {
+      if (this.#effects.has(key)) {
+        return;
+      }
+      const record = new Tr2QuadRendererEffectRecord();
+      record.effect = effect ?? null;
+      record.batchType = batchType;
+      record.instanceSize = instanceSize >>> 0;
+      record.quadCount = quadCount >>> 0;
+      record.definition = definition ?? null;
+      this.#effects.set(key, record);
+      this.bufferAlignment = _Tr2QuadRenderer.#Lcm(this.bufferAlignment, record.instanceSize || 1);
+    }
+    UnregisterEffect(key) {
+      this.#effects.delete(key);
+    }
 
-    /** vertexDeclHandle (unsigned int) */
-    vertexDeclHandle = (_init_extra_instanceSize(this), _init_vertexDeclHandle(this, 0));
+    /**
+     * Accumulates instance data for a registered effect (Carbon cpp:60-79).
+     * Accepts float data (Float32Array or number[]) covering
+     * count * instanceSize bytes; unknown keys are ignored like Carbon.
+     */
+    AddQuads(effectKey, sprites, count = 1) {
+      const record = this.#effects.get(effectKey);
+      if (!record || !sprites) {
+        return;
+      }
+      const size = count * record.instanceSize;
+      const floats = new Float32Array(size / 4);
+      const source = sprites;
+      for (let index = 0; index < floats.length; index++) {
+        floats[index] = Number(source[index]) || 0;
+      }
+      record.pending.push(floats);
+      record.addedSize += size;
+      this.bufferSize += size;
+    }
 
-    /** bufferOffset (uint32_t) */
-    bufferOffset = (_init_extra_vertexDeclHandle(this), _init_bufferOffset(this, 0));
+    /**
+     * Concatenates every record's pending instances into one aligned CPU
+     * buffer, stamping per-record bufferOffset/count (Carbon cpp:81-115).
+     * Returns the largest quadCount among live records.
+     */
+    MergeBuffers() {
+      let padded = this.bufferSize;
+      for (const record of this.#effects.values()) {
+        padded += record.instanceSize;
+      }
+      const merged = new Float32Array(Math.ceil(padded / 4));
+      let offset = 0;
+      let quadCount = 0;
+      for (const record of this.#effects.values()) {
+        offset = _Tr2QuadRenderer.#Align(offset, record.instanceSize || 1);
+        record.bufferOffset = offset;
+        for (const chunk of record.pending) {
+          merged.set(chunk, offset / 4);
+          offset += chunk.length * 4;
+        }
+        record.pending.length = 0;
+        record.addedSize = 0;
+        record.count = record.instanceSize ? (offset - record.bufferOffset) / record.instanceSize : 0;
+        if (record.count) {
+          quadCount = Math.max(quadCount, record.quadCount);
+        }
+      }
+      this.#mergedData = merged;
+      this.#maxQuadCount = quadCount;
+      return quadCount;
+    }
 
-    /** count (uint32_t) */
-    count = (_init_extra_bufferOffset(this), _init_count(this, 0));
+    /**
+     * Frame-start CPU work (Carbon cpp:160-166): merge the accumulated
+     * instances. Buffer upload and quad-buffer creation are engine-owned;
+     * the engine reads GetMergedData()/GetMaxQuadCount() and stamps
+     * vertexBufferOffset with the ring allocation.
+     */
+    BeginRendering(_renderContext = null) {
+      const quadCount = this.MergeBuffers();
+      this.lastInstanceDataSize = this.bufferSize;
+      return quadCount;
+    }
 
-    /** quadCount (uint32_t) */
-    quadCount = (_init_extra_count(this), _init_quadCount(this, 0));
+    /** Frame-end reset (Carbon cpp:55-58). */
+    DoneRendering(_renderContext = null) {
+      this.bufferSize = 0;
+    }
 
-    /** definition (Tr2VertexDefinition) */
-    definition = (_init_extra_quadCount(this), _init_definition(this, null));
+    /**
+     * Emits one instanced batch per live record of the requested type
+     * (Carbon cpp:188-207). The quad vertex/index buffers are shared engine
+     * resources, carried as descriptors on the batch; startInstanceLocation
+     * derives from the ring offset + record offset exactly like Carbon.
+     * Returns whether any batch was committed (JS convention).
+     */
+    GetBatches(batchType, accumulator) {
+      let committed = false;
+      for (const record of this.#effects.values()) {
+        if (!record.count || record.batchType !== batchType) {
+          continue;
+        }
+        const batch = typeof accumulator?.Allocate === "function" ? accumulator.Allocate(Tr2RenderBatch) : new Tr2RenderBatch();
+        batch.SetMaterial(record.effect);
+        batch.SetGeometry(record.definition, _Tr2QuadRenderer.QuadVertexSource, 4, _Tr2QuadRenderer.QuadIndexSource, 2);
+        batch.SetStreamSource(1, {
+          quadInstanceData: this.#mergedData,
+          byteOffset: record.bufferOffset,
+          instanceSize: record.instanceSize
+        }, record.instanceSize);
+        batch.SetDrawIndexedInstanced(6 * record.quadCount, record.count, 0, 0, record.instanceSize ? (this.vertexBufferOffset + record.bufferOffset) / record.instanceSize : 0);
+        committed = accumulator?.Commit?.(batch) === true || committed;
+      }
+      return committed;
+    }
+    GetInstanceDataSize() {
+      return this.lastInstanceDataSize;
+    }
 
-    /** combinable (Tr2EnumerableThreadSpecific<PerThreadData>) */
-    combinable = (_init_extra_definition(this), _init_combinable(this, null));
+    /** The frame's merged CPU instance buffer for the engine uploader. */
+    GetMergedData() {
+      return this.#mergedData;
+    }
 
-    /** m_bufferSize (CcpAtomic<uint32_t>) */
-    bufferSize = (_init_extra_combinable(this), _init_bufferSize(this, 0));
+    /** The largest quadCount among live records (quad IB sizing). */
+    GetMaxQuadCount() {
+      return this.#maxQuadCount;
+    }
 
-    /** m_quad (Tr2BufferAL) */
-    quad = (_init_extra_bufferSize(this), _init_quad(this, null));
+    /** The registered effect records (engine declaration resolution). */
+    GetEffectRecords() {
+      return this.#effects;
+    }
+
+    /** Carbon Tr2QuadRenderer::Instance - the scene-global singleton. */
+    static Instance() {
+      if (!_Tr2QuadRenderer.#instance) {
+        _Tr2QuadRenderer.#instance = new _Tr2QuadRenderer();
+      }
+      return _Tr2QuadRenderer.#instance;
+    }
+
+    /** Deferred descriptor for the engine-owned shared quad vertex buffer. */
+
+    /** Deferred descriptor for the engine-owned shared quad index buffer. */
   }];
+  #Align(offset, alignment) {
+    return Math.ceil(offset / alignment) * alignment;
+  }
+  #Lcm(a, b) {
+    const gcd = (x, y) => y ? gcd(y, x % y) : x;
+    return a * b / gcd(a, b);
+  }
+  #instance = null;
+  QuadVertexSource = Object.freeze({
+    quadRendererBuffer: "quad-vertices"
+  });
+  QuadIndexSource = Object.freeze({
+    quadRendererBuffer: "quad-indices"
+  });
   TriBatchType = Object.freeze({
     TRIBATCHTYPE_OPAQUE: 0,
     TRIBATCHTYPE_DECAL: 1,
@@ -97,5 +251,5 @@ new class extends _identity {
   }
 }();
 
-export { _Tr2QuadRenderer as Tr2QuadRenderer };
+export { _Tr2QuadRenderer as Tr2QuadRenderer, Tr2QuadRendererEffectRecord };
 //# sourceMappingURL=Tr2QuadRenderer.js.map

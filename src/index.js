@@ -4,6 +4,7 @@ export * from "./curves/index.js";
 export * from "./eve/index.js";
 export * from "./particle/index.js";
 export * from "./postProcess/index.js";
+export * from "./sprite2d/index.js";
 export * from "./renderJob/index.js";
 export * from "./shader/index.js";
 export * from "./utilities/index.js";

@@ -4,7 +4,7 @@ import { CjsModel } from '@carbonenginejs/core-types/model';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { bindParticleElement } from '../../particle/particleElementBinding.js';
-import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from '../../particle/Tr2ParticleElementDeclaration.js';
 
 let _initProto, _initClass, _init_minPhi, _init_extra_minPhi, _init_maxPhi, _init_extra_maxPhi, _init_minTheta, _init_extra_minTheta, _init_maxTheta, _init_extra_maxTheta, _init_controlVelocity, _init_extra_controlVelocity, _init_positionEnd, _init_extra_positionEnd, _init_rotationStart, _init_extra_rotationStart, _init_rotationEnd, _init_extra_rotationEnd, _init_positionStart, _init_extra_positionStart, _init_parentVelocityFactor, _init_extra_parentVelocityFactor, _init_maxSpeed, _init_extra_maxSpeed, _init_minSpeed, _init_extra_minSpeed, _init_maxRadius, _init_extra_maxRadius, _init_minRadius, _init_extra_minRadius, _init_valid, _init_extra_valid;
 

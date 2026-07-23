@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, schema } from '@carbonenginejs/core-types/schema';
-import { Tr2PPEffect as _Tr2PPEffect } from '../generated/postProcess/Tr2PPEffect.js';
+import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
 import { Quality } from '../generated/postProcess/enums.js';
 
 let _initClass, _init_quality, _init_extra_quality, _init_effect, _init_extra_effect;

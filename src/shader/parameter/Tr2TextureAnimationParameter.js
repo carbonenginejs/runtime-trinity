@@ -36,6 +36,14 @@ export class Tr2TextureAnimationParameter extends CjsParameter
     return this.name;
   }
 
+  /** Content hash: the animation object's identity (Carbon hashes its pointer). */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    return CjsParameter.hashFnv1Identity(this.animation, startingHash);
+  }
+
   @carbon.method
   @impl.adapted
   OnModified(_options = {})

@@ -26,10 +26,12 @@ new class extends _identity {
     rotation = (_init_extra_scaling(this), _init_rotation(this, quat.create()));
     translation = (_init_extra_rotation(this), _init_translation(this, vec3.create()));
     /**
-     * Pre-multiplies this modifier's scale/rotation/translation onto the incoming
+     * Applies this modifier's scale/rotation/translation before the incoming
      * transform (Carbon EveChildModifierSRT::ApplyTransform:
-     * TransformationMatrix(s,r,t) * transform). Context-first for a uniform
-     * modifier apply loop; SRT is not camera-dependent, so context is unused.
+     * TransformationMatrix(s,r,t) * transform in row-vector convention - SRT
+     * first, then transform, which is mat4.multiply(out, transform, srt) in
+     * gl-matrix). Context-first for a uniform modifier apply loop; SRT is not
+     * camera-dependent, so context is unused.
      * @param {Object} _context - unused (SRT is not a contextual modifier)
      * @param {Float32Array} transform - source (read only)
      * @param {Number} [_boneCount] - Carbon signature parity, unused
@@ -39,7 +41,7 @@ new class extends _identity {
      */
     ApplyTransform(_context, transform, _boneCount = 0, _bones = null, out) {
       const local = mat4.fromRotationTranslationScale(_EveChildModifierSRT.#scratch, this.rotation, this.translation, this.scaling);
-      return mat4.multiply(out, local, transform);
+      return mat4.multiply(out, transform, local);
     }
   }];
   #scratch = mat4.create();

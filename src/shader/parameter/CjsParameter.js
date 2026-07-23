@@ -126,6 +126,73 @@ export class CjsParameter extends CjsModel
     return !!(data?.isSRGB ?? data?.isSrgb ?? data?.srgb);
   }
 
+  // --- Content hashing (Carbon CcpHashFNV1) -------------------------------
+  // Carbon hashes interned name POINTERS and value struct bytes; JS hashes
+  // the name characters and float32 value bytes instead. The dedup contract
+  // (equal content -> equal hash within a session) is preserved; the numeric
+  // hashes intentionally differ from Carbon's, which are address-dependent.
+
+  static FNV1_INITIAL = 2166136261;
+
+  /** FNV1 over a string's UTF-16 code units, two bytes each, little-endian. */
+  static hashFnv1String(text, hash = CjsParameter.FNV1_INITIAL)
+  {
+    const value = String(text ?? "");
+    for (let index = 0; index < value.length; index++)
+    {
+      const code = value.charCodeAt(index);
+      hash = (Math.imul(hash, 16777619) ^ (code & 0xff)) >>> 0;
+      hash = (Math.imul(hash, 16777619) ^ (code >>> 8)) >>> 0;
+    }
+    return hash >>> 0;
+  }
+
+  /** FNV1 over numbers encoded as little-endian float32 bytes. */
+  static hashFnv1Floats(values, hash = CjsParameter.FNV1_INITIAL)
+  {
+    const view = CjsParameter.#hashScratch;
+    for (const value of values)
+    {
+      view.setFloat32(0, Number(value) || 0, true);
+      for (let byte = 0; byte < 4; byte++)
+      {
+        hash = (Math.imul(hash, 16777619) ^ view.getUint8(byte)) >>> 0;
+      }
+    }
+    return hash >>> 0;
+  }
+
+  /**
+   * FNV1 over a stable per-object identity - the JS stand-in for Carbon
+   * hashing a smart-pointer address. Null hashes as identity 0.
+   */
+  static hashFnv1Identity(object, hash = CjsParameter.FNV1_INITIAL)
+  {
+    let id = 0;
+    if (object !== null && object !== undefined)
+    {
+      id = CjsParameter.#identities.get(object);
+      if (id === undefined)
+      {
+        id = CjsParameter.#nextIdentity++;
+        CjsParameter.#identities.set(object, id);
+      }
+    }
+    const view = CjsParameter.#hashScratch;
+    view.setUint32(0, id >>> 0, true);
+    for (let byte = 0; byte < 4; byte++)
+    {
+      hash = (Math.imul(hash, 16777619) ^ view.getUint8(byte)) >>> 0;
+    }
+    return hash >>> 0;
+  }
+
+  static #hashScratch = new DataView(new ArrayBuffer(4));
+
+  static #identities = new WeakMap();
+
+  static #nextIdentity = 1;
+
   static isNumberHolder(value)
   {
     return typeof value === "object" && value !== null && "value" in value && typeof value.value === "number";

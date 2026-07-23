@@ -9,8 +9,13 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 // Carbon's Matrix is row-major / row-vector (v' = v * M). Its basis rows
 // X=(_11.._13) / Y=(_21.._23) / Z=(_31.._33) map onto this codebase's
 // column-major gl-matrix mat4 at indices [0,1,2] / [4,5,6] / [8,9,10];
-// translation (_41.._43) at [12,13,14]. Carbon composition A * B maps to
-// mat4.multiply(out, A, B) in the same operand order.
+// translation (_41.._43) at [12,13,14] - the byte layouts are identical, so
+// individual matrices carry over unchanged. Composition REVERSES: Carbon's
+// row-vector product A * B applies A first, which in gl-matrix is
+// mat4.multiply(out, B, A) - SWAPPED operands. (A previous revision of this
+// comment claimed same-order operands; that was wrong and produced reversed
+// child-transform composition. See EveTransform.UpdateViewDependentData for
+// the reference pattern: world = parent . local.)
 //
 // Carbon reads view state from Tr2Renderer statics; we thread it explicitly and
 // read the same values from the frame context's Tr2RenderContext (context first):

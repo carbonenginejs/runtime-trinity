@@ -4,7 +4,7 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../../../generated/eve/EveEntity.js';
-import { TriFloat as _TriFloat } from '../../../generated/trinityCore/TriFloat.js';
+import { TriFloat as _TriFloat } from '../../../trinityCore/TriFloat.js';
 import { EveChildUpdateParams as _EveChildUpdateParams } from '../../EveChildUpdateParams.js';
 import { getTime, sampleVector, updateChildSync, translationMatrix, updateCurveSet, makeEndpointTransforms, updateChildAsync, makeStretchTransform, updateChildVisibility, collectRenderables, mergeSphere, getCurveDuration } from './CjsStretchRuntime.js';
 

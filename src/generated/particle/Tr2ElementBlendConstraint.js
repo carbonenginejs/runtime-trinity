@@ -4,7 +4,7 @@
 import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2ElementBlendConstraint (particle) - generated from schema shapeHash a09069c3.... */
 @type.define({ className: "Tr2ElementBlendConstraint", family: "particle" })

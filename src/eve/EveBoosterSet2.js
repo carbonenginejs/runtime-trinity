@@ -13,26 +13,32 @@ import { EveBoosterSet2Renderable } from "./EveBoosterSet2Renderable.js";
 @type.define({ className: "EveBoosterSet2Item", family: "eve/attachment/boosters" })
 export class EveBoosterSet2Item extends CjsModel
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.mat4
   transform = mat4.create();
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.vec4
   functionality = vec4.fromValues(0, 1, 1, 1);
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   hasTrail = true;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.uint32
   atlasIndex0 = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.uint32
   atlasIndex1 = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   lightScale = 1;

@@ -163,6 +163,80 @@ export class TriDevice extends CjsModel
   @type.boolean
   frameGeneration = false;
 
+  /** Get/SetGeometryLoadDisabled (MAP_PROPERTY) - disables external geometry loads for batch processing. */
+  @io.readwrite
+  @type.boolean
+  disableGeometryLoad = false;
+
+  /** Get/SetTextureLoadDisabled (MAP_PROPERTY) - disables external texture loads for batch processing. */
+  @io.readwrite
+  @type.boolean
+  disableTextureLoad = false;
+
+  /** Get/SetAsyncLoadDisabled (MAP_PROPERTY) - makes resource loads synchronous. */
+  @io.readwrite
+  @type.boolean
+  disableAsyncLoad = false;
+
+  /** Get/SetMinimumModelLOD (MAP_PROPERTY) - prevents the first N model LODs from loading; 0 disables. */
+  @io.readwrite
+  @type.int32
+  minimumModelLOD = 0;
+
+  @carbon.method
+  @impl.implemented
+  AspectRatio()
+  {
+    const viewport = this.viewport;
+    if (!viewport || !viewport.height)
+    {
+      return 0;
+    }
+    return viewport.width / viewport.height;
+  }
+
+  /**
+   * Maps window-space pixel coordinates into the [-1, 1] projection space.
+   * DX maps viewport pixel CENTRES to view space, so for four pixels, pixel
+   * 3 maps to 1 and pixel 0 to -1.
+   */
+  @carbon.method
+  @impl.adapted
+  ScreenToProjection(x, y, viewport = this.viewport, out = {})
+  {
+    const vx = x - (viewport?.x ?? 0);
+    const vy = y - (viewport?.y ?? 0);
+    const w = viewport?.width ?? 1;
+    const h = viewport?.height ?? 1;
+    out.x = (2 * vx) / (w - 1) - 1;
+    out.y = -((2 * vy) / (h - 1) - 1);
+    return out;
+  }
+
+  /** Time in seconds, recentered regularly (once per hour). */
+  @carbon.method
+  @impl.implemented
+  GetAnimationTime()
+  {
+    return this.animationTime;
+  }
+
+  /**
+   * Elapsed animation time since startTime, correct across the hourly
+   * ANIMATION_TIME_MAX recenter.
+   */
+  @carbon.method
+  @impl.implemented
+  GetAnimationTimeElapsed(startTime)
+  {
+    let elapsed = this.animationTime - startTime;
+    if (elapsed < 0)
+    {
+      elapsed += TriDevice.ANIMATION_TIME_MAX;
+    }
+    return elapsed;
+  }
+
   /** Carbon method CreateUpscalingContext (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
   @carbon.method
   @impl.notImplemented
@@ -274,6 +348,9 @@ export class TriDevice extends CjsModel
   {
     throw new Error("TriDevice.UpdateAvailableUpscalingTechniques is not implemented in CarbonEngineJS.");
   }
+
+  /** One hour - the animation-clock recenter period. */
+  static ANIMATION_TIME_MAX = 3600;
 
   static PresentInterval = PresentInterval;
 

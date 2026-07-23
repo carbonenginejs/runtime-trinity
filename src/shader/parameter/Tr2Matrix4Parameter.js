@@ -38,6 +38,15 @@ export class Tr2Matrix4Parameter extends CjsVectorParameter
   {
     return this.name;
   }
+
+  /** Content hash: matrix bytes then name. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsVectorParameter.FNV1_INITIAL)
+  {
+    return CjsVectorParameter.hashFnv1String(this.name, CjsVectorParameter.hashFnv1Floats(this.value, startingHash));
+  }
+
   @carbon.method
   @impl.implemented
   GetValue(out = mat4.create())

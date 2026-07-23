@@ -5,7 +5,7 @@ import { impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2SphereConstraint (particle) - generated from schema shapeHash f0c572f6.... */
 @type.define({ className: "Tr2SphereConstraint", family: "particle" })
@@ -122,7 +122,17 @@ export class Tr2SphereConstraint extends CjsModel
     return true;
   }
 
+  /**
+   * Carbon-faithful port of Tr2SphereConstraint::ApplyConstraint
+   * (Tr2SphereConstraint.cpp:99-260) minus the TBB parallel-for wrapper:
+   * inside-sphere response, swept segment-vs-sphere response, then generators
+   * and on-collision emitters. Carbon only skips the generator/emitter block
+   * via the swept branch's early continues - particles that neither collide
+   * nor enter the swept test still fall through to it, and that control flow
+   * is preserved.
+   */
   @impl.adapted
+  @impl.reason("Runs single-threaded against the CPU element views; Carbon's particle RNG is replaced by Math.random.")
   ApplyConstraint(_buffers, _strides, count, dt = 0)
   {
     if (!this.isValid)
@@ -130,33 +140,50 @@ export class Tr2SphereConstraint extends CjsModel
       return 0;
     }
     const invert = this.invertSphere ? -1 : 1;
-    let collisions = 0;
+    // Carbon compares against the CONSTRAINT radius (radiusCmp,
+    // Tr2SphereConstraint.cpp:112); the per-particle radius only shifts the
+    // projection target.
+    const radiusCmp = this.radius * this.radius * invert;
+    const offset = Tr2SphereConstraint.#offset;
+    let processed = 0;
     for (let index = 0; index < count; index++)
     {
       const position = this.#view(this.#positionElement, index);
       const velocity = this.#velocityElement ? this.#view(this.#velocityElement, index) : null;
-      const particleRadius = this.#radiusElement
-        ? this.#dotRadius(this.#view(this.#radiusElement, index))
-        : 0;
-      const radius = Math.max(0, this.radius + (this.invertSphere ? -particleRadius : particleRadius));
-      const offset = vec3.subtract(vec3.create(), position, this.position);
-      const distanceSquared = vec3.squaredLength(offset);
-      let collided = distanceSquared * invert < radius * radius * invert;
-
-      if (collided)
+      let radius = this.radius;
+      if (this.#radiusElement)
       {
+        const particleRadius = this.#dotRadius(this.#view(this.#radiusElement, index));
+        radius += this.invertSphere ? -particleRadius : particleRadius;
+      }
+      vec3.subtract(offset, position, this.position);
+      const distanceSquared = vec3.squaredLength(offset);
+
+      if (distanceSquared * invert < radiusCmp)
+      {
+        // Inside the prohibited space (Tr2SphereConstraint.cpp:142-178).
         if (this.affectPosition)
         {
-          this.#projectPosition(position, offset, radius);
+          const length = Math.sqrt(distanceSquared);
+          if (length > 0)
+          {
+            vec3.scale(offset, offset, 1 / length);
+          }
+          else
+          {
+            vec3.set(offset, 0, 1, 0);
+          }
+          vec3.scaleAndAdd(position, this.position, offset, radius);
           if (this.affectVelocity && velocity)
           {
-            vec3.subtract(offset, position, this.position);
-            this.#reflectVelocity(velocity, offset, invert);
+            vec3.scale(offset, offset, invert);
+            this.#reflectVelocity(velocity, offset);
           }
         }
       }
       else if (velocity)
       {
+        // Swept segment-vs-sphere test (Tr2SphereConstraint.cpp:179-239).
         const a = vec3.squaredLength(velocity);
         const b = 2 * vec3.dot(velocity, offset);
         const c = distanceSquared - this.radius * this.radius;
@@ -167,27 +194,24 @@ export class Tr2SphereConstraint extends CjsModel
         }
         const root = Math.sqrt(determinant);
         const time = this.invertSphere ? (-b + root) / (2 * a) : (-b - root) / (2 * a);
-        if (time < 0 || time > dt)
+        if (time > dt || time < 0)
         {
           continue;
         }
-        collided = true;
         if (this.affectPosition)
         {
           vec3.scaleAndAdd(position, position, velocity, time);
           if (this.affectVelocity)
           {
             vec3.subtract(offset, position, this.position);
-            this.#reflectVelocity(velocity, offset, invert);
+            vec3.normalize(offset, offset);
+            vec3.scale(offset, offset, invert);
+            this.#reflectVelocity(velocity, offset);
           }
         }
       }
 
-      if (!collided)
-      {
-        continue;
-      }
-      collisions++;
+      processed++;
       for (const generator of this.generators)
       {
         generator?.Generate?.(position, velocity, index);
@@ -197,40 +221,38 @@ export class Tr2SphereConstraint extends CjsModel
         emitter?.SpawnParticles?.(position, velocity, 1);
       }
     }
-    return collisions;
+    return processed;
   }
 
-  #projectPosition(position, offset, radius)
+  /**
+   * Collision response (Tr2SphereConstraint.cpp:154-175): bounce/slide split
+   * against the pre-normalized, invert-applied surface normal. When
+   * reflectionNoise is set Carbon REPLACES the reflected velocity with
+   * tangential noise scaled by the post-bounce speed (cpp:162-173) - unlike
+   * the plane constraint, which adds it.
+   */
+  #reflectVelocity(velocity, normal)
   {
-    const length = vec3.length(offset);
-    if (length > 0)
-    {
-      vec3.scaleAndAdd(position, this.position, offset, radius / length);
-    }
-    else
-    {
-      vec3.set(position, this.position[0], this.position[1] + radius, this.position[2]);
-    }
-  }
-
-  #reflectVelocity(velocity, offset, invert)
-  {
-    const length = vec3.length(offset);
-    if (length === 0)
-    {
-      return;
-    }
-    const normal = vec3.scale(offset, offset, invert / length);
     const velocityDot = vec3.dot(velocity, normal);
     if (velocityDot >= 0)
     {
       return;
     }
-    const bounceScale = -velocityDot * this.elasticity;
-    const slide = vec3.scaleAndAdd(vec3.create(), velocity, normal, -velocityDot);
+    const bounce = Tr2SphereConstraint.#bounce;
+    vec3.scale(bounce, normal, -velocityDot);
+    const slide = Tr2SphereConstraint.#slide;
+    vec3.add(slide, velocity, bounce);
+    vec3.scale(bounce, bounce, this.elasticity);
     vec3.scale(slide, slide, this.friction);
-    vec3.scaleAndAdd(velocity, slide, normal, bounceScale);
-    this.#addReflectionNoise(velocity, normal);
+    vec3.add(velocity, bounce, slide);
+    if (this.reflectionNoise > 0)
+    {
+      const noise = Tr2SphereConstraint.#noise;
+      vec3.set(noise, Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+      vec3.scale(noise, noise, this.reflectionNoise);
+      vec3.scaleAndAdd(noise, noise, normal, -vec3.dot(noise, normal));
+      vec3.scale(velocity, noise, vec3.length(velocity));
+    }
   }
 
   #view(element, index)
@@ -249,16 +271,12 @@ export class Tr2SphereConstraint extends CjsModel
     return result;
   }
 
-  #addReflectionNoise(velocity, normal)
-  {
-    if (this.reflectionNoise <= 0)
-    {
-      return;
-    }
-    const noise = vec3.fromValues(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
-    vec3.scale(noise, noise, this.reflectionNoise);
-    vec3.scaleAndAdd(noise, noise, normal, -vec3.dot(noise, normal));
-    vec3.scaleAndAdd(velocity, velocity, noise, vec3.length(velocity));
-  }
+  static #bounce = vec3.create();
+
+  static #noise = vec3.create();
+
+  static #offset = vec3.create();
+
+  static #slide = vec3.create();
 
 }

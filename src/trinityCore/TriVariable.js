@@ -79,6 +79,44 @@ export class TriVariable extends CjsModel
   }
 
   /**
+   * Clears the value but leaves the type alone, so a new SetValue will
+   * still work. Carbon zeroes the union slot and drops texture/buffer
+   * references; the JS payload slot zero-fills arrays and nulls references.
+   */
+  @carbon.method
+  @impl.adapted
+  Clear()
+  {
+    const value = this.value;
+    if (value && typeof value.length === "number" && typeof value.fill === "function")
+    {
+      value.fill(0);
+    }
+    else if (typeof value === "number")
+    {
+      this.value = 0;
+    }
+    else
+    {
+      this.value = null;
+    }
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetTypeName(contentType = this.contentType)
+  {
+    return TriVariable.GetTypeName(contentType);
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetTypeSize(contentType = this.contentType)
+  {
+    return TriVariable.GetTypeSize(contentType);
+  }
+
+  /**
    * Maps a script value onto a Carbon content type the way the Python
    * bridge does: integers and booleans register as INT (Python bools are
    * ints), other numbers as FLOAT, arrays by length, texture-provider
@@ -118,6 +156,51 @@ export class TriVariable extends CjsModel
     }
     return TriVariableContentType.TRIVARIABLE_INVALID;
   }
+
+  static GetTypeName(contentType)
+  {
+    return TriVariable.#typeNames[contentType] ?? TriVariable.#typeNames[0];
+  }
+
+  /**
+   * Byte size a variable of the given content type occupies in a constant
+   * buffer. INVALID and UNKNOWN_FLOAT may be converted to another type, so
+   * they must register as the largest type. Texture and GPU-buffer slots are
+   * pointer-sized in Carbon; the JS reference slot keeps the same 8 bytes so
+   * shared-buffer offset math stays aligned with Carbon's.
+   */
+  static GetTypeSize(contentType)
+  {
+    return TriVariable.#typeSizes[contentType] ?? 0;
+  }
+
+  static #typeNames = Object.freeze([
+    "INVALID TYPE!",
+    "TRIVARIABLE_UNKNOWN_FLOAT",
+    "TRIVARIABLE_TEXTURE_RES",
+    "TRIVARIABLE_INT",
+    "TRIVARIABLE_FLOAT",
+    "TRIVARIABLE_FLOAT2",
+    "TRIVARIABLE_FLOAT3",
+    "TRIVARIABLE_FLOAT4",
+    "TRIVARIABLE_FLOAT4X4",
+    "TRIVARIABLE_COLOR",
+    "TRIVARIABLE_GPUBUFFER"
+  ]);
+
+  static #typeSizes = Object.freeze([
+    4 * 16,
+    4 * 16,
+    8,
+    4,
+    4,
+    4 * 2,
+    4 * 3,
+    4 * 4,
+    4 * 16,
+    4 * 4,
+    8
+  ]);
 
   static ContentType = TriVariableContentType;
 }

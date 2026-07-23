@@ -10,6 +10,10 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 export class Tr2ForceSphereVolume extends CjsModel
 {
 
+  // Per-instance scratch: volumes can nest other volumes, so a class-static
+  // accumulator would alias between the outer and inner GetForce calls.
+  #contribution = vec3.create();
+
   /** m_exponent (float) [READWRITE, PERSIST] */
   @io.persist
   @type.float32
@@ -30,31 +34,32 @@ export class Tr2ForceSphereVolume extends CjsModel
   @type.float32
   radius = 1;
 
-  @impl.implemented
-  Update(dt)
+  /**
+   * Carbon's Update is declared inline empty (Tr2ForceSphereVolume.h:20-22);
+   * the contained forces intentionally do NOT receive per-frame updates
+   * through the volume.
+   */
+  @impl.noop
+  Update(_dt)
   {
-    for (const force of this.forces)
-    {
-      force?.Update?.(dt);
-    }
   }
 
+  /**
+   * Child-force aggregation with (1 - d/r)^exponent falloff inside the sphere
+   * (Tr2ForceSphereVolume.cpp:38-59).
+   */
   @impl.adapted
   GetForce(position, velocity, dt, mass, out = vec3.create())
   {
     vec3.set(out, 0, 0, 0);
-    const radius = Number(this.radius) || 0;
-    if (radius <= 0)
-    {
-      return out;
-    }
-    const delta = vec3.subtract(vec3.create(), position, this.position);
+    const delta = Tr2ForceSphereVolume.#delta;
+    vec3.subtract(delta, position, this.position);
     const distance = vec3.length(delta);
-    if (distance >= radius)
+    if (!(distance < this.radius))
     {
       return out;
     }
-    const contribution = vec3.create();
+    const contribution = this.#contribution;
     for (const force of this.forces)
     {
       if (typeof force?.GetForce !== "function")
@@ -64,7 +69,11 @@ export class Tr2ForceSphereVolume extends CjsModel
       vec3.set(contribution, 0, 0, 0);
       vec3.add(out, out, force.GetForce(position, velocity, dt, mass, contribution) ?? contribution);
     }
-    return vec3.scale(out, out, Math.pow(1 - distance / radius, Number(this.exponent) || 0));
+    return vec3.scale(out, out, Math.pow(1 - distance / this.radius, this.exponent));
   }
+
+  // #delta is consumed into a scalar before any child GetForce runs, so a
+  // class-static scratch cannot alias across nested volumes.
+  static #delta = vec3.create();
 
 }

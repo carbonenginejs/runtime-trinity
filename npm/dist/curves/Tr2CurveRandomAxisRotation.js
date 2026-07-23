@@ -76,16 +76,17 @@ new class extends _identity {
     }
 
     /**
-     * Evaluates postRotation * pitchRotation * preRotation.
+     * Evaluates Carbon's row-vector chain post * pitch * pre (post applied
+     * first, pre last) - gl composes it as pre . pitch . post.
      */
     Evaluate(out, time) {
       quat.copy(out, this.postRotation);
       if (this.period !== 0) {
         const angle = time / Math.abs(this.period) * Math.PI * 2;
         fromYawPitchRoll(this.#rotation, 0, angle, 0);
-        quat.multiply(out, out, this.#rotation);
+        quat.multiply(out, this.#rotation, out);
       }
-      return quat.multiply(out, out, this.preRotation);
+      return quat.multiply(out, this.preRotation, out);
     }
 
     /**

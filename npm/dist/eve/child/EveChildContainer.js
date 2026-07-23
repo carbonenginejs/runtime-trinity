@@ -1,12 +1,23 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
+import { sph3 } from '@carbonenginejs/core-math/sph3';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
 import { EveChildTransform as _EveChildTransform, applyTransformModifiers } from './EveChildTransform.js';
+import { EveChildInheritProperties as _EveChildInheritPrope } from './EveChildInheritProperties.js';
+import { EveChildUpdateParams as _EveChildUpdateParams } from '../EveChildUpdateParams.js';
 import { Origin } from '../../generated/eve/child/enums.js';
+import { Tr2RenderReason, TR2SHADERMODEL } from '../../generated/trinityCore/enums.js';
+import { Tr2Lod } from '../EveLODHelper.js';
+import { Tr2PerObjectData } from '../../trinityCore/Tr2PerObjectData.js';
 
 let _initProto, _initClass, _init_displayFilter, _init_extra_displayFilter, _init_objects, _init_extra_objects, _init_transformModifiers, _init_extra_transformModifiers, _init_curveSets, _init_extra_curveSets, _init_worldTransform, _init_extra_worldTransform, _init_mute, _init_extra_mute, _init_display, _init_extra_display, _init_name, _init_extra_name, _init_translation, _init_extra_translation, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_localTransform, _init_extra_localTransform, _init_staticTransform, _init_extra_staticTransform, _init_alwaysOn, _init_extra_alwaysOn, _init_updateOnDisplay, _init_extra_updateOnDisplay, _init_attachments, _init_extra_attachments, _init_observers, _init_extra_observers, _init_fxAttributes, _init_extra_fxAttributes, _init_lights, _init_extra_lights, _init_controllers, _init_extra_controllers, _init_inheritProperties, _init_extra_inheritProperties, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale, _init_animationOwner, _init_extra_animationOwner, _init_origin, _init_extra_origin, _init_isPlacementRoot, _init_extra_isPlacementRoot;
+
+// Module scratch (read-only zero vector; container recursion forbids mutable
+// module scratch here - see GetBoundingSphere).
+const ZERO_VEC3 = vec3.create();
 let _EveChildContainer;
 new class extends _identity {
   static [class EveChildContainer extends _EveChildTransform {
@@ -17,7 +28,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildContainer",
         family: "eve/child"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("DisplayQualityModifier")], 16, "displayFilter"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.persist, type, type.boolean], 16, "staticTransform"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, type, type.boolean], 16, "updateOnDisplay"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.persist, void 0, type.list("IEveFxAttribute")], 16, "fxAttributes"], [[io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, type, type.boolean], 16, "useSRT"], [[io, io.persist, type, type.boolean], 16, "useStaticRotation"], [[io, io.persist, type, type.boolean], 16, "useStaticScale"], [[io, io.persist, void 0, type.objectRef("ITr2GrannyAnimationOwner")], 16, "animationOwner"], [[io, io.persist, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[io, io.persist, type, type.boolean], 16, "isPlacementRoot"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAlwaysOn"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDisplayQualityModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetMute"], [[carbon, carbon.method, impl, impl.implemented], 18, "MuteChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddTransformModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAnimationOwner"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetIsPlacementRoot"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAttachment"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAttachments"], [[carbon, carbon.method, impl, impl.implemented], 18, "Empty"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.adapted], 18, "UpdateAsyncronous"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("DisplayQualityModifier")], 16, "displayFilter"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.notify, io, io.readwrite, type, type.boolean], 16, "mute"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.mat4], 16, "localTransform"], [[io, io.persist, type, type.boolean], 16, "staticTransform"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, type, type.boolean], 16, "updateOnDisplay"], [[io, io.persist, void 0, type.list("IEveSpaceObjectAttachment")], 16, "attachments"], [[io, io.persist, void 0, type.list("TriObserverLocal")], 16, "observers"], [[io, io.persist, void 0, type.list("IEveFxAttribute")], 16, "fxAttributes"], [[io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.objectRef("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.persist, type, type.boolean], 16, "useSRT"], [[io, io.persist, type, type.boolean], 16, "useStaticRotation"], [[io, io.persist, type, type.boolean], 16, "useStaticScale"], [[io, io.persist, void 0, type.objectRef("ITr2GrannyAnimationOwner")], 16, "animationOwner"], [[io, io.persist, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[io, io.persist, type, type.boolean], 16, "isPlacementRoot"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Registry re-registration on display/displayFilter changes is engine-owned; the mute fan-out side effect is ported.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAlwaysOn"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDisplayQualityModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetMute"], [[carbon, carbon.method, impl, impl.implemented], 18, "MuteChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddTransformModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddObserver"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddController"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffectChildByName"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddToEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "RemoveFromEffectChildrenList"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetAnimationOwner"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetIsPlacementRoot"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddAttachment"], [[carbon, carbon.method, impl, impl.implemented], 18, "ClearAttachments"], [[carbon, carbon.method, impl, impl.implemented], 18, "Empty"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.adapted, void 0, impl.reason("The GPU bone ring buffer, task-group dispatch, per-object VS/PS struct refresh, and the Granny bone-list override are engine/animation seams; the CPU update fan-out is ported.")], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The animationOwner bone list for attachments awaits the animation seam (bones pass as null); the visibility fan-out is ported.")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLights"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasTransparentBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSortValue"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Persistent VS/PS device buffers and the bone ring upload are engine-owned; the record carries the object reference the engine serializer consumes.")], 18, "GetPerObjectData"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon reads the Tr2Renderer shader-model global; the browser runtime stamps EveChildContainer.shaderModel (default TR2SM_3_0_DEPTH, the DX11 depth path EVE ships).")], 18, "IsRendering"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsUpdating"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurveSetDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRangeDuration"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The bool + float& out-param pair collapses to value-or-null in JS.")], 18, "GetControllerValueByName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWorldVelocity"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetOwnerMaxSpeed"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"]], 0, void 0, _EveChildTransform));
     }
     displayFilter = (_initProto(this), _init_displayFilter(this, 5));
     objects = (_init_extra_displayFilter(this), _init_objects(this, []));
@@ -50,11 +61,30 @@ new class extends _identity {
     origin = (_init_extra_animationOwner(this), _init_origin(this, 0));
     isPlacementRoot = (_init_extra_origin(this), _init_isPlacementRoot(this, false));
     #controllerVariables = (_init_extra_isPlacementRoot(this), new Map());
+
+    // Carbon m_worldVelocity/m_ownerMaxSpeed/m_activationStrength/m_hasUpdated:
+    // runtime-only frame state (never persisted; Carbon keeps them out of the
+    // Blue surface too).
+    #worldVelocity = vec3.create();
+    #ownerMaxSpeed = 0;
+    #activationStrength = 1;
+    #hasUpdated = false;
     Initialize() {
       for (const controller of this.controllers) {
         if (!controller?.IsLinked?.()) {
           controller?.Link?.(this);
         }
+      }
+      return true;
+    }
+
+    /** Carbon EveChildContainer::OnModified (cpp:76-88): display/displayFilter
+     * changes re-register with the scene component registry (engine-owned,
+     * omitted); a mute change fans out to children and observers. The value
+     * argument follows the repo's OnModified duck (field name or field value). */
+    OnModified(value = null) {
+      if (value === "mute" || value === this.mute) {
+        this.MuteChildren();
       }
       return true;
     }
@@ -189,16 +219,47 @@ new class extends _identity {
     }
 
     /**
-     * Per-frame async update: rebuild the world transform from the parent, tick
-     * this container's controllers, then fold the transform modifiers over the
-     * world transform. Ports EveChildContainer::DoUpdateAsyncronous (Carbon);
-     * @impl.adapted because the task-group dispatch wrapper and the Granny
-     * bone-list override are not modelled yet (see note below).
+     * Sync-side frame update (Carbon EveChildContainer::UpdateSyncronous,
+     * cpp:496-518): gate on IsUpdating, remember the owner max speed, then
+     * recurse into the children with childParent params rebased onto this
+     * container's world transform, and refresh the local observers.
+     * @param {Object} updateContext - frame context (EveUpdateContext)
+     * @param {EveChildUpdateParams} params
+     */
+    UpdateSyncronous(updateContext, params) {
+      if (!this.IsUpdating()) {
+        return;
+      }
+      this.#ownerMaxSpeed = Number(params?.ownerMaxSpeed) || 0;
+      const newParams = _EveChildContainer.#DeriveChildParams(params);
+      newParams.isVisible = params?.isVisible !== false && this.display;
+      newParams.childParent = this;
+      mat4.copy(newParams.localToWorldTransform, this.worldTransform);
+      for (const child of this.objects) {
+        child?.UpdateSyncronous?.(updateContext, newParams);
+      }
+      for (const observer of this.observers) {
+        observer?.Update?.(this.worldTransform);
+      }
+    }
+
+    /**
+     * Per-frame async update (Carbon EveChildContainer::UpdateAsyncronous +
+     * DoUpdateAsyncronous, cpp:520-641): rebuild the world transform from the
+     * parent, tick the controllers, fold the transform modifiers, then recurse
+     * into the children with childParent params, update the curve sets and fx
+     * attributes, and refresh light/attachment bone state. Carbon's wrapper
+     * advances the GPU bone ring buffer and may dispatch the body onto the
+     * placement task group (cpp:522-538) - both engine-owned, so the JS port
+     * runs the DoUpdateAsyncronous body inline behind the same IsUpdating gate.
      * @param {Object} updateContext - frame context (EveUpdateContext), threaded to modifiers
      * @param {EveChildUpdateParams} params - localToWorldTransform + boneCount/bones
      * @returns {Float32Array} worldTransform
      */
     UpdateAsyncronous(updateContext, params) {
+      if (!this.IsUpdating()) {
+        return this.worldTransform;
+      }
       const parentTransform = params?.localToWorldTransform;
       if (parentTransform && parentTransform.length === 16) {
         this.UpdateTransform(parentTransform);
@@ -210,12 +271,442 @@ new class extends _identity {
 
       // Carbon's DoUpdateAsyncronous overrides boneCount/bones from this
       // container's own animation controller here (Tr2GrannyAnimationUtils::
-      // GetBoneList) before folding modifiers. Deferred until the Granny bone-list
-      // API and the bone-consuming EveChildModifierAttachToBone are ported; no
-      // currently-ported modifier reads bones.
-      return applyTransformModifiers(this, updateContext, params?.boneCount ?? 0, params?.bones ?? null);
+      // GetBoneList, cpp:556-559) before folding modifiers. Deferred until the
+      // Granny bone-list API and the bone-consuming EveChildModifierAttachToBone
+      // are ported; no currently-ported modifier reads bones.
+      const boneCount = params?.boneCount ?? 0;
+      const bones = params?.bones ?? null;
+      applyTransformModifiers(this, updateContext, boneCount, bones);
+      this.#activationStrength = Number(params?.activationStrength ?? 1);
+
+      // Carbon (cpp:568-590): when attachments exist the per-object VS/PS
+      // structs are refreshed from the parent - GPU constant-buffer seam; the
+      // per-object record carries the live object reference instead
+      // (GetPerObjectData).
+
+      const newParams = _EveChildContainer.#DeriveChildParams(params);
+      newParams.isVisible = params?.isVisible !== false && this.display;
+      newParams.childParent = this;
+      newParams.boneCount = boneCount;
+      newParams.bones = bones;
+      mat4.copy(newParams.localToWorldTransform, this.worldTransform);
+
+      // Carbon (cpp:599-610): a space-object-rooted container samples the
+      // owner's world velocity; nested containers inherit it via params.
+      if (params?.spaceObjectParent) {
+        if (!params.childParent) {
+          const velocity = params.spaceObjectParent.GetWorldVelocity?.(this.#worldVelocity) ?? params.spaceObjectParent.worldVelocity;
+          if (velocity && velocity !== this.#worldVelocity) {
+            vec3.copy(this.#worldVelocity, velocity);
+          }
+          vec3.copy(newParams.worldVelocity, this.#worldVelocity);
+        } else {
+          vec3.copy(this.#worldVelocity, params.worldVelocity ?? ZERO_VEC3);
+        }
+      }
+      for (const child of this.objects) {
+        child?.UpdateAsyncronous?.(updateContext, newParams);
+      }
+
+      // Carbon (cpp:617-624): container-owned curve sets tick with the frame
+      // time as BOTH realTime and simTime.
+      if (this.curveSets.length) {
+        const time = Number(updateContext?.GetTime?.() ?? updateContext?.currentTime ?? updateContext?.time ?? 0);
+        for (const curveSet of this.curveSets) {
+          curveSet?.Update?.(time, time);
+        }
+      }
+      for (const fxAttribute of this.fxAttributes) {
+        fxAttribute?.UpdateAsyncronous?.(updateContext, newParams);
+      }
+      for (const light of this.lights) {
+        light?.SetBoneMatrix?.(bones, boneCount);
+      }
+      for (const attachment of this.attachments) {
+        attachment?.UpdateLights?.(this.worldTransform, bones, boneCount, this.#activationStrength, 0);
+      }
+      this.#hasUpdated = true;
+      return this.worldTransform;
     }
+
+    /**
+     * Frame visibility fan-out (Carbon EveChildContainer::UpdateVisibility,
+     * cpp:379-410): gate on display/IsUpdating, recurse into the children with
+     * the unchanged parent transform/LOD, then refresh attachment visibility
+     * against this container's world transform.
+     * @param {Object} updateContext - frame context (frustum ducks)
+     * @param {Float32Array} parentTransform
+     * @param {Number} parentLod - parent Tr2Lod level
+     * @returns {Boolean} whether the fan-out ran
+     */
+    UpdateVisibility(updateContext, parentTransform = null, parentLod = Tr2Lod.TR2_LOD_HIGH) {
+      if (!this.display) {
+        return false;
+      }
+      if (!this.IsUpdating()) {
+        return false;
+      }
+      for (const child of this.objects) {
+        child?.UpdateVisibility?.(updateContext, parentTransform, parentLod);
+      }
+      if (this.HasRenderables()) {
+        for (const attachment of this.attachments) {
+          attachment?.UpdateVisibility?.(updateContext, this.worldTransform, null, 0);
+        }
+      }
+      return true;
+    }
+
+    /** Carbon EveChildContainer::GetRenderables (cpp:412-432): the container
+     * itself renders only when it owns attachments; children always recurse. */
+    GetRenderables(out = []) {
+      if (!this.display || !this.#hasUpdated) {
+        return out;
+      }
+      if (!this.IsRendering()) {
+        return out;
+      }
+      if (this.HasRenderables()) {
+        out.push(this);
+      }
+      for (const child of this.objects) {
+        child?.GetRenderables?.(out);
+      }
+      return out;
+    }
+
+    /** Carbon EveChildContainer::GetBoundingSphere (cpp:434-452): the union of
+     * the children's spheres (BoundingSphereSetOrUpdate -> sph3.union). The
+     * child sphere is a per-call local rather than module scratch because
+     * containers nest - a shared scratch would be clobbered between recursion
+     * levels; this is a bounds query, not the per-frame update hot path. */
+    GetBoundingSphere(out = vec4.create(), _query = 0) {
+      if (!this.IsUpdating()) {
+        return false;
+      }
+      const childSphere = vec4.create();
+      let success = false;
+      for (const child of this.objects) {
+        if (child?.GetBoundingSphere?.(childSphere)) {
+          if (success) {
+            sph3.union(out, out, childSphere);
+          } else {
+            vec4.copy(out, childSphere);
+          }
+          success = true;
+        }
+      }
+      return success;
+    }
+
+    /** Carbon EveChildContainer::GetLocalToWorldTransform (cpp:644-647); the
+     * optional out follows the EveChildInstancedMeshes copy-out shape. */
+    GetLocalToWorldTransform(out = null) {
+      if (out) {
+        return mat4.copy(out, this.worldTransform);
+      }
+      return this.worldTransform;
+    }
+
+    /** Carbon EveChildContainer::ChangeLOD (cpp:649-655): fan-out only. */
+    ChangeLOD(lod) {
+      for (const child of this.objects) {
+        child?.ChangeLOD?.(lod);
+      }
+    }
+
+    /** Carbon EveChildContainer::GetLights (cpp:657-675): each light is added
+     * with the container world transform and the average basis-length scaling
+     * ((|X| + |Y| + |Z|) / 3 of the world basis rows - single-matrix reads, no
+     * composition). The light manager is duck-typed. */
+    GetLights(lightManager) {
+      if (!this.display || !this.#hasUpdated) {
+        return;
+      }
+      if (!this.IsRendering()) {
+        return;
+      }
+      const m = this.worldTransform;
+      const scaling = (Math.hypot(m[0], m[1], m[2]) + Math.hypot(m[4], m[5], m[6]) + Math.hypot(m[8], m[9], m[10])) / 3;
+      for (const light of this.lights) {
+        light?.AddLight?.(lightManager, m, scaling);
+      }
+    }
+
+    /** Carbon EveChildContainer::GetBatches (cpp:1134-1143): attachments only,
+     * gated on display, the NORMAL render reason, and a non-zero activation
+     * strength. Returns whether any batch was committed (JS addition; Carbon
+     * returns void). */
+    GetBatches(batches, batchType, perObjectData, reason = Tr2RenderReason.TR2RENDERREASON_NORMAL) {
+      if (!this.display || reason !== Tr2RenderReason.TR2RENDERREASON_NORMAL || this.#activationStrength === 0) {
+        return false;
+      }
+      let committed = false;
+      for (const attachment of this.attachments) {
+        committed = attachment?.GetBatches?.(batches, batchType, perObjectData, reason) === true || committed;
+      }
+      return committed;
+    }
+
+    /** Carbon EveChildContainer::HasTransparentBatches (cpp:1145-1148). */
+    HasTransparentBatches() {
+      return false;
+    }
+
+    /** Carbon EveChildContainer::GetSortValue (cpp:1150-1153). */
+    GetSortValue() {
+      return 0;
+    }
+
+    /** Carbon EveChildContainer::GetPerObjectData (cpp:1180-1203) uploads the
+     * animationOwner bone palette into the GPU ring buffer and allocates
+     * Tr2PerObjectDataWithPersistentBuffers; both are GPU seams, so the GPU-free
+     * record carries the live object reference for the engine serializer
+     * (mirrors EveSpaceObject2.GetPerObjectData). */
+    GetPerObjectData(accumulator = null) {
+      const data = typeof accumulator?.Allocate === "function" ? accumulator.Allocate(Tr2PerObjectData) : new Tr2PerObjectData();
+      data.object = this;
+      return data;
+    }
+
+    /** Carbon EveChildContainer::HasRenderables (cpp:1129-1132): the container
+     * renders only for its attachments. */
+    HasRenderables() {
+      return this.attachments.length > 0;
+    }
+
+    /** Carbon EveChildContainer::IsRendering (cpp:334-362): whether the current
+     * shader model passes this container's display filter. */
+    IsRendering() {
+      const settings = _EveChildContainer.shaderModel;
+      const filter = _EveChildContainer.DisplayQualityModifier;
+      if (settings === TR2SHADERMODEL.TR2SM_AUTHORING && this.displayFilter !== filter.ONLY_REFLECTIONS) {
+        return true;
+      }
+      switch (this.displayFilter) {
+        case filter.SHADER_LOW:
+          return settings === TR2SHADERMODEL.TR2SM_3_0_LO;
+        case filter.SHADER_LOWMID:
+          return settings <= TR2SHADERMODEL.TR2SM_3_0_HI;
+        case filter.SHADER_MED:
+          return settings === TR2SHADERMODEL.TR2SM_3_0_HI;
+        case filter.SHADER_HIGHMID:
+          return settings >= TR2SHADERMODEL.TR2SM_3_0_HI;
+        case filter.SHADER_HIGH:
+          return settings === TR2SHADERMODEL.TR2SM_3_0_DEPTH;
+        case filter.SHADER_ALL:
+          return true;
+        case filter.ONLY_REFLECTIONS:
+          return false;
+      }
+      return false;
+    }
+
+    /** Carbon EveChildContainer::IsUpdating (cpp:364-367). */
+    IsUpdating() {
+      return (this.display || !this.updateOnDisplay) && (this.IsRendering() || this.displayFilter === _EveChildContainer.DisplayQualityModifier.ONLY_REFLECTIONS);
+    }
+
+    /** Carbon EveChildContainer::PlayCurveSet (cpp:682-712): named own sets play
+     * (or play a named range); children recurse via the curve-set-owner duck. */
+    PlayCurveSet(name, rangeName = "") {
+      if (!this.IsUpdating()) {
+        return;
+      }
+      const target = String(name ?? "");
+      for (const curveSet of this.curveSets) {
+        if ((curveSet?.GetName?.() ?? curveSet?.name) !== target) {
+          continue;
+        }
+        if (rangeName) {
+          curveSet.PlayTimeRange?.(rangeName);
+        } else {
+          curveSet.ResetTimeRange?.();
+          curveSet.Play?.();
+        }
+      }
+      for (const child of this.objects) {
+        child?.PlayCurveSet?.(target, rangeName);
+      }
+    }
+
+    /** Carbon EveChildContainer::StopCurveSet (cpp:746-768). */
+    StopCurveSet(name) {
+      if (!this.IsUpdating()) {
+        return;
+      }
+      const target = String(name ?? "");
+      for (const curveSet of this.curveSets) {
+        if ((curveSet?.GetName?.() ?? curveSet?.name) === target) {
+          curveSet.Stop?.();
+        }
+      }
+      for (const child of this.objects) {
+        child?.StopCurveSet?.(target);
+      }
+    }
+
+    /** Carbon EveChildContainer::UpdateCurveSet (cpp:770-786): samples matching
+     * own and child sets at an explicit time (both clocks, as Carbon does). */
+    UpdateCurveSet(name, time) {
+      const target = String(name ?? "");
+      for (const curveSet of this.curveSets) {
+        if ((curveSet?.GetName?.() ?? curveSet?.name) === target) {
+          curveSet.Update?.(time, time);
+        }
+      }
+      for (const child of this.objects) {
+        child?.UpdateCurveSet?.(target, time);
+      }
+    }
+
+    /** Carbon EveChildContainer::PlayAllCurveSets (cpp:714-728): children
+     * first, then every own set. */
+    PlayAllCurveSets() {
+      for (const child of this.objects) {
+        child?.PlayAllCurveSets?.();
+      }
+      for (const curveSet of this.curveSets) {
+        curveSet?.Play?.();
+      }
+    }
+
+    /** Carbon EveChildContainer::StopAllCurveSets (cpp:730-744). */
+    StopAllCurveSets() {
+      for (const child of this.objects) {
+        child?.StopAllCurveSets?.();
+      }
+      for (const curveSet of this.curveSets) {
+        curveSet?.Stop?.();
+      }
+    }
+
+    /** Carbon EveChildContainer::GetCurveSetDuration (cpp:788-813): maximum
+     * GetMaxCurveDuration over matching own and child sets. */
+    GetCurveSetDuration(name) {
+      if (!this.IsUpdating()) {
+        return 0;
+      }
+      const target = String(name ?? "");
+      let duration = 0;
+      for (const curveSet of this.curveSets) {
+        if ((curveSet?.GetName?.() ?? curveSet?.name) === target) {
+          duration = Math.max(duration, Number(curveSet.GetMaxCurveDuration?.() ?? 0));
+        }
+      }
+      for (const child of this.objects) {
+        duration = Math.max(duration, Number(child?.GetCurveSetDuration?.(target) ?? 0));
+      }
+      return duration;
+    }
+
+    /** Carbon EveChildContainer::GetRangeDuration (cpp:815-840): maximum named
+     * range duration over matching own and child sets. */
+    GetRangeDuration(name, rangeName) {
+      if (!this.IsUpdating()) {
+        return 0;
+      }
+      const target = String(name ?? "");
+      let duration = 0;
+      for (const curveSet of this.curveSets) {
+        if ((curveSet?.GetName?.() ?? curveSet?.name) === target) {
+          duration = Math.max(duration, Number(curveSet.GetRangeDuration?.(rangeName) ?? 0));
+        }
+      }
+      for (const child of this.objects) {
+        duration = Math.max(duration, Number(child?.GetRangeDuration?.(target, rangeName) ?? 0));
+      }
+      return duration;
+    }
+
+    /** Carbon EveChildContainer::GetControllerValueByName (cpp:1083-1098):
+     * Carbon returns bool with a float& out; the JS port returns the value or
+     * null when no controller exposes the named float variable. */
+    GetControllerValueByName(name) {
+      const key = String(name ?? "");
+      for (const controller of this.controllers) {
+        const value = controller?.GetFloatVariableByName?.(key);
+        if (value !== undefined && value !== null) {
+          return Number(value);
+        }
+      }
+      return null;
+    }
+
+    /** Carbon EveChildContainer::GetWorldVelocity (cpp:1012-1015). */
+    GetWorldVelocity(out = vec3.create()) {
+      return vec3.copy(out, this.#worldVelocity);
+    }
+
+    /** Carbon EveChildContainer::GetOwnerMaxSpeed (cpp:1073-1076). */
+    GetOwnerMaxSpeed() {
+      return this.#ownerMaxSpeed;
+    }
+
+    /** Carbon EveChildContainer::SetInheritProperties (cpp:1017-1040): lazily
+     * creates the property holder, then fans the color set out to children and
+     * lights. */
+    SetInheritProperties(colorSet) {
+      if (!this.inheritProperties) {
+        this.inheritProperties = new _EveChildInheritPrope();
+      }
+      this.inheritProperties.SetProperties(colorSet);
+      for (const child of this.objects) {
+        child?.SetInheritProperties?.(colorSet);
+      }
+      for (const light of this.lights) {
+        light?.SetInheritProperties?.(colorSet);
+      }
+    }
+
+    /** Carbon EveChildContainer::FindSoundEmitter (cpp:1042-1066): named local
+     * observers first, then duck-typed recursion into the children. */
+    FindSoundEmitter(name) {
+      const target = String(name ?? "");
+      for (const observer of this.observers) {
+        if (observer?.name === target) {
+          return typeof observer.GetObserver === "function" ? observer.GetObserver() : observer.observer ?? null;
+        }
+      }
+      for (const child of this.objects) {
+        const emitter = child?.FindSoundEmitter?.(target);
+        if (emitter) {
+          return emitter;
+        }
+      }
+      return null;
+    }
+
+    // Copies the caller's params into a fresh child-facing record (Carbon copies
+    // EveChildUpdateParams by value, cpp:505/592). Allocated per call like
+    // EveSpaceObject2's child fan-out - container recursion makes a module
+    // scratch record unsafe.
+
+    // Carbon reads Tr2Renderer::GetShaderModel() (a renderer global); the
+    // browser runtime stamps it here. TR2SM_3_0_DEPTH is the DX11 depth path
+    // EVE ships, so every quality-gated container renders by default.
   }];
+  #DeriveChildParams(params) {
+    const next = new _EveChildUpdateParams();
+    if (params) {
+      next.spaceObjectParent = params.spaceObjectParent ?? null;
+      next.childParent = params.childParent ?? null;
+      next.boneCount = params.boneCount ?? 0;
+      next.bones = params.bones ?? null;
+      next.ownerMaxSpeed = Number(params.ownerMaxSpeed) || 0;
+      next.activationStrength = Number(params.activationStrength ?? 1);
+      next.controllerUpdateFrequency = Number(params.controllerUpdateFrequency ?? 0.5);
+      next.isVisible = params.isVisible !== false;
+      if (params.localToWorldTransform?.length === 16) {
+        mat4.copy(next.localToWorldTransform, params.localToWorldTransform);
+      }
+      if (params.worldVelocity) {
+        vec3.copy(next.worldVelocity, params.worldVelocity);
+      }
+    }
+    return next;
+  }
+  shaderModel = TR2SHADERMODEL.TR2SM_3_0_DEPTH;
   DisplayQualityModifier = Object.freeze({
     ONLY_REFLECTIONS: 6,
     SHADER_ALL: 5,

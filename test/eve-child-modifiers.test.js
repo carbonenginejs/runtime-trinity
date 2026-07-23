@@ -7,12 +7,16 @@ import { CjsSchema } from "@carbonenginejs/core-types/schema";
 import {
   EveChildContainer,
   EveChildMesh,
+  EveChildModifierAttachToBone,
   EveChildModifierBillboard2D,
+  EveChildModifierBillboard3D,
   EveChildModifierBooster,
   EveChildModifierCameraOrientedRotationConstrained,
   EveChildModifierHalo,
   EveChildModifierHaloInverted,
   EveChildModifierSRT,
+  EveChildModifierStretch,
+  EveChildModifierTranslateWithCamera,
   EveChildUpdateParams,
   EveSpaceObject2,
   EveUpdateContext,
@@ -359,4 +363,67 @@ test("camera-dependent modifiers carry the carbon.contextual camera marker", () 
     assert.deepEqual(Array.from(method.carbon.contextTiers), ["camera"], `${Modifier.name} tiers`);
     assert.equal(method.impl.status, "implemented", `${Modifier.name} status`);
   }
+});
+
+test("EveChildModifierAttachToBone composes the Float4x3 bone before the child", () =>
+{
+  const modifier = new EveChildModifierAttachToBone();
+  const out = mat4.create();
+  const transform = mat4.fromZRotation(mat4.create(), Math.PI / 2);
+
+  // No bone selected -> passthrough.
+  modifier.ApplyTransform(null, transform, 0, null, out);
+  assert.ok(Math.abs(out[1] - 1) < EPSILON, "passthrough keeps the rotation");
+
+  // Bone 0 = translation (1, 0, 0) in Float4x3 column-stride packing.
+  const bones = new Float32Array([1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0]);
+  modifier.SetBoneIndex(0);
+  modifier.ApplyTransform(null, transform, 1, bones, out);
+  // Carbon (row-vector): bone * transform - bone applies FIRST, so the bone
+  // translation (1,0,0) is rotated by the +90-degree Z child into (0,1,0).
+  assert.ok(Math.abs(out[12]) < EPSILON, "tx rotated away");
+  assert.ok(Math.abs(out[13] - 1) < EPSILON, "bone translation rotated onto +Y");
+});
+
+test("EveChildModifierTranslateWithCamera adds or replaces the view position", () =>
+{
+  const modifier = new EveChildModifierTranslateWithCamera();
+  const context = contextAtCamera([5, 6, 7]);
+  const out = mat4.create();
+  const transform = mat4.fromTranslation(mat4.create(), [1, 1, 1]);
+
+  modifier.ApplyTransform(context, transform, 0, null, out);
+  assert.deepEqual([out[12], out[13], out[14]], [6, 7, 8], "additive mode");
+
+  modifier.attachedToCamera = true;
+  modifier.ApplyTransform(context, transform, 0, null, out);
+  assert.deepEqual([out[12], out[13], out[14]], [5, 6, 7], "attached mode");
+});
+
+test("EveChildModifierBillboard3D fixed mode builds the camera-facing basis", () =>
+{
+  const modifier = new EveChildModifierBillboard3D();
+  modifier.fixed = true;
+  const out = mat4.create();
+
+  // Identity child at the origin, camera on +X: local +Z must face the camera.
+  modifier.ApplyTransform(contextAtCamera([10, 0, 0]), mat4.create(), 0, null, out);
+  assert.ok(Math.abs(out[8] - 1) < EPSILON, "forward.x");
+  assert.ok(Math.abs(out[10]) < EPSILON, "forward.z");
+  assert.ok(Math.abs(out[5] - 1) < EPSILON, "up preserved");
+});
+
+test("EveChildModifierStretch spans from the child to the destination", () =>
+{
+  const modifier = new EveChildModifierStretch();
+  modifier.SetDestPosition([0, 0, -10]);
+  const out = mat4.create();
+
+  modifier.ApplyTransform(null, mat4.create(), 0, null, out);
+  // Carbon's TriQuaternionArcFromForward (and gl arcFromForward - verified
+  // identical, both neutral at -Z) leaves a -Z stretch unrotated: scaled to
+  // the length on Z, centred at the midpoint.
+  assert.ok(Math.abs(out[10] - 10) < EPSILON, "z scale = stretch length");
+  assert.ok(Math.abs(out[14] + 5) < EPSILON, "midpoint translation");
+  assert.ok(Math.abs(out[0] - 1) < EPSILON, "x scale from source");
 });

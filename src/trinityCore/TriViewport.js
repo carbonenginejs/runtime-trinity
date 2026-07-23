@@ -53,3 +53,15 @@ export class TriViewport extends CjsModel
     return this.width / this.height;
   }
 }
+
+/**
+ * Maps a clip-space vector into viewport screen space in place, matching
+ * Carbon's inline Vec3TransformByViewport.
+ */
+export function Vec3TransformByViewport(vec, viewport)
+{
+  vec[0] = viewport.x + (1 + vec[0]) * 0.5 * viewport.width;
+  vec[1] = viewport.y + (1 - vec[1]) * 0.5 * viewport.height;
+  vec[2] = viewport.minZ + vec[2] * (viewport.maxZ - viewport.minZ);
+  return vec;
+}

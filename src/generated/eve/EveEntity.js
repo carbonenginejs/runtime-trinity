@@ -11,12 +11,15 @@ export class EveEntity extends CjsModel
 
   #componentIndexLookup = new Map();
 
-  /** m_registry (EveComponentRegistry*) */
-  @type.objectRef("EveComponentRegistry")
+  // Carbon keeps m_registry/m_indexInRegistry PRIVATE (EveEntity.h:57-61) -
+  // they are runtime registration state, never Blue-exposed. Schema typing
+  // removed 2026-07-23: exporting them via GetValues leaked indexInRegistry
+  // into values interchange and poisoned re-registration of hydrated
+  // entities (Register() refuses when indexInRegistry !== -1).
+  /** m_registry (EveComponentRegistry*) - runtime-only. */
   registry = null;
 
-  /** m_indexInRegistry (size_t) */
-  @type.uint64
+  /** m_indexInRegistry (size_t) - runtime-only. */
   indexInRegistry = -1;
 
   @impl.implemented

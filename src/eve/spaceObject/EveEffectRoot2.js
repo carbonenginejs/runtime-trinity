@@ -198,7 +198,8 @@ export class EveEffectRoot2 extends EveEntity
     const time = EveEffectRoot2.#GetContextValue(updateContext, "GetTime", "currentTime", "time");
     this.UpdateWorldTransform(time);
     mat4.fromRotationTranslationScale(this.#localTransform, this.rotation, this.translation, this.scaling);
-    mat4.multiply(this.#lastUpdateMatrix, this.#localTransform, this.#worldTransform);
+    // Carbon (row-vector): m_localTransform * m_worldTransform - local first.
+    mat4.multiply(this.#lastUpdateMatrix, this.#worldTransform, this.#localTransform);
     this.#secondaryLightingSphereRadiusWorld = this.secondaryLightingSphereRadius *
       (this.scaling[0] + this.scaling[1] + this.scaling[2]) / 3;
 
@@ -333,7 +334,8 @@ export class EveEffectRoot2 extends EveEntity
     if (this.modelRotationCurve)
     {
       EveEffectRoot2.#UpdateCurve(this.modelRotationCurve, time, EveEffectRoot2.#modelRotation, EveEffectRoot2.#identityRotation);
-      quat.multiply(EveEffectRoot2.#rotation, EveEffectRoot2.#modelRotation, EveEffectRoot2.#rotation);
+      // Carbon (row-vector): rotation = modelRotation * rotation - model first.
+      quat.multiply(EveEffectRoot2.#rotation, EveEffectRoot2.#rotation, EveEffectRoot2.#modelRotation);
     }
 
     mat4.fromRotationTranslation(this.#worldTransform, EveEffectRoot2.#rotation, EveEffectRoot2.#translation);
@@ -356,7 +358,8 @@ export class EveEffectRoot2 extends EveEntity
   {
     this.UpdateWorldTransform(time);
     mat4.fromRotationTranslationScale(this.#localTransform, this.rotation, this.translation, this.scaling);
-    mat4.multiply(EveEffectRoot2.#centerTransform, this.#localTransform, this.#worldTransform);
+    // Carbon (row-vector): currentTransform * m_worldTransform - local first.
+    mat4.multiply(EveEffectRoot2.#centerTransform, this.#worldTransform, this.#localTransform);
     return vec3.transformMat4(out, this.boundingSphereCenter, EveEffectRoot2.#centerTransform);
   }
 
@@ -604,7 +607,8 @@ export class EveEffectRoot2 extends EveEntity
   GetWorldRotation(out = quat.create())
   {
     mat4.getRotation(EveEffectRoot2.#worldRotation, this.#worldTransform);
-    quat.multiply(out, this.rotation, EveEffectRoot2.#worldRotation);
+    // Carbon (row-vector): m_rotation * RotationQuaternion(world) - local first.
+    quat.multiply(out, EveEffectRoot2.#worldRotation, this.rotation);
     return quat.normalize(out, out);
   }
 

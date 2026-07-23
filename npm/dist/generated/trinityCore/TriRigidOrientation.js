@@ -58,7 +58,8 @@ class TriRigidOrientation extends CjsModel {
       }
       quat.set(converter, tau[0], tau[1], tau[2], 0);
       quat.exp(converter, converter);
-      quat.multiply(current.rot0, previous.rot0, converter);
+      // Carbon (row-vector): rot0 = previousRot0 * tauConverter - previous first.
+      quat.multiply(current.rot0, converter, previous.rot0);
     }
     if (this.states.length) quat.copy(this.value, this.states[0].rot0);
   }

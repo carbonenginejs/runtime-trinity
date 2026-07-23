@@ -6,7 +6,7 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { bindParticleElement } from "../../particle/particleElementBinding.js";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2SphereShapeAttributeGenerator (particle) - generated from schema shapeHash 8f3083b6.... */
 @type.define({ className: "Tr2SphereShapeAttributeGenerator", family: "particle" })
@@ -115,6 +115,7 @@ export class Tr2SphereShapeAttributeGenerator extends CjsModel
   }
 
   @impl.adapted
+  @impl.reason("Carbon's particle RNG is replaced by Math.random while retaining its cone sampling, rotation and distribution-exponent order.")
   Generate(parentPosition, parentVelocity, index)
   {
     if (!this.valid || (!this.controlPosition && !this.controlVelocity))
@@ -123,11 +124,16 @@ export class Tr2SphereShapeAttributeGenerator extends CjsModel
     }
     const phi = (this.minPhi + Math.random() * (this.maxPhi - this.minPhi)) * Math.PI / 180;
     const theta = (this.minTheta + Math.random() * (this.maxTheta - this.minTheta)) * Math.PI / 180;
-    const direction = vec3.fromValues(
+    const direction = Tr2SphereShapeAttributeGenerator.#direction;
+    vec3.set(
+      direction,
       Math.sin(phi) * Math.cos(theta),
       -Math.cos(phi),
       Math.sin(phi) * Math.sin(theta)
     );
+    // Carbon's XMQuaternionMultiply(XMQuaternionMultiply(conj(q), v), q)
+    // (Tr2SphereShapeAttributeGenerator.cpp:87-89) is the standard active
+    // rotation q * v * q^-1 - exactly vec3.transformQuat.
     vec3.transformQuat(direction, direction, this.rotation);
     if (this.#velocityElement)
     {
@@ -141,9 +147,10 @@ export class Tr2SphereShapeAttributeGenerator extends CjsModel
     }
     if (this.#positionElement)
     {
-      const exponent = Number(this.distributionExponent) || 0;
+      // frand(min, max, exponent) = min + (max - min) * pow(rand, exponent)
+      // (Tr2SphereShapeAttributeGenerator.cpp:21-24).
       const radius = this.minRadius
-        + (this.maxRadius - this.minRadius) * Math.pow(Math.random(), exponent);
+        + (this.maxRadius - this.minRadius) * Math.pow(Math.random(), this.distributionExponent);
       const offset = this.#positionElement.startOffset + index * this.#positionElement.instanceStride;
       for (let component = 0; component < 3; component++)
       {
@@ -161,5 +168,23 @@ export class Tr2SphereShapeAttributeGenerator extends CjsModel
       ? this.controlVelocity ? "POSITION + VELOCITY" : "POSITION"
       : this.controlVelocity ? "VELOCITY" : "NONE";
   }
+
+  /** Carbon returns via reference arguments (Tr2SphereShapeAttributeGenerator.cpp:215-219). */
+  @impl.adapted
+  @impl.reason("Carbon's paired reference outputs become caller-provided out arguments.")
+  GetTransform(outPosition, outRotation)
+  {
+    vec3.copy(outPosition, this.position);
+    quat.copy(outRotation, this.rotation);
+  }
+
+  @impl.implemented
+  SetTransform(position, rotation)
+  {
+    vec3.copy(this.position, position);
+    quat.copy(this.rotation, rotation);
+  }
+
+  static #direction = vec3.create();
 
 }

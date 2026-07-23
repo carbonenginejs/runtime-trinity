@@ -19,6 +19,7 @@ import { type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { Tr2VariableStore } from "./Tr2VariableStore.js";
 
 /** Tr2RenderContext (trinityCore) - generated from schema shapeHash 73e2a4e7.... */
 @type.define({ className: "Tr2RenderContext", family: "trinityCore" })
@@ -563,6 +564,51 @@ export class Tr2RenderContext extends CjsModel
   static GetDefault()
   {
     return Tr2RenderContext.#defaultContext;
+  }
+
+  /**
+   * The global "objectId" TriVariable Carbon registers at context
+   * construction and stamps per batch during picking. Registered lazily
+   * here so contexts that never pick pay nothing.
+   */
+  GetObjectIdVariable()
+  {
+    if (!this.#objectIdVariable)
+    {
+      this.#objectIdVariable = Tr2VariableStore.GlobalStore().RegisterVariable("objectId", 0.0);
+    }
+    return this.#objectIdVariable;
+  }
+
+  #objectIdVariable = null;
+
+  /**
+   * True when any batch's shader implements the technique with at least one
+   * pass - Carbon's cheap "can this pass be skipped entirely" pre-check.
+   * Consecutive batches sharing a shader are tested once.
+   */
+  static TechniqueInBatch(batches, techniqueName)
+  {
+    let prevShader = null;
+    for (const batch of batches)
+    {
+      const shader = batch?.shader;
+      if (!shader || shader === prevShader)
+      {
+        continue;
+      }
+      prevShader = shader;
+      const technique = shader.GetTechniqueIndex?.(techniqueName);
+      if (technique === undefined || technique === null || technique < 0)
+      {
+        continue;
+      }
+      if ((shader.GetPassCount?.(technique) ?? 0) > 0)
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   static #defaultContext = new Tr2RenderContext();

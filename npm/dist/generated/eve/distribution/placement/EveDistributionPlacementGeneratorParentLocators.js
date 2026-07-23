@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
-import { InitialPlacement as _InitialPlacement } from '../attributeModifiers/InitialPlacement.js';
+import { InitialPlacement as _InitialPlacement } from '../../../../eve/distribution/attributeModifiers/InitialPlacement.js';
 import { PlacementDataWithIdentifier as _PlacementDataWithIde } from '../../../../eve/PlacementDataWithIdentifier.js';
 
 let _initProto, _initClass, _init_locatorSetName, _init_extra_locatorSetName;

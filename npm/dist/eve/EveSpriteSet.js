@@ -80,6 +80,7 @@ class EveSpriteSet extends _EveEntity {
   }
   Rebuild() {
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
   Initialize() {
     this.Rebuild();

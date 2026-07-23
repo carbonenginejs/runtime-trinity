@@ -31,6 +31,14 @@ export class Tr2FloatParameter extends CjsParameter
     return this.name;
   }
 
+  /** Content hash: value bytes then name (Carbon hashes the interned name pointer). */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    return CjsParameter.hashFnv1String(this.name, CjsParameter.hashFnv1Floats([this.value], startingHash));
+  }
+
   @carbon.method
   @impl.implemented
   GetValue()

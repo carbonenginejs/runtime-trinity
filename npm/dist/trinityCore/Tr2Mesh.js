@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { Tr2MeshBase as _Tr2MeshBase } from './Tr2MeshBase.js';
-import { Tr2SerializedMorphAnimation as _Tr2SerializedMorphAn } from '../generated/trinityCore/Tr2SerializedMorphAnimation.js';
+import { Tr2SerializedMorphAnimation as _Tr2SerializedMorphAn } from './Tr2SerializedMorphAnimation.js';
 
 let _initProto, _initClass, _init_geometryResPath, _init_extra_geometryResPath, _init_serializedMorphAnimations, _init_extra_serializedMorphAnimations, _init_deferGeometryLoad, _init_extra_deferGeometryLoad, _init_geometry, _init_extra_geometry;
 let _Tr2Mesh;

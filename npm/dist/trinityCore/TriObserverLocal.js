@@ -87,6 +87,12 @@ new class extends _identity {
     super(_TriObserverLocal), _initClass();
   }
 }();
+function SendEventToAudEmitter(observer, audioEvent) {
+  const emitter = observer?.GetObserver?.();
+  if (typeof emitter?.SendEvent === "function") {
+    emitter.SendEvent(audioEvent);
+  }
+}
 
-export { _TriObserverLocal as TriObserverLocal };
+export { SendEventToAudEmitter, _TriObserverLocal as TriObserverLocal };
 //# sourceMappingURL=TriObserverLocal.js.map

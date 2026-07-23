@@ -8,7 +8,7 @@ import {
   bindParticleElement,
   hasUnboundParticleElements
 } from "../../../particle/particleElementBinding.js";
-import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../../particle/Tr2ParticleElementDeclaration.js";
 
 
 const BIND_PENDING = 0;

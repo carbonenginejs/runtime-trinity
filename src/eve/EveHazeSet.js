@@ -55,6 +55,7 @@ export class EveHazeSet extends EveEntity
     // backend-neutral runtime keeps the authored graph and invalidates the
     // renderer-facing revision without allocating device resources.
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
 
   @carbon.method

@@ -140,6 +140,7 @@ export class EveSpriteSet extends EveEntity
   Rebuild()
   {
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
 
   @carbon.method

@@ -55,6 +55,7 @@ export class EveBannerSet extends EveEntity
   {
     // Physical geometry, buffers, bounds and batches are backend work.
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
 
   @carbon.method

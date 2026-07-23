@@ -42,9 +42,34 @@ export class Tr2MeshArea extends CjsModel
   @type.objectRef("Tr2Effect")
   effect = null;
 
-  #castsShadows = true;
+  // DIVERGENCE (deliberate, precedent: EvePlaneSetItem.blinkData): Carbon
+  // keeps these three as private runtime state stamped by SOF through
+  // setters. The JS values path has no setter side channel, so they are
+  // schema-backed here so SOF-authored shadow/depth/LOD state survives
+  // values exchange. Without them every area defaults to shadow-casting.
+  /** m_castsShadows - per-batch-type shadow participation (SOF-stamped). */
+  @io.rebuild("batches")
+  @io.persist
+  @type.boolean
+  castsShadows = true;
 
-  #generateDepthArea = false;
+  /** m_generateDepthArea - authored depth-area participation (SOF-stamped). */
+  @io.rebuild("batches")
+  @io.persist
+  @type.boolean
+  generateDepthArea = false;
+
+  /** m_minLod (Tr2Lod) - minimal visible lod; TR2_LOD_UNSPECIFIED = -1. */
+  @io.rebuild("batches")
+  @io.persist
+  @type.int32
+  minLod = -1;
+
+  /** m_jointCount - skinning joint count, fed by Tr2MeshBase.BindToRig. */
+  #jointCount = 0;
+
+  /** m_jointMappingAnimRig - shared joint mapping owned by the parent mesh. */
+  #jointMappingAnimRig = null;
 
   @carbon.method
   @impl.adapted
@@ -155,27 +180,94 @@ export class Tr2MeshArea extends CjsModel
   @impl.adapted
   IsCastingShadows()
   {
-    return this.#castsShadows;
+    return this.castsShadows;
   }
 
   @carbon.method
   @impl.adapted
   SetCastsShadows(value)
   {
-    this.#castsShadows = !!value;
+    this.castsShadows = !!value;
   }
 
   @carbon.method
   @impl.adapted
   GetGenerateDepthArea()
   {
-    return this.#generateDepthArea;
+    return this.generateDepthArea;
   }
 
   @carbon.method
   @impl.adapted
   SetGenerateDepthArea(value)
   {
-    this.#generateDepthArea = !!value;
+    this.generateDepthArea = !!value;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetMinLod()
+  {
+    return this.minLod;
+  }
+
+  @carbon.method
+  @impl.implemented
+  SetMinLod(lod)
+  {
+    this.minLod = Number(lod) | 0;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetJointCount()
+  {
+    return this.#jointCount;
+  }
+
+  @carbon.method
+  @impl.implemented
+  SetJointCount(value)
+  {
+    this.#jointCount = Number(value) >>> 0;
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetJointMappingAnimRig()
+  {
+    return this.#jointMappingAnimRig;
+  }
+
+  /**
+   * The provided array is NOT owned by this instance, it is owned by the
+   * parent mesh; each mesh area shares the same array.
+   */
+  @carbon.method
+  @impl.implemented
+  SetJointMappingAnimRig(value)
+  {
+    this.#jointMappingAnimRig = value ?? null;
+  }
+
+  /**
+   * Carbon's operator= - copies authored fields and deliberately resets the
+   * joint state, which BindToRig must rebuild for the new owner.
+   */
+  @carbon.method
+  @impl.adapted
+  CopyFrom(other)
+  {
+    this.name = other.name;
+    this.index = other.index;
+    this.count = other.count;
+    this.reversed = other.reversed;
+    this.effect = other.effect;
+    this.#jointCount = 0;
+    this.#jointMappingAnimRig = null;
+    this.display = other.display;
+    this.useSHLighting = other.useSHLighting;
+    this.generateDepthArea = other.GetGenerateDepthArea();
+    return this;
   }
 }

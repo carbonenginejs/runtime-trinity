@@ -17,7 +17,7 @@ class EveBoosterSet2Item extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveBoosterSet2Item",
       family: "eve/attachment/boosters"
-    })], [[[io, io.persist, type, type.mat4], 16, "transform"], [[io, io.persist, type, type.vec4], 16, "functionality"], [[io, io.persist, type, type.boolean], 16, "hasTrail"], [[io, io.persist, type, type.uint32], 16, "atlasIndex0"], [[io, io.persist, type, type.uint32], 16, "atlasIndex1"], [[io, io.persist, type, type.float32], 16, "lightScale"]], 0, void 0, CjsModel));
+    })], [[[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.mat4], 16, "transform"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.vec4], 16, "functionality"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.boolean], 16, "hasTrail"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.uint32], 16, "atlasIndex0"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.uint32], 16, "atlasIndex1"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.float32], 16, "lightScale"]], 0, void 0, CjsModel));
   }
   constructor(...args) {
     super(...args);

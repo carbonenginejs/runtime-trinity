@@ -56,6 +56,21 @@ export class TriTransformParameter extends CjsParameter
     return this.name;
   }
 
+  /**
+   * Content hash: transform base + translation/scaling/rotation bytes, then
+   * name (Carbon hashes the contiguous transform-state struct region).
+   */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    startingHash = CjsParameter.hashFnv1Floats([this.transformBase], startingHash);
+    startingHash = CjsParameter.hashFnv1Floats(this.translation, startingHash);
+    startingHash = CjsParameter.hashFnv1Floats(this.scaling, startingHash);
+    startingHash = CjsParameter.hashFnv1Floats(this.rotation, startingHash);
+    return CjsParameter.hashFnv1String(this.name, startingHash);
+  }
+
   @carbon.method
   @impl.adapted
   CopyValueToEffect(_inputType, dest, size = 64, context = null)
@@ -69,7 +84,9 @@ export class TriTransformParameter extends CjsParameter
       baseTransform[12] = 0;
       baseTransform[13] = 0;
       baseTransform[14] = 0;
-      mat4.multiply(transform, baseTransform, transform);
+      // Carbon (row-vector): texTransform *= original - the base transform
+      // applies first, the authored SRT last.
+      mat4.multiply(transform, transform, baseTransform);
     }
     const out = mat4.create();
     mat4.transpose(out, transform);

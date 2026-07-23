@@ -5,7 +5,7 @@ import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { bindParticleElement } from "../../particle/particleElementBinding.js";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2RandomIntegerAttributeGenerator (particle) - generated from schema shapeHash 8bfdb492.... */
 @type.define({ className: "Tr2RandomIntegerAttributeGenerator", family: "particle" })

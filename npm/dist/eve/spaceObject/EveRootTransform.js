@@ -41,7 +41,8 @@ new class extends _identity {
       _EveRootTransform.#UpdateCurve(this.rotationCurve, time, _EveRootTransform.#rotation, _EveRootTransform.#identityRotation);
       if (this.modelRotationCurve) {
         _EveRootTransform.#UpdateCurve(this.modelRotationCurve, time, _EveRootTransform.#modelRotation, _EveRootTransform.#identityRotation);
-        quat.multiply(_EveRootTransform.#rotation, _EveRootTransform.#modelRotation, _EveRootTransform.#rotation);
+        // Carbon (row-vector): rotation = modelRotation * rotation - model first.
+        quat.multiply(_EveRootTransform.#rotation, _EveRootTransform.#rotation, _EveRootTransform.#modelRotation);
       }
       mat4.fromRotationTranslation(this.#lastUpdateMatrix, _EveRootTransform.#rotation, _EveRootTransform.#translation);
       if (this.modelTranslationCurve) {

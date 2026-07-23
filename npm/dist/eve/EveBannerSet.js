@@ -34,6 +34,7 @@ new class extends _identity {
     Rebuild() {
       // Physical geometry, buffers, bounds and batches are backend work.
       this.#rebuildRevision++;
+      this.__state.rebuild.add("packedGeometry");
     }
     GetReference(index) {
       return this.banners[index].reference;

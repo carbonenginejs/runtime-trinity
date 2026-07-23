@@ -307,7 +307,8 @@ new class extends _identity {
       }
       const boneMatrix = mat4.fromJointMatIndex(mat4.create(), params.bones, placement.boneIndex);
       const placementMatrix = this.#getInitialPlacementMatrix(placement);
-      mat4.multiply(placementMatrix, placementMatrix, boneMatrix);
+      // Carbon (row-vector): m = m * boneMatrix - placement first, bone last.
+      mat4.multiply(placementMatrix, boneMatrix, placementMatrix);
       mat4.decompose(placementMatrix, placement.initialRotation, placement.initialTranslation, placement.initialScale);
     }
     #getInitialPlacementMatrix(placement) {

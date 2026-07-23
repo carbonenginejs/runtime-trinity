@@ -14,7 +14,7 @@ class Tr2Vector4Parameter extends CjsVectorParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2Vector4Parameter",
       family: "shader"
-    })], [[[io, io.persistOnly, type, type.vec4], 16, "value"], [[io, io.read, type, type.boolean], 16, "isSrgb"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsRerouted"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDestination"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDestination"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterBinding"], [[carbon, carbon.method, impl, impl.adapted], 18, "UnregisterBinding"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsVectorParameter));
+    })], [[[io, io.persistOnly, type, type.vec4], 16, "value"], [[io, io.read, type, type.boolean], 16, "isSrgb"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[io, io.notify, io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsRerouted"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDestination"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetDestination"], [[carbon, carbon.method, impl, impl.adapted], 18, "RegisterBinding"], [[carbon, carbon.method, impl, impl.adapted], 18, "UnregisterBinding"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsVectorParameter));
   }
   value = (_initProto(this), _init_value(this, vec4.fromValues(1, 1, 1, 1)));
   isSrgb = (_init_extra_value(this), _init_isSrgb(this, false));
@@ -24,8 +24,73 @@ class Tr2Vector4Parameter extends CjsVectorParameter {
   linearValue = (_init_extra_name(this), vec4.fromValues(1, 1, 1, 1));
   #bindings = [];
   #reroutedValue = null;
+
+  /** Blue MAP_PROPERTY "x"/"v1" - refreshes from the rerouted value on read. */
+  get x() {
+    this.GetValue();
+    return this.value[0];
+  }
+  set x(component) {
+    this.#setComponent(0, component);
+  }
+
+  /** Blue MAP_PROPERTY "y"/"v2". */
+  get y() {
+    this.GetValue();
+    return this.value[1];
+  }
+  set y(component) {
+    this.#setComponent(1, component);
+  }
+
+  /** Blue MAP_PROPERTY "z"/"v3". */
+  get z() {
+    this.GetValue();
+    return this.value[2];
+  }
+  set z(component) {
+    this.#setComponent(2, component);
+  }
+
+  /** Blue MAP_PROPERTY "w"/"v4". */
+  get w() {
+    this.GetValue();
+    return this.value[3];
+  }
+  set w(component) {
+    this.#setComponent(3, component);
+  }
+  get v1() {
+    return this.x;
+  }
+  set v1(component) {
+    this.x = component;
+  }
+  get v2() {
+    return this.y;
+  }
+  set v2(component) {
+    this.y = component;
+  }
+  get v3() {
+    return this.z;
+  }
+  set v3(component) {
+    this.z = component;
+  }
+  get v4() {
+    return this.w;
+  }
+  set v4(component) {
+    this.w = component;
+  }
   GetParameterName() {
     return this.name;
+  }
+
+  /** Content hash: authored value bytes then name. */
+  GetHashValue(startingHash = CjsVectorParameter.FNV1_INITIAL) {
+    return CjsVectorParameter.hashFnv1String(this.name, CjsVectorParameter.hashFnv1Floats(this.value, startingHash));
   }
   GetValue(out = this.value) {
     if (this.#reroutedValue) {
@@ -100,6 +165,10 @@ class Tr2Vector4Parameter extends CjsVectorParameter {
     this.linearValue[1] = num.gammaToLinear(this.value[1]);
     this.linearValue[2] = num.gammaToLinear(this.value[2]);
     this.linearValue[3] = this.value[3];
+  }
+  #setComponent(index, component) {
+    this.value[index] = Number(component);
+    this.SetValue(this.value);
   }
 
   /** JS convenience: raw values this parameter class claims for map-form inference. */

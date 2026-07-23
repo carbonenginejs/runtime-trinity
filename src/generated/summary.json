@@ -1448,6 +1448,201 @@
       "family": "utilities",
       "className": "Range",
       "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "particle",
+      "className": "Tr2ParticleElementData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "particle",
+      "className": "Tr2ParticleElementDeclaration",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "particle",
+      "className": "Tr2ParticleElementDeclarationName",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "BlurContext",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "GaussianData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPColorCorrectionEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPDesaturateEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPDynamicExposureEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPFadeEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPFilmGrainEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPFogEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPGodRaysEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPLutEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPSignalLossEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "postProcess",
+      "className": "Tr2PPVignetteEffect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child/behaviors",
+      "className": "DroneAgent",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child/behaviors",
+      "className": "SplineTunnel",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child/behaviors",
+      "className": "SplineTunnelPoint",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child",
+      "className": "EveChildInstanceTransform",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/child",
+      "className": "EveCloudVolumeBall",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/attachment/decal",
+      "className": "DecalMeshCache",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/distribution/attributeModifiers",
+      "className": "InitialPlacement",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/lights",
+      "className": "LightFeatures",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/perObjectData",
+      "className": "DecalPSPerObjectData",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/perObjectData",
+      "className": "MergeMorphsConstantBuffer",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/socket",
+      "className": "EveSocketParameterFilePath",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject/swarm",
+      "className": "SwarmVehicle",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "eve/spaceObject/swarm",
+      "className": "SwarmVehicleDebug",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "Tr2BindingVector3",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "Tr2PyValueBinding",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "Tr2SerializedMorphAnimation",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "TriFloat",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "trinityCore",
+      "className": "TriTorque",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "sprite2d",
+      "className": "Tr2Sprite2dClipRect",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "sprite2d",
+      "className": "Tr2Sprite2dD3DVertex",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "sprite2d",
+      "className": "Tr2Sprite2dLineTraceVertex",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "sprite2d",
+      "className": "Tr2Sprite2dTriangle",
+      "reason": "hand-maintained source exists"
+    },
+    {
+      "family": "sprite2d",
+      "className": "Tr2Sprite2dVertexBase",
+      "reason": "hand-maintained source exists"
     }
   ],
   "enumSkipped": [

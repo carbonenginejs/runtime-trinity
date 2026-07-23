@@ -27,6 +27,7 @@ class EveSpriteLineSet extends _EveEntity {
     // Position expansion is available on each item, but packed quad data,
     // effect hashes, bounds caches and registration belong to the adapter.
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
   Initialize() {
     this.Rebuild();

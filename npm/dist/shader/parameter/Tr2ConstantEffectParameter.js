@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/core-types/schema';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { CjsParameter } from './CjsParameter.js';
 
@@ -15,16 +15,16 @@ class Tr2ConstantEffectParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2ConstantEffectParameter",
       family: "shader"
-    })], [[[void 0, io.rebuild("bindings"), type, type.string], 16, "name"], [[void 0, io.rebuild("bindings"), type, type.vec4], 16, "value"]], 0, void 0, CjsParameter));
+    })], [[[void 0, io.rebuild("bindings"), io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("bindings"), io, io.persist, type, type.vec4], 16, "value"]], 0, void 0, CjsParameter));
   }
   constructor(...args) {
     super(...args);
     _init_extra_value(this);
   }
-  /** name (BlueSharedString) */
+  /** name (BlueSharedString) - persisted via the constParameters structure list. */
   name = _init_name(this, "");
 
-  /** value (Vector4) */
+  /** value (Vector4) - persisted via the constParameters structure list. */
   value = (_init_extra_name(this), _init_value(this, vec4.create()));
   static {
     _initClass();

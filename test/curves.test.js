@@ -956,9 +956,11 @@ test("Tr2CurveRandomAxisRotation spins between source random rotations", () =>
   assertAlmostEquals(seededA.postRotation[1], 0.498926, 1e-5);
   assertAlmostEquals(seededA.postRotation[2], -0.536559, 1e-5);
   assertAlmostEquals(seededA.postRotation[3], 0.431048, 1e-5);
-  assertAlmostEquals(seededValueA[0], 0.046231, 1e-5);
-  assertAlmostEquals(seededValueA[1], 0.653433, 1e-5);
-  assertAlmostEquals(seededValueA[2], -0.0943, 1e-5);
+  // Carbon (row-vector): post * pitch * pre with post applied FIRST, which is
+  // gl pre . pitch . post (pitch is identity at t=0 here).
+  assertAlmostEquals(seededValueA[0], 0.131596, 1e-5);
+  assertAlmostEquals(seededValueA[1], -0.031946, 1e-5);
+  assertAlmostEquals(seededValueA[2], -0.647817, 1e-5);
   assertAlmostEquals(seededValueA[3], 0.749663, 1e-5);
   assertEquals(CjsSchema.getField(Tr2CurveRandomAxisRotation, "currentValue")?.type.kind, "quat");
 });

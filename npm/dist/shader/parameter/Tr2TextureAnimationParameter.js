@@ -14,7 +14,7 @@ class Tr2TextureAnimationParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2TextureAnimationParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2TextureAnimation")], 16, "animation"], [[io, io.persist, type, type.string], 16, "channel"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetTexture"]], 0, void 0, CjsParameter));
+    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("Tr2TextureAnimation")], 16, "animation"], [[io, io.persist, type, type.string], 16, "channel"], [[io, io.persist, type, type.string], 16, "name"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetTexture"]], 0, void 0, CjsParameter));
   }
   /** m_animation (Tr2TextureAnimationPtr) [READWRITE, PERSIST, NOTIFY] */
   animation = (_initProto(this), _init_animation(this, null));
@@ -28,6 +28,11 @@ class Tr2TextureAnimationParameter extends CjsParameter {
   #materials = [];
   GetParameterName() {
     return this.name;
+  }
+
+  /** Content hash: the animation object's identity (Carbon hashes its pointer). */
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL) {
+    return CjsParameter.hashFnv1Identity(this.animation, startingHash);
   }
   OnModified(_options = {}) {
     for (const material of this.#materials) {

@@ -225,7 +225,12 @@ new class extends _identity {
     PlayCurveSet(name, rangeName = "") {
       for (const curveSet of this.curveSets) {
         if ((curveSet?.GetName?.() ?? curveSet?.name) !== name) continue;
-        if (rangeName) curveSet.PlayFromRange?.(rangeName) ?? curveSet.Play?.();else curveSet.Play?.();
+        if (rangeName) {
+          curveSet.PlayTimeRange?.(rangeName);
+        } else {
+          curveSet.ResetTimeRange?.();
+          curveSet.Play?.();
+        }
       }
     }
     StopCurveSet(name) {
@@ -233,7 +238,7 @@ new class extends _identity {
     }
     GetCurveSetDuration(name) {
       let duration = 0;
-      for (const curveSet of this.curveSets) if ((curveSet?.GetName?.() ?? curveSet?.name) === name) duration = Math.max(duration, Number(curveSet.GetDuration?.() ?? 0));
+      for (const curveSet of this.curveSets) if ((curveSet?.GetName?.() ?? curveSet?.name) === name) duration = Math.max(duration, Number(curveSet.GetMaxCurveDuration?.() ?? 0));
       return duration;
     }
     GetRangeDuration(name, rangeName) {

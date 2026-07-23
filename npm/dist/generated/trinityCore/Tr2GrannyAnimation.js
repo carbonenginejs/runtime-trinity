@@ -458,8 +458,13 @@ class Tr2GrannyAnimation extends CjsModel {
   #composePose() {
     const rotationMatrix = mat4.create();
     for (const bone of this.#runtimeModel.bones) {
+      // Granny composite applies ScaleShear FIRST, then Orientation, then
+      // Position (row-vector SS*R*T - authority: the validated gr2->CMF
+      // converter, runtime-resource formats/cmf/core/gr2Anim.js composeTrs).
+      // In gl-matrix that is local = R . SS with the translation stamped in.
+      // Order-insensitive for identity scaleShear (all EVE skeletons).
       mat4.fromMat3(bone.localTransform, bone.scaleShear);
-      mat4.multiply(bone.localTransform, bone.localTransform, mat4.fromQuat(rotationMatrix, bone.orientation));
+      mat4.multiply(bone.localTransform, mat4.fromQuat(rotationMatrix, bone.orientation), bone.localTransform);
       bone.localTransform[12] = bone.position[0];
       bone.localTransform[13] = bone.position[1];
       bone.localTransform[14] = bone.position[2];
@@ -587,8 +592,9 @@ class Tr2GrannyAnimation extends CjsModel {
   #rebuildRestTransforms() {
     const rotationMatrix = mat4.create();
     for (const bone of this.#runtimeModel.bones) {
+      // Granny composite: ScaleShear first, then Orientation (see #composePose).
       mat4.fromMat3(bone.localTransform, bone.restScaleShear);
-      mat4.multiply(bone.localTransform, bone.localTransform, mat4.fromQuat(rotationMatrix, bone.restOrientation));
+      mat4.multiply(bone.localTransform, mat4.fromQuat(rotationMatrix, bone.restOrientation), bone.localTransform);
       bone.localTransform[12] = bone.restPosition[0];
       bone.localTransform[13] = bone.restPosition[1];
       bone.localTransform[14] = bone.restPosition[2];
@@ -736,10 +742,16 @@ class Tr2GrannyAnimation extends CjsModel {
       CjsGrannyCurves.sampleGrannyCurve(referenceScaleShear, curves.scaleShear, 0, false, duration);
     }
     vec3.scaleAndAdd(bone.position, bone.position, vec3.subtract(position, position, referencePosition), amount);
+    // Additive delta = orientation . reference^-1, applied on the LEFT of the
+    // current pose (out = delta . bone), so amount=1 from the reference pose
+    // recovers the authored orientation exactly. Authority: the visually
+    // proven reverse-engineered composeInteriorAdditivePose
+    // (e:\ccpwgl\src\interior\character\Tr2InteriorAdditiveAnimation.js) -
+    // right-multiplying conjugates the delta instead.
     const inverseReference = quat.invert(quat.create(), referenceOrientation);
     const delta = quat.multiply(quat.create(), orientation, inverseReference);
     quat.slerp(delta, quat.create(), delta, Math.min(1, amount));
-    quat.multiply(bone.orientation, bone.orientation, delta);
+    quat.multiply(bone.orientation, delta, bone.orientation);
     quat.normalize(bone.orientation, bone.orientation);
     for (let index = 0; index < 9; index++) {
       bone.scaleShear[index] += (scaleShear[index] - referenceScaleShear[index]) * amount;

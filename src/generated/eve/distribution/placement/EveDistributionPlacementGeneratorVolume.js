@@ -5,7 +5,7 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
-import { InitialPlacement } from "../attributeModifiers/InitialPlacement.js";
+import { InitialPlacement } from "../../../../eve/distribution/attributeModifiers/InitialPlacement.js";
 import { PlacementDataWithIdentifier } from "../../../../eve/PlacementDataWithIdentifier.js";
 
 /** EveDistributionPlacementGeneratorVolume (eve/distribution/placement) - generated from schema shapeHash d6e2cbac.... */

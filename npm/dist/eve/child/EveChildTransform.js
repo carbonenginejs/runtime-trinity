@@ -60,13 +60,18 @@ new class extends _identity {
       this.staticTransform = true;
       return this.Setup(scale, rotation, translation, lowestLodVisible);
     }
+
+    // Carbon: m_worldTransform = m_localTransform * parentTransform in
+    // row-vector convention (local first, then parent), which is
+    // mat4.multiply(world, parent, local) in gl-matrix - matching
+    // EveTransform.UpdateViewDependentData.
     UpdateTransform(parentTransform) {
       if (this.staticTransform || !this.useSRT) {
-        return mat4.multiply(this.worldTransform, this.localTransform, parentTransform);
+        return mat4.multiply(this.worldTransform, parentTransform, this.localTransform);
       }
       this.RebuildLocalTransform();
       if (!this.useStaticRotation && !this.useStaticScale) {
-        return mat4.multiply(this.worldTransform, this.localTransform, parentTransform);
+        return mat4.multiply(this.worldTransform, parentTransform, this.localTransform);
       }
       const scale = mat4.getScaling(vec3.create(), parentTransform);
       const rotation = _EveChildTransform.#getRotation(quat.create(), parentTransform, scale);
@@ -78,7 +83,7 @@ new class extends _identity {
         quat.identity(rotation);
       }
       const modifiedParentTransform = _EveChildTransform.#compose(mat4.create(), scale, rotation, translation);
-      return mat4.multiply(this.worldTransform, this.localTransform, modifiedParentTransform);
+      return mat4.multiply(this.worldTransform, modifiedParentTransform, this.localTransform);
     }
   }];
   #compose(out, scale, rotation, translation) {

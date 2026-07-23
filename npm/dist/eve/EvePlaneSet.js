@@ -35,6 +35,7 @@ class EvePlaneSet extends _EveEntity {
     // Packed vertices, bounds caches and quad registration are reconciled by
     // the renderer adapter from this authored graph.
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
   Initialize() {
     this.Rebuild();

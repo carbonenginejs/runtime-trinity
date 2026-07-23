@@ -2,7 +2,7 @@ import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_v
 import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { bindParticleElement } from '../../particle/particleElementBinding.js';
-import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from '../../particle/Tr2ParticleElementDeclaration.js';
 
 let _initProto, _initClass, _init_elementType, _init_extra_elementType, _init_customName, _init_extra_customName, _init_valid, _init_extra_valid;
 
@@ -17,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2RandomDirectionAttributeGenerator",
         family: "particle"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Type")], 16, "elementType"], [[io, io.persist, type, type.string], 16, "customName"], [[io, io.read, type, type.boolean], 16, "valid"], [[impl, impl.implemented], 18, "Bind"], [[impl, impl.adapted], 18, "Generate"], [[impl, impl.implemented], 18, "GetDimension"], [[impl, impl.implemented], 18, "GetName"]], 0, void 0, CjsModel));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Type")], 16, "elementType"], [[io, io.persist, type, type.string], 16, "customName"], [[io, io.read, type, type.boolean], 16, "valid"], [[impl, impl.implemented], 18, "Bind"], [[impl, impl.adapted, void 0, impl.reason("Carbon's particle RNG is replaced by Math.random while retaining its rejection-free normalize-or-fallback sampling.")], 18, "Generate"], [[impl, impl.implemented], 18, "GetDimension"], [[impl, impl.implemented], 18, "GetName"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
@@ -42,9 +42,10 @@ new class extends _identity {
       if (!this.valid) {
         return;
       }
-      const value = new Float32Array(this.#element.dimension);
+      const dimension = this.#element.dimension;
+      const value = _Tr2RandomDirectionAt.#value;
       let lengthSquared = 0;
-      for (let component = 0; component < value.length; component++) {
+      for (let component = 0; component < dimension; component++) {
         value[component] = -1 + 2 * Math.random();
         lengthSquared += value[component] * value[component];
       }
@@ -52,12 +53,14 @@ new class extends _identity {
         value[0] = 1;
       } else {
         const inverseLength = 1 / Math.sqrt(lengthSquared);
-        for (let component = 0; component < value.length; component++) {
+        for (let component = 0; component < dimension; component++) {
           value[component] *= inverseLength;
         }
       }
       const offset = this.#element.startOffset + index * this.#element.instanceStride;
-      this.#element.buffer.set(value, offset);
+      for (let component = 0; component < dimension; component++) {
+        this.#element.buffer[offset + component] = value[component];
+      }
     }
     GetDimension() {
       return this.valid ? this.#element.dimension : 0;
@@ -67,6 +70,7 @@ new class extends _identity {
     }
   }];
   Type = _Tr2ParticleElementDe.Type;
+  #value = new Float32Array(4);
   constructor() {
     super(_Tr2RandomDirectionAt), _initClass();
   }

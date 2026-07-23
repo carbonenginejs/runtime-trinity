@@ -53,6 +53,7 @@ export class EveSpotlightSet extends EveEntity
     // Packed cone/glow vertices, bounds caches, effect hashes and quad
     // registration are reconciled by the concrete renderer adapter.
     this.#rebuildRevision++;
+    this.__state.rebuild.add("packedGeometry");
   }
 
   @carbon.method

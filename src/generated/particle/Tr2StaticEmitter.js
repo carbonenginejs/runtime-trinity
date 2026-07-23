@@ -9,6 +9,8 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 export class Tr2StaticEmitter extends CjsModel
 {
 
+  #isThreadSafe = false;
+
   /** Carbon's internal one-shot spawn state. */
   @type.boolean
   hasSpawnedParticles = false;
@@ -87,8 +89,58 @@ export class Tr2StaticEmitter extends CjsModel
     return spawned;
   }
 
+  /**
+   * IInitialize.Initialize (Tr2StaticEmitter.cpp:35-48): Carbon starts the
+   * geometry resource fetch and propagates the thread-safe contract.
+   */
   @impl.adapted
-  Update()
+  @impl.reason("Resource streaming is host-owned in the browser; geometryResource arrives via the loader, so only the thread-safe propagation is mirrored.")
+  Initialize()
+  {
+    if (this.particleSystem && this.#isThreadSafe)
+    {
+      this.particleSystem.SetThreadSafeFlag?.();
+    }
+    return true;
+  }
+
+  /**
+   * INotify.OnModified (Tr2StaticEmitter.cpp:60-76): geometry path changes
+   * restart the resource fetch (host-owned here); particle-system changes
+   * re-propagate the thread-safe contract.
+   */
+  @impl.adapted
+  @impl.reason("Geometry reloads are host-owned; only Carbon's particle-system thread-safe propagation applies on the CPU side.")
+  OnModified(propertyName)
+  {
+    if ((!propertyName || propertyName === "particleSystem") && this.#isThreadSafe && this.particleSystem)
+    {
+      this.particleSystem.SetThreadSafeFlag?.();
+    }
+    return true;
+  }
+
+  /** ITr2GenericEmitter.SetThreadSafeFlag (Tr2StaticEmitter.cpp:83-90). */
+  @impl.adapted
+  @impl.reason("JavaScript updates are single-threaded; the flag is retained and propagated only for Carbon contract parity.")
+  SetThreadSafeFlag()
+  {
+    this.#isThreadSafe = true;
+    this.particleSystem?.SetThreadSafeFlag?.();
+  }
+
+  /**
+   * Both Carbon SpawnParticles overloads are empty for the static emitter -
+   * it only spawns once from Update (Tr2StaticEmitter.cpp:293-308).
+   */
+  @impl.noop
+  SpawnParticles(_a, _b, _c, _d, _e, _f)
+  {
+  }
+
+  /** ITr2GenericEmitter.Update (Tr2StaticEmitter.cpp:274-280): one-shot spawn. */
+  @impl.adapted
+  Update(_updateArguments)
   {
     return this.hasSpawnedParticles ? false : this.ForceSpawn();
   }

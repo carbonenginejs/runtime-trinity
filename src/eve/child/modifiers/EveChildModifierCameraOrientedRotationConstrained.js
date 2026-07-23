@@ -110,8 +110,9 @@ export class EveChildModifierCameraOrientedRotationConstrained extends CjsModel
     const rot = Math.atan2(vecX, vecZ);
     this.constructor.rotationMatrixAxisAngle(result, UP, rot);
 
-    // return result * transform
-    mat4.multiply(out, result, transform);
+    // Carbon (row-vector): result * transform - the yaw applies first, then
+    // the child transform. In gl-matrix that is out = transform . result.
+    mat4.multiply(out, transform, result);
     return out;
   }
 }

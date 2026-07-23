@@ -3,7 +3,7 @@ import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
-import { InitialPlacement as _InitialPlacement } from '../attributeModifiers/InitialPlacement.js';
+import { InitialPlacement as _InitialPlacement } from '../../../../eve/distribution/attributeModifiers/InitialPlacement.js';
 import { PlacementDataWithIdentifier as _PlacementDataWithIde } from '../../../../eve/PlacementDataWithIdentifier.js';
 
 let _initProto, _initClass, _init_numGenerated, _init_extra_numGenerated, _init_hollowVolume, _init_extra_hollowVolume, _init_falloffFactor, _init_extra_falloffFactor, _init_volume, _init_extra_volume;

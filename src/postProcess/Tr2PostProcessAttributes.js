@@ -7,14 +7,14 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { Tr2PPBloomEffect } from "./Tr2PPBloomEffect.js";
-import { Tr2PPColorCorrectionEffect } from "../generated/postProcess/Tr2PPColorCorrectionEffect.js";
+import { Tr2PPColorCorrectionEffect } from "./Tr2PPColorCorrectionEffect.js";
 import { Tr2PPDepthOfFieldEffect } from "./Tr2PPDepthOfFieldEffect.js";
-import { Tr2PPDesaturateEffect } from "../generated/postProcess/Tr2PPDesaturateEffect.js";
-import { Tr2PPFadeEffect } from "../generated/postProcess/Tr2PPFadeEffect.js";
-import { Tr2PPFilmGrainEffect } from "../generated/postProcess/Tr2PPFilmGrainEffect.js";
-import { Tr2PPLutEffect } from "../generated/postProcess/Tr2PPLutEffect.js";
-import { Tr2PPSignalLossEffect } from "../generated/postProcess/Tr2PPSignalLossEffect.js";
-import { Tr2PPVignetteEffect } from "../generated/postProcess/Tr2PPVignetteEffect.js";
+import { Tr2PPDesaturateEffect } from "./Tr2PPDesaturateEffect.js";
+import { Tr2PPFadeEffect } from "./Tr2PPFadeEffect.js";
+import { Tr2PPFilmGrainEffect } from "./Tr2PPFilmGrainEffect.js";
+import { Tr2PPLutEffect } from "./Tr2PPLutEffect.js";
+import { Tr2PPSignalLossEffect } from "./Tr2PPSignalLossEffect.js";
+import { Tr2PPVignetteEffect } from "./Tr2PPVignetteEffect.js";
 
 
 @type.define({ className: "Tr2PostProcessAttributes", family: "postProcess" })

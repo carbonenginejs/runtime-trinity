@@ -15,7 +15,7 @@ class TriVariableParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "TriVariableParameter",
       family: "shader"
-    })], [[[void 0, io.flag("effectHandles"), io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[void 0, io.flag("variable"), io, io.notify, io, io.persist, type, type.string], 16, "variableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVariableType"]], 0, void 0, CjsParameter));
+    })], [[[void 0, io.flag("effectHandles"), io, io.notify, io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.boolean], 16, "usedByCurrentTechnique"], [[io, io.read, type, type.boolean], 16, "usedByCurrentEffect"], [[void 0, io.flag("variable"), io, io.notify, io, io.persist, type, type.string], 16, "variableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyToResourceSet"], [[carbon, carbon.method, impl, impl.adapted], 18, "ApplyUav"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVariableType"]], 0, void 0, CjsParameter));
   }
   /** m_name (BlueSharedString) [READWRITE, NOTIFY, PERSIST] */
   name = (_initProto(this), _init_name(this, ""));
@@ -33,6 +33,11 @@ class TriVariableParameter extends CjsParameter {
   cachedEffect = null;
   GetParameterName() {
     return this.name;
+  }
+
+  /** Content hash: name only - the variable's value comes from the store. */
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL) {
+    return CjsParameter.hashFnv1String(this.name, startingHash);
   }
   Initialize(variableStore = null) {
     this.variableStore = variableStore ?? this.variableStore;

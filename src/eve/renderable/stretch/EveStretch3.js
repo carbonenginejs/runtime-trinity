@@ -5,7 +5,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../../generated/eve/EveEntity.js";
-import { TriFloat } from "../../../generated/trinityCore/TriFloat.js";
+import { TriFloat } from "../../../trinityCore/TriFloat.js";
 import { EveChildUpdateParams } from "../../EveChildUpdateParams.js";
 import {
   collectRenderables,

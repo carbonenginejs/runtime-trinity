@@ -4,7 +4,7 @@
 import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { bindParticleElement } from "../../particle/particleElementBinding.js";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2RandomDirectionAttributeGenerator (particle) - generated from schema shapeHash b1a02c8e.... */
 @type.define({ className: "Tr2RandomDirectionAttributeGenerator", family: "particle" })
@@ -40,15 +40,17 @@ export class Tr2RandomDirectionAttributeGenerator extends CjsModel
   }
 
   @impl.adapted
+  @impl.reason("Carbon's particle RNG is replaced by Math.random while retaining its rejection-free normalize-or-fallback sampling.")
   Generate(position, velocity, index)
   {
     if (!this.valid)
     {
       return;
     }
-    const value = new Float32Array(this.#element.dimension);
+    const dimension = this.#element.dimension;
+    const value = Tr2RandomDirectionAttributeGenerator.#value;
     let lengthSquared = 0;
-    for (let component = 0; component < value.length; component++)
+    for (let component = 0; component < dimension; component++)
     {
       value[component] = -1 + 2 * Math.random();
       lengthSquared += value[component] * value[component];
@@ -60,13 +62,16 @@ export class Tr2RandomDirectionAttributeGenerator extends CjsModel
     else
     {
       const inverseLength = 1 / Math.sqrt(lengthSquared);
-      for (let component = 0; component < value.length; component++)
+      for (let component = 0; component < dimension; component++)
       {
         value[component] *= inverseLength;
       }
     }
     const offset = this.#element.startOffset + index * this.#element.instanceStride;
-    this.#element.buffer.set(value, offset);
+    for (let component = 0; component < dimension; component++)
+    {
+      this.#element.buffer[offset + component] = value[component];
+    }
   }
 
   @impl.implemented
@@ -84,5 +89,7 @@ export class Tr2RandomDirectionAttributeGenerator extends CjsModel
   }
 
   static Type = Tr2ParticleElementDeclaration.Type;
+
+  static #value = new Float32Array(4);
 
 }

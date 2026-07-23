@@ -7,3 +7,4 @@ export * from "./EveMissile.js";
 export * from "./EveMobile.js";
 export * from "./EveStation2.js";
 export * from "./createEveSpaceObjectMainPerObjectValues.js";
+export * from "./swarm/index.js";

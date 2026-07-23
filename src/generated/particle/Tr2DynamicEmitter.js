@@ -16,6 +16,10 @@ export class Tr2DynamicEmitter extends CjsModel
 
   #emittedParticles = 0;
 
+  #isThreadSafe = false;
+
+  #lastUpdate = 0;
+
   /** m_name (std::string) [READWRITE, PERSIST] */
   @io.persist
   @type.string
@@ -89,15 +93,107 @@ export class Tr2DynamicEmitter extends CjsModel
     return this.SpawnParticles(null, null, Math.max(0, Number(dt) || 0));
   }
 
+  /**
+   * ITr2GenericEmitter.Update (Tr2DynamicEmitter.cpp:109-123): clamp the frame
+   * delta to 0.3s and spawn at the constant rate scaled by the LOD
+   * emit-count factor.
+   */
+  @impl.adapted
+  @impl.reason("Be::Time arrives as float seconds on the duck-typed update-arguments record instead of Carbon's native UpdateArguments struct.")
+  Update(updateArguments)
+  {
+    if (!this.isValid || !this.particleSystem)
+    {
+      return;
+    }
+    const time = Number(updateArguments?.time) || 0;
+    if (this.#lastUpdate === 0)
+    {
+      this.#lastUpdate = time;
+    }
+    const dt = Math.min(time - this.#lastUpdate, 0.3);
+    this.#lastUpdate = time;
+    const emitCountFactor = Number(updateArguments?.emitCountFactor ?? 1);
+    this.UpdateSimulation(dt * emitCountFactor);
+  }
+
   @impl.implemented
   Initialize()
   {
-    return this.Rebind();
+    if (this.particleSystem)
+    {
+      this.Rebind();
+      if (this.#isThreadSafe)
+      {
+        this.particleSystem.SetThreadSafeFlag?.();
+      }
+    }
+    return true;
   }
 
-  @impl.adapted
-  SpawnParticles(position, velocity, rateModifier = 1)
+  /** INotify.OnModified (Tr2DynamicEmitter.cpp:63-74): rebind on particle-system changes. */
+  @impl.implemented
+  OnModified(propertyName)
   {
+    if (!propertyName || propertyName === "particleSystem")
+    {
+      this.Rebind();
+      if (this.#isThreadSafe && this.particleSystem)
+      {
+        this.particleSystem.SetThreadSafeFlag?.();
+      }
+    }
+    return true;
+  }
+
+  /** ITr2GenericEmitter.SetThreadSafeFlag (Tr2DynamicEmitter.cpp:81-88). */
+  @impl.adapted
+  @impl.reason("JavaScript updates are single-threaded; the flag is retained and propagated only for Carbon contract parity.")
+  SetThreadSafeFlag()
+  {
+    this.#isThreadSafe = true;
+    this.particleSystem?.SetThreadSafeFlag?.();
+  }
+
+  /**
+   * Both Carbon SpawnParticles overloads (Tr2DynamicEmitter.cpp:150-221)
+   * collapse into one duck-typed entry point:
+   * - (position, velocity, rateModifier) - the Tr2ParticleSystem CPU call shape;
+   * - (updateArguments, position, velocity, rateModifier) - Carbon overload 1;
+   * - (updateArguments, positionStart, positionEnd, velocityStart, velocityEnd,
+   *   deltaTime) - Carbon overload 2, which forwards the end-of-frame values to
+   *   overload 1 exactly as Tr2DynamicEmitter.cpp:213-221 does.
+   * An update-arguments record is recognized as a leading non-array-like object.
+   */
+  @impl.adapted
+  @impl.reason("JavaScript cannot overload; Carbon's signatures are distinguished by duck-typing the leading update-arguments record and the argument count.")
+  SpawnParticles(a = null, b = null, c = undefined, d = undefined, e = undefined, f = undefined)
+  {
+    let position;
+    let velocity;
+    let rateModifier;
+    if (a !== null && typeof a === "object" && typeof a.length !== "number")
+    {
+      // Carbon signature with the UpdateArguments record first.
+      if (f !== undefined)
+      {
+        position = Tr2DynamicEmitter.#asVector(c);
+        velocity = Tr2DynamicEmitter.#asVector(e);
+        rateModifier = f;
+      }
+      else
+      {
+        position = Tr2DynamicEmitter.#asVector(b);
+        velocity = Tr2DynamicEmitter.#asVector(c);
+        rateModifier = d ?? 1;
+      }
+    }
+    else
+    {
+      position = a ?? null;
+      velocity = b ?? null;
+      rateModifier = c ?? 1;
+    }
     if (!this.isValid || !this.particleSystem)
     {
       return 0;
@@ -114,10 +210,13 @@ export class Tr2DynamicEmitter extends CjsModel
     this.#accumulatedRate += this.rate * Math.max(0, Number(rateModifier) || 0);
     let count = Math.floor(this.#accumulatedRate);
     this.#accumulatedRate -= count;
-    if (this.maxParticles >= 0)
+    // Carbon counts the whole batch against maxParticles before inserting
+    // (Tr2DynamicEmitter.cpp:175-179), even when the system fills up mid-batch.
+    if (this.maxParticles >= 0 && this.#emittedParticles + count > this.maxParticles)
     {
-      count = Math.max(0, Math.min(count, this.maxParticles - this.#emittedParticles));
+      count = Math.max(this.maxParticles - this.#emittedParticles, 0);
     }
+    this.#emittedParticles += count;
     let spawned = 0;
     for (let index = 0; index < count; index++)
     {
@@ -133,7 +232,6 @@ export class Tr2DynamicEmitter extends CjsModel
       this.particleSystem.EndSpawnParticle?.();
       spawned++;
     }
-    this.#emittedParticles += spawned;
     return spawned;
   }
 
@@ -147,6 +245,12 @@ export class Tr2DynamicEmitter extends CjsModel
   ResetEmittedParticleCount()
   {
     this.#emittedParticles = 0;
+  }
+
+  /** Returns the value when it is an array-like vector, otherwise null. */
+  static #asVector(value)
+  {
+    return value !== null && value !== undefined && typeof value.length === "number" ? value : null;
   }
 
 }

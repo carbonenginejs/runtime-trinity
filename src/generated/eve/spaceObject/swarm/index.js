@@ -1,4 +1,2 @@
 export * from "./EveSwarm.js";
 export * from "./EveSwarmRenderable.js";
-export * from "./SwarmVehicle.js";
-export * from "./SwarmVehicleDebug.js";

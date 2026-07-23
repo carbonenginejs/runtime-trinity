@@ -65,9 +65,11 @@ new class extends _identity {
       if (!boneMatrix) {
         return mat4.identity(out);
       }
-      mat4.multiply(this.#scratch, this.transform, boneMatrix);
+      // Carbon (row-vector): (m_transform * bone) * world - m_transform first,
+      // world last (XMMatrixMultiply is row-vector A*B).
+      mat4.multiply(this.#scratch, boneMatrix, this.transform);
       const worldTransform = _Tr2BoneMatrixCurve.#getSkinnedObjectTransform(this.skinnedObject);
-      return worldTransform ? mat4.multiply(out, this.#scratch, worldTransform) : mat4.copy(out, this.#scratch);
+      return worldTransform ? mat4.multiply(out, worldTransform, this.#scratch) : mat4.copy(out, this.#scratch);
     }
 
     /**

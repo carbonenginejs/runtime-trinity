@@ -133,7 +133,8 @@ new class extends _identity {
       const time = _EveEffectRoot.#GetContextValue(updateContext, "GetTime", "currentTime", "time");
       this.UpdateWorldTransform(time);
       mat4.fromRotationTranslationScale(this.#localTransform, this.rotation, this.translation, this.scaling);
-      mat4.multiply(this.#lastUpdateMatrix, this.#localTransform, this.#worldTransform);
+      // Carbon (row-vector): m_localTransform * m_worldTransform - local first.
+      mat4.multiply(this.#lastUpdateMatrix, this.#worldTransform, this.#localTransform);
       this.#secondaryLightingSphereRadiusWorld = this.secondaryLightingSphereRadius * (this.scaling[0] + this.scaling[1] + this.scaling[2]) / 3;
       for (const observer of this.observers) observer?.Update?.(this.#lastUpdateMatrix);
       if (this.effectChildren.length) {
@@ -221,7 +222,8 @@ new class extends _identity {
       _EveEffectRoot.#UpdateCurve(this.rotationCurve, time, _EveEffectRoot.#rotation, _EveEffectRoot.#identityRotation);
       if (this.modelRotationCurve) {
         _EveEffectRoot.#UpdateCurve(this.modelRotationCurve, time, _EveEffectRoot.#modelRotation, _EveEffectRoot.#identityRotation);
-        quat.multiply(_EveEffectRoot.#rotation, _EveEffectRoot.#modelRotation, _EveEffectRoot.#rotation);
+        // Carbon (row-vector): rotation = modelRotation * rotation - model first.
+        quat.multiply(_EveEffectRoot.#rotation, _EveEffectRoot.#rotation, _EveEffectRoot.#modelRotation);
       }
       mat4.fromRotationTranslation(this.#worldTransform, _EveEffectRoot.#rotation, _EveEffectRoot.#translation);
       if (this.modelTranslationCurve) {
@@ -238,7 +240,8 @@ new class extends _identity {
     UpdateModelCenterWorldPosition(time, out = vec3.create()) {
       this.UpdateWorldTransform(time);
       mat4.fromRotationTranslationScale(this.#localTransform, this.rotation, this.translation, this.scaling);
-      mat4.multiply(_EveEffectRoot.#centerTransform, this.#localTransform, this.#worldTransform);
+      // Carbon (row-vector): currentTransform * m_worldTransform - local first.
+      mat4.multiply(_EveEffectRoot.#centerTransform, this.#worldTransform, this.#localTransform);
       return vec3.transformMat4(out, this.boundingSphereCenter, _EveEffectRoot.#centerTransform);
     }
 
@@ -388,7 +391,8 @@ new class extends _identity {
     /** Returns the authored local rotation composed with the detached root rotation. */
     GetWorldRotation(out = quat.create()) {
       mat4.getRotation(_EveEffectRoot.#worldRotation, this.#worldTransform);
-      quat.multiply(out, this.rotation, _EveEffectRoot.#worldRotation);
+      // Carbon (row-vector): m_rotation * RotationQuaternion(world) - local first.
+      quat.multiply(out, _EveEffectRoot.#worldRotation, this.rotation);
       return quat.normalize(out, out);
     }
 

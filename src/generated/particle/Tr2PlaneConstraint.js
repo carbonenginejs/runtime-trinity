@@ -5,7 +5,7 @@ import { impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { Tr2ParticleElementDeclaration } from "./Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclaration } from "../../particle/Tr2ParticleElementDeclaration.js";
 
 /** Tr2PlaneConstraint (particle) - generated from schema shapeHash bac6c545.... */
 @type.define({ className: "Tr2PlaneConstraint", family: "particle" })
@@ -211,16 +211,23 @@ export class Tr2PlaneConstraint extends CjsModel
     return result;
   }
 
+  /**
+   * Carbon adds tangential noise scaled by the post-bounce speed to the
+   * reflected velocity (Tr2PlaneConstraint.cpp:154-165).
+   */
   #addReflectionNoise(velocity, normal)
   {
     if (this.reflectionNoise <= 0)
     {
       return;
     }
-    const noise = vec3.fromValues(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+    const noise = Tr2PlaneConstraint.#noise;
+    vec3.set(noise, Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
     vec3.scale(noise, noise, this.reflectionNoise);
     vec3.scaleAndAdd(noise, noise, normal, -vec3.dot(noise, normal));
     vec3.scaleAndAdd(velocity, velocity, noise, vec3.length(velocity));
   }
+
+  static #noise = vec3.create();
 
 }

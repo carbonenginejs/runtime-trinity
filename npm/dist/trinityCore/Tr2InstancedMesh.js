@@ -14,7 +14,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "Tr2InstancedMesh",
         family: "trinityCore"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("BoundsMethod")], 16, "boundsMethod"], [[void 0, io.rebuild("instanceBuffer"), io, io.notify, io, io.persist, type, type.string], 16, "instanceGeometryResPath"], [[io, io.persist, type, type.vec3], 16, "maxBounds"], [[io, io.persist, type, type.float32], 16, "maxInstanceSize"], [[io, io.persist, type, type.vec3], 16, "minBounds"], [[void 0, io.rebuild("instanceBuffer"), io, io.persistOnly, void 0, type.objectRef("ITr2InstanceData")], 16, "instanceGeometryResource"], [[void 0, io.rebuild("instanceBuffer"), io, io.notify, io, io.persist, type, type.int32], 16, "instanceMeshIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceMeshResPath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetInstanceMeshResPath"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceMeshIndex"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetInstanceGeometryRes"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDynamicBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDynamicScaledBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBounds"]], 0, void 0, _Tr2Mesh));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("BoundsMethod")], 16, "boundsMethod"], [[void 0, io.rebuild("instanceBuffer"), io, io.notify, io, io.persist, type, type.string], 16, "instanceGeometryResPath"], [[io, io.persist, type, type.vec3], 16, "maxBounds"], [[io, io.persist, type, type.float32], 16, "maxInstanceSize"], [[io, io.persist, type, type.vec3], 16, "minBounds"], [[void 0, io.rebuild("instanceBuffer"), io, io.persistOnly, void 0, type.objectRef("ITr2InstanceData")], 16, "instanceGeometryResource"], [[void 0, io.rebuild("instanceBuffer"), io, io.notify, io, io.persist, type, type.int32], 16, "instanceMeshIndex"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceMeshResPath"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetInstanceMeshResPath"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceMeshIndex"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInstanceGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetInstanceGeometryRes"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoundingBox"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDynamicBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetDynamicScaledBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBounds"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAreaBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetInstanceBounds"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetInstanceBoundsClosestToPoint"]], 0, void 0, _Tr2Mesh));
     }
     constructor(...args) {
       super(...args);
@@ -79,6 +79,64 @@ new class extends _identity {
       return {
         min: minBounds,
         max: maxBounds
+      };
+    }
+
+    /**
+     * Overrides Tr2Mesh - loading state also waits on the instance geometry.
+     * Carbon combines the terms with &&, so a ready base mesh reports loaded
+     * even while instance data settles; ported verbatim.
+     */
+    get isLoading() {
+      return super.isLoading && !!this.GetInstanceGeometryResource() && !(this.GetInstanceGeometryResource().IsInstanceDataReady?.() ?? false);
+    }
+
+    /** Overrides Tr2MeshBase - instanced areas share the whole-mesh bounds. */
+    GetAreaBounds(_areaIndex, _boneTransforms) {
+      return this.GetBounds();
+    }
+
+    /** Bounding box of a single instance - the mesh's own geometry bounds. */
+    GetInstanceBounds() {
+      const bounds = this.GetGeometryResource()?.GetBoundingBox?.(this.meshIndex);
+      if (!bounds) {
+        return _Tr2InstancedMesh.#cloneBounds(_Tr2InstancedMesh.#zero, _Tr2InstancedMesh.#zero);
+      }
+      return {
+        min: vec3.clone(bounds.min ?? bounds.minBounds ?? _Tr2InstancedMesh.#zero),
+        max: vec3.clone(bounds.max ?? bounds.maxBounds ?? _Tr2InstancedMesh.#zero)
+      };
+    }
+
+    /**
+     * Sphere of the instance nearest to the given point: shrinks the outer
+     * bounds by the instance size and clamps the point into the result.
+     * Returns null for the STATIC bounds method, matching Carbon's empty
+     * sphere.
+     */
+    GetInstanceBoundsClosestToPoint(point) {
+      let instanceSize = this.maxInstanceSize;
+      switch (this.boundsMethod) {
+        case _Tr2InstancedMesh.BoundsMethod.DYNAMIC:
+          break;
+        case _Tr2InstancedMesh.BoundsMethod.DYNAMIC_SCALED:
+          instanceSize *= _Tr2InstancedMesh.#getGeometryRadius(this.GetGeometryResource(), this.meshIndex);
+          break;
+        default:
+          return null;
+      }
+      const outer = this.GetBounds();
+      const minBounds = outer.min;
+      const maxBounds = outer.max;
+      const center = vec3.create();
+      for (let index = 0; index < 3; index++) {
+        minBounds[index] += instanceSize;
+        maxBounds[index] -= instanceSize;
+        center[index] = Math.min(Math.max(Number(point[index]) || 0, minBounds[index]), maxBounds[index]);
+      }
+      return {
+        center,
+        radius: instanceSize
       };
     }
   }];

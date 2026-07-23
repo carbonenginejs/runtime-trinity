@@ -3,7 +3,7 @@ import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { bindParticleElement } from '../../particle/particleElementBinding.js';
-import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from './Tr2ParticleElementDeclaration.js';
+import { Tr2ParticleElementDeclaration as _Tr2ParticleElementDe } from '../../particle/Tr2ParticleElementDeclaration.js';
 
 let _initProto, _initClass, _init_elementType, _init_extra_elementType, _init_customName, _init_extra_customName, _init_maxRange, _init_extra_maxRange, _init_minRange, _init_extra_minRange, _init_valid, _init_extra_valid;
 

@@ -8,6 +8,7 @@ import { Tr2ConstantEffectParameter } from "./parameter/Tr2ConstantEffectParamet
 import { Tr2FloatParameter } from "./parameter/Tr2FloatParameter.js";
 import { Tr2GeometryBufferParameter } from "./parameter/Tr2GeometryBufferParameter.js";
 import { Tr2Matrix4Parameter } from "./parameter/Tr2Matrix4Parameter.js";
+import { Tr2EffectConstant } from "./reflection/Tr2EffectConstant.js";
 import { Tr2ShaderOption } from "./reflection/Tr2ShaderOption.js";
 import { Tr2SamplerOverride } from "./sampler/Tr2SamplerOverride.js";
 import { Tr2Vector2Parameter } from "./parameter/Tr2Vector2Parameter.js";
@@ -82,7 +83,12 @@ export class Tr2Effect extends Tr2Material
 
   display = true;
 
-  variableStore = CjsVariableStore.GetGlobalStore();
+  /**
+   * Carbon keeps m_variableStore null and falls back to the GLOBAL store at
+   * call time, so a later global-store swap is seen by existing effects.
+   * Read through GetVariableStore(); never capture the global eagerly.
+   */
+  variableStore = null;
 
   insideStartUpdate = false;
 
@@ -92,6 +98,80 @@ export class Tr2Effect extends Tr2Material
   RebuildCachedData()
   {
     this.RebuildCachedDataInternal();
+  }
+
+  /**
+   * The resource-arrival overload: Carbon temporarily clears
+   * insideStartUpdate so a shader arriving during a batched Start/EndUpdate
+   * still rebuilds immediately.
+   */
+  @carbon.method
+  @impl.implemented
+  RebuildCachedDataAsync()
+  {
+    const wasInsideStartUpdate = this.insideStartUpdate;
+    this.insideStartUpdate = false;
+    this.RebuildCachedDataInternal();
+    this.insideStartUpdate = wasInsideStartUpdate;
+  }
+
+  @carbon.method
+  @impl.implemented
+  SetVariableStore(store)
+  {
+    this.variableStore = store ?? null;
+  }
+
+  /** The effect's store, falling back to the global store at call time. */
+  @carbon.method
+  @impl.implemented
+  GetVariableStore()
+  {
+    return this.variableStore ?? CjsVariableStore.GetGlobalStore();
+  }
+
+  @carbon.method
+  @impl.implemented
+  GetConstParameters()
+  {
+    return this.constParameters;
+  }
+
+  /**
+   * Content hash over the shader path, options, constant parameters, and
+   * every parameter/resource - Carbon's effect dedup/batching key. Only
+   * hashes authored content; values coming from a variable store are not
+   * included. Not lightweight - do not call every frame.
+   */
+  @carbon.method
+  @impl.adapted
+  GetHashValue()
+  {
+    let hash = 0;
+    const path = this.actualEffectFilePath || this.effectFilePath;
+    if (path)
+    {
+      hash = CjsParameter.hashFnv1String(path);
+    }
+    for (const option of this.options)
+    {
+      hash = CjsParameter.hashFnv1String(option?.name ?? "", hash);
+      hash = CjsParameter.hashFnv1String(option?.value ?? "", hash);
+    }
+    for (const parameter of this.constParameters)
+    {
+      hash = CjsParameter.hashFnv1String(parameter?.name ?? "", hash);
+      hash = CjsParameter.hashFnv1Floats(parameter?.value ?? [0, 0, 0, 0], hash);
+    }
+    for (const parameter of this.parameters)
+    {
+      hash = parameter?.GetHashValue?.(hash) ?? hash;
+    }
+    for (const resource of this.resources)
+    {
+      hash = resource?.GetHashValue?.(hash) ?? hash;
+    }
+    return hash >>> 0;
   }
 
   /** Carbon method GetParameterAnnotations -> PyGetParameterAnnotations (MAP_METHOD). */
@@ -237,7 +317,7 @@ export class Tr2Effect extends Tr2Material
     {
       if (parameter instanceof TriVariableParameter)
       {
-        parameter.Initialize(this.variableStore);
+        parameter.Initialize(this.GetVariableStore());
       }
       parameter?.RebuildEffectHandles?.(this.shader);
     }
@@ -303,6 +383,22 @@ export class Tr2Effect extends Tr2Material
     parameter.SetParameterName?.(name);
     parameter.SetResourcePath?.(resourcePath);
     return this.AddResource(parameter);
+  }
+
+  /**
+   * Carbon's SetResourceTexture2D - assigns the texture path on the named
+   * resource, creating the TriTextureParameter when absent.
+   */
+  @carbon.method
+  @impl.adapted
+  SetResourceTexture2D(name, resourcePath = "")
+  {
+    const updated = this.#setNamedTexture(name, resourcePath);
+    if (updated)
+    {
+      this.RebuildCachedDataInternal();
+    }
+    return updated;
   }
 
   AddSamplerOverride(name, addressU = 1, addressV = addressU)
@@ -853,6 +949,14 @@ export class Tr2Effect extends Tr2Material
 
   static convertEffectConstant(constant, constantValues)
   {
+    // Carbon only populates parameters for FLOAT constants; INT/UINT/BOOL
+    // constants are skipped. String types accepted for pre-enum reflection data.
+    const constantType = constant?.type;
+    if (constantType !== undefined && constantType !== null &&
+      constantType !== Tr2EffectConstant.Type.FLOAT && constantType !== "FLOAT")
+    {
+      return null;
+    }
     const name = constant.name ?? "";
     const dimension = Number(constant.dimension ?? 1);
     const elements = Number(constant.elements ?? 1);
@@ -880,18 +984,21 @@ export class Tr2Effect extends Tr2Material
     {
       const parameter = new Tr2Matrix4Parameter();
       parameter.name = name;
+      Tr2Effect.readComponents(parameter.value, constant, constantValues, 16);
       return parameter;
     }
     if (dimension === 2)
     {
       const parameter = new Tr2Vector2Parameter();
       parameter.name = name;
+      Tr2Effect.readComponents(parameter.value, constant, constantValues, 2);
       return parameter;
     }
     if (dimension === 3)
     {
       const parameter = new Tr2Vector3Parameter();
       parameter.name = name;
+      Tr2Effect.readComponents(parameter.value, constant, constantValues, 3);
       return parameter;
     }
     if (dimension > 1)
@@ -927,7 +1034,9 @@ export class Tr2Effect extends Tr2Material
     {
       return type.includes("TEXTURE") && !type.includes("BUFFER");
     }
-    return Number(type) >= 0 && Number(type) <= 4;
+    // Tr2EffectResource texture types are TEXTURE_1D(1)..TEXTURE_TYPELESS(5);
+    // Carbon routes TYPELESS to TriTextureParameter too. Buffers start at 6.
+    return Number(type) >= 1 && Number(type) <= 5;
   }
 
   static readScalar(constant, values)
@@ -945,6 +1054,36 @@ export class Tr2Effect extends Tr2Material
       }
     }
     return 0;
+  }
+
+  /**
+   * Reads the shader-authored default components for a constant into the
+   * parameter's value slot (Carbon reads them straight from constantValues
+   * at the constant's offset). Missing data leaves the class default.
+   */
+  static readComponents(out, constant, values, count)
+  {
+    if (constant.value && typeof constant.value.length === "number")
+    {
+      for (let i = 0; i < count; i++)
+      {
+        out[i] = Number(constant.value[i]) || 0;
+      }
+      return out;
+    }
+    if (ArrayBuffer.isView(values))
+    {
+      const view = new DataView(values.buffer, values.byteOffset, values.byteLength);
+      const offset = Number(constant.offset ?? 0);
+      if (offset >= 0 && offset + count * 4 <= values.byteLength)
+      {
+        for (let i = 0; i < count; i++)
+        {
+          out[i] = view.getFloat32(offset + i * 4, true);
+        }
+      }
+    }
+    return out;
   }
 
   static readVector4(constant, values, element)

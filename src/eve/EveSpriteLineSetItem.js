@@ -10,6 +10,7 @@ import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 @type.define({ className: "EveSpriteLineSetItem", family: "eve/attachment/sprites" })
 export class EveSpriteLineSetItem extends CjsModel
 {
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.int32
   boneIndex = 0;
@@ -18,50 +19,62 @@ export class EveSpriteLineSetItem extends CjsModel
   @type.string
   name = "";
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.boolean
   isCircle = false;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.vec3
   position = vec3.create();
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.quat
   rotation = quat.create();
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.vec3
   scaling = vec3.fromValues(1, 1, 1);
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   spacing = 1;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   blinkRate = 0.1;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   blinkPhase = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   blinkPhaseShift = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   minScale = 1;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   maxScale = 10;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.float32
   falloff = 0;
 
+  @io.rebuild("packedGeometry")
   @io.persist
   @type.color
   color = vec4.fromValues(1, 1, 1, 1);

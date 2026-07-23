@@ -55,6 +55,14 @@ export class Tr2RuntimeTextureParameter extends CjsParameter
   {
     return this.name;
   }
+
+  /** Content hash: the texture provider's identity (Carbon hashes its pointer). */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL)
+  {
+    return CjsParameter.hashFnv1Identity(this.texture, startingHash);
+  }
   @carbon.method
   @impl.adapted
   OnModified(_options = {})

@@ -39,6 +39,12 @@ class TriViewport extends CjsModel {
     _initClass();
   }
 }
+function Vec3TransformByViewport(vec, viewport) {
+  vec[0] = viewport.x + (1 + vec[0]) * 0.5 * viewport.width;
+  vec[1] = viewport.y + (1 - vec[1]) * 0.5 * viewport.height;
+  vec[2] = viewport.minZ + vec[2] * (viewport.maxZ - viewport.minZ);
+  return vec;
+}
 
-export { _TriViewport as TriViewport };
+export { _TriViewport as TriViewport, Vec3TransformByViewport };
 //# sourceMappingURL=TriViewport.js.map

@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Vector2Parameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Vector2Parameter.cpp
+import { num } from "@carbonenginejs/core-math/num";
 import { vec2 } from "@carbonenginejs/core-math/vec2";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { CjsVectorParameter } from "./CjsVectorParameter.js";
@@ -28,15 +29,73 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
   @type.string
   name = "";
 
+  /** m_isSrgb - shader-annotation driven; not Blue-exposed on vec2 in Carbon. */
+  isSrgb = false;
+
+  /** m_linearValue - gamma-to-linear mirror uploaded when isSrgb. */
+  linearValue = vec2.fromValues(1, 1);
+
   #bindings = [];
 
   #reroutedValue = null;
+
+  /** Blue MAP_PROPERTY "x"/"v1" - refreshes from the rerouted value on read. */
+  get x()
+  {
+    this.GetValue();
+    return this.value[0];
+  }
+
+  set x(component)
+  {
+    this.#setComponent(0, component);
+  }
+
+  /** Blue MAP_PROPERTY "y"/"v2". */
+  get y()
+  {
+    this.GetValue();
+    return this.value[1];
+  }
+
+  set y(component)
+  {
+    this.#setComponent(1, component);
+  }
+
+  get v1()
+  {
+    return this.x;
+  }
+
+  set v1(component)
+  {
+    this.x = component;
+  }
+
+  get v2()
+  {
+    return this.y;
+  }
+
+  set v2(component)
+  {
+    this.y = component;
+  }
 
   @carbon.method
   @impl.implemented
   GetParameterName()
   {
     return this.name;
+  }
+
+  /** Content hash: authored value bytes then name. */
+  @carbon.method
+  @impl.adapted
+  GetHashValue(startingHash = CjsVectorParameter.FNV1_INITIAL)
+  {
+    return CjsVectorParameter.hashFnv1String(this.name, CjsVectorParameter.hashFnv1Floats(this.value, startingHash));
   }
 
   @carbon.method
@@ -55,6 +114,7 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
   SetValue(value)
   {
     CjsVectorParameter.copyNumberArray(this.value, value, 2);
+    this.#updateLinearValue();
     if (this.#reroutedValue)
     {
       CjsVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 2);
@@ -65,14 +125,14 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
   @impl.implemented
   IsRerouted()
   {
-    return this.#reroutedValue !== null;
+    return !this.isSrgb && this.#reroutedValue !== null;
   }
 
   @carbon.method
   @impl.adapted
   SetDestination(dest, size = 8)
   {
-    if (size >= 8 && CjsVectorParameter.isVectorDestination(dest, 2))
+    if (size >= 8 && !this.isSrgb && CjsVectorParameter.isVectorDestination(dest, 2))
     {
       this.#reroutedValue = dest;
       CjsVectorParameter.writeVectorDestination(dest, this.value, 2);
@@ -80,6 +140,7 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
     else
     {
       this.#reroutedValue = null;
+      this.#updateLinearValue();
     }
     CjsVectorParameter.notifyBindings(this.#bindings, this.GetDestination().dest);
   }
@@ -112,13 +173,21 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
   @impl.adapted
   RebuildEffectHandles(effectRes)
   {
+    this.isSrgb = false;
     if (!effectRes && this.#reroutedValue)
     {
       this.SetDestination(null, 0);
     }
-    const used = !!this.name && CjsVectorParameter.hasEffectConstant(effectRes, this.name);
+    const constant = this.name ? CjsVectorParameter.getEffectConstant(effectRes, this.name) : null;
+    const used = !!constant;
     this.usedByCurrentEffect = used;
     this.usedByCurrentTechnique = used;
+    this.isSrgb = CjsVectorParameter.getConstantIsSrgb(constant);
+    if (this.isSrgb)
+    {
+      this.SetDestination(null, 0);
+    }
+    this.#updateLinearValue();
   }
 
   @carbon.method
@@ -129,6 +198,7 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
     {
       CjsVectorParameter.writeVectorDestination(this.#reroutedValue, this.value, 2);
     }
+    this.#updateLinearValue();
     return true;
   }
 
@@ -136,7 +206,29 @@ export class Tr2Vector2Parameter extends CjsVectorParameter
   @impl.adapted
   CopyValueToEffect(_inputType, out)
   {
-    CjsVectorParameter.writeVectorDestination(out, this.GetValue(), 2);
+    if (this.#reroutedValue)
+    {
+      CjsVectorParameter.writeVectorDestination(out, this.value, 2);
+      return;
+    }
+    CjsVectorParameter.writeVectorDestination(out, this.isSrgb ? this.linearValue : this.value, 2);
+  }
+
+  #updateLinearValue()
+  {
+    if (!this.isSrgb)
+    {
+      CjsVectorParameter.copyNumberArray(this.linearValue, this.value, 2);
+      return;
+    }
+    this.linearValue[0] = num.gammaToLinear(this.value[0]);
+    this.linearValue[1] = num.gammaToLinear(this.value[1]);
+  }
+
+  #setComponent(index, component)
+  {
+    this.value[index] = Number(component);
+    this.SetValue(this.value);
   }
 
   /** JS convenience: raw values this parameter class claims for map-form inference. */

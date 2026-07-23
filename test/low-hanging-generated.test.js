@@ -61,8 +61,8 @@ import { Tr2StaticEmitter } from "../npm/dist/generated/particle/Tr2StaticEmitte
 import { Tr2RaytracingGeometry } from "../npm/dist/generated/raytracing/Tr2RaytracingGeometry.js";
 import { Tr2QuadRenderer } from "../npm/dist/generated/trinityCore/Tr2QuadRenderer.js";
 import { BehaviorGroup } from "../npm/dist/generated/eve/child/behaviors/BehaviorGroup.js";
-import { Tr2ParticleElementDeclaration } from "../npm/dist/generated/particle/Tr2ParticleElementDeclaration.js";
-import { Tr2ParticleElementDeclarationName } from "../npm/dist/generated/particle/Tr2ParticleElementDeclarationName.js";
+import { Tr2ParticleElementDeclaration } from "../npm/dist/particle/Tr2ParticleElementDeclaration.js";
+import { Tr2ParticleElementDeclarationName } from "../npm/dist/particle/Tr2ParticleElementDeclarationName.js";
 import { Tr2ElementBlendConstraint } from "../npm/dist/generated/particle/Tr2ElementBlendConstraint.js";
 import { Tr2RandomUniformAttributeGenerator } from "../npm/dist/generated/particle/Tr2RandomUniformAttributeGenerator.js";
 import { Tr2SphereShapeAttributeGenerator } from "../npm/dist/generated/particle/Tr2SphereShapeAttributeGenerator.js";
@@ -774,7 +774,9 @@ test("particle reset hooks and native concurrency fields retain portable semanti
   assert.equal(Tr2RaytracingGeometry.INVALID_MATERIAL, 0xffffffff);
   assert.equal(Object.hasOwn(geometry, "INVALID_MATERIAL"), false);
   assert.equal(geometry.threadLocalUsedResources, null);
-  assert.equal(quadRenderer.combinable, null);
+  // The flattened EffectRecord fields (combinable et al.) were removed when
+  // the CPU half landed; per-frame accumulation lives on the effect records.
+  assert.equal(Object.hasOwn(quadRenderer, "combinable"), false);
   assert.equal(quadRenderer.bufferSize, 0);
 });
 
@@ -1139,18 +1141,24 @@ test("behavior groups maintain portable DroneAgent counts and spawn positions", 
     RebuildFlareBuffer: count => flareCounts.push(count)
   };
   group.SetCount(2);
-  assert.equal(group.count, 2);
+  // Carbon's SetCount spawns agents WITHOUT writing the authored count field
+  // (writing it wiped grid-spawned agents on the FollowASpline reset path -
+  // fixed 2026-07-23); count keeps its authored value.
+  assert.equal(group.count, 0);
   assert.equal(group.actualCount, 2);
   assert.deepEqual(Array.from(group.GetAgents()[0].position), [4, 5, 6]);
   assert.notEqual(group.GetAgents()[0].position, group.GetAgents()[1].position);
-  assert.equal(group.CreateAgentTree().length, 2);
+  // CreateAgentTree now builds the real EveKDdroneManagementTree (was a
+  // plain agent-array stand-in before the 2026-07-23 behavior port).
+  assert.ok(group.CreateAgentTree());
+  assert.equal(group.GetAgents().length, 2);
   group.AddAgent();
   assert.equal(group.actualCount, 3);
   group.RemoveAgent();
   assert.equal(group.actualCount, 2);
   group.SetCount(-1);
   assert.equal(group.actualCount, 2);
-  assert.deepEqual(flareCounts, [2, 3, 2]);
+  assert.deepEqual(flareCounts, [2, 3, 2, 2]); // SetCount(-1) clamps but still rebuilds (Carbon parity)
 });
 
 test("scaling and texture animation helpers retain portable CPU state", () =>

@@ -101,7 +101,8 @@ export class Tr2CurveRandomAxisRotation extends CjsModel
   }
 
   /**
-   * Evaluates postRotation * pitchRotation * preRotation.
+   * Evaluates Carbon's row-vector chain post * pitch * pre (post applied
+   * first, pre last) - gl composes it as pre . pitch . post.
    */
   Evaluate(out, time)
   {
@@ -110,9 +111,9 @@ export class Tr2CurveRandomAxisRotation extends CjsModel
     {
       const angle = time / Math.abs(this.period) * Math.PI * 2;
       fromYawPitchRoll(this.#rotation, 0, angle, 0);
-      quat.multiply(out, out, this.#rotation);
+      quat.multiply(out, this.#rotation, out);
     }
-    return quat.multiply(out, out, this.preRotation);
+    return quat.multiply(out, this.preRotation, out);
   }
 
   /**

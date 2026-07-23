@@ -268,6 +268,11 @@ export class EveSpaceObject2 extends EveEntity
   @type.float32
   dirtLevel = 0;
 
+  /** m_psData.customData (Vector4) [READWRITE] - script/SOF-driven custom shader data. */
+  @io.readwrite
+  @type.vec4
+  customShaderData = vec4.create();
+
   /** m_lastDamageLocatorHit (int) [READ] */
   @io.read
   @type.int32
@@ -600,7 +605,8 @@ export class EveSpaceObject2 extends EveEntity
     {
       const modelRotation = quat.create();
       EveSpaceObject2.#UpdateCurve(this.modelRotationCurve, nextTime, modelRotation, EveSpaceObject2.#identityRotation);
-      quat.multiply(rotation, modelRotation, rotation);
+      // Carbon (row-vector): rotation = modelRotation * m_worldRotation - model first.
+      quat.multiply(rotation, rotation, modelRotation);
     }
 
     mat4.fromQuat(this.worldTransform, rotation);
@@ -1198,6 +1204,14 @@ export class EveSpaceObject2 extends EveEntity
       : new Tr2PerObjectData();
     data.object = this;
     return data;
+  }
+
+  /** Carbon forwards the shadow pass to the same per-object record. */
+  @carbon.method
+  @impl.implemented
+  GetShadowPerObjectData(accumulator = null)
+  {
+    return this.GetPerObjectData(accumulator);
   }
 
   @carbon.method

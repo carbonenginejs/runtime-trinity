@@ -63,9 +63,11 @@ new class extends _identity {
       vec3.set(scaleVec, scale, scale, scale);
       mat4.fromScaling(scalingTransform, scaleVec);
 
-      // return scalingTransform * alignMat * transform
-      mat4.multiply(out, alignMat, transform);
-      mat4.multiply(out, scalingTransform, out);
+      // Carbon (row-vector): scalingTransform * alignMat * transform - scaling
+      // applied first, transform last. In gl-matrix that is
+      // out = transform . align . scaling.
+      mat4.multiply(out, transform, alignMat);
+      mat4.multiply(out, out, scalingTransform);
       return out;
     }
   }];

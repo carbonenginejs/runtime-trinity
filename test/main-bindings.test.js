@@ -124,6 +124,9 @@ test("space-object Main extraction maps object aliases, shared values, and custo
   object.customMasks = [mask];
 
   const shared = new EveSpacePerObjectData();
+  // clipSphereCenter now lives on the shared record (matching Carbon's
+  // EveSpacePerObjectData struct), so the shared value is the one consumed.
+  shared.clipSphereCenter.set([3, 4, 5]);
   shared.boneOffsets = [7, 8, 9, 10];
   shared.customData.set([11, 12, 13, 14]);
   shared.shLighting[0].set([15, 16, 17, 18]);

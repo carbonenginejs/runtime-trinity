@@ -94,7 +94,8 @@ export class GrannyBoneOffset extends CjsModel
     const offset = this.#riggedTransforms[joint];
     if (!offset) return false;
     const offsetRotation = mat4.getRotation(quat.create(), offset);
-    quat.multiply(rotation, offsetRotation, rotation);
+    // Carbon (row-vector): rotation = offsetRotation * rotation - offset first.
+    quat.multiply(rotation, rotation, offsetRotation);
     vec3.add(position, position, mat4.getTranslation(vec3.create(), offset));
     return true;
   }

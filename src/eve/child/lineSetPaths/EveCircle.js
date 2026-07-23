@@ -224,7 +224,8 @@ export class EveCircle extends EveChildTransform
       return;
     }
     this.isVisible = false;
-    const transform = mat4.multiply(mat4.create(), this.localTransform, systemLocation);
+    // Carbon (row-vector): m_localTransform * systemLocation - local first.
+    const transform = mat4.multiply(mat4.create(), systemLocation, this.localTransform);
     const sphere = sph3.transformMat4(vec4.create(), this.#boundingSphere, transform);
     this.isVisible = !!frustum?.IsSphereVisible?.(sphere);
   }

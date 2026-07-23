@@ -38,28 +38,33 @@ export class Tr2SamplerOverride extends CjsModel
   addressW = 1;
 
   /** filter (Tr2RenderContextEnum::TextureFilter) */
+  @io.rebuild("bindings")
   @io.persist
   @type.int32
   @schema.enum("TextureFilter")
   filter = 2;
 
   /** mipFilter (Tr2RenderContextEnum::TextureFilter) */
+  @io.rebuild("bindings")
   @io.persist
   @type.int32
   @schema.enum("TextureFilter")
   mipFilter = 2;
 
   /** lodBias (float) */
+  @io.rebuild("bindings")
   @io.persist
   @type.float32
   lodBias = 0;
 
   /** maxMipLevel (uint32_t) */
+  @io.rebuild("bindings")
   @io.persist
   @type.uint32
   maxMipLevel = 0;
 
   /** maxAnisotropy (uint32_t) */
+  @io.rebuild("bindings")
   @io.persist
   @type.uint32
   maxAnisotropy = 4;

@@ -12,7 +12,7 @@ class Tr2RuntimeTextureParameter extends CjsParameter {
     } = _applyDecs2311(this, [type.define({
       className: "Tr2RuntimeTextureParameter",
       family: "shader"
-    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2TextureProvider")], 16, "texture"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.uint32], 16, "uavMipLevel"], [[carbon, carbon.method, impl, impl.adapted], 18, "__init__"], [[carbon, carbon.method, impl, impl.implemented], 18, "Create"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTextureProvider"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTextureProvider"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetUavMipLevel"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"]], 0, void 0, CjsParameter));
+    })], [[[io, io.notify, io, io.persist, void 0, type.objectRef("ITr2TextureProvider")], 16, "texture"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.uint32], 16, "uavMipLevel"], [[carbon, carbon.method, impl, impl.adapted], 18, "__init__"], [[carbon, carbon.method, impl, impl.implemented], 18, "Create"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildEffectHandles"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTextureProvider"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTextureProvider"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetUavMipLevel"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnAddedToMaterial"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnRemovedFromMaterial"]], 0, void 0, CjsParameter));
   }
   texture = (_initProto(this), _init_texture(this, null));
   name = (_init_extra_texture(this), _init_name(this, ""));
@@ -39,6 +39,11 @@ class Tr2RuntimeTextureParameter extends CjsParameter {
   }
   GetParameterName() {
     return this.name;
+  }
+
+  /** Content hash: the texture provider's identity (Carbon hashes its pointer). */
+  GetHashValue(startingHash = CjsParameter.FNV1_INITIAL) {
+    return CjsParameter.hashFnv1Identity(this.texture, startingHash);
   }
   OnModified(_options = {}) {
     this.#invalidateResourceSets();

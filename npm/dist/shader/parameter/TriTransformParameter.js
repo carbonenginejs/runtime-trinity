@@ -19,7 +19,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "TriTransformParameter",
         family: "shader"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("TRITRANSFORMBASE")], 16, "transformBase"], [[io, io.persist, type, type.vec3], 16, "rotationCenter"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("TRITRANSFORMBASE")], 16, "transformBase"], [[io, io.persist, type, type.vec3], 16, "rotationCenter"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.mat4], 16, "worldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetParameterName"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetHashValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "CopyValueToEffect"]], 0, void 0, CjsParameter));
     }
     constructor(...args) {
       super(...args);
@@ -48,6 +48,18 @@ new class extends _identity {
     GetParameterName() {
       return this.name;
     }
+
+    /**
+     * Content hash: transform base + translation/scaling/rotation bytes, then
+     * name (Carbon hashes the contiguous transform-state struct region).
+     */
+    GetHashValue(startingHash = CjsParameter.FNV1_INITIAL) {
+      startingHash = CjsParameter.hashFnv1Floats([this.transformBase], startingHash);
+      startingHash = CjsParameter.hashFnv1Floats(this.translation, startingHash);
+      startingHash = CjsParameter.hashFnv1Floats(this.scaling, startingHash);
+      startingHash = CjsParameter.hashFnv1Floats(this.rotation, startingHash);
+      return CjsParameter.hashFnv1String(this.name, startingHash);
+    }
     CopyValueToEffect(_inputType, dest, size = 64, context = null) {
       const transform = mat4.create();
       mat4.fromRotationTranslationScaleOrigin(transform, this.rotation, this.translation, this.scaling, this.rotationCenter);
@@ -57,7 +69,9 @@ new class extends _identity {
         baseTransform[12] = 0;
         baseTransform[13] = 0;
         baseTransform[14] = 0;
-        mat4.multiply(transform, baseTransform, transform);
+        // Carbon (row-vector): texTransform *= original - the base transform
+        // applies first, the authored SRT last.
+        mat4.multiply(transform, transform, baseTransform);
       }
       const out = mat4.create();
       mat4.transpose(out, transform);

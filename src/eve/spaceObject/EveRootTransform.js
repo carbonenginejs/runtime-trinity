@@ -51,7 +51,8 @@ export class EveRootTransform extends EveTransform
     if (this.modelRotationCurve)
     {
       EveRootTransform.#UpdateCurve(this.modelRotationCurve, time, EveRootTransform.#modelRotation, EveRootTransform.#identityRotation);
-      quat.multiply(EveRootTransform.#rotation, EveRootTransform.#modelRotation, EveRootTransform.#rotation);
+      // Carbon (row-vector): rotation = modelRotation * rotation - model first.
+      quat.multiply(EveRootTransform.#rotation, EveRootTransform.#rotation, EveRootTransform.#modelRotation);
     }
 
     mat4.fromRotationTranslation(this.#lastUpdateMatrix, EveRootTransform.#rotation, EveRootTransform.#translation);

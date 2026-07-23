@@ -2,7 +2,6 @@ export { EveBaseDistributionMethod } from './EveBaseDistributionMethod.js';
 export { EveDistributionModifierProcessLifetime } from './attributeModifiers/EveDistributionModifierProcessLifetime.js';
 export { EveDistributionModifierScaleBySpaceObjectParent } from './attributeModifiers/EveDistributionModifierScaleBySpaceObjectParent.js';
 export { EveDistributionModifierTransformOffset } from './attributeModifiers/EveDistributionModifierTransformOffset.js';
-export { InitialPlacement } from './attributeModifiers/InitialPlacement.js';
 export { DistributionEntityLifeTimeEvent } from './attributeModifiers/enums.js';
 export { EveDistributionPlacementGeneratorLocators } from './placement/EveDistributionPlacementGeneratorLocators.js';
 export { EveDistributionPlacementGeneratorParentLocators } from './placement/EveDistributionPlacementGeneratorParentLocators.js';

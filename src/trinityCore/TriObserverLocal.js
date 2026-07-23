@@ -132,3 +132,16 @@ export class TriObserverLocal extends CjsModel
 
   static #up = Object.freeze([0, 1, 0]);
 }
+
+/**
+ * Sends an audio event to an observer's emitter when the observed object
+ * quacks like an audio emitter (Carbon dynamic_casts to ITr2AudEmitter).
+ */
+export function SendEventToAudEmitter(observer, audioEvent)
+{
+  const emitter = observer?.GetObserver?.();
+  if (typeof emitter?.SendEvent === "function")
+  {
+    emitter.SendEvent(audioEvent);
+  }
+}

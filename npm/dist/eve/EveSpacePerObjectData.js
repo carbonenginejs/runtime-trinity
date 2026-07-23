@@ -1,27 +1,37 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { type } from '@carbonenginejs/core-types/schema';
 
-let _initClass, _init_boneOffsets, _init_extra_boneOffsets, _init_customData, _init_extra_customData, _init_customMaskMatrix, _init_extra_customMaskMatrix, _init_customMaskData, _init_extra_customMaskData, _init_customMaskMaterialIDs, _init_extra_customMaskMaterialIDs, _init_customMaskTargets, _init_extra_customMaskTargets, _init_customMaskClamps, _init_extra_customMaskClamps, _init_shLighting, _init_extra_shLighting, _init_clipRadiusSq, _init_extra_clipRadiusSq, _init_clipRadius2Sq, _init_extra_clipRadius2Sq, _init_impactDataOffset, _init_extra_impactDataOffset, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2;
+let _initClass, _init_worldTransform, _init_extra_worldTransform, _init_worldTransformLast, _init_extra_worldTransformLast, _init_invWorldTransform, _init_extra_invWorldTransform, _init_shipData, _init_extra_shipData, _init_clipSphereCenter, _init_extra_clipSphereCenter, _init_ellpsoidRadii, _init_extra_ellpsoidRadii, _init_ellpsoidCenter, _init_extra_ellpsoidCenter, _init_boneOffsets, _init_extra_boneOffsets, _init_customData, _init_extra_customData, _init_customMaskMatrix, _init_extra_customMaskMatrix, _init_customMaskData, _init_extra_customMaskData, _init_customMaskMaterialIDs, _init_extra_customMaskMaterialIDs, _init_customMaskTargets, _init_extra_customMaskTargets, _init_customMaskClamps, _init_extra_customMaskClamps, _init_shLighting, _init_extra_shLighting, _init_clipRadiusSq, _init_extra_clipRadiusSq, _init_clipRadius2Sq, _init_extra_clipRadius2Sq, _init_impactDataOffset, _init_extra_impactDataOffset, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2;
 let _EveSpacePerObjectDat;
 new class extends _identity {
   static [class EveSpacePerObjectData extends CjsModel {
     static {
       ({
-        e: [_init_boneOffsets, _init_extra_boneOffsets, _init_customData, _init_extra_customData, _init_customMaskMatrix, _init_extra_customMaskMatrix, _init_customMaskData, _init_extra_customMaskData, _init_customMaskMaterialIDs, _init_extra_customMaskMaterialIDs, _init_customMaskTargets, _init_extra_customMaskTargets, _init_customMaskClamps, _init_extra_customMaskClamps, _init_shLighting, _init_extra_shLighting, _init_clipRadiusSq, _init_extra_clipRadiusSq, _init_clipRadius2Sq, _init_extra_clipRadius2Sq, _init_impactDataOffset, _init_extra_impactDataOffset, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2],
+        e: [_init_worldTransform, _init_extra_worldTransform, _init_worldTransformLast, _init_extra_worldTransformLast, _init_invWorldTransform, _init_extra_invWorldTransform, _init_shipData, _init_extra_shipData, _init_clipSphereCenter, _init_extra_clipSphereCenter, _init_ellpsoidRadii, _init_extra_ellpsoidRadii, _init_ellpsoidCenter, _init_extra_ellpsoidCenter, _init_boneOffsets, _init_extra_boneOffsets, _init_customData, _init_extra_customData, _init_customMaskMatrix, _init_extra_customMaskMatrix, _init_customMaskData, _init_extra_customMaskData, _init_customMaskMaterialIDs, _init_extra_customMaskMaterialIDs, _init_customMaskTargets, _init_extra_customMaskTargets, _init_customMaskClamps, _init_extra_customMaskClamps, _init_shLighting, _init_extra_shLighting, _init_clipRadiusSq, _init_extra_clipRadiusSq, _init_clipRadius2Sq, _init_extra_clipRadius2Sq, _init_impactDataOffset, _init_extra_impactDataOffset, _init_clipSphereFactor, _init_extra_clipSphereFactor, _init_clipSphereFactor2, _init_extra_clipSphereFactor2],
         c: [_EveSpacePerObjectDat, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "EveSpacePerObjectData",
         family: "eve/perObjectData"
-      })], [[type.array("uint32"), 0, "boneOffsets"], [[type, type.vec4], 16, "customData"], [type.array("mat4"), 0, "customMaskMatrix"], [type.array("vec4"), 0, "customMaskData"], [type.array("vec4"), 0, "customMaskMaterialIDs"], [type.array("vec4"), 0, "customMaskTargets"], [[type, type.vec4], 16, "customMaskClamps"], [type.array("vec4"), 0, "shLighting"], [[type, type.float32], 16, "clipRadiusSq"], [[type, type.float32], 16, "clipRadius2Sq"], [[type, type.float32], 16, "impactDataOffset"], [[type, type.float32], 16, "clipSphereFactor2"], [[type, type.float32], 16, "clipSphereFactor"]], 0, void 0, CjsModel));
+      })], [[[type, type.mat4], 16, "worldTransform"], [[type, type.mat4], 16, "worldTransformLast"], [[type, type.mat4], 16, "invWorldTransform"], [[type, type.vec4], 16, "shipData"], [[type, type.vec3], 16, "clipSphereCenter"], [[type, type.vec4], 16, "ellpsoidRadii"], [[type, type.vec4], 16, "ellpsoidCenter"], [type.array("uint32"), 0, "boneOffsets"], [[type, type.vec4], 16, "customData"], [type.array("mat4"), 0, "customMaskMatrix"], [type.array("vec4"), 0, "customMaskData"], [type.array("vec4"), 0, "customMaskMaterialIDs"], [type.array("vec4"), 0, "customMaskTargets"], [[type, type.vec4], 16, "customMaskClamps"], [type.array("vec4"), 0, "shLighting"], [[type, type.float32], 16, "clipRadiusSq"], [[type, type.float32], 16, "clipRadius2Sq"], [[type, type.float32], 16, "impactDataOffset"], [[type, type.float32], 16, "clipSphereFactor2"], [[type, type.float32], 16, "clipSphereFactor"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
       _init_extra_clipSphereFactor2(this);
     }
-    boneOffsets = _init_boneOffsets(this, Array(_EveSpacePerObjectDat.BONE_OFFSET_COUNT).fill(0));
+    worldTransform = _init_worldTransform(this, mat4.create());
+    worldTransformLast = (_init_extra_worldTransform(this), _init_worldTransformLast(this, mat4.create()));
+    invWorldTransform = (_init_extra_worldTransformLast(this), _init_invWorldTransform(this, mat4.create()));
+    shipData = (_init_extra_invWorldTransform(this), _init_shipData(this, vec4.create()));
+    clipSphereCenter = (_init_extra_shipData(this), _init_clipSphereCenter(this, vec3.create()));
+
+    /** Carbon's field name (sic) - "ellpsoid" matches the source struct. */
+    ellpsoidRadii = (_init_extra_clipSphereCenter(this), _init_ellpsoidRadii(this, vec4.create()));
+    ellpsoidCenter = (_init_extra_ellpsoidRadii(this), _init_ellpsoidCenter(this, vec4.create()));
+    boneOffsets = (_init_extra_ellpsoidCenter(this), _init_boneOffsets(this, Array(_EveSpacePerObjectDat.BONE_OFFSET_COUNT).fill(0)));
     customData = (_init_extra_boneOffsets(this), _init_customData(this, vec4.create()));
     customMaskMatrix = (_init_extra_customData(this), _init_customMaskMatrix(this, Array.from({
       length: _EveSpacePerObjectDat.CUSTOM_MASK_COUNT

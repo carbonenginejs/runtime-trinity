@@ -3,7 +3,7 @@ import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schem
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { PresentInterval, SwapEffect, UpscalingSetting, UpscalingTechnique } from '@carbonenginejs/runtime-const/render-context';
 
-let _initProto, _initClass, _init_presentationInterval, _init_extra_presentationInterval, _init_swapEffect, _init_extra_swapEffect, _init_throttlingState, _init_extra_throttlingState, _init_deviceType, _init_extra_deviceType, _init_allowThrottling, _init_extra_allowThrottling, _init_onDeviceRemoved, _init_extra_onDeviceRemoved, _init_curveSets, _init_extra_curveSets, _init_supportedUpscalingTechniques, _init_extra_supportedUpscalingTechniques, _init_viewport, _init_extra_viewport, _init_adapterWidth, _init_extra_adapterWidth, _init_adapterHeight, _init_extra_adapterHeight, _init_adapterRefreshRate, _init_extra_adapterRefreshRate, _init_adapter, _init_extra_adapter, _init_width, _init_extra_width, _init_height, _init_extra_height, _init_multiSampleType, _init_extra_multiSampleType, _init_multiSampleQuality, _init_extra_multiSampleQuality, _init_scene, _init_extra_scene, _init_backBufferCount, _init_extra_backBufferCount, _init_tickInterval, _init_extra_tickInterval, _init_mipLevelSkipCount, _init_extra_mipLevelSkipCount, _init_animationTimeScale, _init_extra_animationTimeScale, _init_animationTime, _init_extra_animationTime, _init_upscalingSetting, _init_extra_upscalingSetting, _init_upscalingTechnique, _init_extra_upscalingTechnique, _init_frameGeneration, _init_extra_frameGeneration;
+let _initProto, _initClass, _init_presentationInterval, _init_extra_presentationInterval, _init_swapEffect, _init_extra_swapEffect, _init_throttlingState, _init_extra_throttlingState, _init_deviceType, _init_extra_deviceType, _init_allowThrottling, _init_extra_allowThrottling, _init_onDeviceRemoved, _init_extra_onDeviceRemoved, _init_curveSets, _init_extra_curveSets, _init_supportedUpscalingTechniques, _init_extra_supportedUpscalingTechniques, _init_viewport, _init_extra_viewport, _init_adapterWidth, _init_extra_adapterWidth, _init_adapterHeight, _init_extra_adapterHeight, _init_adapterRefreshRate, _init_extra_adapterRefreshRate, _init_adapter, _init_extra_adapter, _init_width, _init_extra_width, _init_height, _init_extra_height, _init_multiSampleType, _init_extra_multiSampleType, _init_multiSampleQuality, _init_extra_multiSampleQuality, _init_scene, _init_extra_scene, _init_backBufferCount, _init_extra_backBufferCount, _init_tickInterval, _init_extra_tickInterval, _init_mipLevelSkipCount, _init_extra_mipLevelSkipCount, _init_animationTimeScale, _init_extra_animationTimeScale, _init_animationTime, _init_extra_animationTime, _init_upscalingSetting, _init_extra_upscalingSetting, _init_upscalingTechnique, _init_extra_upscalingTechnique, _init_frameGeneration, _init_extra_frameGeneration, _init_disableGeometryLoad, _init_extra_disableGeometryLoad, _init_disableTextureLoad, _init_extra_disableTextureLoad, _init_disableAsyncLoad, _init_extra_disableAsyncLoad, _init_minimumModelLOD, _init_extra_minimumModelLOD;
 
 /** TriDevice (trinityCore) - generated from schema shapeHash 1db3a492.... */
 let _TriDevice;
@@ -11,16 +11,16 @@ new class extends _identity {
   static [class TriDevice extends CjsModel {
     static {
       ({
-        e: [_init_presentationInterval, _init_extra_presentationInterval, _init_swapEffect, _init_extra_swapEffect, _init_throttlingState, _init_extra_throttlingState, _init_deviceType, _init_extra_deviceType, _init_allowThrottling, _init_extra_allowThrottling, _init_onDeviceRemoved, _init_extra_onDeviceRemoved, _init_curveSets, _init_extra_curveSets, _init_supportedUpscalingTechniques, _init_extra_supportedUpscalingTechniques, _init_viewport, _init_extra_viewport, _init_adapterWidth, _init_extra_adapterWidth, _init_adapterHeight, _init_extra_adapterHeight, _init_adapterRefreshRate, _init_extra_adapterRefreshRate, _init_adapter, _init_extra_adapter, _init_width, _init_extra_width, _init_height, _init_extra_height, _init_multiSampleType, _init_extra_multiSampleType, _init_multiSampleQuality, _init_extra_multiSampleQuality, _init_scene, _init_extra_scene, _init_backBufferCount, _init_extra_backBufferCount, _init_tickInterval, _init_extra_tickInterval, _init_mipLevelSkipCount, _init_extra_mipLevelSkipCount, _init_animationTimeScale, _init_extra_animationTimeScale, _init_animationTime, _init_extra_animationTime, _init_upscalingSetting, _init_extra_upscalingSetting, _init_upscalingTechnique, _init_extra_upscalingTechnique, _init_frameGeneration, _init_extra_frameGeneration, _initProto],
+        e: [_init_presentationInterval, _init_extra_presentationInterval, _init_swapEffect, _init_extra_swapEffect, _init_throttlingState, _init_extra_throttlingState, _init_deviceType, _init_extra_deviceType, _init_allowThrottling, _init_extra_allowThrottling, _init_onDeviceRemoved, _init_extra_onDeviceRemoved, _init_curveSets, _init_extra_curveSets, _init_supportedUpscalingTechniques, _init_extra_supportedUpscalingTechniques, _init_viewport, _init_extra_viewport, _init_adapterWidth, _init_extra_adapterWidth, _init_adapterHeight, _init_extra_adapterHeight, _init_adapterRefreshRate, _init_extra_adapterRefreshRate, _init_adapter, _init_extra_adapter, _init_width, _init_extra_width, _init_height, _init_extra_height, _init_multiSampleType, _init_extra_multiSampleType, _init_multiSampleQuality, _init_extra_multiSampleQuality, _init_scene, _init_extra_scene, _init_backBufferCount, _init_extra_backBufferCount, _init_tickInterval, _init_extra_tickInterval, _init_mipLevelSkipCount, _init_extra_mipLevelSkipCount, _init_animationTimeScale, _init_extra_animationTimeScale, _init_animationTime, _init_extra_animationTime, _init_upscalingSetting, _init_extra_upscalingSetting, _init_upscalingTechnique, _init_extra_upscalingTechnique, _init_frameGeneration, _init_extra_frameGeneration, _init_disableGeometryLoad, _init_extra_disableGeometryLoad, _init_disableTextureLoad, _init_extra_disableTextureLoad, _init_disableAsyncLoad, _init_extra_disableAsyncLoad, _init_minimumModelLOD, _init_extra_minimumModelLOD, _initProto],
         c: [_TriDevice, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "TriDevice",
         family: "trinityCore"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("PresentInterval")], 16, "presentationInterval"], [[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("SwapEffect")], 16, "swapEffect"], [[io, io.read, type, type.uint32], 16, "throttlingState"], [[io, io.readwrite, type, type.int32, void 0, schema.enum("DeviceType")], 16, "deviceType"], [[io, io.readwrite, type, type.boolean], 16, "allowThrottling"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onDeviceRemoved"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.read, void 0, type.list("Tr2UpscalingTechniqueInfo")], 16, "supportedUpscalingTechniques"], [[io, io.persist, void 0, type.objectRef("TriViewport")], 16, "viewport"], [[io, io.read, type, type.uint32], 16, "adapterWidth"], [[io, io.read, type, type.uint32], 16, "adapterHeight"], [[io, io.read, type, type.uint32], 16, "adapterRefreshRate"], [[io, io.read, type, type.int32], 16, "adapter"], [[io, io.read, type, type.int32], 16, "width"], [[io, io.read, type, type.int32], 16, "height"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiSampleType"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiSampleQuality"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITr2Scene")], 16, "scene"], [[io, io.notify, io, io.readwrite, type, type.int32], 16, "backBufferCount"], [[io, io.readwrite, type, type.int32], 16, "tickInterval"], [[io, io.readwrite, type, type.uint32], 16, "mipLevelSkipCount"], [[io, io.readwrite, type, type.float32], 16, "animationTimeScale"], [[io, io.readwrite, type, type.float32], 16, "animationTime"], [[io, io.read, type, type.uint32, void 0, schema.enum("UpscalingSetting")], 16, "upscalingSetting"], [[io, io.read, type, type.uint32, void 0, schema.enum("UpscalingTechnique")], 16, "upscalingTechnique"], [[io, io.read, type, type.boolean], 16, "frameGeneration"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateUpscalingContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DeleteUpscalingContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderResolution"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RefreshDeviceResources"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Render"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderingPlatformID"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SupportsRenderTargetFormat"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "IsVariableRefreshRateSupported"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SupportsRaytracing"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DoesD3DDeviceExist"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetRenderJobs"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetUpscaling"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateAvailableUpscalingTechniques"]], 0, void 0, CjsModel));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("PresentInterval")], 16, "presentationInterval"], [[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("SwapEffect")], 16, "swapEffect"], [[io, io.read, type, type.uint32], 16, "throttlingState"], [[io, io.readwrite, type, type.int32, void 0, schema.enum("DeviceType")], 16, "deviceType"], [[io, io.readwrite, type, type.boolean], 16, "allowThrottling"], [[io, io.readwrite, void 0, type.rawStruct("BlueScriptCallback")], 16, "onDeviceRemoved"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.read, void 0, type.list("Tr2UpscalingTechniqueInfo")], 16, "supportedUpscalingTechniques"], [[io, io.persist, void 0, type.objectRef("TriViewport")], 16, "viewport"], [[io, io.read, type, type.uint32], 16, "adapterWidth"], [[io, io.read, type, type.uint32], 16, "adapterHeight"], [[io, io.read, type, type.uint32], 16, "adapterRefreshRate"], [[io, io.read, type, type.int32], 16, "adapter"], [[io, io.read, type, type.int32], 16, "width"], [[io, io.read, type, type.int32], 16, "height"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiSampleType"], [[io, io.notify, io, io.persist, type, type.uint32], 16, "multiSampleQuality"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("ITr2Scene")], 16, "scene"], [[io, io.notify, io, io.readwrite, type, type.int32], 16, "backBufferCount"], [[io, io.readwrite, type, type.int32], 16, "tickInterval"], [[io, io.readwrite, type, type.uint32], 16, "mipLevelSkipCount"], [[io, io.readwrite, type, type.float32], 16, "animationTimeScale"], [[io, io.readwrite, type, type.float32], 16, "animationTime"], [[io, io.read, type, type.uint32, void 0, schema.enum("UpscalingSetting")], 16, "upscalingSetting"], [[io, io.read, type, type.uint32, void 0, schema.enum("UpscalingTechnique")], 16, "upscalingTechnique"], [[io, io.read, type, type.boolean], 16, "frameGeneration"], [[io, io.readwrite, type, type.boolean], 16, "disableGeometryLoad"], [[io, io.readwrite, type, type.boolean], 16, "disableTextureLoad"], [[io, io.readwrite, type, type.boolean], 16, "disableAsyncLoad"], [[io, io.readwrite, type, type.int32], 16, "minimumModelLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "AspectRatio"], [[carbon, carbon.method, impl, impl.adapted], 18, "ScreenToProjection"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAnimationTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetAnimationTimeElapsed"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "CreateUpscalingContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DeleteUpscalingContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderResolution"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RefreshDeviceResources"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "Render"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderingPlatformID"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SupportsRenderTargetFormat"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "IsVariableRefreshRateSupported"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SupportsRaytracing"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "DoesD3DDeviceExist"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetRenderJobs"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "SetUpscaling"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetRenderContext"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UpdateAvailableUpscalingTechniques"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
-      _init_extra_frameGeneration(this);
+      _init_extra_minimumModelLOD(this);
     }
     /** mPresentParam.presentInterval (Tr2PresentParametersAL - enum Tr2PresentParametersAL) [READWRITE, NOTIFY, PERSIST, ENUM] */
     presentationInterval = (_initProto(this), _init_presentationInterval(this, 1));
@@ -100,6 +100,57 @@ new class extends _identity {
     /** m_upscalingWithFrameGeneration (bool) [READ] */
     frameGeneration = (_init_extra_upscalingTechnique(this), _init_frameGeneration(this, false));
 
+    /** Get/SetGeometryLoadDisabled (MAP_PROPERTY) - disables external geometry loads for batch processing. */
+    disableGeometryLoad = (_init_extra_frameGeneration(this), _init_disableGeometryLoad(this, false));
+
+    /** Get/SetTextureLoadDisabled (MAP_PROPERTY) - disables external texture loads for batch processing. */
+    disableTextureLoad = (_init_extra_disableGeometryLoad(this), _init_disableTextureLoad(this, false));
+
+    /** Get/SetAsyncLoadDisabled (MAP_PROPERTY) - makes resource loads synchronous. */
+    disableAsyncLoad = (_init_extra_disableTextureLoad(this), _init_disableAsyncLoad(this, false));
+
+    /** Get/SetMinimumModelLOD (MAP_PROPERTY) - prevents the first N model LODs from loading; 0 disables. */
+    minimumModelLOD = (_init_extra_disableAsyncLoad(this), _init_minimumModelLOD(this, 0));
+    AspectRatio() {
+      const viewport = this.viewport;
+      if (!viewport || !viewport.height) {
+        return 0;
+      }
+      return viewport.width / viewport.height;
+    }
+
+    /**
+     * Maps window-space pixel coordinates into the [-1, 1] projection space.
+     * DX maps viewport pixel CENTRES to view space, so for four pixels, pixel
+     * 3 maps to 1 and pixel 0 to -1.
+     */
+    ScreenToProjection(x, y, viewport = this.viewport, out = {}) {
+      const vx = x - (viewport?.x ?? 0);
+      const vy = y - (viewport?.y ?? 0);
+      const w = viewport?.width ?? 1;
+      const h = viewport?.height ?? 1;
+      out.x = 2 * vx / (w - 1) - 1;
+      out.y = -(2 * vy / (h - 1) - 1);
+      return out;
+    }
+
+    /** Time in seconds, recentered regularly (once per hour). */
+    GetAnimationTime() {
+      return this.animationTime;
+    }
+
+    /**
+     * Elapsed animation time since startTime, correct across the hourly
+     * ANIMATION_TIME_MAX recenter.
+     */
+    GetAnimationTimeElapsed(startTime) {
+      let elapsed = this.animationTime - startTime;
+      if (elapsed < 0) {
+        elapsed += _TriDevice.ANIMATION_TIME_MAX;
+      }
+      return elapsed;
+    }
+
     /** Carbon method CreateUpscalingContext (MAP_METHOD_AND_WRAP_OPTIONAL_ARGS). */
     CreateUpscalingContext(...args) {
       throw new Error("TriDevice.CreateUpscalingContext is not implemented in CarbonEngineJS.");
@@ -169,6 +220,8 @@ new class extends _identity {
     UpdateAvailableUpscalingTechniques(...args) {
       throw new Error("TriDevice.UpdateAvailableUpscalingTechniques is not implemented in CarbonEngineJS.");
     }
+
+    /** One hour - the animation-clock recenter period. */
   }];
   ThrottlingReason = Object.freeze({
     WINDOW_OUT_OF_FOCUS: 1,
@@ -188,6 +241,7 @@ new class extends _identity {
     APP_ACTIVATED: 0,
     APP_DEACTIVATED: 1
   });
+  ANIMATION_TIME_MAX = 3600;
   PresentInterval = PresentInterval;
   SwapEffect = SwapEffect;
   UpscalingSetting = UpscalingSetting;

@@ -1,32 +1,33 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, impl } from '@carbonenginejs/core-types/schema';
+import { impl, type } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 
-let _initProto, _initClass, _init_registry, _init_extra_registry, _init_indexInRegistry, _init_extra_indexInRegistry;
+let _initProto, _initClass;
 
 /** EveEntity (eve) - generated from schema shapeHash 598ee56f.... */
 let _EveEntity;
 class EveEntity extends CjsModel {
   static {
     ({
-      e: [_init_registry, _init_extra_registry, _init_indexInRegistry, _init_extra_indexInRegistry, _initProto],
+      e: [_initProto],
       c: [_EveEntity, _initClass]
     } = _applyDecs2311(this, [type.define({
       className: "EveEntity",
       family: "eve"
-    })], [[type.objectRef("EveComponentRegistry"), 0, "registry"], [[type, type.uint64], 16, "indexInRegistry"], [[impl, impl.implemented], 18, "IsInRegistry"], [[impl, impl.implemented], 18, "Register"], [[impl, impl.implemented], 18, "UnRegister"], [[impl, impl.implemented], 18, "ReRegister"], [[impl, impl.implemented], 18, "GetComponentRegistry"], [[impl, impl.implemented], 18, "GetComponentIndex"], [[impl, impl.implemented], 18, "SetComponentState"], [[impl, impl.implemented], 18, "RemoveComponentState"], [[impl, impl.implemented], 18, "ClearComponentState"], [[impl, impl.implemented], 18, "RegisterComponents"], [[impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, CjsModel));
-  }
-  constructor(...args) {
-    super(...args);
-    _init_extra_indexInRegistry(this);
+    })], [[[impl, impl.implemented], 18, "IsInRegistry"], [[impl, impl.implemented], 18, "Register"], [[impl, impl.implemented], 18, "UnRegister"], [[impl, impl.implemented], 18, "ReRegister"], [[impl, impl.implemented], 18, "GetComponentRegistry"], [[impl, impl.implemented], 18, "GetComponentIndex"], [[impl, impl.implemented], 18, "SetComponentState"], [[impl, impl.implemented], 18, "RemoveComponentState"], [[impl, impl.implemented], 18, "ClearComponentState"], [[impl, impl.implemented], 18, "RegisterComponents"], [[impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, CjsModel));
   }
   #componentIndexLookup = (_initProto(this), new Map());
 
-  /** m_registry (EveComponentRegistry*) */
-  registry = _init_registry(this, null);
+  // Carbon keeps m_registry/m_indexInRegistry PRIVATE (EveEntity.h:57-61) -
+  // they are runtime registration state, never Blue-exposed. Schema typing
+  // removed 2026-07-23: exporting them via GetValues leaked indexInRegistry
+  // into values interchange and poisoned re-registration of hydrated
+  // entities (Register() refuses when indexInRegistry !== -1).
+  /** m_registry (EveComponentRegistry*) - runtime-only. */
+  registry = null;
 
-  /** m_indexInRegistry (size_t) */
-  indexInRegistry = (_init_extra_registry(this), _init_indexInRegistry(this, -1));
+  /** m_indexInRegistry (size_t) - runtime-only. */
+  indexInRegistry = -1;
   IsInRegistry() {
     return this.registry !== null;
   }

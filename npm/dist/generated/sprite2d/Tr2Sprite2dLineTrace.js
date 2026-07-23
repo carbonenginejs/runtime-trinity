@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { Tr2TexturedSpriteObject as _Tr2TexturedSpriteObj } from './Tr2TexturedSpriteObject.js';
-import { Tr2Sprite2dLineTraceVertex as _Tr2Sprite2dLineTrace$1 } from './Tr2Sprite2dLineTraceVertex.js';
+import { Tr2Sprite2dLineTraceVertex as _Tr2Sprite2dLineTrace$1 } from '../../sprite2d/Tr2Sprite2dLineTraceVertex.js';
 import { vec2 } from '@carbonenginejs/core-math/vec2';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 

@@ -10,13 +10,15 @@ import { CjsParameter } from "./CjsParameter.js";
 export class Tr2ConstantEffectParameter extends CjsParameter
 {
 
-  /** name (BlueSharedString) */
+  /** name (BlueSharedString) - persisted via the constParameters structure list. */
   @io.rebuild("bindings")
+  @io.persist
   @type.string
   name = "";
 
-  /** value (Vector4) */
+  /** value (Vector4) - persisted via the constParameters structure list. */
   @io.rebuild("bindings")
+  @io.persist
   @type.vec4
   value = vec4.create();
 
