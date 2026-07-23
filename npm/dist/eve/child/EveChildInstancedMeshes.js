@@ -1,11 +1,19 @@
 import { applyDecs2311 as _applyDecs2311, identity as _identity } from '../../_virtual/_rollupPluginBabelHelpers.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../../generated/eve/EveEntity.js';
-import { EveComponentType } from '../EveComponentTypes.js';
+import { ShouldReflect, EveComponentType } from '../EveComponentTypes.js';
 
 let _initClass, _init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_areaIndex, _init_extra_areaIndex, _init_areaCount, _init_extra_areaCount, _init_effectHash, _init_extra_effectHash, _initClass2, _init_transform, _init_extra_transform, _init_sphereIndex, _init_extra_sphereIndex, _initClass3, _init_geometryPath, _init_extra_geometryPath, _init_castsShadow, _init_extra_castsShadow, _init_reflectionMode, _init_extra_reflectionMode, _init_meshIndex, _init_extra_meshIndex, _init_areas, _init_extra_areas, _init_instances, _init_extra_instances, _init_sofHullName, _init_extra_sofHullName, _init_sofLocatorSetName, _init_extra_sofLocatorSetName, _init_display, _init_extra_display, _initProto, _initClass4, _init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated, _init_meshes, _init_extra_meshes;
+
+/** Carbon EveInstancedMeshManager::InstanceFlags (EveInstancedMeshManager.h:
+ * 13-26, cpp:998-1048): a uint32 bitfield - bit (1 << batchType) per present
+ * batch type, CASTS_SHADOW = 1 << 30, RENDER_IN_REFLECTION = 1 << 31. */
+const INSTANCE_FLAG_CASTS_SHADOW = 0x40000000;
+const INSTANCE_FLAG_RENDER_IN_REFLECTION = 0x80000000;
+const POSITION_SCRATCH = vec3.create();
 let _EveChildInstancedMes;
 class EveChildInstancedMeshArea extends CjsModel {
   static {
@@ -17,15 +25,16 @@ class EveChildInstancedMeshArea extends CjsModel {
       family: "eve/child"
     })], [[[void 0, io.rebuild("instanceBuffer"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "batchType"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "areaIndex"], [[void 0, io.rebuild("instanceBuffer"), io, io.persist, type, type.uint32], 16, "areaCount"], [[io, io.read, type, type.float32], 16, "effectHash"]], 0, void 0, CjsModel));
   }
-  constructor(...args) {
-    super(...args);
-    _init_extra_effectHash(this);
-  }
   effect = _init_effect(this, null);
   batchType = (_init_extra_effect(this), _init_batchType(this, 0));
   areaIndex = (_init_extra_batchType(this), _init_areaIndex(this, 0));
   areaCount = (_init_extra_areaIndex(this), _init_areaCount(this, 1));
   effectHash = (_init_extra_areaCount(this), _init_effectHash(this, 0));
+
+  /** Carbon MeshArea::meshGroupHandle (EveChildInstancedMeshes.h:72) - the
+   * manager registration handle; runtime state, not persisted. Truthy handles
+   * carry .owner for the removal routing (EveInstancedMeshManager.h:41-72). */
+  meshGroupHandle = (_init_extra_effectHash(this), null);
   static {
     _initClass();
   }
@@ -71,7 +80,27 @@ class EveChildInstancedMesh extends CjsModel {
   sofHullName = (_init_extra_instances(this), _init_sofHullName(this, ""));
   sofLocatorSetName = (_init_extra_sofHullName(this), _init_sofLocatorSetName(this, ""));
   display = (_init_extra_sofLocatorSetName(this), _init_display(this, true));
-  #geometry = (_init_extra_display(this), null);
+
+  /** Carbon Mesh::sphereHandle (h:110) - manager registration handle;
+   * runtime state, not persisted. */
+  sphereHandle = (_init_extra_display(this), null);
+
+  /** Carbon Mesh::worldBoundingSphere - stamped by UpdateAsyncronous
+   * (cpp:270); the TriFrustum sphere-duck shape. */
+  worldBoundingSphere = {
+    center: vec3.create(),
+    radius: 0
+  };
+
+  /** Carbon Mesh::instanceSpheres - per-instance world cull spheres, stamped
+   * by UpdateAsyncronous (cpp:259-269). */
+  instanceSpheres = [];
+
+  /** Carbon Mesh::flags (InstanceFlags uint32) - batch-type bits stamped at
+   * AddMesh (cpp:422-425), CASTS_SHADOW at AddMesh (cpp:418-421),
+   * RENDER_IN_REFLECTION refreshed each async pass (cpp:251). */
+  flags = 0;
+  #geometry = null;
   GetGeometryResource() {
     return this.#geometry;
   }
@@ -92,13 +121,21 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildInstancedMeshes",
         family: "eve/child"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[io, io.persist, void 0, type.list("EveChildInstancedMesh")], 16, "meshes"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("UnregisterFromMeshManager releases GPU mesh-group/sphere/per-object handles owned by the engine's EveInstancedMeshManager.")], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddMeshesToManager"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsCastingShadow"], [[carbon, carbon.method, impl, impl.noop], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowPerObjectData"]], 0, void 0, _EveEntity));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[io, io.persist, void 0, type.list("EveChildInstancedMesh")], 16, "meshes"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The EveSpaceObjectVS/PSData per-object constant copy (cpp:204-238) and the raytracing mesh build (cpp:283-327) are engine-owned; mesh bounds come from a GetMeshData duck ({minBounds, maxBounds}) and meshes without one are skipped fail-closed.")], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon dereferences area.effect unguarded; the JS option write is optional-chained. Handle removal + latch clear are ported.")], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Handle invalidation after removal is explicit (Carbon's DataHandle is invalidated by the manager by reference).")], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Handle invalidation after removal is explicit (Carbon's DataHandle is invalidated by the manager by reference).")], 18, "UnregisterFromMeshManager"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The manager is an injected engine duck returning handles (out-params become returns; .owner is stamped when the duck omits it); Carbon's combinedVertexDeclaration gate (cpp:499, a D3D declaration handle rebuilt in RebuildCachedData cpp:435-457) reduces to geometry presence + IsGood, and the declaration argument is passed as 0 for the engine to rebuild; GetRawRoot() becomes the object itself as picking owner.")], 18, "AddMeshesToManager"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsCastingShadow"], [[carbon, carbon.method, impl, impl.noop], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowPerObjectData"]], 0, void 0, _EveEntity));
     }
     name = (_initProto(this), _init_name(this, ""));
     worldTransform = (_init_extra_name(this), _init_worldTransform(this, mat4.create()));
     hasUpdated = (_init_extra_worldTransform(this), _init_hasUpdated(this, false));
     meshes = (_init_extra_hasUpdated(this), _init_meshes(this, []));
     #revision = (_init_extra_meshes(this), 0);
+
+    /** Carbon m_perObjectDataHandle (h:143) - manager registration handle. */
+    #perObjectDataHandle = null;
+
+    /** Carbon m_allRegistered (h:147) - the AddMeshesToManager retry latch:
+     * set optimistically each pass, cleared by ANY not-ready mesh/area so the
+     * per-frame CollectMeshes retries until geometry streams in. */
+    #allRegistered = false;
     GetName() {
       return this.name;
     }
@@ -117,7 +154,91 @@ new class extends _identity {
         mat4.copy(this.worldTransform, params.localToWorldTransform);
       }
     }
-    UpdateAsyncronous() {
+
+    /** Carbon EveChildInstancedMeshes::UpdateAsyncronous (cpp:202-328), the CPU
+     * half: per-mesh RENDER_IN_REFLECTION refresh (cpp:251), the mesh-local
+     * bounds sphere radius = |center| + radius (cpp:254-255), per-instance
+     * world cull spheres - position from the instance translation (Carbon reads
+     * the packed rows' w = _41.._43, i.e. the transform translation) moved
+     * through the child world transform, radius scaled by the instance's max
+     * basis length times the child worldScale (cpp:259-269; NOTE Carbon's two
+     * scale extractions deliberately differ - worldScale uses the world
+     * transform's basis ROWS while the instance scale uses the packed rows'
+     * xyz = the transpose's rows; equal under rotation + uniform scale,
+     * ported exactly) - the world bounding sphere over all instance spheres
+     * (cpp:257-270), a live SetSphereGroupBounds refresh on registered handles
+     * (cpp:272-278), and the hasUpdated stamp (cpp:281). */
+    UpdateAsyncronous(_updateContext, _params) {
+      const w = this.worldTransform;
+      // cpp:240-242 - worldScale from the world transform's basis rows.
+      const worldScale = Math.max(Math.hypot(w[0], w[1], w[2]), Math.hypot(w[4], w[5], w[6]), Math.hypot(w[8], w[9], w[10]));
+      for (const mesh of this.meshes) {
+        const geometry = mesh.GetGeometryResource();
+        if (!geometry || geometry.IsGood?.() === false) {
+          continue;
+        }
+
+        // cpp:251 - refreshed every pass (set OR cleared).
+        mesh.flags = ShouldReflect(mesh.reflectionMode) ? (mesh.flags | INSTANCE_FLAG_RENDER_IN_REFLECTION) >>> 0 : (mesh.flags & ~INSTANCE_FLAG_RENDER_IN_REFLECTION) >>> 0;
+        const meshData = geometry.GetMeshData?.(mesh.meshIndex);
+        const minBounds = meshData?.minBounds ?? meshData?.m_minBounds;
+        const maxBounds = meshData?.maxBounds ?? meshData?.m_maxBounds;
+        if (!minBounds || !maxBounds) {
+          continue;
+        }
+        // cpp:254-255 - Sphere(AABB): center (min+max)/2, radius |max-min|/2;
+        // then radius = sphere.radius + |sphere.center| (origin-inclusive).
+        const centerX = (minBounds[0] + maxBounds[0]) * 0.5;
+        const centerY = (minBounds[1] + maxBounds[1]) * 0.5;
+        const centerZ = (minBounds[2] + maxBounds[2]) * 0.5;
+        const localRadius = Math.hypot(maxBounds[0] - minBounds[0], maxBounds[1] - minBounds[1], maxBounds[2] - minBounds[2]) * 0.5 + Math.hypot(centerX, centerY, centerZ);
+        mesh.instanceSpheres.length = mesh.instances.length;
+        let boundsMinX = Infinity,
+          boundsMinY = Infinity,
+          boundsMinZ = Infinity;
+        let boundsMaxX = -Infinity,
+          boundsMaxY = -Infinity,
+          boundsMaxZ = -Infinity;
+        for (let index = 0; index < mesh.instances.length; index++) {
+          const transform = mesh.instances[index].transform;
+          // cpp:261 - packed rows' w = the transform translation (gl [12..14]).
+          POSITION_SCRATCH[0] = transform[12];
+          POSITION_SCRATCH[1] = transform[13];
+          POSITION_SCRATCH[2] = transform[14];
+          // cpp:262-264 - instance scale from the packed rows' xyz (the
+          // transpose's rows: gl (t[0],t[4],t[8]) / (t[1],t[5],t[9]) /
+          // (t[2],t[6],t[10])) - deliberately NOT the same extraction as
+          // worldScale above.
+          const scale = Math.max(Math.hypot(transform[0], transform[4], transform[8]), Math.hypot(transform[1], transform[5], transform[9]), Math.hypot(transform[2], transform[6], transform[10])) * worldScale;
+          vec3.transformMat4(POSITION_SCRATCH, POSITION_SCRATCH, w);
+          const radius = localRadius * scale;
+          const sphere = mesh.instanceSpheres[index] ??= {
+            center: vec3.create(),
+            radius: 0
+          };
+          vec3.copy(sphere.center, POSITION_SCRATCH);
+          sphere.radius = radius;
+          boundsMinX = Math.min(boundsMinX, POSITION_SCRATCH[0] - radius);
+          boundsMinY = Math.min(boundsMinY, POSITION_SCRATCH[1] - radius);
+          boundsMinZ = Math.min(boundsMinZ, POSITION_SCRATCH[2] - radius);
+          boundsMaxX = Math.max(boundsMaxX, POSITION_SCRATCH[0] + radius);
+          boundsMaxY = Math.max(boundsMaxY, POSITION_SCRATCH[1] + radius);
+          boundsMaxZ = Math.max(boundsMaxZ, POSITION_SCRATCH[2] + radius);
+        }
+        if (mesh.instances.length) {
+          // cpp:270 - Sphere(worldBounds).
+          const sphereCenter = mesh.worldBoundingSphere.center;
+          sphereCenter[0] = (boundsMinX + boundsMaxX) * 0.5;
+          sphereCenter[1] = (boundsMinY + boundsMaxY) * 0.5;
+          sphereCenter[2] = (boundsMinZ + boundsMaxZ) * 0.5;
+          mesh.worldBoundingSphere.radius = Math.hypot(boundsMaxX - boundsMinX, boundsMaxY - boundsMinY, boundsMaxZ - boundsMinZ) * 0.5;
+
+          // cpp:272-278 - live refresh of a registered sphere group.
+          if (mesh.sphereHandle) {
+            mesh.sphereHandle.owner?.SetSphereGroupBounds?.(mesh.sphereHandle, mesh.worldBoundingSphere, mesh.flags);
+          }
+        }
+      }
       this.hasUpdated = true;
     }
     GetLocalToWorldTransform(out = null) {
@@ -132,11 +253,22 @@ new class extends _identity {
     IsAlwaysOn() {
       return false;
     }
+
+    /** Carbon EveChildInstancedMeshes::SetShaderOption (cpp:343-359): flips the
+     * option and refreshes the effect hash on every area, then removes any
+     * registered mesh-group handle and clears the latch - so the groups
+     * re-register with the NEW effectHash on the next AddMeshesToManager pass.
+     * Sphere/per-object handles deliberately stay registered. */
     SetShaderOption(name, value) {
       for (const mesh of this.meshes) {
         for (const area of mesh.areas) {
           area.effect?.SetOption?.(name, value);
           area.effectHash = _EveChildInstancedMes4.#GetEffectHash(area.effect);
+          if (area.meshGroupHandle) {
+            area.meshGroupHandle.owner?.RemoveMeshGroup?.(area.meshGroupHandle);
+            area.meshGroupHandle = null;
+            this.#allRegistered = false;
+          }
         }
       }
       this.#revision++;
@@ -166,7 +298,17 @@ new class extends _identity {
       mesh.instances = instances;
       mesh.sofHullName = String(sofHullName ?? "");
       mesh.sofLocatorSetName = String(sofLocatorSetName ?? "");
+      // Carbon (cpp:418-425): the CASTS_SHADOW flag and one bit per area batch
+      // type are stamped at add time; RENDER_IN_REFLECTION is refreshed each
+      // async pass. cpp:428 clears the registration latch.
+      if (mesh.castsShadow) {
+        mesh.flags = (mesh.flags | INSTANCE_FLAG_CASTS_SHADOW) >>> 0;
+      }
+      for (const area of mesh.areas) {
+        mesh.flags = (mesh.flags | 1 << area.batchType) >>> 0;
+      }
       this.meshes.push(mesh);
+      this.#allRegistered = false;
       this.#revision++;
       return true;
     }
@@ -202,11 +344,29 @@ new class extends _identity {
     GetMeshDisplay(meshId) {
       return _EveChildInstancedMes4.#GetMesh(this.meshes, meshId).display;
     }
+
+    /** Carbon EveChildInstancedMeshes::SetMeshDisplay (cpp:663-691): a toggle
+     * clears the latch; turning a mesh OFF eagerly removes its sphere and
+     * mesh-group handles - which is why AddMeshesToManager's display-off skip
+     * does NOT clear the latch (the handles are already gone). */
     SetMeshDisplay(meshId, display) {
       const mesh = _EveChildInstancedMes4.#GetMesh(this.meshes, meshId);
       const next = !!display;
       if (mesh.display !== next) {
         mesh.display = next;
+        this.#allRegistered = false;
+        if (!next) {
+          if (mesh.sphereHandle) {
+            mesh.sphereHandle.owner?.RemoveBoundingSphereGroup?.(mesh.sphereHandle);
+            mesh.sphereHandle = null;
+          }
+          for (const area of mesh.areas) {
+            if (area.meshGroupHandle) {
+              area.meshGroupHandle.owner?.RemoveMeshGroup?.(area.meshGroupHandle);
+              area.meshGroupHandle = null;
+            }
+          }
+        }
         this.#revision++;
       }
     }
@@ -237,16 +397,108 @@ new class extends _identity {
     }
 
     /** Carbon EveChildInstancedMeshes::UnRegisterComponents (cpp:45-48) only
-     * calls UnregisterFromMeshManager (GPU mesh-manager handle cleanup,
-     * unported); own components were already removed by EveEntity::UnRegister
-     * (EveEntity.cpp:90). */
-    UnRegisterComponents() {}
+     * calls UnregisterFromMeshManager; own components were already removed by
+     * EveEntity::UnRegister (EveEntity.cpp:90). */
+    UnRegisterComponents() {
+      this.UnregisterFromMeshManager();
+    }
 
-    /** Carbon EveChildInstancedMeshes::AddMeshesToManager (cpp:472-535)
-     * uploads instance data to the engine-owned EveInstancedMeshManager;
-     * presence satisfies the "InstancedMeshProvider" duck contract. */
-    AddMeshesToManager(..._args) {
-      throw new Error("EveChildInstancedMeshes.AddMeshesToManager is not implemented in CarbonEngineJS.");
+    /** Carbon EveChildInstancedMeshes::UnregisterFromMeshManager (cpp:50-71):
+     * every registered mesh-group / sphere-group / per-object handle is removed
+     * through ITS OWN handle.owner (handles may span managers after a switch),
+     * then the latch clears. */
+    UnregisterFromMeshManager() {
+      for (const mesh of this.meshes) {
+        for (const area of mesh.areas) {
+          if (area.meshGroupHandle) {
+            area.meshGroupHandle.owner?.RemoveMeshGroup?.(area.meshGroupHandle);
+            area.meshGroupHandle = null;
+          }
+        }
+        if (mesh.sphereHandle) {
+          mesh.sphereHandle.owner?.RemoveBoundingSphereGroup?.(mesh.sphereHandle);
+          mesh.sphereHandle = null;
+        }
+      }
+      if (this.#perObjectDataHandle) {
+        this.#perObjectDataHandle.owner?.RemovePerObjectData?.(this.#perObjectDataHandle);
+        this.#perObjectDataHandle = null;
+      }
+      this.#allRegistered = false;
+    }
+
+    /** Carbon EveChildInstancedMeshes::AddMeshesToManager (cpp:472-553), the
+     * InstancedMeshProvider entry the engine's CollectMeshes drives
+     * (EveInstancedMeshManager.cpp:45-56; scene EveSpaceScene.cpp:1516).
+     * Contract quirks preserved: nothing registers before the first update
+     * pass (cpp:474); switching managers tears EVERYTHING down BEFORE the
+     * latch early-out (cpp:478-481); the latch is set optimistically and
+     * cleared by ANY not-ready mesh/area so the per-frame caller retries until
+     * geometry streams in - EXCEPT display-off meshes, which skip WITHOUT
+     * clearing it (their handles were already removed by SetMeshDisplay);
+     * handles are add-once (partial re-registration after SetShaderOption /
+     * display toggles); an area-level effect failure clears the latch while
+     * the mesh's sphere group STAYS registered (Carbon's asymmetry);
+     * pickingOwnerIndex is the mesh ordinal (pairs with GetSofSourceLocator's
+     * meshIndex<<16 decode). */
+    AddMeshesToManager(manager) {
+      if (!this.hasUpdated) {
+        return;
+      }
+      if (this.#perObjectDataHandle && this.#perObjectDataHandle.owner !== manager) {
+        this.UnregisterFromMeshManager();
+      }
+      if (this.#allRegistered) {
+        return;
+      }
+      if (!this.#perObjectDataHandle) {
+        const handle = manager?.AddPerObjectData?.(this) ?? null;
+        if (handle && typeof handle === "object" && !handle.owner) {
+          handle.owner = manager;
+        }
+        this.#perObjectDataHandle = handle;
+      }
+      this.#allRegistered = true;
+      for (let meshIndex = 0; meshIndex < this.meshes.length; meshIndex++) {
+        const mesh = this.meshes[meshIndex];
+        if (!mesh.display) {
+          continue;
+        }
+        const geometry = mesh.GetGeometryResource();
+        if (!geometry || geometry.IsGood?.() === false) {
+          this.#allRegistered = false;
+          continue;
+        }
+        if (!mesh.instances.length) {
+          this.#allRegistered = false;
+          continue;
+        }
+        if (mesh.instances.length !== mesh.instanceSpheres.length) {
+          this.#allRegistered = false;
+          continue;
+        }
+        if (!mesh.sphereHandle) {
+          const handle = manager?.AddBoundingSphereGroup?.(mesh.worldBoundingSphere, mesh.flags, mesh.instanceSpheres, mesh.instanceSpheres.length) ?? null;
+          if (handle && typeof handle === "object" && !handle.owner) {
+            handle.owner = manager;
+          }
+          mesh.sphereHandle = handle;
+        }
+        for (const area of mesh.areas) {
+          if (area.meshGroupHandle) {
+            continue;
+          }
+          if (!area.effect) {
+            this.#allRegistered = false;
+            continue;
+          }
+          const handle = manager?.AddMeshGroup?.(geometry, 0, area.batchType, mesh.meshIndex, area.areaIndex, area.areaCount, area.effect, area.effectHash, this.#perObjectDataHandle, mesh.sphereHandle, mesh.instances, mesh.instances.length, this, meshIndex) ?? null;
+          if (handle && typeof handle === "object" && !handle.owner) {
+            handle.owner = manager;
+          }
+          area.meshGroupHandle = handle;
+        }
+      }
     }
 
     /** Carbon EveChildInstancedMeshes::IsCastingShadow (cpp:73-76) always
@@ -311,5 +563,5 @@ new class extends _identity {
   }
 }();
 
-export { _EveChildInstancedMes3 as EveChildInstancedMesh, _EveChildInstancedMes as EveChildInstancedMeshArea, _EveChildInstancedMes2 as EveChildInstancedMeshInstance, _EveChildInstancedMes4 as EveChildInstancedMeshes };
+export { _EveChildInstancedMes3 as EveChildInstancedMesh, _EveChildInstancedMes as EveChildInstancedMeshArea, _EveChildInstancedMes2 as EveChildInstancedMeshInstance, _EveChildInstancedMes4 as EveChildInstancedMeshes, INSTANCE_FLAG_CASTS_SHADOW, INSTANCE_FLAG_RENDER_IN_REFLECTION };
 //# sourceMappingURL=EveChildInstancedMeshes.js.map

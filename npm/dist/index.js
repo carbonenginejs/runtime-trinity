@@ -150,7 +150,7 @@ export { EveChildContainer } from './eve/child/EveChildContainer.js';
 export { EveChildEffectPropagator } from './eve/child/EveChildEffectPropagator.js';
 export { EveChildFogVolume } from './eve/child/EveChildFogVolume.js';
 export { EveChildInheritProperties } from './eve/child/EveChildInheritProperties.js';
-export { EveChildInstancedMesh, EveChildInstancedMeshArea, EveChildInstancedMeshInstance, EveChildInstancedMeshes } from './eve/child/EveChildInstancedMeshes.js';
+export { EveChildInstancedMesh, EveChildInstancedMeshArea, EveChildInstancedMeshInstance, EveChildInstancedMeshes, INSTANCE_FLAG_CASTS_SHADOW, INSTANCE_FLAG_RENDER_IN_REFLECTION } from './eve/child/EveChildInstancedMeshes.js';
 export { EveChildInstanceTransform } from './eve/child/EveChildInstanceTransform.js';
 export { EveChildLightingOverride } from './eve/child/EveChildLightingOverride.js';
 export { EveChildMesh } from './eve/child/EveChildMesh.js';
