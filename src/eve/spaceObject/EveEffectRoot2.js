@@ -390,6 +390,19 @@ export class EveEffectRoot2 extends EveEntity
     return mat4.copy(out, this.#lastUpdateMatrix);
   }
 
+  /** Protected-equivalent read of Carbon's m_worldTransform
+   * (EveEffectRoot2.h:219, protected) - the detached root transform
+   * UpdateWorldTransform evaluates, WITHOUT the local SRT composition that
+   * GetLocalToWorldTransform's #lastUpdateMatrix carries. EvePlanet reads the
+   * member directly for the z-only depth-prepass drive (EvePlanet.cpp:137). */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Carbon's protected member access becomes a copying accessor; JS has no protected fields and the live buffer stays private.")
+  GetWorldTransform(out = mat4.create())
+  {
+    return mat4.copy(out, this.#worldTransform);
+  }
+
   /** Registers every child with an injected quad renderer. */
   @carbon.method
   @impl.adapted

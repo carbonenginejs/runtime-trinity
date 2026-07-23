@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 
 let _initProto, _initClass, _init_translationCurve, _init_extra_translationCurve, _init_mesh, _init_extra_mesh, _init_name, _init_extra_name, _init_backgroundOccluders, _init_extra_backgroundOccluders, _init_occluders, _init_extra_occluders, _init_curveSets, _init_extra_curveSets, _init_distanceToEdgeCurves, _init_extra_distanceToEdgeCurves, _init_distanceToCenterCurves, _init_extra_distanceToCenterCurves, _init_radialAngleCurves, _init_extra_radialAngleCurves, _init_xDistanceToCenter, _init_extra_xDistanceToCenter, _init_yDistanceToCenter, _init_extra_yDistanceToCenter, _init_controllers, _init_extra_controllers, _init_bindings, _init_extra_bindings, _init_cameraFactor, _init_extra_cameraFactor, _init_position, _init_extra_position, _init_flares, _init_extra_flares, _init_update, _init_extra_update, _init_display, _init_extra_display;
@@ -15,11 +16,7 @@ class EveLensflare extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveLensflare",
       family: "eve/effect"
-    })], [[[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "backgroundOccluders"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "occluders"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToEdgeCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToCenterCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "radialAngleCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "xDistanceToCenter"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "yDistanceToCenter"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("ITr2ValueBinding")], 16, "bindings"], [[io, io.persist, type, type.float32], 16, "cameraFactor"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, void 0, type.list("EveTransform")], 16, "flares"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, CjsModel));
-  }
-  constructor(...args) {
-    super(...args);
-    _init_extra_display(this);
+    })], [[[io, io.readwrite, void 0, type.objectRef("ITriVectorFunction")], 16, "translationCurve"], [[io, io.persist, void 0, type.model("Tr2Mesh")], 16, "mesh"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "backgroundOccluders"], [[io, io.persist, void 0, type.list("EveOccluder")], 16, "occluders"], [[io, io.persist, void 0, type.list("TriCurveSet")], 16, "curveSets"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToEdgeCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "distanceToCenterCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "radialAngleCurves"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "xDistanceToCenter"], [[io, io.persist, void 0, type.list("ITriFunction")], 16, "yDistanceToCenter"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[io, io.persist, void 0, type.list("ITr2ValueBinding")], 16, "bindings"], [[io, io.persist, type, type.float32], 16, "cameraFactor"], [[io, io.persist, type, type.vec3], 16, "position"], [[io, io.persist, void 0, type.list("EveTransform")], 16, "flares"], [[io, io.persist, type, type.boolean], 16, "update"], [[io, io.persist, type, type.boolean], 16, "display"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, CjsModel));
   }
   #controllerVariables = (_initProto(this), new Map());
 
@@ -76,6 +73,39 @@ class EveLensflare extends CjsModel {
 
   /** m_display (bool) [READWRITE, PERSIST] */
   display = (_init_extra_update(this), _init_display(this, true));
+
+  /** m_isVisible (EveLensflare.h:95; ctor false, cpp:68) - runtime state,
+   * not persisted. */
+  isVisible = (_init_extra_display(this), false);
+
+  /** m_direction (EveLensflare.h:106) - zero until PrepareRender stamps
+   * Normalize(-position); the first-frame zero direction dots to 0, which
+   * counts as VISIBLE (the >= comparison) - deliberate Carbon behavior. */
+  direction = vec3.create();
+
+  /** m_transform (EveLensflare.h:102; ctor identity, cpp:74) - stamped by
+   * PrepareRender, forwarded to the flare children as their parent. */
+  transform = mat4.create();
+
+  /** Carbon EveLensflare::UpdateVisibility (EveLensflare.cpp:298-311): the
+   * viewDir dot test - visible iff dot(frustum.viewDir, direction) >= 0
+   * (a sun exactly perpendicular to the view IS visible), then every flare
+   * child updates its visibility under this lensflare's transform. NO display
+   * gate (the display || isVisible gate lives in GetRenderables, cpp:281).
+   * ONE-FRAME LATENCY is contract: within a Carbon frame this runs before
+   * PrepareRender, so the dot uses the PREVIOUS frame's direction and
+   * forwards the previous frame's transform - do not "fix" the order. Scene
+   * call site: EveSpaceScene.cpp:1462-1466 (sequential, single-lensflare). */
+  UpdateVisibility(updateContext) {
+    this.isVisible = false;
+    const frustum = updateContext?.GetFrustum?.() ?? updateContext?.frustum;
+    const viewDir = frustum?.viewDir ?? frustum?.m_viewDir;
+    const viewDotDir = viewDir ? vec3.dot(viewDir, this.direction) : 0;
+    this.isVisible = viewDotDir >= 0;
+    for (const flare of this.flares) {
+      flare?.UpdateVisibility?.(updateContext, this.transform);
+    }
+  }
 
   /** Carbon method SetControllerVariable (MAP_METHOD_AND_WRAP). */
   SetControllerVariable(name, value) {

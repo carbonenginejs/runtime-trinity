@@ -1,10 +1,20 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
 import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
+import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { Tr2PerObjectData } from '../../../trinityCore/Tr2PerObjectData.js';
 
 let _initProto, _initClass, _init_clusters, _init_extra_clusters, _init_centerOfClusters, _init_extra_centerOfClusters, _init_boundingSphere, _init_extra_boundingSphere, _init_clusterParticleDensityAdjust, _init_extra_clusterParticleDensityAdjust, _init_estimatedSize, _init_extra_estimatedSize, _init_clusterParticleDensity, _init_extra_clusterParticleDensity, _init_maxSize, _init_extra_maxSize, _init_minSize, _init_extra_minSize, _init_mesh, _init_extra_mesh, _init_maxParticleCount, _init_extra_maxParticleCount, _init_visible, _init_extra_visible;
+
+/** Carbon PARTICLE_CLUSTER_MIN_SIZE (EveSceneStaticParticles.cpp:14, a
+ * file-scope const - NOT in the header): the pixel-size floor, scaled by the
+ * context lodFactor, below which the cluster system is invisible. */
+const PARTICLE_CLUSTER_MIN_SIZE = 100;
+
+// Packed (x, y, z, radius) world-space cull-sphere scratch.
+const SPHERE_SCRATCH = vec4.create();
 function createRandom(seed) {
   let state = seed >>> 0 || 0x6d2b79f5;
   return () => {
@@ -27,11 +37,7 @@ class EveSceneStaticParticles extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveSceneStaticParticles",
       family: "eve/scene"
-    })], [[type.list("ClusterData"), 0, "clusters"], [type.rawStruct("Vector3d"), 0, "centerOfClusters"], [[type, type.vec4], 16, "boundingSphere"], [[io, io.read, type, type.float32], 16, "clusterParticleDensityAdjust"], [[io, io.read, type, type.float32], 16, "estimatedSize"], [[io, io.readwrite, type, type.float32], 16, "clusterParticleDensity"], [[io, io.readwrite, type, type.float32], 16, "maxSize"], [[io, io.readwrite, type, type.float32], 16, "minSize"], [[io, io.readwrite, void 0, type.objectRef("Tr2InstancedMesh")], 16, "mesh"], [[io, io.readwrite, type, type.uint64], 16, "maxParticleCount"], [[io, io.read, type, type.boolean], 16, "visible"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddCluster"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Builds Carbon's CPU instance rows and bounds; a deterministic local PRNG replaces Carbon's process-global C rand state.")], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "ClearClusters"]], 0, void 0, CjsModel));
-  }
-  constructor(...args) {
-    super(...args);
-    _init_extra_visible(this);
+    })], [[type.list("ClusterData"), 0, "clusters"], [type.rawStruct("Vector3d"), 0, "centerOfClusters"], [[type, type.vec4], 16, "boundingSphere"], [[io, io.read, type, type.float32], 16, "clusterParticleDensityAdjust"], [[io, io.read, type, type.float32], 16, "estimatedSize"], [[io, io.readwrite, type, type.float32], 16, "clusterParticleDensity"], [[io, io.readwrite, type, type.float32], 16, "maxSize"], [[io, io.readwrite, type, type.float32], 16, "minSize"], [[io, io.readwrite, void 0, type.objectRef("Tr2InstancedMesh")], 16, "mesh"], [[io, io.readwrite, type, type.uint64], 16, "maxParticleCount"], [[io, io.read, type, type.boolean], 16, "visible"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsVisible"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The estimatedSize LOD select is engine-resolved at realization; the delegation structure is ported.")], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("EveSceneStaticParticlesPerObjectData's device buffers are engine-owned; the record carries the transposed matrices and the object reference.")], 18, "GetPerObjectData"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasTransparentBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSortValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddCluster"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Builds Carbon's CPU instance rows and bounds; a deterministic local PRNG replaces Carbon's process-global C rand state.")], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "ClearClusters"]], 0, void 0, CjsModel));
   }
   /** Carbon ClusterData records retained on the CPU. */
   clusters = (_initProto(this), _init_clusters(this, []));
@@ -65,6 +71,124 @@ class EveSceneStaticParticles extends CjsModel {
 
   /** m_visible (bool) [READ] */
   visible = (_init_extra_maxParticleCount(this), _init_visible(this, false));
+
+  /** m_worldMatrix (EveSceneStaticParticles.h:93; ctor identity, cpp:27) -
+   * the camera-relative placement stamped by Update. */
+  worldMatrix = (_init_extra_visible(this), mat4.create());
+
+  /** m_lastWorldMatrix (h:94; ctor identity, cpp:28) - the previous frame's
+   * placement, consumed by GetPerObjectData for motion vectors. */
+  lastWorldMatrix = mat4.create();
+
+  /** m_center (h:95; ctor zero, cpp:24) - the world-space sphere center
+   * stamped by Update. */
+  center = vec3.create();
+
+  /** Carbon EveSceneStaticParticles::Update (cpp:90-105): the same
+   * low-quality/clusters/mesh triple early-out as UpdateVisibility; stashes
+   * the previous world matrix, rebuilds the camera-relative translation from
+   * the DOUBLE-precision offset centerOfClusters - origin (narrowed to
+   * float32 per component only when it enters the matrix, Carbon's
+   * float(offset.x) casts), and stamps the world-space sphere center. */
+  Update(updateContext) {
+    if ((updateContext?.lowQuality ?? updateContext?.device?.lowQuality) === true || this.clusters.length === 0 || !this.mesh) {
+      return;
+    }
+    mat4.copy(this.lastWorldMatrix, this.worldMatrix);
+    const origin = updateContext?.GetOrigin?.();
+    // Double-precision subtraction (Carbon Vector3d, cpp:100), narrowed per
+    // component at the matrix boundary (cpp:102).
+    mat4.fromTranslation(this.worldMatrix, [Math.fround(this.centerOfClusters[0] - (origin?.[0] ?? 0)), Math.fround(this.centerOfClusters[1] - (origin?.[1] ?? 0)), Math.fround(this.centerOfClusters[2] - (origin?.[2] ?? 0))]);
+    vec3.transformMat4(this.center, this.boundingSphere, this.worldMatrix);
+  }
+
+  /** Carbon EveSceneStaticParticles::UpdateVisibility (cpp:107-123): visible
+   * is stamped false first (so a quality toggle / cleared clusters drop the
+   * system the same frame); the pixel size is measured on the UNTRANSLATED
+   * LOCAL bounding sphere (cpp:117) while the inside test and the frustum
+   * test use the world-space center - Carbon's asymmetry, preserved; the
+   * camera being inside the cluster sphere bypasses BOTH the frustum test
+   * and the size gate; the size gate is strict > against
+   * PARTICLE_CLUSTER_MIN_SIZE * lodFactor. estimatedSize is stamped even
+   * when invisible - GetBatches consumes it as the LOD size (cpp:139). */
+  UpdateVisibility(updateContext) {
+    this.visible = false;
+    if ((updateContext?.lowQuality ?? updateContext?.device?.lowQuality) === true || this.clusters.length === 0 || !this.mesh) {
+      return;
+    }
+    const frustum = updateContext?.GetFrustum?.();
+    if (!frustum) {
+      return;
+    }
+    this.estimatedSize = frustum.GetPixelSizeAccross(this.boundingSphere);
+    const estimatedSizeWithinBounds = this.estimatedSize > PARTICLE_CLUSTER_MIN_SIZE * (updateContext?.GetLodFactor?.() ?? 1);
+    const viewPos = frustum.viewPos ?? frustum.m_viewPos;
+    const dx = this.center[0] - (viewPos?.[0] ?? 0);
+    const dy = this.center[1] - (viewPos?.[1] ?? 0);
+    const dz = this.center[2] - (viewPos?.[2] ?? 0);
+    const inBoundingSphere = dx * dx + dy * dy + dz * dz <= this.boundingSphere[3] * this.boundingSphere[3];
+    this.visible = inBoundingSphere || this.IsVisible(updateContext) && estimatedSizeWithinBounds;
+  }
+
+  /** Carbon EveSceneStaticParticles::IsVisible (cpp:170-174): the world-space
+   * center with the local radius through the ONE-ARG IsSphereVisible - the
+   * back-plane-ignored TriFrustum quirk applies (cullBackPlane false). */
+  IsVisible(updateContext) {
+    const frustum = updateContext?.GetFrustum?.();
+    if (!frustum) {
+      return false;
+    }
+    vec4.set(SPHERE_SCRATCH, this.center[0], this.center[1], this.center[2], this.boundingSphere[3]);
+    return frustum.IsSphereVisible(SPHERE_SCRATCH) === true;
+  }
+
+  /** Carbon EveSceneStaticParticles::GetRenderables (cpp:129-135): pushes the
+   * object ITSELF when visible; the frustum parameter is deliberately unused
+   * (kept for the scene call-site contract, EveSpaceScene.cpp:1504-1507). */
+  GetRenderables(_frustum, out = []) {
+    if (this.visible) {
+      out.push(this);
+    }
+    return out;
+  }
+
+  /** Carbon EveSceneStaticParticles::GetBatches (cpp:137-140): the mesh's
+   * areas of the requested type with the stamped estimatedSize as the LOD
+   * screen size (engine-resolved at realization in the GPU-free model). */
+  GetBatches(batches, batchType, perObjectData, _reason) {
+    return this.mesh?.GetBatches?.(batches, batchType, perObjectData, this.estimatedSize) === true;
+  }
+
+  /** Carbon EveSceneStaticParticles::GetShadowBatches (cpp:142-145): the
+   * particle clusters never cast shadows. */
+  GetShadowBatches(_batches, _perObjectData, _shadowPixelSize) {
+    return false;
+  }
+
+  /** Carbon EveSceneStaticParticles::GetPerObjectData (cpp:147-158): the
+   * world/lastWorld pair (HLSL packing transposes of single matrices - no
+   * composition); the GPU-free record carries them plus the object
+   * reference. */
+  GetPerObjectData(accumulator = null) {
+    const data = typeof accumulator?.Allocate === "function" ? accumulator.Allocate(Tr2PerObjectData) : new Tr2PerObjectData();
+    if (!data) {
+      return null;
+    }
+    data.object = this;
+    data.world = mat4.transpose(mat4.create(), this.worldMatrix);
+    data.lastWorld = mat4.transpose(mat4.create(), this.lastWorldMatrix);
+    return data;
+  }
+
+  /** Carbon EveSceneStaticParticles::HasTransparentBatches (cpp:160-163). */
+  HasTransparentBatches() {
+    return false;
+  }
+
+  /** Carbon EveSceneStaticParticles::GetSortValue (cpp:165-168). */
+  GetSortValue() {
+    return 0;
+  }
 
   /** Carbon method AddCluster (MAP_METHOD_AND_WRAP). */
   AddCluster(position, radius, color1, color2, randomSeed) {
@@ -169,5 +293,5 @@ class EveSceneStaticParticles extends CjsModel {
   }
 }
 
-export { _EveSceneStaticPartic as EveSceneStaticParticles };
+export { _EveSceneStaticPartic as EveSceneStaticParticles, PARTICLE_CLUSTER_MIN_SIZE };
 //# sourceMappingURL=EveSceneStaticParticles.js.map

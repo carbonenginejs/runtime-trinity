@@ -463,7 +463,7 @@ export { EveComponentCollection } from './generated/eve/scene/EveComponentCollec
 export { EveComponentRegistry } from './generated/eve/scene/EveComponentRegistry.js';
 export { EvePendingPickingReadback } from './generated/eve/scene/EvePendingPickingReadback.js';
 export { EvePickingContext } from './generated/eve/scene/EvePickingContext.js';
-export { EveSceneStaticParticles } from './generated/eve/scene/EveSceneStaticParticles.js';
+export { EveSceneStaticParticles, PARTICLE_CLUSTER_MIN_SIZE } from './generated/eve/scene/EveSceneStaticParticles.js';
 export { EveSpaceSceneRenderDriver } from './generated/eve/scene/EveSpaceSceneRenderDriver.js';
 export { TriShadowFrustum } from './generated/eve/scene/TriShadowFrustum.js';
 export { TriShadowOrthoFrustum } from './generated/eve/scene/TriShadowOrthoFrustum.js';
