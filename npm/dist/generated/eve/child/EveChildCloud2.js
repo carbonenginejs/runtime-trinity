@@ -114,7 +114,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildCloud2",
         family: "eve/child"
-      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, type, type.int32, void 0, schema.enum("Tr2VolumerticQuality")], 16, "minVisibleQuality"], [[io, io.persist, type, type.float32], 16, "sortingModifier"], [[io, io.persist, void 0, type.model("Tr2TextureAnimation")], 16, "animation"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("Tr2DepthStencil")], 16, "shadowMapDS"], [[io, io.read, void 0, type.objectRef("Tr2TextureReference")], 16, "lightmap"], [[io, io.read, type, type.float32], 16, "lightmapSizeScale"], [[io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "reflectionEffect"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.uint32], 16, "noiseTextureSize"], [[io, io.read, type, type.vec3], 16, "mapOffset0"], [[io, io.read, type, type.vec3], 16, "mapOffset1"], [[io, io.read, type, type.vec3], 16, "mapOffset2"], [[io, io.persist, type, type.boolean], 16, "castShadows"], [[io, io.persist, type, type.boolean], 16, "receiveShadows"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.vec3], 16, "detailTiling1"], [[io, io.persist, type, type.vec3], 16, "detailTiling2"], [[io, io.persist, type, type.vec3], 16, "textureTiling"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[impl, impl.implemented], 18, "RegisterComponents"], [[impl, impl.adapted, void 0, impl.reason("DensityMap texture discovery and empty-lightmap creation (cpp:634-674) are engine-owned resource work - lightmapWidth stays 0 until the engine stamps it, which fail-closes UpdateVolumetricLightmap; the hash invalidation, animation gate and renderedLastFrame contract are ported.")], 18, "UpdateSyncronous"], [[impl, impl.implemented], 18, "UpdateAsyncronous"], [[impl, impl.implemented], 18, "IsVisible"], [[impl, impl.implemented], 18, "HasValidTransform"], [[impl, impl.implemented], 18, "IsLightmapDirty"], [[impl, impl.implemented], 18, "MarkLightmapDirty"], [[impl, impl.implemented], 18, "GetLights"], [[impl, impl.implemented], 18, "GetSortValue"], [[impl, impl.adapted, void 0, impl.reason("The procedural unit-cube vertex/index buffers and declaration (OnPrepareResources cpp:453-532) are engine-realized, so the buffer-validity gate (cpp:267-270) and shader-state gate (cpp:271-274) reduce to the effect presence check; the batch records the effect, per-object data and draw arguments for the engine to bind the cube.")], 18, "GetVolumetricBatches"], [[impl, impl.adapted, void 0, impl.reason("The 3D lightmap texture lifecycle, per-object upload and LightMap variable swaps (cpp:327-352, 363-372) are engine-owned; the GenerateLightmap dispatch is delegated to a renderContext.RunComputeShader duck and fail-closes to false when absent.")], 18, "UpdateVolumetricLightmap"], [[impl, impl.adapted, void 0, impl.reason("Carbon dereferences m_effect with no null guard (cpp:417); the JS option writes are optional-chained. Everything else is verbatim, including the missing degree conversion in the sun-motion threshold.")], 18, "SetSceneInformation"], [[impl, impl.adapted, void 0, impl.reason("The 'Shadow' technique gate applies only when a shader-state interface is realized - in GPU-free collection the engine drops the batch at realization otherwise; NULL_DECLARATION maps to declaration 0.")], 18, "GetVolumetricShadowBatches"], [[impl, impl.implemented], 18, "GetVolumetricShadowInfo"], [[impl, impl.implemented], 18, "SetupShadowFrustum"], [[impl, impl.adapted, void 0, impl.reason("Depth-stencil creation and the viewport/render-target pushes (cpp:801-823) are engine-owned, delegated to a renderContext duck; the gate and return contract are ported.")], 18, "PrepareCloudShadowMap"], [[impl, impl.adapted, void 0, impl.reason("The variable store is engine-owned (depthShadowMapHandle is an injected duck); Carbon's unguarded m_shadowMapDS dereference is optional-chained.")], 18, "SetCloudShadowMapHandle"], [[impl, impl.adapted, void 0, impl.reason("Unit-cube buffers/declaration are engine-realized (as GetVolumetricBatches); the perObjectData parameter is unused because Carbon allocates the cloud's own with screenSize 10000 (cpp:878).")], 18, "GetBatches"], [[impl, impl.implemented], 18, "HasTransparentBatches"], [[impl, impl.adapted, void 0, impl.reason("EveChildCloudPerObjectData's device constant buffers are engine-owned; the record carries the object reference, the collection-time screenSize and the CPU field block.")], 18, "GetPerObjectData"], [[impl, impl.adapted, void 0, impl.reason("Tr2Renderer's view/projection globals relocate onto the optional renderContext duck (identity/zero fallbacks when absent - the engine repopulates at realization); rand() maps to Math.random with a zero-size guard Carbon's UB-free ctor default (32) never needed; the Tr2Light Perlin flicker inside GetLight awaits the frame-clock seam.")], 18, "PopulatePerObjectData"]], 0, void 0, _EveEntity));
+      })], [[[io, io.notify, io, io.persist, type, type.int32, void 0, schema.enum("ReflectionMode")], 16, "reflectionMode"], [[io, io.persist, type, type.int32, void 0, schema.enum("Tr2VolumerticQuality")], 16, "minVisibleQuality"], [[io, io.persist, type, type.float32], 16, "sortingModifier"], [[io, io.persist, void 0, type.model("Tr2TextureAnimation")], 16, "animation"], [[io, io.notify, io, io.readwrite, void 0, type.objectRef("Tr2DepthStencil")], 16, "shadowMapDS"], [[io, io.read, void 0, type.objectRef("Tr2TextureReference")], 16, "lightmap"], [[io, io.read, type, type.float32], 16, "lightmapSizeScale"], [[io, io.persist, void 0, type.list("Tr2Light")], 16, "lights"], [[io, io.persist, type, type.float32], 16, "minScreenSize"], [[io, io.persist, type, type.quat], 16, "rotation"], [[io, io.persist, type, type.vec3], 16, "translation"], [[io, io.persist, type, type.vec3], 16, "scaling"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "reflectionEffect"], [[io, io.notify, io, io.persist, void 0, type.model("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.uint32], 16, "noiseTextureSize"], [[io, io.read, type, type.vec3], 16, "mapOffset0"], [[io, io.read, type, type.vec3], 16, "mapOffset1"], [[io, io.read, type, type.vec3], 16, "mapOffset2"], [[io, io.persist, type, type.boolean], 16, "castShadows"], [[io, io.persist, type, type.boolean], 16, "receiveShadows"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.vec3], 16, "detailTiling1"], [[io, io.persist, type, type.vec3], 16, "detailTiling2"], [[io, io.persist, type, type.vec3], 16, "textureTiling"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[impl, impl.implemented], 18, "RegisterComponents"], [[impl, impl.adapted, void 0, impl.reason("DensityMap texture discovery and empty-lightmap creation (cpp:634-674) are engine-owned resource work - lightmapWidth stays 0 until the engine stamps it, which fail-closes UpdateVolumetricLightmap; the hash invalidation, animation gate and renderedLastFrame contract are ported.")], 18, "UpdateSyncronous"], [[impl, impl.implemented], 18, "UpdateAsyncronous"], [[impl, impl.implemented], 18, "GetBoundingSphere"], [[impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[impl, impl.implemented], 18, "IsVisible"], [[impl, impl.implemented], 18, "HasValidTransform"], [[impl, impl.implemented], 18, "IsLightmapDirty"], [[impl, impl.implemented], 18, "MarkLightmapDirty"], [[impl, impl.implemented], 18, "GetLights"], [[impl, impl.implemented], 18, "GetSortValue"], [[impl, impl.adapted, void 0, impl.reason("The procedural unit-cube vertex/index buffers and declaration (OnPrepareResources cpp:453-532) are engine-realized, so the buffer-validity gate (cpp:267-270) and shader-state gate (cpp:271-274) reduce to the effect presence check; the batch records the effect, per-object data and draw arguments for the engine to bind the cube.")], 18, "GetVolumetricBatches"], [[impl, impl.adapted, void 0, impl.reason("The 3D lightmap texture lifecycle, per-object upload and LightMap variable swaps (cpp:327-352, 363-372) are engine-owned; the GenerateLightmap dispatch is delegated to a renderContext.RunComputeShader duck and fail-closes to false when absent.")], 18, "UpdateVolumetricLightmap"], [[impl, impl.adapted, void 0, impl.reason("Carbon dereferences m_effect with no null guard (cpp:417); the JS option writes are optional-chained. Everything else is verbatim, including the missing degree conversion in the sun-motion threshold.")], 18, "SetSceneInformation"], [[impl, impl.adapted, void 0, impl.reason("The 'Shadow' technique gate applies only when a shader-state interface is realized - in GPU-free collection the engine drops the batch at realization otherwise; NULL_DECLARATION maps to declaration 0.")], 18, "GetVolumetricShadowBatches"], [[impl, impl.implemented], 18, "GetVolumetricShadowInfo"], [[impl, impl.implemented], 18, "SetupShadowFrustum"], [[impl, impl.adapted, void 0, impl.reason("Depth-stencil creation and the viewport/render-target pushes (cpp:801-823) are engine-owned, delegated to a renderContext duck; the gate and return contract are ported.")], 18, "PrepareCloudShadowMap"], [[impl, impl.adapted, void 0, impl.reason("The variable store is engine-owned (depthShadowMapHandle is an injected duck); Carbon's unguarded m_shadowMapDS dereference is optional-chained.")], 18, "SetCloudShadowMapHandle"], [[impl, impl.adapted, void 0, impl.reason("Unit-cube buffers/declaration are engine-realized (as GetVolumetricBatches); the perObjectData parameter is unused because Carbon allocates the cloud's own with screenSize 10000 (cpp:878).")], 18, "GetBatches"], [[impl, impl.implemented], 18, "HasTransparentBatches"], [[impl, impl.adapted, void 0, impl.reason("EveChildCloudPerObjectData's device constant buffers are engine-owned; the record carries the object reference, the collection-time screenSize and the CPU field block.")], 18, "GetPerObjectData"], [[impl, impl.adapted, void 0, impl.reason("Tr2Renderer's view/projection globals relocate onto the optional renderContext duck (identity/zero fallbacks when absent - the engine repopulates at realization); rand() maps to Math.random with a zero-size guard Carbon's UB-free ctor default (32) never needed; the Tr2Light Perlin flicker inside GetLight awaits the frame-clock seam.")], 18, "PopulatePerObjectData"]], 0, void 0, _EveEntity));
     }
     /** m_reflectionMode (EntityComponents::ReflectionMode - enum ReflectionMode) [READWRITE, PERSIST, NOTIFY, ENUM] */
     reflectionMode = (_initProto(this), _init_reflectionMode(this, 0));
@@ -357,21 +357,42 @@ new class extends _identity {
       SHIFT_SCRATCH[0] = (originShift ? -originShift[0] : 0) + w[12] - prevX;
       SHIFT_SCRATCH[1] = (originShift ? -originShift[1] : 0) + w[13] - prevY;
       SHIFT_SCRATCH[2] = (originShift ? -originShift[2] : 0) + w[14] - prevZ;
-      if (mat4.invert(INV_SCRATCH, w)) {
-        TransformNormal(SHIFT_SCRATCH, SHIFT_SCRATCH, INV_SCRATCH);
-        const offsets = [this.mapOffset0, this.mapOffset1, this.mapOffset2];
-        const tilings = [this.textureTiling, this.detailTiling1, this.detailTiling2];
-        for (let i = 0; i < 3; ++i) {
-          const offset = offsets[i];
-          const tiling = tilings[i];
-          offset[0] = (offset[0] + SHIFT_SCRATCH[0] * tiling[0]) % 1;
-          offset[1] = (offset[1] + SHIFT_SCRATCH[1] * tiling[1]) % 1;
-          // Carbon bug preserved verbatim: .z scrolls by mapTiling.y (cpp:703).
-          offset[2] = (offset[2] + SHIFT_SCRATCH[2] * tiling[1]) % 1;
-        }
+      // Carbon's one-arg Inverse returns the INPUT unchanged on a singular
+      // matrix (math Matrix.cpp:12-16) and the scroll still runs - mirrored.
+      const inverse = mat4.invert(INV_SCRATCH, w) ?? w;
+      TransformNormal(SHIFT_SCRATCH, SHIFT_SCRATCH, inverse);
+      const offsets = [this.mapOffset0, this.mapOffset1, this.mapOffset2];
+      const tilings = [this.textureTiling, this.detailTiling1, this.detailTiling2];
+      for (let i = 0; i < 3; ++i) {
+        const offset = offsets[i];
+        const tiling = tilings[i];
+        offset[0] = (offset[0] + SHIFT_SCRATCH[0] * tiling[0]) % 1;
+        offset[1] = (offset[1] + SHIFT_SCRATCH[1] * tiling[1]) % 1;
+        // Carbon bug preserved verbatim: .z scrolls by mapTiling.y (cpp:703).
+        offset[2] = (offset[2] + SHIFT_SCRATCH[2] * tiling[1]) % 1;
       }
       this.adjustedMinScreenSize = this.minScreenSize * (updateContext?.GetLodFactor?.() ?? 1);
       this.hasUpdated = true;
+    }
+
+    /** Carbon EveChildCloud2::GetBoundingSphere (cpp:226-230): the packed
+     * (center, radius) cloud sphere, unconditionally true. IEveSpaceObjectChild
+     * override - parent bounds unions consume it optional-chained. */
+    GetBoundingSphere(out = new Float32Array(4), _query = 0) {
+      out[0] = this.boundingSphere.center[0];
+      out[1] = this.boundingSphere.center[1];
+      out[2] = this.boundingSphere.center[2];
+      out[3] = this.boundingSphere.radius;
+      return true;
+    }
+
+    /** Carbon EveChildCloud2::GetLocalToWorldTransform (cpp:232-235); the
+     * optional out follows the EveChildContainer copy-out shape. */
+    GetLocalToWorldTransform(out = null) {
+      if (out) {
+        return mat4.copy(out, this.worldTransform);
+      }
+      return this.worldTransform;
     }
 
     /** Carbon EveChildCloud2::IsVisible (cpp:837-852): display + one-arg
@@ -556,10 +577,12 @@ new class extends _identity {
       for (let i = 0; i < 4; ++i) {
         this.depthSlices[i] = sceneInformation.depthSlices?.[i] ?? 0;
       }
-      if (mat4.invert(INV_SCRATCH, this.worldTransform)) {
-        TransformNormal(SUN_SCRATCH, sceneInformation.sunDirection, INV_SCRATCH);
-        vec3.normalize(this.localSunDirection, SUN_SCRATCH);
-      }
+
+      // Carbon's one-arg Inverse returns the INPUT unchanged on a singular
+      // matrix (math Matrix.cpp:12-16) and the recompute still runs - mirrored.
+      const inverse = mat4.invert(INV_SCRATCH, this.worldTransform) ?? this.worldTransform;
+      TransformNormal(SUN_SCRATCH, sceneInformation.sunDirection, inverse);
+      vec3.normalize(this.localSunDirection, SUN_SCRATCH);
       if (vec3.dot(this.prevSunDirection, this.localSunDirection) < Math.cos(5.0 / 180.0)) {
         vec3.copy(this.prevSunDirection, this.localSunDirection);
         this.MarkLightmapDirty(true);
@@ -581,9 +604,15 @@ new class extends _identity {
       if (!this.display || !this.effect || !this.castShadows) {
         return false;
       }
+      // cpp:766-776 - the "Shadow" technique must exist. The JS shader duck
+      // (Tr2Shader.GetTechniqueIndex) returns an INDEX: -1 for missing, 0..n
+      // for found - 0 is a valid technique (compare < 0, never truthiness).
       const shader = this.effect.GetShaderStateInterface?.();
-      if (shader?.GetTechniqueIndex && !shader.GetTechniqueIndex("Shadow")) {
-        return false;
+      if (shader?.GetTechniqueIndex) {
+        const technique = shader.GetTechniqueIndex("Shadow");
+        if (technique === null || technique === undefined || technique < 0) {
+          return false;
+        }
       }
       const batch = new Tr2RenderBatch();
       batch.SetMaterial(this.effect);
@@ -749,30 +778,36 @@ new class extends _identity {
       // cpp:546 - packing transpose of a single matrix.
       data.world = mat4.transpose(mat4.create(), w);
 
-      // cpp:547 - Transpose(Inverse(reversed-depth projection)); renderer global.
+      // cpp:547 - Transpose(Inverse(reversed-depth projection)); renderer
+      // global (identity when the context duck is absent; a singular input
+      // mirrors Carbon's Inverse-returns-input).
       data.projectionInv = mat4.create();
       const projection = renderContext?.GetReversedDepthProjectionTransform?.();
-      if (projection && mat4.invert(data.projectionInv, projection)) {
+      if (projection) {
+        if (!mat4.invert(data.projectionInv, projection)) {
+          mat4.copy(data.projectionInv, projection);
+        }
         mat4.transpose(data.projectionInv, data.projectionInv);
-      } else {
-        mat4.identity(data.projectionInv);
       }
 
       // cpp:548-549 - Inverse(world * view), COMPOSITION: operands swap.
+      // Singular product: Carbon's Inverse returns the input unchanged
+      // (math Matrix.cpp:12-16) - mirrored.
       const view = renderContext?.GetViewTransform?.() ?? IDENTITY;
       mat4.multiply(WV_SCRATCH, view, w);
       data.worldViewInv = mat4.create();
-      if (mat4.invert(data.worldViewInv, WV_SCRATCH)) {
-        mat4.transpose(data.worldViewInv, data.worldViewInv);
-      } else {
-        mat4.identity(data.worldViewInv);
+      if (!mat4.invert(data.worldViewInv, WV_SCRATCH)) {
+        mat4.copy(data.worldViewInv, WV_SCRATCH);
       }
+      mat4.transpose(data.worldViewInv, data.worldViewInv);
 
-      // cpp:550 - TransformCoord(viewPosition, Inverse(world)) - single matrix.
+      // cpp:550 - TransformCoord(viewPosition, Inverse(world)) - single matrix;
+      // same singular-input mirror.
       data.viewPosition = vec3.create();
       const viewPosition = renderContext?.GetViewPosition?.();
-      if (viewPosition && mat4.invert(INV_SCRATCH, w)) {
-        vec3.transformMat4(data.viewPosition, viewPosition, INV_SCRATCH);
+      if (viewPosition) {
+        const inverseWorld = mat4.invert(INV_SCRATCH, w) ?? w;
+        vec3.transformMat4(data.viewPosition, viewPosition, inverseWorld);
       }
 
       // cpp:551 - packing transpose (stamped by SetupShadowFrustum).

@@ -419,24 +419,49 @@ export class EveChildCloud2 extends EveEntity
     SHIFT_SCRATCH[0] = (originShift ? -originShift[0] : 0) + w[12] - prevX;
     SHIFT_SCRATCH[1] = (originShift ? -originShift[1] : 0) + w[13] - prevY;
     SHIFT_SCRATCH[2] = (originShift ? -originShift[2] : 0) + w[14] - prevZ;
-    if (mat4.invert(INV_SCRATCH, w))
+    // Carbon's one-arg Inverse returns the INPUT unchanged on a singular
+    // matrix (math Matrix.cpp:12-16) and the scroll still runs - mirrored.
+    const inverse = mat4.invert(INV_SCRATCH, w) ?? w;
+    TransformNormal(SHIFT_SCRATCH, SHIFT_SCRATCH, inverse);
+    const offsets = [this.mapOffset0, this.mapOffset1, this.mapOffset2];
+    const tilings = [this.textureTiling, this.detailTiling1, this.detailTiling2];
+    for (let i = 0; i < 3; ++i)
     {
-      TransformNormal(SHIFT_SCRATCH, SHIFT_SCRATCH, INV_SCRATCH);
-      const offsets = [this.mapOffset0, this.mapOffset1, this.mapOffset2];
-      const tilings = [this.textureTiling, this.detailTiling1, this.detailTiling2];
-      for (let i = 0; i < 3; ++i)
-      {
-        const offset = offsets[i];
-        const tiling = tilings[i];
-        offset[0] = (offset[0] + SHIFT_SCRATCH[0] * tiling[0]) % 1;
-        offset[1] = (offset[1] + SHIFT_SCRATCH[1] * tiling[1]) % 1;
-        // Carbon bug preserved verbatim: .z scrolls by mapTiling.y (cpp:703).
-        offset[2] = (offset[2] + SHIFT_SCRATCH[2] * tiling[1]) % 1;
-      }
+      const offset = offsets[i];
+      const tiling = tilings[i];
+      offset[0] = (offset[0] + SHIFT_SCRATCH[0] * tiling[0]) % 1;
+      offset[1] = (offset[1] + SHIFT_SCRATCH[1] * tiling[1]) % 1;
+      // Carbon bug preserved verbatim: .z scrolls by mapTiling.y (cpp:703).
+      offset[2] = (offset[2] + SHIFT_SCRATCH[2] * tiling[1]) % 1;
     }
 
     this.adjustedMinScreenSize = this.minScreenSize * (updateContext?.GetLodFactor?.() ?? 1);
     this.hasUpdated = true;
+  }
+
+  /** Carbon EveChildCloud2::GetBoundingSphere (cpp:226-230): the packed
+   * (center, radius) cloud sphere, unconditionally true. IEveSpaceObjectChild
+   * override - parent bounds unions consume it optional-chained. */
+  @impl.implemented
+  GetBoundingSphere(out = new Float32Array(4), _query = 0)
+  {
+    out[0] = this.boundingSphere.center[0];
+    out[1] = this.boundingSphere.center[1];
+    out[2] = this.boundingSphere.center[2];
+    out[3] = this.boundingSphere.radius;
+    return true;
+  }
+
+  /** Carbon EveChildCloud2::GetLocalToWorldTransform (cpp:232-235); the
+   * optional out follows the EveChildContainer copy-out shape. */
+  @impl.implemented
+  GetLocalToWorldTransform(out = null)
+  {
+    if (out)
+    {
+      return mat4.copy(out, this.worldTransform);
+    }
+    return this.worldTransform;
   }
 
   /** Carbon EveChildCloud2::IsVisible (cpp:837-852): display + one-arg
@@ -676,11 +701,11 @@ export class EveChildCloud2 extends EveEntity
       this.depthSlices[i] = sceneInformation.depthSlices?.[i] ?? 0;
     }
 
-    if (mat4.invert(INV_SCRATCH, this.worldTransform))
-    {
-      TransformNormal(SUN_SCRATCH, sceneInformation.sunDirection, INV_SCRATCH);
-      vec3.normalize(this.localSunDirection, SUN_SCRATCH);
-    }
+    // Carbon's one-arg Inverse returns the INPUT unchanged on a singular
+    // matrix (math Matrix.cpp:12-16) and the recompute still runs - mirrored.
+    const inverse = mat4.invert(INV_SCRATCH, this.worldTransform) ?? this.worldTransform;
+    TransformNormal(SUN_SCRATCH, sceneInformation.sunDirection, inverse);
+    vec3.normalize(this.localSunDirection, SUN_SCRATCH);
     if (vec3.dot(this.prevSunDirection, this.localSunDirection) < Math.cos(5.0 / 180.0))
     {
       vec3.copy(this.prevSunDirection, this.localSunDirection);
@@ -715,10 +740,17 @@ export class EveChildCloud2 extends EveEntity
     {
       return false;
     }
+    // cpp:766-776 - the "Shadow" technique must exist. The JS shader duck
+    // (Tr2Shader.GetTechniqueIndex) returns an INDEX: -1 for missing, 0..n
+    // for found - 0 is a valid technique (compare < 0, never truthiness).
     const shader = this.effect.GetShaderStateInterface?.();
-    if (shader?.GetTechniqueIndex && !shader.GetTechniqueIndex("Shadow"))
+    if (shader?.GetTechniqueIndex)
     {
-      return false;
+      const technique = shader.GetTechniqueIndex("Shadow");
+      if (technique === null || technique === undefined || technique < 0)
+      {
+        return false;
+      }
     }
 
     const batch = new Tr2RenderBatch();
@@ -917,37 +949,40 @@ export class EveChildCloud2 extends EveEntity
     // cpp:546 - packing transpose of a single matrix.
     data.world = mat4.transpose(mat4.create(), w);
 
-    // cpp:547 - Transpose(Inverse(reversed-depth projection)); renderer global.
+    // cpp:547 - Transpose(Inverse(reversed-depth projection)); renderer
+    // global (identity when the context duck is absent; a singular input
+    // mirrors Carbon's Inverse-returns-input).
     data.projectionInv = mat4.create();
     const projection = renderContext?.GetReversedDepthProjectionTransform?.();
-    if (projection && mat4.invert(data.projectionInv, projection))
+    if (projection)
     {
+      if (!mat4.invert(data.projectionInv, projection))
+      {
+        mat4.copy(data.projectionInv, projection);
+      }
       mat4.transpose(data.projectionInv, data.projectionInv);
-    }
-    else
-    {
-      mat4.identity(data.projectionInv);
     }
 
     // cpp:548-549 - Inverse(world * view), COMPOSITION: operands swap.
+    // Singular product: Carbon's Inverse returns the input unchanged
+    // (math Matrix.cpp:12-16) - mirrored.
     const view = renderContext?.GetViewTransform?.() ?? IDENTITY;
     mat4.multiply(WV_SCRATCH, view, w);
     data.worldViewInv = mat4.create();
-    if (mat4.invert(data.worldViewInv, WV_SCRATCH))
+    if (!mat4.invert(data.worldViewInv, WV_SCRATCH))
     {
-      mat4.transpose(data.worldViewInv, data.worldViewInv);
+      mat4.copy(data.worldViewInv, WV_SCRATCH);
     }
-    else
-    {
-      mat4.identity(data.worldViewInv);
-    }
+    mat4.transpose(data.worldViewInv, data.worldViewInv);
 
-    // cpp:550 - TransformCoord(viewPosition, Inverse(world)) - single matrix.
+    // cpp:550 - TransformCoord(viewPosition, Inverse(world)) - single matrix;
+    // same singular-input mirror.
     data.viewPosition = vec3.create();
     const viewPosition = renderContext?.GetViewPosition?.();
-    if (viewPosition && mat4.invert(INV_SCRATCH, w))
+    if (viewPosition)
     {
-      vec3.transformMat4(data.viewPosition, viewPosition, INV_SCRATCH);
+      const inverseWorld = mat4.invert(INV_SCRATCH, w) ?? w;
+      vec3.transformMat4(data.viewPosition, viewPosition, inverseWorld);
     }
 
     // cpp:551 - packing transpose (stamped by SetupShadowFrustum).
