@@ -10,6 +10,12 @@ import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBoosterSet2Renderable } from "./EveBoosterSet2Renderable.js";
 import { EveComponentType } from "./EveComponentTypes.js";
 
+/** Carbon's process-global booster light-noise table (EveBoosterSet2.cpp:
+ * 44-46, lazily filled with rand()/RAND_MAX in the ctor path cpp:700-707). */
+const LIGHT_NOISE_SIZE = 128;
+const LIGHT_NOISE = new Float32Array(LIGHT_NOISE_SIZE);
+let LIGHT_NOISE_INITIALIZED = false;
+
 
 @type.define({ className: "EveBoosterSet2Item", family: "eve/attachment/boosters" })
 export class EveBoosterSet2Item extends CjsModel
@@ -610,16 +616,84 @@ export class EveBoosterSet2 extends EveEntity
     }
   }
 
-  /** Carbon EveBoosterSet2::GetLights (cpp:1287-1330): booster/warp light
-   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
-   * submission is unported); presence satisfies the "LightOwner" duck
-   * contract. */
+  /** Carbon EveBoosterSet2::GetLights (cpp:1287-1319): NO display gate
+   * (registration is unconditional too) - the effective gates are both light
+   * radii <= 0 (cpp:1289) and per-renderable overallIntensity <= 0
+   * (cpp:1296). Per renderable: warp blend of radius factor and color
+   * (clamped warpIntensity, cpp:1301-1304 - the COLOR blend itself is
+   * unclamped 4-component lerp); per single booster: the shared 128-entry
+   * random noise table drives a flicker of 1 +/- amplitude around the
+   * interpolated noise (cpp:1308-1312), and AddPointLight submits the
+   * booster light position under the renderable's parent transform
+   * (TransformCoord - single matrix, no composition) with radius *
+   * radiusFactor and color * flicker (the 3-arg overload: innerRadius 0,
+   * FLAG_DEFAULT - manager-side). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.adapted
+  @impl.reason("Tr2Renderer::GetAnimationTime relocates onto the light-manager duck (GetAnimationTime, default 0); the g_lightNoise table is module state filled with Math.random (Carbon fills it with rand()/RAND_MAX - random either way).")
+  GetLights(lightManager)
   {
-    throw new Error("EveBoosterSet2.GetLights is not implemented in CarbonEngineJS.");
+    if (this.lightRadius <= 0 && this.lightWarpRadius <= 0)
+    {
+      return;
+    }
+
+    if (!LIGHT_NOISE_INITIALIZED)
+    {
+      LIGHT_NOISE_INITIALIZED = true;
+      for (let index = 0; index < LIGHT_NOISE_SIZE; index++)
+      {
+        LIGHT_NOISE[index] = Math.random();
+      }
+    }
+
+    const time = lightManager?.GetAnimationTime?.() ?? 0;
+    const position = EveBoosterSet2.#lightPositionScratch;
+    const color = EveBoosterSet2.#lightColorScratch;
+
+    for (const renderable of this.instances)
+    {
+      if (!renderable || renderable.overallIntensity <= 0)
+      {
+        continue;
+      }
+
+      const warpIntensity = Math.min(Math.max(this.warpIntensity, 0), 1);
+      let radiusFactor = this.lightRadius * (1 - warpIntensity) + this.lightWarpRadius * warpIntensity;
+      radiusFactor *= renderable.overallIntensity;
+      for (let channel = 0; channel < 4; channel++)
+      {
+        color[channel] = this.lightColor[channel] * (1 - warpIntensity) + this.lightWarpColor[channel] * warpIntensity;
+      }
+      const transform = renderable.GetParentTransform?.();
+      if (!transform)
+      {
+        continue;
+      }
+
+      for (const booster of this.#singleBoosters)
+      {
+        const phase = (booster.lightPhase + time) * this.lightFlickerFrequency;
+        const p0 = LIGHT_NOISE[Math.trunc(phase) % LIGHT_NOISE_SIZE];
+        const p1 = LIGHT_NOISE[(Math.trunc(phase) + 1) % LIGHT_NOISE_SIZE];
+        const t = phase - Math.floor(phase);
+        const flicker = 1 + this.lightFlickerAmplitude * 2 * (p0 * (1 - t) + p1 * t) - this.lightFlickerAmplitude;
+        vec3.transformMat4(position, booster.lightPosition, transform);
+        lightManager?.AddPointLight?.(
+          position,
+          booster.lightRadius * radiusFactor,
+          vec4.set(EveBoosterSet2.#flickerColorScratch,
+            color[0] * flicker, color[1] * flicker, color[2] * flicker, color[3] * flicker)
+        );
+      }
+    }
   }
+
+  static #lightPositionScratch = vec3.create();
+
+  static #lightColorScratch = vec4.create();
+
+  static #flickerColorScratch = vec4.create();
 
   static #CreateFlares(owner, booster)
   {

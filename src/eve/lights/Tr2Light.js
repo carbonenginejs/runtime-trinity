@@ -6,6 +6,13 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, schema, type } from "@carbonenginejs/core-types/schema";
 import { PerLightShadowSetting } from "../../generated/eve/lights/enums.js";
 import { createCjsLightDataView, setCjsLightDataOwnerValues } from "./CjsLightData.js";
+import {
+  AreLightFlagsValid,
+  AsPerPointLightData,
+  AsPerSpotLightData,
+  CreateLightRecord,
+  MatrixCopyFrom3x4
+} from "./lightConversion.js";
 
 
 @type.define({ className: "Tr2Light", family: "eve/lights" })
@@ -108,6 +115,78 @@ export class Tr2Light extends CjsModel
     return this.brightnessMultiplier;
   }
 
+  /** Carbon Tr2Light::SetBoneMatrix (Tr2Light.cpp:98-106): only when
+   * 0 <= boneIndex < boneCount (note >= 0, unlike the packed sets' > 0 -
+   * bone 0 CAN drive a Tr2Light) - the Float4x3 bone is unpacked over an
+   * identity (column-stride, MatrixUtils.cpp:81-96). QUIRK: on a non-match
+   * the previous boneTransform STAYS (sticky, identity initially) - it is
+   * not reset per call. `bones` is a flat Float32Array, stride 12. */
+  @carbon.method
+  @impl.implemented
+  SetBoneMatrix(bones, boneCount)
+  {
+    const boneIndex = this.lightData.boneIndex ?? -1;
+    if (bones && boneIndex >= 0 && boneIndex < boneCount)
+    {
+      mat4.identity(this.boneTransform);
+      MatrixCopyFrom3x4(this.boneTransform, bones, boneIndex);
+    }
+  }
+
+  /** Carbon Tr2Light::AddLight (Tr2Light.cpp:119-149): dynamic update hook,
+   * the ONLY entity-side flag validity check in the light family
+   * (AreLightFlagsValid, cpp:126-129), the bone refresh, then
+   * lightTransform = boneTransform * transform - Carbon row-vector, bone
+   * first, so the gl-matrix operands SWAP (cpp:132) - and the point/spot
+   * conversion submitted to the duck manager. QUIRKS: UNDEFINED_LIGHT
+   * submits NOTHING (a deserialized base light is silently inert); Carbon's
+   * profileIndex here is GetTextureIndex() + 1 while the packed sets use no
+   * +1 - moot in JS (the profile rides the record by reference) but
+   * recorded. The record is scratch; the manager must copy. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The profile-index flag packing and half-float narrowing are renderer-backend concerns (record carries the profile by reference); the Perlin brightness flicker awaits the frame-clock seam (see lightConversion.js).")
+  AddLight(lightManager, transform, scale, bones = null, boneCount = 0)
+  {
+    if (this.isDynamic)
+    {
+      this.Update?.();
+    }
+    if (!AreLightFlagsValid(this.lightData.flags ?? 0))
+    {
+      return;
+    }
+
+    this.SetBoneMatrix(bones, boneCount);
+    // Carbon (row-vector): m_boneTransform * transform - bone first.
+    mat4.multiply(Tr2Light.#lightTransformScratch, transform, this.boneTransform);
+
+    const features = Tr2Light.#featuresScratch;
+    features.parentBrightness = this.brightnessMultiplier;
+    features.parentScale = scale;
+
+    const record = Tr2Light.#lightRecord;
+    if (this.type === Tr2Light.POINT_LIGHT)
+    {
+      AsPerPointLightData(record, this.lightData, Tr2Light.#lightTransformScratch, features,
+        lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0);
+    }
+    else if (this.type === Tr2Light.SPOT_LIGHT)
+    {
+      AsPerSpotLightData(record, this.lightData, Tr2Light.#lightTransformScratch, features,
+        lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0);
+    }
+    else
+    {
+      return;
+    }
+    record.lightType = this.type;
+    record.lightData = this.lightData;
+    record.lightProfile = this.lightProfile;
+    record.owner = this;
+    lightManager?.AddLight?.(record);
+  }
+
   /** Carbon Tr2Light::GetLight (Tr2Light.cpp:152-163): position and radius
    * straight from the light data, color = authored rgb * brightness. Carbon's
    * three reference out-params become one out record (JS out-params go last
@@ -145,5 +224,11 @@ export class Tr2Light extends CjsModel
   static LIGHT_TYPE = Tr2Light.LightType;
 
   static PerLightShadowSetting = PerLightShadowSetting;
+
+  static #lightTransformScratch = mat4.create();
+
+  static #featuresScratch = { parentBrightness: 1, parentScale: 1 };
+
+  static #lightRecord = CreateLightRecord();
 
 }

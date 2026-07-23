@@ -1072,15 +1072,27 @@ export class EveChildMesh extends EveChildTransform
     }
   }
 
-  /** Carbon EveChildMesh::GetLights (cpp:1638-1667): submits m_lights to the
-   * light manager. Awaits the LightOwner consumption pass (Tr2LightManager
-   * submission is unported); presence satisfies the "LightOwner" duck
-   * contract. */
+  /** Carbon EveChildMesh::GetLights (cpp:1638-1652): BOTH gates (empty
+   * lights and display, cpp:1640 - unlike EveSpaceObject2's display-only),
+   * then per light AddLight(manager, worldTransform, 1, bones, boneCount)
+   * FOLLOWED by SetBrightnessMultiplier(m_activationStrength) - the
+   * one-frame-lag order is contract (the submission uses the multiplier
+   * stamped on the previous pass; the first pass uses the Tr2Light default
+   * 1). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.adapted
+  @impl.reason("GetBoneTransforms (cpp:1285-1307) rides the granny animation updater - awaits the JS animation seam; (null, 0) is passed per the file's UpdateAsyncronous convention.")
+  GetLights(lightManager)
   {
-    throw new Error("EveChildMesh.GetLights is not implemented in CarbonEngineJS.");
+    if (!this.lights.length || !this.display)
+    {
+      return;
+    }
+    for (const light of this.lights)
+    {
+      light?.AddLight?.(lightManager, this.worldTransform, 1, null, 0);
+      light?.SetBrightnessMultiplier?.(this.#activationStrength);
+    }
   }
 
   /** Carbon EveChildMesh::GetPickingBatches (cpp:862-889) maps Tr2PickTypes

@@ -1,9 +1,13 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveSpriteLineSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveSpriteLineSet.cpp
+import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveSpriteLight } from "./EveSpriteLight.js";
 import { EveComponentType } from "./EveComponentTypes.js";
+import { Blink } from "./EveSpaceObjectAttachmentUtils.js";
+import { Tr2Light } from "./lights/Tr2Light.js";
+import { AsPerPointLightData, CreateLightRecord, MatrixCopyFrom3x4 } from "./lights/lightConversion.js";
 
 
 @type.define({ className: "EveSpriteLineSet", family: "eve/attachment/sprites" })
@@ -41,6 +45,10 @@ export class EveSpriteLineSet extends EveEntity
   lights = [];
 
   #rebuildRevision = 0;
+
+  /** Carbon m_activationStrength (ctor default 0, EveSpriteLineSet.cpp:26 -
+   * NOT 1: packed-set lights are BLACK until UpdateLights runs). */
+  #activationStrength = 0;
 
   @carbon.method
   @impl.adapted
@@ -105,13 +113,68 @@ export class EveSpriteLineSet extends EveEntity
     }
   }
 
-  /** Carbon EveSpriteLineSet::GetLights (cpp:358-375): per-light submission.
-   * Awaits the LightOwner consumption pass (Tr2LightManager submission is
-   * unported); presence satisfies the "LightOwner" duck contract. */
+  /** Carbon EveSpriteLineSet::UpdateLights (cpp:152-171): byte-identical to
+   * EveSpriteSet's - boneIndex > 0 only (bone 0 never drives a packed-set
+   * light), column-stride Float4x3 unpack, 4th column zeroed with [15] = 1,
+   * then boneMatrix *= parentTransform - Carbon row-vector, bone FIRST: the
+   * gl-matrix operands SWAP; else boneMatrix = parentTransform. Stamps the
+   * activation strength (boosterGain unused). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.implemented
+  UpdateLights(parentTransform, bones, boneCount, activationStrength, _boosterGain = 0)
   {
-    throw new Error("EveSpriteLineSet.GetLights is not implemented in CarbonEngineJS.");
+    for (const light of this.lights)
+    {
+      const boneIndex = light.lightData.boneIndex;
+      if (bones && boneIndex > 0 && boneIndex < boneCount)
+      {
+        MatrixCopyFrom3x4(light.boneMatrix, bones, boneIndex);
+        light.boneMatrix[3] = 0;
+        light.boneMatrix[7] = 0;
+        light.boneMatrix[11] = 0;
+        light.boneMatrix[15] = 1;
+        // Carbon (row-vector): boneMatrix * parentTransform - bone first.
+        mat4.multiply(light.boneMatrix, parentTransform, light.boneMatrix);
+      }
+      else
+      {
+        mat4.copy(light.boneMatrix, parentTransform);
+      }
+    }
+    this.#activationStrength = Number(activationStrength) || 0;
   }
+
+  /** Carbon EveSpriteLineSet::GetLights (cpp:358-373): byte-identical to
+   * EveSpriteSet's (shared EveSpriteLight items) - point conversion on the
+   * bone matrix, Blink scales radius + innerRadius after conversion, no
+   * gates. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Tr2Renderer::GetAnimationTime relocates onto the light-manager duck (GetAnimationTime, default 0); profile-index packing is by-reference per lightConversion.js.")
+  GetLights(lightManager)
+  {
+    const features = EveSpriteLineSet.#features;
+    features.parentBrightness = this.#activationStrength;
+    features.parentScale = 1;
+    const time = lightManager?.GetAnimationTime?.() ?? 0;
+    const quality = lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0;
+    const record = EveSpriteLineSet.#lightRecord;
+
+    for (const light of this.lights)
+    {
+      AsPerPointLightData(record, light.lightData, light.boneMatrix, features, quality);
+      const blinkScale = Blink(time, light.blinkRate, light.blinkPhase, light.minScale, light.maxScale);
+      record.radius *= blinkScale;
+      record.innerRadius *= blinkScale;
+      record.lightType = Tr2Light.POINT_LIGHT;
+      record.lightData = light.lightData;
+      record.lightProfile = light.lightProfile;
+      record.owner = this;
+      lightManager?.AddLight?.(record);
+    }
+  }
+
+  static #features = { parentBrightness: 0, parentScale: 1 };
+
+  static #lightRecord = CreateLightRecord();
 }

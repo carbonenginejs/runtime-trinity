@@ -1,9 +1,21 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.cpp
+import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EvePlaneLight } from "./EvePlaneLight.js";
 import { EveComponentType } from "./EveComponentTypes.js";
+import { Fade, Saturate } from "./EveSpaceObjectAttachmentUtils.js";
+import { Tr2Light } from "./lights/Tr2Light.js";
+import {
+  AsPerPointLightData,
+  CopyLightData,
+  CreateLightDataScratch,
+  CreateLightRecord,
+  MatrixCopyFrom3x4
+} from "./lights/lightConversion.js";
+
+const WHITE = new Float32Array([1, 1, 1, 1]);
 
 
 @type.define({ className: "EvePlaneSet", family: "eve/attachment/planes" })
@@ -64,6 +76,10 @@ export class EvePlaneSet extends EveEntity
   @type.objectRef("TriTextureParameter")
   maskMapParameter = null;
   #rebuildRevision = 0;
+
+  /** Carbon m_activationStrength (ctor 0, EvePlaneSet.cpp:76). Lights are
+   * BLACK until UpdateLights runs. */
+  #activationStrength = 0;
 
   @carbon.method
   @impl.adapted
@@ -177,14 +193,109 @@ export class EvePlaneSet extends EveEntity
     }
   }
 
-  /** Carbon EvePlaneSet::GetLights (cpp:544-570): average-color light
-   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
-   * submission is unported); presence satisfies the "LightOwner" duck
-   * contract. */
+  /** Carbon EvePlaneSet::UpdateLights (cpp:248-267): the shared packed-set
+   * bone pattern (boneIndex > 0 only; column-stride Float4x3 unpack; 4th
+   * column zeroed, [15] = 1; boneMatrix *= parentTransform - Carbon
+   * row-vector, bone FIRST: gl operands SWAP; else copy the parent). Stamps
+   * the activation strength (boosterGain unused by planes). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.implemented
+  UpdateLights(parentTransform, bones, boneCount, activationStrength, _boosterGain = 0)
   {
-    throw new Error("EvePlaneSet.GetLights is not implemented in CarbonEngineJS.");
+    for (const light of this.lights)
+    {
+      const boneIndex = light.lightData.boneIndex;
+      if (bones && boneIndex > 0 && boneIndex < boneCount)
+      {
+        MatrixCopyFrom3x4(light.boneMatrix, bones, boneIndex);
+        light.boneMatrix[3] = 0;
+        light.boneMatrix[7] = 0;
+        light.boneMatrix[11] = 0;
+        light.boneMatrix[15] = 1;
+        // Carbon (row-vector): boneMatrix * parentTransform - bone first.
+        mat4.multiply(light.boneMatrix, parentTransform, light.boneMatrix);
+      }
+      else
+      {
+        mat4.copy(light.boneMatrix, parentTransform);
+      }
+    }
+    this.#activationStrength = Number(activationStrength) || 0;
   }
+
+  /** Carbon EvePlaneSet::GetAverageColor (cpp:499-528): the componentwise
+   * product of the four texture parameters' average colors, each defaulting
+   * to white when the map or its resource is missing. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The texture average color is a resource capability - read as a GetAverageColor duck on the parameter's resource, white when absent.")
+  GetAverageColor(out = new Float32Array(4))
+  {
+    const layer1 = EvePlaneSet.#MapAverageColor(this.layerMap1Parameter);
+    const layer2 = EvePlaneSet.#MapAverageColor(this.layerMap2Parameter);
+    const image = EvePlaneSet.#MapAverageColor(this.imageMapParameter);
+    const mask = EvePlaneSet.#MapAverageColor(this.maskMapParameter);
+    for (let channel = 0; channel < 4; channel++)
+    {
+      out[channel] = layer1[channel] * layer2[channel] * image[channel] * mask[channel];
+    }
+    return out;
+  }
+
+  /** Carbon EvePlaneSet::GetLights (cpp:544-568): parentBrightness set once;
+   * average color computed only when lights exist (cpp:550-553; zero
+   * otherwise - moot, the loop is empty); the loop iterates BY VALUE
+   * (cpp:555-557 `auto light` + lightDataCopy) so the stored items are never
+   * mutated - a scratch copy carries: color = authored * averageColor
+   * componentwise, then Saturate (extrapolating above 1), then brightness *=
+   * Fade(fadeType, ...) (cpp:558-564); point conversion on the bone matrix. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Tr2Renderer::GetAnimationTime relocates onto the light-manager duck (GetAnimationTime, default 0); the texture average colors and profile packing follow the adapted ducks above.")
+  GetLights(lightManager)
+  {
+    const features = EvePlaneSet.#features;
+    features.parentBrightness = this.#activationStrength;
+    features.parentScale = 1;
+    const averageColor = EvePlaneSet.#averageColorScratch;
+    if (this.lights.length > 0)
+    {
+      this.GetAverageColor(averageColor);
+    }
+    const time = lightManager?.GetAnimationTime?.() ?? 0;
+    const quality = lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0;
+    const record = EvePlaneSet.#lightRecord;
+    const dataCopy = EvePlaneSet.#lightDataScratch;
+
+    for (const light of this.lights)
+    {
+      CopyLightData(dataCopy, light.lightData);
+      dataCopy.color[0] *= averageColor[0];
+      dataCopy.color[1] *= averageColor[1];
+      dataCopy.color[2] *= averageColor[2];
+      dataCopy.color[3] *= averageColor[3];
+      Saturate(dataCopy.color, dataCopy.color, light.saturation);
+      dataCopy.brightness *= Fade(time, light.fadeType, light.blinkRate, light.blinkPhase);
+      AsPerPointLightData(record, dataCopy, light.boneMatrix, features, quality);
+      record.lightType = Tr2Light.POINT_LIGHT;
+      record.lightData = light.lightData;
+      record.lightProfile = light.lightProfile;
+      record.owner = this;
+      lightManager?.AddLight?.(record);
+    }
+  }
+
+  static #MapAverageColor(parameter)
+  {
+    const average = parameter?.GetResource?.()?.GetAverageColor?.();
+    return average ?? WHITE;
+  }
+
+  static #features = { parentBrightness: 0, parentScale: 1 };
+
+  static #lightRecord = CreateLightRecord();
+
+  static #lightDataScratch = CreateLightDataScratch();
+
+  static #averageColorScratch = new Float32Array(4);
 }

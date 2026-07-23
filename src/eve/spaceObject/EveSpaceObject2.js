@@ -1215,15 +1215,28 @@ export class EveSpaceObject2 extends EveEntity
     return this.GetPerObjectData(accumulator);
   }
 
-  /** Carbon EveSpaceObject2::GetLights (cpp:3536-3560): submits m_lights to
-   * the light manager. Awaits the LightOwner consumption pass
-   * (Tr2LightManager submission is unported); registration presence is the
-   * "LightOwner" duck contract. */
+  /** Carbon EveSpaceObject2::GetLights (cpp:3536-3555): display gate only
+   * (no lights-empty early-out, unlike EveChildMesh), then per light
+   * AddLight(manager, worldTransform, 1, bones, boneCount) FOLLOWED by
+   * SetBrightnessMultiplier(m_activationStrength) - the order is contract:
+   * the submission uses the multiplier stamped on the PREVIOUS pass (first
+   * pass uses the Tr2Light default 1) - one frame of activation-strength
+   * lag, preserved verbatim. cpp:3554's dead `DisplayChildren()` local is
+   * not ported. */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.adapted
+  @impl.reason("The granny bone list (Tr2GrannyAnimationUtils::GetBoneList, cpp:3545-3547) awaits the JS animation seam - (null, 0) is passed, the established EveChildMesh convention.")
+  GetLights(lightManager)
   {
-    throw new Error("EveSpaceObject2.GetLights is not implemented in CarbonEngineJS.");
+    if (!this.display)
+    {
+      return;
+    }
+    for (const light of this.lights)
+    {
+      light?.AddLight?.(lightManager, this.worldTransform, 1, null, 0);
+      light?.SetBrightnessMultiplier?.(this.activationStrength);
+    }
   }
 
   /** Carbon EveSpaceObject2::IsCastingShadow (cpp:1940-1990) culls against the

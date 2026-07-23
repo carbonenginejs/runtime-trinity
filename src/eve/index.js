@@ -34,6 +34,7 @@ export * from "./EveSpotlightSet.js";
 export * from "./EveSpriteLight.js";
 export * from "./EveSpriteLineSet.js";
 export * from "./EveSpriteLineSetItem.js";
+export * from "./EveSpaceObjectAttachmentUtils.js";
 export * from "./EveSpriteSet.js";
 export * from "./EveSpherePinPerObjectData.js";
 export * from "./EveThrottleable.js";

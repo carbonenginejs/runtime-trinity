@@ -1,5 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveBannerSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveBannerSet.cpp
+import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
@@ -7,6 +8,15 @@ import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBannerItem } from "./EveBannerItem.js";
 import { EveBannerLight } from "./EveBannerLight.js";
 import { EveComponentType } from "./EveComponentTypes.js";
+import { Saturate } from "./EveSpaceObjectAttachmentUtils.js";
+import { Tr2Light } from "./lights/Tr2Light.js";
+import {
+  AsPerPointLightData,
+  CopyLightData,
+  CreateLightDataScratch,
+  CreateLightRecord,
+  MatrixCopyFrom3x4
+} from "./lights/lightConversion.js";
 
 
 @type.define({ className: "EveBannerSet", family: "eve/attachment/banners" })
@@ -49,6 +59,10 @@ export class EveBannerSet extends EveEntity
   primaryTextureParameter = null;
 
   #rebuildRevision = 0;
+
+  /** Carbon m_activationStrength (ctor 0, EveBannerSet.cpp:94). Lights are
+   * BLACK until UpdateLights runs. */
+  #activationStrength = 0;
 
   @carbon.method
   @impl.adapted
@@ -142,16 +156,110 @@ export class EveBannerSet extends EveEntity
     }
   }
 
-  /** Carbon EveBannerSet::GetLights (cpp:466-497): average-color light
-   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
-   * submission is unported); presence satisfies the "LightOwner" duck
-   * contract. */
+  /** Carbon EveBannerSet::UpdateLights (cpp:164-183): the shared packed-set
+   * bone pattern (boneIndex > 0 only; column-stride Float4x3 unpack; 4th
+   * column zeroed, [15] = 1; boneMatrix *= parentTransform - Carbon
+   * row-vector, bone FIRST: gl operands SWAP; else copy the parent). Stamps
+   * the activation strength (boosterGain unused by banners). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.implemented
+  UpdateLights(parentTransform, bones, boneCount, activationStrength, _boosterGain = 0)
   {
-    throw new Error("EveBannerSet.GetLights is not implemented in CarbonEngineJS.");
+    for (const light of this.lights)
+    {
+      const boneIndex = light.lightData.boneIndex;
+      if (bones && boneIndex > 0 && boneIndex < boneCount)
+      {
+        MatrixCopyFrom3x4(light.boneMatrix, bones, boneIndex);
+        light.boneMatrix[3] = 0;
+        light.boneMatrix[7] = 0;
+        light.boneMatrix[11] = 0;
+        light.boneMatrix[15] = 1;
+        // Carbon (row-vector): boneMatrix * parentTransform - bone first.
+        mat4.multiply(light.boneMatrix, parentTransform, light.boneMatrix);
+      }
+      else
+      {
+        mat4.copy(light.boneMatrix, parentTransform);
+      }
+    }
+    this.#activationStrength = Number(activationStrength) || 0;
   }
+
+  /** Carbon EveBannerSet::GetAverageColor (cpp:441-455): the PRIMARY texture
+   * parameter's average color, (0,0,0,0) when the map or resource is
+   * missing (contrast EvePlaneSet's white default and four-map product). */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The texture average color is a resource capability - read as a GetAverageColor duck on the parameter's resource, zero when absent.")
+  GetAverageColor(out = new Float32Array(4))
+  {
+    const average = this.primaryTextureParameter?.GetResource?.()?.GetAverageColor?.();
+    if (average)
+    {
+      out[0] = average[0];
+      out[1] = average[1];
+      out[2] = average[2];
+      out[3] = average[3];
+    }
+    else
+    {
+      out.fill(0);
+    }
+    return out;
+  }
+
+  /** Carbon EveBannerSet::GetLights (cpp:466-491): the ONLY packed set with
+   * a display gate in GetLights (its registration is unconditional,
+   * cpp:457-464); an averageColor with zero alpha submits NOTHING (texture
+   * not loaded yet, cpp:474-477); the loop iterates BY VALUE (`auto light`,
+   * cpp:482) - the authored color is REPLACED entirely by
+   * Saturate(averageColor, saturation) on a scratch copy (cpp:484 -
+   * contrast EvePlaneSet's multiply); no blink/fade; point conversion on
+   * the bone matrix. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("The texture average color and profile packing follow the adapted ducks above.")
+  GetLights(lightManager)
+  {
+    if (!this.display || this.lights.length === 0)
+    {
+      return;
+    }
+    const averageColor = EveBannerSet.#averageColorScratch;
+    this.GetAverageColor(averageColor);
+    if (averageColor[3] === 0)
+    {
+      return;
+    }
+
+    const features = EveBannerSet.#features;
+    features.parentBrightness = this.#activationStrength;
+    features.parentScale = 1;
+    const quality = lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0;
+    const record = EveBannerSet.#lightRecord;
+    const dataCopy = EveBannerSet.#lightDataScratch;
+
+    for (const light of this.lights)
+    {
+      CopyLightData(dataCopy, light.lightData);
+      Saturate(dataCopy.color, averageColor, light.saturation);
+      AsPerPointLightData(record, dataCopy, light.boneMatrix, features, quality);
+      record.lightType = Tr2Light.POINT_LIGHT;
+      record.lightData = light.lightData;
+      record.lightProfile = light.lightProfile;
+      record.owner = this;
+      lightManager?.AddLight?.(record);
+    }
+  }
+
+  static #features = { parentBrightness: 0, parentScale: 1 };
+
+  static #lightRecord = CreateLightRecord();
+
+  static #lightDataScratch = CreateLightDataScratch();
+
+  static #averageColorScratch = new Float32Array(4);
 
   static #copyBanner(source)
   {

@@ -1,9 +1,12 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveSpotlightSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveSpotlightSet.cpp
+import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveSpotlightLight } from "./EveSpotlightLight.js";
 import { EveComponentType } from "./EveComponentTypes.js";
+import { Tr2Light } from "./lights/Tr2Light.js";
+import { AsPerSpotLightData, CreateLightRecord, MatrixCopyFrom3x4 } from "./lights/lightConversion.js";
 
 
 @type.define({ className: "EveSpotlightSet", family: "eve/attachment/spotlights" })
@@ -46,6 +49,12 @@ export class EveSpotlightSet extends EveEntity
   lights = [];
 
   #rebuildRevision = 0;
+
+  /** Carbon m_activationStrength / m_boosterGain (ctor 0 / 0,
+   * EveSpotlightSet.cpp:90-91). Lights are BLACK until UpdateLights runs. */
+  #activationStrength = 0;
+
+  #boosterGain = 0;
 
   @carbon.method
   @impl.adapted
@@ -162,13 +171,70 @@ export class EveSpotlightSet extends EveEntity
     }
   }
 
-  /** Carbon EveSpotlightSet::GetLights (cpp:536-556): per-light submission.
-   * Awaits the LightOwner consumption pass (Tr2LightManager submission is
-   * unported); presence satisfies the "LightOwner" duck contract. */
+  /** Carbon EveSpotlightSet::UpdateLights (cpp:150-170): the shared
+   * packed-set bone pattern (boneIndex > 0 only; column-stride Float4x3
+   * unpack; 4th column zeroed, [15] = 1; boneMatrix *= parentTransform -
+   * Carbon row-vector, bone FIRST: gl operands SWAP; else copy the parent).
+   * Stamps BOTH activationStrength and boosterGain (cpp:168-169). */
   @carbon.method
-  @impl.notImplemented
-  GetLights(..._args)
+  @impl.implemented
+  UpdateLights(parentTransform, bones, boneCount, activationStrength, boosterGain = 0)
   {
-    throw new Error("EveSpotlightSet.GetLights is not implemented in CarbonEngineJS.");
+    for (const light of this.lights)
+    {
+      const boneIndex = light.lightData.boneIndex;
+      if (bones && boneIndex > 0 && boneIndex < boneCount)
+      {
+        MatrixCopyFrom3x4(light.boneMatrix, bones, boneIndex);
+        light.boneMatrix[3] = 0;
+        light.boneMatrix[7] = 0;
+        light.boneMatrix[11] = 0;
+        light.boneMatrix[15] = 1;
+        // Carbon (row-vector): boneMatrix * parentTransform - bone first.
+        mat4.multiply(light.boneMatrix, parentTransform, light.boneMatrix);
+      }
+      else
+      {
+        mat4.copy(light.boneMatrix, parentTransform);
+      }
+    }
+    this.#activationStrength = Number(activationStrength) || 0;
+    this.#boosterGain = Number(boosterGain) || 0;
   }
+
+  /** Carbon EveSpotlightSet::GetLights (cpp:536-552): the haze pattern
+   * (parentBrightness inside the loop, boosterGainInfluence multiply) but
+   * with the SPOT conversion (cpp:549) - cos-of-degree angles and the
+   * 1/tan(outerAngle) projection-plane distance, Infinity at outerAngle 0
+   * exactly as Carbon ships. The spot direction comes from lightData.rotation
+   * via the conversion's swapped RotationMatrix * transform composition. */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("Profile-index packing is by-reference per lightConversion.js conventions.")
+  GetLights(lightManager)
+  {
+    const features = EveSpotlightSet.#features;
+    features.parentScale = 1;
+    const quality = lightManager?.GetCurrentSpaceSceneShadowQuality?.() ?? 0;
+    const record = EveSpotlightSet.#lightRecord;
+
+    for (const light of this.lights)
+    {
+      features.parentBrightness = this.#activationStrength;
+      if (light.boosterGainInfluence)
+      {
+        features.parentBrightness *= this.#boosterGain;
+      }
+      AsPerSpotLightData(record, light.lightData, light.boneMatrix, features, quality);
+      record.lightType = Tr2Light.SPOT_LIGHT;
+      record.lightData = light.lightData;
+      record.lightProfile = light.lightProfile;
+      record.owner = this;
+      lightManager?.AddLight?.(record);
+    }
+  }
+
+  static #features = { parentBrightness: 0, parentScale: 1 };
+
+  static #lightRecord = CreateLightRecord();
 }

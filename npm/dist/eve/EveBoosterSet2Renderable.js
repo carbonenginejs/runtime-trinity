@@ -17,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveBoosterSet2Renderable",
         family: "eve/attachment/boosters"
-      })], [[[io, io.read, type, type.float32], 16, "trailIntensity"], [[io, io.read, type, type.float32], 16, "trailsTotalLength"], [[io, io.read, type, type.boolean], 16, "isVisible"], [[io, io.read, type, type.boolean], 16, "trailsVisible"], [[io, io.read, type, type.boolean], 16, "boostersVisible"], [[io, io.persist, type, type.float32], 16, "trailsTimeDelta"], [[io, io.read, type, type.boolean], 16, "boosterHighLod"], [[io, io.read, type, type.vec3], 16, "trailsBoundsMax"], [[io, io.read, type, type.vec3], 16, "trailsBoundsMin"], [[io, io.read, type, type.float32], 16, "overallIntensity"], [[io, io.readwrite, type, type.quat], 16, "parentRotation"], [[io, io.readwrite, type, type.float32], 16, "parentSpeed"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoosterSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "CalculateIntensity"], [[carbon, carbon.method, impl, impl.implemented], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateTrails"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetTrailSplineData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"]], 0, void 0, CjsModel));
+      })], [[[io, io.read, type, type.float32], 16, "trailIntensity"], [[io, io.read, type, type.float32], 16, "trailsTotalLength"], [[io, io.read, type, type.boolean], 16, "isVisible"], [[io, io.read, type, type.boolean], 16, "trailsVisible"], [[io, io.read, type, type.boolean], 16, "boostersVisible"], [[io, io.persist, type, type.float32], 16, "trailsTimeDelta"], [[io, io.read, type, type.boolean], 16, "boosterHighLod"], [[io, io.read, type, type.vec3], 16, "trailsBoundsMax"], [[io, io.read, type, type.vec3], 16, "trailsBoundsMin"], [[io, io.read, type, type.float32], 16, "overallIntensity"], [[io, io.readwrite, type, type.quat], 16, "parentRotation"], [[io, io.readwrite, type, type.float32], 16, "parentSpeed"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoosterSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "CalculateIntensity"], [[carbon, carbon.method, impl, impl.implemented], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateTrails"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetTrailSplineData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetIntensity"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's direct member access becomes an accessor; JS has no protected fields.")], 18, "GetParentTransform"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetBoundingSphere"]], 0, void 0, CjsModel));
     }
     /** m_trailIntensity (float) [READ] */
     trailIntensity = (_initProto(this), _init_trailIntensity(this, 0));
@@ -147,6 +147,14 @@ new class extends _identity {
     }
     GetIntensity() {
       return this.overallIntensity;
+    }
+
+    /** Protected-equivalent read of Carbon's m_parentTransform
+     * (EveBoosterSet2.h:132) - the owning set's GetLights transforms each
+     * booster light position by it (cpp:1305/1314). Returns the live buffer;
+     * read-only by convention. */
+    GetParentTransform() {
+      return this.#parentTransform;
     }
     GetBoundingSphere() {
       const boosterSet = this.#boosterSet;
