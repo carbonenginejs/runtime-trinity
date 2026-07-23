@@ -1,12 +1,11 @@
 /**
  * Granny animation-curve decoding authored by cppctamber for ccpwgl2.
  *
- * This local copy is intentionally retained so runtime-trinity remains MIT
- * licensed and does not depend on the currently EUPL-1.2 format-gr2 package.
- * It can be replaced by a direct @carbonenginejs/format-gr2 curve dependency
- * once that package and its dependency path are available wholly under MIT.
- * This module decodes and samples already-materialized curve data; it does not
- * read or parse GR2 containers.
+ * This local copy decodes and samples already-materialized curve data without
+ * coupling runtime-trinity to a GR2 container reader. The former format-gr2
+ * licensing boundary is resolved: its BitKnit2 decoder was replaced by a
+ * clean-room implementation, the package is MIT, and the canonical reader now
+ * lives at @carbonenginejs/runtime-resource/formats/gr2.
  */
 import { num } from "@carbonenginejs/core-math/num";
 
