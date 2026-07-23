@@ -5,6 +5,7 @@ import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { Tr2PostProcessAttributes as _Tr2PostProcessAttrib } from '../../../postProcess/Tr2PostProcessAttributes.js';
+import { EveComponentType } from '../../../eve/EveComponentTypes.js';
 
 let _initProto, _initClass, _init_volumes, _init_extra_volumes, _init_exclusionVolumes, _init_extra_exclusionVolumes, _init_boundingSphereCenter, _init_extra_boundingSphereCenter, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_name, _init_extra_name, _init_postProcessAttributes, _init_extra_postProcessAttributes;
 
@@ -19,7 +20,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildPostProcessVolume",
         family: "eve/child"
-      })], [[[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "exclusionVolumes"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereCenter"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereRadius"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2PostProcessAttributes")], 16, "postProcessAttributes"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Volume bounding spheres arrive as duck-typed { center, radius } records rather than CcpMath::Sphere values.")], 18, "RebuildBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.noop], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.noop], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.noop], 18, "UpdateSyncronous"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.adapted, void 0, impl.reason("Carbon reads the Tr2Renderer view-position global; the relocated camera state arrives via the threaded render context.")], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.noop], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The Carbon constructor's attribute-instance creation (cpp:11-18) is deferred to first use because the generated field default stays null.")], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetPostProcessAttributes"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "exclusionVolumes"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereCenter"], [[io, io.read, void 0, type.rawStruct("CcpMath::Sphere")], 16, "boundingSphereRadius"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.model("Tr2PostProcessAttributes")], 16, "postProcessAttributes"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Volume bounding spheres arrive as duck-typed { center, radius } records rather than CcpMath::Sphere values.")], 18, "RebuildBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.noop], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.noop], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.noop], 18, "UpdateSyncronous"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.adapted, void 0, impl.reason("Carbon reads the Tr2Renderer view-position global; the relocated camera state arrives via the threaded render context.")], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.noop], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The Carbon constructor's attribute-instance creation (cpp:11-18) is deferred to first use because the generated field default stays null.")], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetPostProcessAttributes"]], 0, void 0, _EveChildTransform));
     }
     /** m_volumes (PIEveVolumeVector) [READ, PERSIST] */
     volumes = (_initProto(this), _init_volumes(this, []));
@@ -184,6 +185,18 @@ new class extends _identity {
       this.#EnsureAttributes();
       this.RebuildBoundingSphere();
       return true;
+    }
+
+    /** Carbon EveChildPostProcessVolume::RegisterComponents (cpp:62-65):
+     * unconditional PostProcessOwner leaf self-registration. Carbon's
+     * UnRegisterComponents (cpp:67-70) only removes this same component, which
+     * EveEntity::UnRegister already did via UnRegisterAllComponents
+     * (EveEntity.cpp:90), so the JS un-side keeps the base no-op. */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        registry.RegisterComponent(EveComponentType.PostProcessOwner, this);
+      }
     }
 
     /** Returns the owned attribute record (EveChildPostProcessVolume.cpp:217-220). */

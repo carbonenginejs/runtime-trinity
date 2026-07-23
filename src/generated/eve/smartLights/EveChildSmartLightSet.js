@@ -121,7 +121,7 @@ export class EveChildSmartLightSet extends EveChildTransform
    */
   @carbon.method
   @impl.adapted
-  @impl.reason("The class flattens onto EveChildTransform without Carbon's EveEntity base; the re-register hook is limited to an optional duck-typed call.")
+  @impl.reason("Carbon re-registers on m_display/m_distribution Var edits; JS forwards every OnModified to the EveEntity ReRegister lifecycle on the flattened EveChildTransform base.")
   OnModified(_options = {})
   {
     this.ReRegister?.();
@@ -131,8 +131,9 @@ export class EveChildSmartLightSet extends EveChildTransform
   /**
    * Inserted light groups inherit the current color set
    * (EveChildSmartLightSet.cpp:26-71). Carbon's registry (un)wiring of the
-   * inserted/removed EveEntity groups is omitted: this class has no EveEntity
-   * surface in JS (see RegisterComponents).
+   * inserted/removed EveEntity groups is a dynamic list-notify trigger and
+   * stays a follow-up (registration is one-shot via
+   * EveSpaceScene.ReregisterEntities in this pass).
    */
   @carbon.method
   @impl.adapted
@@ -156,20 +157,36 @@ export class EveChildSmartLightSet extends EveChildTransform
     }
   }
 
-  /** Carbon method RegisterComponents (EveChildSmartLightSet.cpp:121-134). */
+  /** Carbon EveChildSmartLightSet::RegisterComponents (cpp:121-134):
+   * forward-only to the light groups. Gate m_distribution && m_display. */
   @carbon.method
-  @impl.notImplemented
-  RegisterComponents(..._args)
+  @impl.implemented
+  RegisterComponents()
   {
-    throw new Error("EveChildSmartLightSet.RegisterComponents is not implemented in CarbonEngineJS.");
+    const registry = this.GetComponentRegistry();
+    if (registry && this.distribution && this.display)
+    {
+      for (const group of this.lightGroups)
+      {
+        group?.Register?.(registry);
+      }
+    }
   }
 
-  /** Carbon method UnRegisterComponents (EveChildSmartLightSet.cpp:136-149). */
+  /** Carbon EveChildSmartLightSet::UnRegisterComponents (cpp:136-149):
+   * forwards to the light groups; no distribution/display re-check. */
   @carbon.method
-  @impl.notImplemented
-  UnRegisterComponents(..._args)
+  @impl.implemented
+  UnRegisterComponents()
   {
-    throw new Error("EveChildSmartLightSet.UnRegisterComponents is not implemented in CarbonEngineJS.");
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const group of this.lightGroups)
+      {
+        group?.UnRegister?.(registry);
+      }
+    }
   }
 
   /** Renderable fan-out, gated on the distribution and display (EveChildSmartLightSet.cpp:151-160). */

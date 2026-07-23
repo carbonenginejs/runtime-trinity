@@ -17,7 +17,7 @@ class EveShip2 extends _EveMobile {
     } = _applyDecs2311(this, [type.define({
       className: "EveShip2",
       family: "eve/spaceObject"
-    })], [[[io, io.persistOnly, void 0, type.model("EveBoosterSet2")], 16, "boosters"], [[io, io.readwrite, type, type.uint32], 16, "displayKillCounterValue"], [[io, io.readwrite, type, type.float32], 16, "maxSpeed"], [[io, io.read, void 0, type.objectRef("TriFloat")], 16, "speed"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoosters"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetKillCounterValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMaxSpeed"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Blue FindEntry member binding becomes a duck-typed value holder; runtime-audio owns the emitter side.")], 18, "UpdateShipSpeedForAudio"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildCachedData"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoosterSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Persistent VS/PS buffers are engine-owned; shipData is exposed for createEveSpaceObjectMainPerObjectValues.")], 18, "GetPerObjectData"]], 0, void 0, _EveMobile));
+    })], [[[io, io.persistOnly, void 0, type.model("EveBoosterSet2")], 16, "boosters"], [[io, io.readwrite, type, type.uint32], 16, "displayKillCounterValue"], [[io, io.readwrite, type, type.float32], 16, "maxSpeed"], [[io, io.read, void 0, type.objectRef("TriFloat")], 16, "speed"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoosters"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayBoosters"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetKillCounterValue"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMaxSpeed"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Blue FindEntry member binding becomes a duck-typed value holder; runtime-audio owns the emitter side.")], 18, "UpdateShipSpeedForAudio"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildCachedData"], [[carbon, carbon.method, impl, impl.adapted], 18, "RebuildBoosterSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Persistent VS/PS buffers are engine-owned; shipData is exposed for createEveSpaceObjectMainPerObjectValues.")], 18, "GetPerObjectData"]], 0, void 0, _EveMobile));
   }
   /** m_boosters (EveBoosterSet2Ptr) [PERSISTONLY] */
   boosters = (_initProto(this), _init_boosters(this, null));
@@ -125,6 +125,26 @@ class EveShip2 extends _EveMobile {
     this.boosters = boosters ?? null;
     if (registry) {
       this.boosters?.Register?.(registry);
+    }
+  }
+
+  /** Carbon EveShip2::RegisterComponents (cpp:145-153): base registration,
+   * then forwards the booster set (no display gate of its own). */
+  RegisterComponents() {
+    super.RegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry && this.boosters) {
+      this.boosters.Register?.(registry);
+    }
+  }
+
+  /** Carbon EveShip2::UnRegisterComponents (cpp:155-163): base, then forwards
+   * the booster set. */
+  UnRegisterComponents() {
+    super.UnRegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry && this.boosters) {
+      this.boosters.UnRegister?.(registry);
     }
   }
 

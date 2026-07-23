@@ -14,7 +14,7 @@ class EveChildRef extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildRef",
       family: "eve/child"
-    })], [[type.objectRef("IEveChildResourceLoader"), 0, "resourceLoader"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "loadChildAutomatically"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "child"], [[carbon, carbon.method, impl, impl.adapted], 18, "Reload"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[type.objectRef("IEveChildResourceLoader"), 0, "resourceLoader"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "loadChildAutomatically"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "child"], [[carbon, carbon.method, impl, impl.adapted], 18, "Reload"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -60,6 +60,22 @@ class EveChildRef extends _EveChildTransform {
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers() {
     this.child?.StartControllers?.();
+  }
+
+  /** Carbon EveChildRef::RegisterComponents (cpp:87-96): forward-only to the
+   * referenced child. Gate IsInRegistry() && child && m_display. */
+  RegisterComponents() {
+    if (this.IsInRegistry() && this.child !== null && this.display) {
+      this.child.Register?.(this.GetComponentRegistry());
+    }
+  }
+
+  /** Carbon EveChildRef::UnRegisterComponents (cpp:98-107): forwards to the
+   * referenced child; no display re-check. */
+  UnRegisterComponents() {
+    if (this.IsInRegistry() && this.child !== null) {
+      this.child.UnRegister?.(this.GetComponentRegistry());
+    }
   }
   static {
     _initClass();

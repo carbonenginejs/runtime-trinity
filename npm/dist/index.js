@@ -79,6 +79,7 @@ export { DecalVSPerObjectData } from './eve/DecalVSPerObjectData.js';
 export { EveBasicPerObjectData } from './eve/EveBasicPerObjectData.js';
 export { EveChildSpherePinPerObjectData } from './eve/EveChildSpherePinPerObjectData.js';
 export { EveChildUpdateParams } from './eve/EveChildUpdateParams.js';
+export { EveComponentRequiredMethods, EveComponentType, GetReflectionSetting, SetReflectionSetting, ShouldReflect } from './eve/EveComponentTypes.js';
 export { EveCustomMask } from './eve/EveCustomMask.js';
 export { EveBannerLight } from './eve/EveBannerLight.js';
 export { EveBannerItem } from './eve/EveBannerItem.js';

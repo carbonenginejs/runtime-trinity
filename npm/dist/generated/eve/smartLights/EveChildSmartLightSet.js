@@ -17,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildSmartLightSet",
         family: "eve/smartLights"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveDistributionMethod")], 16, "distribution"], [[io, io.persist, void 0, type.list("IEveSmartLightGroup")], 16, "lightGroups"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.noop], 18, "Setup"], [[carbon, carbon.method, impl, impl.noop], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The class flattens onto EveChildTransform without Carbon's EveEntity base; the re-register hook is limited to an optional duck-typed call.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List events carry no BELIST insert mask; the inserted value (or, absent one, the whole list) is re-fanned - SetInheritProperties is idempotent.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS uses an out-last signature and returns the matrix when no output is supplied.")], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RenderDebugInfo"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2DebugRendererOptions is a std::set of option names; the duck-typed bag accepts add or insert.")], 18, "GetDebugOptions"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddQuadsToQuadRenderer"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterWithQuadRenderer"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveDistributionMethod")], 16, "distribution"], [[io, io.persist, void 0, type.list("IEveSmartLightGroup")], 16, "lightGroups"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.noop], 18, "Setup"], [[carbon, carbon.method, impl, impl.noop], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon re-registers on m_display/m_distribution Var edits; JS forwards every OnModified to the EveEntity ReRegister lifecycle on the flattened EveChildTransform base.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List events carry no BELIST insert mask; the inserted value (or, absent one, the whole list) is re-fanned - SetInheritProperties is idempotent.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("CarbonEngineJS uses an out-last signature and returns the matrix when no output is supplied.")], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RenderDebugInfo"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2DebugRendererOptions is a std::set of option names; the duck-typed bag accepts add or insert.")], 18, "GetDebugOptions"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddQuadsToQuadRenderer"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterWithQuadRenderer"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"]], 0, void 0, _EveChildTransform));
     }
     /** m_name (std::string) [READWRITE, PERSIST] */
     name = (_initProto(this), _init_name(this, ""));
@@ -92,8 +92,9 @@ new class extends _identity {
     /**
      * Inserted light groups inherit the current color set
      * (EveChildSmartLightSet.cpp:26-71). Carbon's registry (un)wiring of the
-     * inserted/removed EveEntity groups is omitted: this class has no EveEntity
-     * surface in JS (see RegisterComponents).
+     * inserted/removed EveEntity groups is a dynamic list-notify trigger and
+     * stays a follow-up (registration is one-shot via
+     * EveSpaceScene.ReregisterEntities in this pass).
      */
     OnListModified(_event, _key, _key2, value, list) {
       if (list === this.lightGroups && this.#inheritProperties) {
@@ -108,14 +109,26 @@ new class extends _identity {
       }
     }
 
-    /** Carbon method RegisterComponents (EveChildSmartLightSet.cpp:121-134). */
-    RegisterComponents(..._args) {
-      throw new Error("EveChildSmartLightSet.RegisterComponents is not implemented in CarbonEngineJS.");
+    /** Carbon EveChildSmartLightSet::RegisterComponents (cpp:121-134):
+     * forward-only to the light groups. Gate m_distribution && m_display. */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry && this.distribution && this.display) {
+        for (const group of this.lightGroups) {
+          group?.Register?.(registry);
+        }
+      }
     }
 
-    /** Carbon method UnRegisterComponents (EveChildSmartLightSet.cpp:136-149). */
-    UnRegisterComponents(..._args) {
-      throw new Error("EveChildSmartLightSet.UnRegisterComponents is not implemented in CarbonEngineJS.");
+    /** Carbon EveChildSmartLightSet::UnRegisterComponents (cpp:136-149):
+     * forwards to the light groups; no distribution/display re-check. */
+    UnRegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        for (const group of this.lightGroups) {
+          group?.UnRegister?.(registry);
+        }
+      }
     }
 
     /** Renderable fan-out, gated on the distribution and display (EveChildSmartLightSet.cpp:151-160). */

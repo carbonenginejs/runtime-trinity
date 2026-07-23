@@ -1,6 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
 import { type, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../../EveEntity.js';
+import { EveComponentType } from '../../../../eve/EveComponentTypes.js';
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
@@ -19,7 +20,7 @@ class EveSwarmRenderable extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveSwarmRenderable",
       family: "eve/spaceObject/swarm"
-    })], [[type.objectRef("Tr2MeshBase"), 0, "mesh"], [type.objectRef("EveSwarm"), 0, "owner"], [[type, type.mat4], 16, "worldTransform"], [type.list("EveSpaceObjectDecal"), 0, "decals"], [type.rawStruct("Tr2PersistentPerObjectData"), 0, "perObjectDataVs"], [type.rawStruct("Tr2PersistentPerObjectData"), 0, "perObjectDataPs"], [type.rawStruct("EveSpaceObjectPSData"), 0, "psData"], [type.rawStruct("EveSpaceObjectVSData"), 0, "vsData"], [[impl, impl.adapted], 18, "InitializeRenderable"], [[impl, impl.adapted], 18, "SetWorldTransform"], [[impl, impl.implemented], 18, "GetWorldTransform"], [[impl, impl.implemented], 18, "SetBoosterIntensity"], [[impl, impl.adapted], 18, "SetShaderData"], [[impl, impl.adapted], 18, "InitDecals"], [[impl, impl.implemented], 18, "GetID"], [[impl, impl.adapted], 18, "SetShaderOption"]], 0, void 0, _EveEntity));
+    })], [[type.objectRef("Tr2MeshBase"), 0, "mesh"], [type.objectRef("EveSwarm"), 0, "owner"], [[type, type.mat4], 16, "worldTransform"], [type.list("EveSpaceObjectDecal"), 0, "decals"], [type.rawStruct("Tr2PersistentPerObjectData"), 0, "perObjectDataVs"], [type.rawStruct("Tr2PersistentPerObjectData"), 0, "perObjectDataPs"], [type.rawStruct("EveSpaceObjectPSData"), 0, "psData"], [type.rawStruct("EveSpaceObjectVSData"), 0, "vsData"], [[impl, impl.adapted], 18, "InitializeRenderable"], [[impl, impl.adapted], 18, "SetWorldTransform"], [[impl, impl.implemented], 18, "GetWorldTransform"], [[impl, impl.implemented], 18, "SetBoosterIntensity"], [[impl, impl.adapted], 18, "SetShaderData"], [[impl, impl.adapted], 18, "InitDecals"], [[impl, impl.implemented], 18, "GetID"], [[impl, impl.adapted], 18, "SetShaderOption"], [[impl, impl.adapted, void 0, impl.reason("Carbon's RegisterComponent<IEveShadowCaster> template is expressed as the registry's explicit component-name signature.")], 18, "RegisterComponents"], [[impl, impl.notImplemented], 18, "IsCastingShadow"], [[impl, impl.notImplemented], 18, "GetShadowBatches"], [[impl, impl.notImplemented], 18, "GetShadowPerObjectData"]], 0, void 0, _EveEntity));
   }
   constructor(...args) {
     super(...args);
@@ -92,6 +93,32 @@ class EveSwarmRenderable extends _EveEntity {
   }
   SetShaderOption(name, value) {
     this.mesh?.SetShaderOption?.(name, value);
+  }
+
+  /** Carbon EveSwarmRenderable::RegisterComponents (EveSwarm.cpp:306-313):
+   * unconditional ShadowCaster leaf self-registration. */
+  RegisterComponents() {
+    const registry = this.GetComponentRegistry();
+    if (registry) {
+      registry.RegisterComponent(EveComponentType.ShadowCaster, this);
+    }
+  }
+
+  /** Carbon EveSwarmRenderable::IsCastingShadow (EveSwarm.cpp:242-267) culls
+   * per-swarmer spheres; awaits the TriFrustum port (visibility pass).
+   * Presence satisfies the "ShadowCaster" duck contract. */
+  IsCastingShadow(..._args) {
+    throw new Error("EveSwarmRenderable.IsCastingShadow is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon EveSwarmRenderable::GetShadowBatches (EveSwarm.cpp:269-298). */
+  GetShadowBatches(..._args) {
+    throw new Error("EveSwarmRenderable.GetShadowBatches is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon EveSwarmRenderable::GetShadowPerObjectData (EveSwarm.cpp:300-304). */
+  GetShadowPerObjectData(..._args) {
+    throw new Error("EveSwarmRenderable.GetShadowPerObjectData is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

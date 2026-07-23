@@ -12,6 +12,7 @@ import { EveChildUpdateParams } from "../EveChildUpdateParams.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 import { EveSpaceObjectPSData } from "../EveSpaceObjectPSData.js";
 import { EveSpaceObjectVSData } from "../EveSpaceObjectVSData.js";
+import { EveComponentType } from "../EveComponentTypes.js";
 
 
 @type.define({ className: "EveEffectRoot2", family: "eve/spaceObject" })
@@ -406,6 +407,43 @@ export class EveEffectRoot2 extends EveEntity
   {
     if (!this.display) return;
     for (const child of this.effectChildren) child?.AddQuadsToQuadRenderer?.(frustum, quadRenderer);
+  }
+
+  /** Carbon EveEffectRoot2::RegisterComponents (cpp:496-513): LightOwner when
+   * lights are authored, then forwards the effect children. Gate m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      if (this.lights.length)
+      {
+        registry.RegisterComponent(EveComponentType.LightOwner, this);
+      }
+      for (const child of this.effectChildren)
+      {
+        child?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveEffectRoot2::UnRegisterComponents (cpp:515-528): forwards the
+   * effect children only (own components were already removed by
+   * EveEntity::UnRegister, EveEntity.cpp:90); no display re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const child of this.effectChildren)
+      {
+        child?.UnRegister?.(registry);
+      }
+    }
   }
 
   /** Adds authored lights using the effect's composed placement and average scale. */

@@ -4,6 +4,7 @@
 import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { EveComponentCollection } from "./EveComponentCollection.js";
+import { EveComponentRequiredMethods } from "../../../eve/EveComponentTypes.js";
 
 /** EveComponentRegistry (eve/scene) - generated from schema shapeHash abca1458.... */
 @type.define({ className: "EveComponentRegistry", family: "eve/scene" })
@@ -99,6 +100,21 @@ export class EveComponentRegistry extends CjsModel
   @impl.reason("JavaScript passes Carbon's compile-time component name explicitly because it has no C++ template specialization.")
   RegisterComponent(componentName, entity)
   {
+    // Fail-closed duck assertion: Carbon's RegisterComponent<T> cannot compile
+    // for an entity that does not implement T; the JS port asserts the
+    // interface's pure-virtual surface (EveComponentRequiredMethods) instead.
+    if (Object.hasOwn(EveComponentRequiredMethods, componentName))
+    {
+      for (const method of EveComponentRequiredMethods[componentName])
+      {
+        if (typeof entity?.[method] !== "function")
+        {
+          throw new TypeError(
+            `EveComponentRegistry.RegisterComponent("${componentName}"): entity `
+            + `${entity?.constructor?.name ?? typeof entity} is missing required method ${method}().`);
+        }
+      }
+    }
     let collection = this.GetComponentCollection(componentName);
     if (!collection)
     {

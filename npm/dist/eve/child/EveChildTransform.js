@@ -2,13 +2,23 @@ import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_v
 import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
 import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { EveEntity as _EveEntity } from '../../generated/eve/EveEntity.js';
 
 let _initProto, _initClass, _init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale;
+
+// Carbon's registered space-object children multiple-inherit EveEntity
+// alongside EveChildTransform (e.g. EveChildMesh.h:56-64, EveChildContainer.h
+// :33-41); JavaScript single inheritance flattens the EveEntity registration
+// lifecycle (Register/UnRegister/GetComponentRegistry/component state) into
+// this shared child base so container RegisterComponents overrides can forward
+// child?.Register?.(registry) exactly like Carbon's BlueCastPtr<EveEntity>
+// fan-out. Children whose Carbon class is not an EveEntity simply never get
+// forwarded a registry (Carbon's BlueCastPtr fails; JS registers them with no
+// components, base RegisterComponents being a no-op).
 let _EveChildTransform;
 new class extends _identity {
-  static [class EveChildTransform extends CjsModel {
+  static [class EveChildTransform extends _EveEntity {
     static {
       ({
         e: [_init_translation, _init_extra_translation, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_staticTransform, _init_extra_staticTransform, _init_useSRT, _init_extra_useSRT, _init_useStaticRotation, _init_extra_useStaticRotation, _init_useStaticScale, _init_extra_useStaticScale, _initProto],
@@ -16,7 +26,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildTransform",
         family: "eve/child"
-      })], [[[type, type.vec3], 16, "translation"], [[type, type.vec3], 16, "scaling"], [[type, type.quat], 16, "rotation"], [[type, type.mat4], 16, "localTransform"], [[type, type.mat4], 16, "worldTransform"], [[type, type.boolean], 16, "staticTransform"], [[type, type.boolean], 16, "useSRT"], [[type, type.boolean], 16, "useStaticRotation"], [[type, type.boolean], 16, "useStaticScale"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildLocalTransform"]], 0, void 0, CjsModel));
+      })], [[[type, type.vec3], 16, "translation"], [[type, type.vec3], 16, "scaling"], [[type, type.quat], 16, "rotation"], [[type, type.mat4], 16, "localTransform"], [[type, type.mat4], 16, "worldTransform"], [[type, type.boolean], 16, "staticTransform"], [[type, type.boolean], 16, "useSRT"], [[type, type.boolean], 16, "useStaticRotation"], [[type, type.boolean], 16, "useStaticScale"], [[carbon, carbon.method, impl, impl.implemented], 18, "RebuildLocalTransform"]], 0, void 0, _EveEntity));
     }
     constructor(...args) {
       super(...args);

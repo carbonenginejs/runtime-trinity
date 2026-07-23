@@ -4,6 +4,7 @@ export { DecalVSPerObjectData } from './DecalVSPerObjectData.js';
 export { EveBasicPerObjectData } from './EveBasicPerObjectData.js';
 export { EveChildSpherePinPerObjectData } from './EveChildSpherePinPerObjectData.js';
 export { EveChildUpdateParams } from './EveChildUpdateParams.js';
+export { EveComponentRequiredMethods, EveComponentType, GetReflectionSetting, SetReflectionSetting, ShouldReflect } from './EveComponentTypes.js';
 export { EveCustomMask } from './EveCustomMask.js';
 export { EveBannerLight } from './EveBannerLight.js';
 export { EveBannerItem } from './EveBannerItem.js';
@@ -139,4 +140,5 @@ export { EveMissileWarheadPerObjectData } from './perObjectData/EveMissileWarhea
 export { EveTurretSetPerObjectData } from './perObjectData/EveTurretSetPerObjectData.js';
 export { MergeMorphsConstantBuffer } from './perObjectData/MergeMorphsConstantBuffer.js';
 export { AudioGameObject } from './AudioGameObject.js';
+export { ReflectionMode, ReflectionSetting } from '../generated/eve/enums.js';
 //# sourceMappingURL=index.js.map

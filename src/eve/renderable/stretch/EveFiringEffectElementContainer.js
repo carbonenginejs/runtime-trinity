@@ -158,5 +158,22 @@ export class EveFiringEffectElementContainer extends EveEntity
     return Number(this.element?.GetCurveDuration?.() ?? 0);
   }
 
+  /** Carbon EveFiringEffectElementContainer::RegisterComponents
+   * (cpp:140-146): forwards the wrapped element (no gates; EveEntity.Register
+   * tolerates a null registry). */
+  @carbon.method @impl.implemented
+  RegisterComponents()
+  {
+    this.element?.Register?.(this.GetComponentRegistry());
+  }
+
+  /** Carbon EveFiringEffectElementContainer::UnRegisterComponents
+   * (cpp:148-154): forwards the wrapped element. */
+  @carbon.method @impl.implemented
+  UnRegisterComponents()
+  {
+    this.element?.UnRegister?.(this.GetComponentRegistry());
+  }
+
   static #zero = vec3.create();
 }

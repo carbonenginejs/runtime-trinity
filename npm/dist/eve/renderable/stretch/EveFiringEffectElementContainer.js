@@ -16,7 +16,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveFiringEffectElementContainer",
         family: "eve/renderable/stretch"
-      })], [[[io, io.persistOnly, void 0, type.model("IEveFiringEffectElement")], 16, "element"], [[io, io.readwrite, type, type.vec3], 16, "source"], [[io, io.persist, type, type.mat4], 16, "sourceTransform"], [[io, io.persist, type, type.vec3], 16, "destination"], [[io, io.persist, type, type.boolean], 16, "useSourceTransform"], [[io, io.persist, type, type.boolean], 16, "displayDestination"], [[io, io.persist, type, type.boolean], 16, "displaySource"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "destinationScale"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("JavaScript uses duck-typed firing elements rather than Carbon QueryInterface dispatch.")], 18, "UpdateSynchronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser runtime forwards lifecycle calls directly to the hydrated element.")], 18, "UpdateAsynchronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Visibility is graph-owned; the renderer consumes the collected element later.")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Renderable collection is backend-neutral and leaves batch realization to the engine package.")], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartFiring"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopFiring"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetActive"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetActive"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetElement"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetElement"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetFiringTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDestObjectScale"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayEndPoints"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDisplay"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurveDuration"]], 0, void 0, _EveEntity));
+      })], [[[io, io.persistOnly, void 0, type.model("IEveFiringEffectElement")], 16, "element"], [[io, io.readwrite, type, type.vec3], 16, "source"], [[io, io.persist, type, type.mat4], 16, "sourceTransform"], [[io, io.persist, type, type.vec3], 16, "destination"], [[io, io.persist, type, type.boolean], 16, "useSourceTransform"], [[io, io.persist, type, type.boolean], 16, "displayDestination"], [[io, io.persist, type, type.boolean], 16, "displaySource"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.float32], 16, "destinationScale"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("JavaScript uses duck-typed firing elements rather than Carbon QueryInterface dispatch.")], 18, "UpdateSynchronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The browser runtime forwards lifecycle calls directly to the hydrated element.")], 18, "UpdateAsynchronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Visibility is graph-owned; the renderer consumes the collected element later.")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Renderable collection is backend-neutral and leaves batch realization to the engine package.")], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartFiring"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopFiring"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetActive"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetActive"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetElement"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetElement"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetFiringTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDestObjectScale"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayEndPoints"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDisplay"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurveDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveEntity));
     }
     element = (_initProto(this), _init_element(this, null));
     source = (_init_extra_element(this), _init_source(this, vec3.create()));
@@ -102,6 +102,19 @@ new class extends _identity {
     }
     GetCurveDuration() {
       return Number(this.element?.GetCurveDuration?.() ?? 0);
+    }
+
+    /** Carbon EveFiringEffectElementContainer::RegisterComponents
+     * (cpp:140-146): forwards the wrapped element (no gates; EveEntity.Register
+     * tolerates a null registry). */
+    RegisterComponents() {
+      this.element?.Register?.(this.GetComponentRegistry());
+    }
+
+    /** Carbon EveFiringEffectElementContainer::UnRegisterComponents
+     * (cpp:148-154): forwards the wrapped element. */
+    UnRegisterComponents() {
+      this.element?.UnRegister?.(this.GetComponentRegistry());
     }
   }];
   #zero = vec3.create();

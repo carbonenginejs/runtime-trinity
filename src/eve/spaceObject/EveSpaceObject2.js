@@ -12,6 +12,7 @@ import { sph3 } from "@carbonenginejs/core-math/sph3";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
+import { EveComponentType, ShouldReflect } from "../EveComponentTypes.js";
 import { ImpactConfiguration } from "../../generated/include/enums.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
@@ -1212,6 +1213,89 @@ export class EveSpaceObject2 extends EveEntity
   GetShadowPerObjectData(accumulator = null)
   {
     return this.GetPerObjectData(accumulator);
+  }
+
+  /** Carbon EveSpaceObject2::GetLights (cpp:3536-3560): submits m_lights to
+   * the light manager. Awaits the LightOwner consumption pass
+   * (Tr2LightManager submission is unported); registration presence is the
+   * "LightOwner" duck contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EveSpaceObject2.GetLights is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon EveSpaceObject2::IsCastingShadow (cpp:1940-1990) culls against the
+   * camera/shadow frustums; awaits the TriFrustum port (visibility pass).
+   * Presence satisfies the "ShadowCaster" duck contract. */
+  @carbon.method
+  @impl.notImplemented
+  IsCastingShadow(..._args)
+  {
+    throw new Error("EveSpaceObject2.IsCastingShadow is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon EveSpaceObject2::RegisterComponents (cpp:3568-3609): registers its
+   * own components and its children with the scene registration container "so
+   * we don't have to traverse the tree every frame". RegisterAudioGeometry
+   * (cpp:3572-3575) is audio-engine-owned and unported. Gate m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      if (this.lights.length)
+      {
+        registry.RegisterComponent(EveComponentType.LightOwner, this);
+      }
+
+      if (ShouldReflect(this.reflectionMode))
+      {
+        registry.RegisterComponent(EveComponentType.ReflectionRenderable, this);
+      }
+
+      if (this.castShadow)
+      {
+        registry.RegisterComponent(EveComponentType.ShadowCaster, this);
+      }
+
+      for (const child of this.effectChildren)
+      {
+        child?.Register?.(registry);
+      }
+
+      for (const attachment of this.attachments)
+      {
+        attachment?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveSpaceObject2::UnRegisterComponents (cpp:3615-3638): forwards
+   * the un-registration to the children only - EveEntity::UnRegister already
+   * called UnRegisterAllComponents(this) first (EveEntity.cpp:90) - and does
+   * not re-check display. UnregisterAudioGeometry (cpp:3617) is
+   * audio-engine-owned and unported. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const child of this.effectChildren)
+      {
+        child?.UnRegister?.(registry);
+      }
+
+      for (const attachment of this.attachments)
+      {
+        attachment?.UnRegister?.(registry);
+      }
+    }
   }
 
   @carbon.method

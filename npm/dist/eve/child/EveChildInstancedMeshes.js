@@ -3,6 +3,7 @@ import { mat4 } from '@carbonenginejs/core-math/mat4';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../../generated/eve/EveEntity.js';
+import { EveComponentType } from '../EveComponentTypes.js';
 
 let _initClass, _init_effect, _init_extra_effect, _init_batchType, _init_extra_batchType, _init_areaIndex, _init_extra_areaIndex, _init_areaCount, _init_extra_areaCount, _init_effectHash, _init_extra_effectHash, _initClass2, _init_transform, _init_extra_transform, _init_sphereIndex, _init_extra_sphereIndex, _initClass3, _init_geometryPath, _init_extra_geometryPath, _init_castsShadow, _init_extra_castsShadow, _init_reflectionMode, _init_extra_reflectionMode, _init_meshIndex, _init_extra_meshIndex, _init_areas, _init_extra_areas, _init_instances, _init_extra_instances, _init_sofHullName, _init_extra_sofHullName, _init_sofLocatorSetName, _init_extra_sofLocatorSetName, _init_display, _init_extra_display, _initProto, _initClass4, _init_name, _init_extra_name, _init_worldTransform, _init_extra_worldTransform, _init_hasUpdated, _init_extra_hasUpdated, _init_meshes, _init_extra_meshes;
 let _EveChildInstancedMes;
@@ -91,7 +92,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildInstancedMeshes",
         family: "eve/child"
-      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[io, io.persist, void 0, type.list("EveChildInstancedMesh")], 16, "meshes"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"]], 0, void 0, _EveEntity));
+      })], [[[io, io.persist, type, type.string], 16, "name"], [[io, io.read, type, type.mat4], 16, "worldTransform"], [[io, io.read, type, type.boolean], 16, "hasUpdated"], [[io, io.persist, void 0, type.list("EveChildInstancedMesh")], 16, "meshes"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsAlwaysOn"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddMesh"], [[carbon, carbon.method, impl, impl.adapted], 18, "Clear"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSofSourceLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMeshCount"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetAreaInfo"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetMeshDisplay"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetGeometryResource"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetMeshData"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRevision"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("UnregisterFromMeshManager releases GPU mesh-group/sphere/per-object handles owned by the engine's EveInstancedMeshManager.")], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "AddMeshesToManager"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsCastingShadow"], [[carbon, carbon.method, impl, impl.noop], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowPerObjectData"]], 0, void 0, _EveEntity));
     }
     name = (_initProto(this), _init_name(this, ""));
     worldTransform = (_init_extra_name(this), _init_worldTransform(this, mat4.create()));
@@ -222,6 +223,47 @@ new class extends _identity {
     }
     GetRevision() {
       return this.#revision;
+    }
+
+    /** Carbon EveChildInstancedMeshes::RegisterComponents (cpp:36-43):
+     * unconditional InstancedMeshProvider + ShadowCaster leaf
+     * self-registration. */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        registry.RegisterComponent(EveComponentType.InstancedMeshProvider, this);
+        registry.RegisterComponent(EveComponentType.ShadowCaster, this);
+      }
+    }
+
+    /** Carbon EveChildInstancedMeshes::UnRegisterComponents (cpp:45-48) only
+     * calls UnregisterFromMeshManager (GPU mesh-manager handle cleanup,
+     * unported); own components were already removed by EveEntity::UnRegister
+     * (EveEntity.cpp:90). */
+    UnRegisterComponents() {}
+
+    /** Carbon EveChildInstancedMeshes::AddMeshesToManager (cpp:472-535)
+     * uploads instance data to the engine-owned EveInstancedMeshManager;
+     * presence satisfies the "InstancedMeshProvider" duck contract. */
+    AddMeshesToManager(..._args) {
+      throw new Error("EveChildInstancedMeshes.AddMeshesToManager is not implemented in CarbonEngineJS.");
+    }
+
+    /** Carbon EveChildInstancedMeshes::IsCastingShadow (cpp:73-76) always
+     * returns false (instanced shadows cull per instance group); presence
+     * satisfies the "ShadowCaster" duck contract. */
+    IsCastingShadow(..._args) {
+      return false;
+    }
+
+    /** Carbon EveChildInstancedMeshes::GetShadowBatches (cpp:78-80) is an
+     * intentional no-op (the instanced mesh manager emits the batches). */
+    GetShadowBatches(..._args) {}
+
+    /** Carbon EveChildInstancedMeshes::GetShadowPerObjectData (cpp:82-85)
+     * returns null (per-object data flows through the mesh manager). */
+    GetShadowPerObjectData(..._args) {
+      return null;
     }
   }];
   #GetMesh(meshes, meshId) {

@@ -7,6 +7,7 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { ProcessPriority } from './enums.js';
 import { EveKDdroneManagementTree as _EveKDdroneManagement } from './EveKDdroneManagementTree.js';
+import { EveComponentType } from '../../../../eve/EveComponentTypes.js';
 
 let _initProto, _initClass, _init_display, _init_extra_display, _init_maxVelocity, _init_extra_maxVelocity, _init_scale, _init_extra_scale, _init_blendScreenSizeMax, _init_extra_blendScreenSizeMax, _init_blendScreenSizeMin, _init_extra_blendScreenSizeMin, _init_currentScreenSize, _init_extra_currentScreenSize, _init_renderThreshold, _init_extra_renderThreshold, _init_debugIntensity, _init_extra_debugIntensity, _init_debugLodLevel, _init_extra_debugLodLevel, _init_actualCount, _init_extra_actualCount, _init_count, _init_extra_count, _init_boosters, _init_extra_boosters, _init_mesh, _init_extra_mesh, _init_name, _init_extra_name, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_debugMode, _init_extra_debugMode, _init_update, _init_extra_update, _init_behaviors, _init_extra_behaviors, _init_spawnPosition, _init_extra_spawnPosition, _init_collectForces, _init_extra_collectForces;
 
@@ -588,11 +589,13 @@ class BehaviorGroup extends _EveEntity {
   /** ITr2LightOwner::ClearLights - intentionally empty in Carbon (h:117). */
   ClearLights() {}
 
-  /** Carbon BehaviorGroup::RegisterComponents (cpp:1003-1015). */
+  /** Carbon BehaviorGroup::RegisterComponents (cpp:1003-1015): unconditional
+   * LightOwner (Carbon's verbatim "LightOwner" component name,
+   * Lights/ITr2LightOwner.h:18), then forwards the PlayFX behavior. */
   RegisterComponents() {
     const registry = this.GetComponentRegistry();
     if (registry) {
-      registry.RegisterComponent?.("ITr2LightOwner", this);
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
       this.#playFXBehavior?.Register?.(registry);
     }
   }

@@ -98,6 +98,46 @@ export class EveChildInstanceContainer extends EveChildTransform
     for (const instance of this.instances) instance?.StartControllers?.();
   }
 
+  /** Carbon EveChildInstanceContainer::RegisterComponents (cpp:83-103):
+   * forwards the instances; with no instances (and edit mode enabled -
+   * m_disableEditMode has no JS field yet, read duck-typed) the source
+   * template registers instead. Gate IsInRegistry() && m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    if (this.IsInRegistry() && this.display)
+    {
+      const registry = this.GetComponentRegistry();
+      for (const instance of this.instances)
+      {
+        instance?.Register?.(registry);
+      }
+
+      if (!this.instances.length && !this.disableEditMode)
+      {
+        this.source?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildInstanceContainer::UnRegisterComponents (cpp:105-122):
+   * forwards the instances and the source; no display re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    if (this.IsInRegistry())
+    {
+      const registry = this.GetComponentRegistry();
+      for (const instance of this.instances)
+      {
+        instance?.UnRegister?.(registry);
+      }
+      this.source?.UnRegister?.(registry);
+    }
+  }
+
   static Origin = Object.freeze({
     SPACE: 0,
     SOF: 1,

@@ -10,6 +10,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { ProcessPriority } from "./enums.js";
 import { EveKDdroneManagementTree } from "./EveKDdroneManagementTree.js";
+import { EveComponentType } from "../../../../eve/EveComponentTypes.js";
 
 // Module scratch for the per-agent integration and visibility loops (child
 // updates run sequentially; non-reentrant by design).
@@ -822,7 +823,9 @@ export class BehaviorGroup extends EveEntity
   {
   }
 
-  /** Carbon BehaviorGroup::RegisterComponents (cpp:1003-1015). */
+  /** Carbon BehaviorGroup::RegisterComponents (cpp:1003-1015): unconditional
+   * LightOwner (Carbon's verbatim "LightOwner" component name,
+   * Lights/ITr2LightOwner.h:18), then forwards the PlayFX behavior. */
   @carbon.method
   @impl.implemented
   RegisterComponents()
@@ -830,7 +833,7 @@ export class BehaviorGroup extends EveEntity
     const registry = this.GetComponentRegistry();
     if (registry)
     {
-      registry.RegisterComponent?.("ITr2LightOwner", this);
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
       this.#playFXBehavior?.Register?.(registry);
     }
   }

@@ -103,4 +103,28 @@ export class EveChildSocket extends EveChildTransform
     this.plug?.StartControllers?.();
   }
 
+  /** Carbon EveChildSocket::RegisterComponents (cpp:212-221): forward-only to
+   * the plug. Gate IsInRegistry() && plug && m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    if (this.IsInRegistry() && this.plug !== null && this.display)
+    {
+      this.plug.Register?.(this.GetComponentRegistry());
+    }
+  }
+
+  /** Carbon EveChildSocket::UnRegisterComponents (cpp:227-236): forwards to
+   * the plug; no display re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    if (this.IsInRegistry() && this.plug)
+    {
+      this.plug.UnRegister?.(this.GetComponentRegistry());
+    }
+  }
+
 }

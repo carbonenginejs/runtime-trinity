@@ -11,6 +11,7 @@ import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
 import { EveChildTransform, applyTransformModifiers } from "./EveChildTransform.js";
 import { Origin } from "../../generated/eve/child/enums.js";
 import { ReflectionMode } from "../../generated/eve/enums.js";
+import { EveComponentType, ShouldReflect } from "../EveComponentTypes.js";
 import { Tr2RenderReason } from "../../generated/trinityCore/enums.js";
 import { Tr2Lod } from "../EveLODHelper.js";
 import { Tr2PerObjectData } from "../../trinityCore/Tr2PerObjectData.js";
@@ -931,7 +932,7 @@ export class EveChildMesh extends EveChildTransform
       : Number(renderReasonOrRadius ?? Tr2RenderReason.TR2RENDERREASON_NORMAL);
 
     if (renderReason === Tr2RenderReason.TR2RENDERREASON_REFLECTION &&
-      !EveChildMesh.#ShouldReflect(this.reflectionMode))
+      !ShouldReflect(this.reflectionMode))
     {
       return false;
     }
@@ -1015,6 +1016,73 @@ export class EveChildMesh extends EveChildTransform
   {
   }
 
+  /** Carbon EveChildMesh::RegisterComponents (cpp:239-269): LightOwner when
+   * lights are authored; ReflectionRenderable (ShouldReflect) and ShadowCaster
+   * (castShadow) only when a mesh is present; then forwards the attachments.
+   * Gate m_display. "MeshMorph" stays OUT-OF-BAND: Carbon registers it at
+   * baked-morph need inside BakeMorphs (cpp:1404-1409), not here - the JS
+   * BakeMorphs stub is the site that would register it when the GPU morph
+   * bake is ported. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      if (this.lights.length)
+      {
+        registry.RegisterComponent(EveComponentType.LightOwner, this);
+      }
+
+      if (this.mesh !== null)
+      {
+        if (ShouldReflect(this.reflectionMode))
+        {
+          registry.RegisterComponent(EveComponentType.ReflectionRenderable, this);
+        }
+        if (this.castShadow)
+        {
+          registry.RegisterComponent(EveComponentType.ShadowCaster, this);
+        }
+      }
+
+      for (const attachment of this.attachments)
+      {
+        attachment?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildMesh::UnRegisterComponents (cpp:275-290): forwards the
+   * attachments only (own components were already removed by
+   * EveEntity::UnRegister, EveEntity.cpp:90); no display re-check.
+   * UnregisterAudioGeometry (cpp:277) is audio-engine-owned and unported. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const attachment of this.attachments)
+      {
+        attachment?.UnRegister?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildMesh::GetLights (cpp:1638-1667): submits m_lights to the
+   * light manager. Awaits the LightOwner consumption pass (Tr2LightManager
+   * submission is unported); presence satisfies the "LightOwner" duck
+   * contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EveChildMesh.GetLights is not implemented in CarbonEngineJS.");
+  }
+
   /** Carbon EveChildMesh::GetPickingBatches (cpp:862-889) maps Tr2PickTypes
    * flags onto batch-type collections with transparent/additive special
    * casing; the pick-type flag enum is not yet ported, so the surface fails
@@ -1058,15 +1126,6 @@ export class EveChildMesh extends EveChildTransform
   IsMeshBaked(..._args)
   {
     throw new Error("EveChildMesh.IsMeshBaked is not implemented in CarbonEngineJS.");
-  }
-
-  // Carbon EntityComponents::ShouldReflect (EveEntity.cpp:13-33) also consults
-  // the g_eveReflectionMode quality global (scene/engine-owned). With
-  // reflections enabled, REFLECT_NEVER is the only unconditionally-false mode,
-  // which is the portable core of the predicate.
-  static #ShouldReflect(mode)
-  {
-    return mode !== ReflectionMode.REFLECT_NEVER;
   }
 
   // Carbon s_instanceScreenSizeThreshold (EveChildMesh.cpp:22).

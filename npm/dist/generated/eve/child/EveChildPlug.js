@@ -14,7 +14,7 @@ class EveChildPlug extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildPlug",
       family: "eve/child"
-    })], [[[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "objects"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, void 0, type.list("Tr2ExternalParameter")], 16, "externalParameters"], [[io, io.persist, void 0, type.list("ITr2Controller")], 16, "controllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -54,6 +54,28 @@ class EveChildPlug extends _EveChildTransform {
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers() {
     for (const controller of this.controllers) controller?.Start?.();
+  }
+
+  /** Carbon EveChildPlug::RegisterComponents (cpp:122-135): forward-only to
+   * the plugged objects. Gate m_display. */
+  RegisterComponents() {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display) {
+      for (const object of this.objects) {
+        object?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildPlug::UnRegisterComponents (cpp:141-154): forwards to the
+   * plugged objects; no display re-check. */
+  UnRegisterComponents() {
+    const registry = this.GetComponentRegistry();
+    if (registry) {
+      for (const object of this.objects) {
+        object?.UnRegister?.(registry);
+      }
+    }
   }
   static {
     _initClass();

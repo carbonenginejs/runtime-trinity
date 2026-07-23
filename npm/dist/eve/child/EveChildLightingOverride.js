@@ -4,6 +4,7 @@ import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
 import { EveChildTransform as _EveChildTransform } from './EveChildTransform.js';
+import { EveComponentType } from '../EveComponentTypes.js';
 
 let _initProto, _initClass, _init_priority, _init_extra_priority, _init_name, _init_extra_name, _init_backgroundIntensity, _init_extra_backgroundIntensity, _init_intensity, _init_extra_intensity, _init_reflectionIntensity, _init_extra_reflectionIntensity, _init_sunIntensity, _init_extra_sunIntensity, _init_sunColor, _init_extra_sunColor, _init_volumes, _init_extra_volumes;
 let _EveChildLightingOver;
@@ -16,7 +17,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildLightingOverride",
         family: "eve/child"
-      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Priority")], 16, "priority"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "backgroundIntensity"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.float32], 16, "reflectionIntensity"], [[io, io.persist, type, type.float32], 16, "sunIntensity"], [[io, io.persist, type, type.color], 16, "sunColor"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[impl, impl.implemented], 18, "GetOverrides"], [[impl, impl.adapted], 18, "GetBoundingSphere"], [[impl, impl.adapted], 18, "UpdateAsyncronous"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.persist, type, type.int32, void 0, schema.enum("Priority")], 16, "priority"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.float32], 16, "backgroundIntensity"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.float32], 16, "reflectionIntensity"], [[io, io.persist, type, type.float32], 16, "sunIntensity"], [[io, io.persist, type, type.color], 16, "sunColor"], [[io, io.persist, void 0, type.list("IEveVolume")], 16, "volumes"], [[impl, impl.implemented], 18, "RegisterComponents"], [[impl, impl.implemented], 18, "GetOverrides"], [[impl, impl.adapted], 18, "GetBoundingSphere"], [[impl, impl.adapted], 18, "UpdateAsyncronous"]], 0, void 0, _EveChildTransform));
     }
     constructor(...args) {
       super(...args);
@@ -36,6 +37,18 @@ new class extends _identity {
     sunIntensity = (_init_extra_reflectionIntensity(this), _init_sunIntensity(this, 1));
     sunColor = (_init_extra_sunIntensity(this), _init_sunColor(this, vec4.fromValues(1, 1, 1, 1)));
     volumes = (_init_extra_sunColor(this), _init_volumes(this, []));
+
+    /** Carbon EveChildLightingOverride::RegisterComponents (cpp:47-50):
+     * unconditional EveLightingOverride leaf self-registration. Carbon's
+     * UnRegisterComponents (cpp:52-55) only removes this same component, which
+     * EveEntity::UnRegister already did via UnRegisterAllComponents
+     * (EveEntity.cpp:90), so the JS un-side keeps the base no-op. */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        registry.RegisterComponent(EveComponentType.EveLightingOverride, this);
+      }
+    }
     GetOverrides() {
       return {
         priority: this.priority,

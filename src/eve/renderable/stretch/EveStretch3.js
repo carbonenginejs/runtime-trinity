@@ -403,6 +403,35 @@ export class EveStretch3 extends EveEntity
     return this.audio?.FindEmitterByName?.(name) ?? this.stretchAudio?.FindEmitterByName?.(name) ?? null;
   }
 
+  /** Carbon EveStretch3::RegisterComponents (cpp:721-734): forwards the
+   * source/dest/stretch children via RunOnComponents (cpp:126-141; the move
+   * object is NOT part of that fan-out). Gate m_display. */
+  @carbon.method @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      this.sourceObject?.Register?.(registry);
+      this.destObject?.Register?.(registry);
+      this.stretchObject?.Register?.(registry);
+    }
+  }
+
+  /** Carbon EveStretch3::UnRegisterComponents (cpp:736-749): forwards the
+   * same RunOnComponents children; no display re-check. */
+  @carbon.method @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      this.sourceObject?.UnRegister?.(registry);
+      this.destObject?.UnRegister?.(registry);
+      this.stretchObject?.UnRegister?.(registry);
+    }
+  }
+
   #components()
   {
     return [this.sourceObject, this.destObject, this.stretchObject, this.moveObject].filter(Boolean);

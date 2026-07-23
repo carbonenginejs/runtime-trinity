@@ -9,6 +9,7 @@ import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { Tr2Light } from "../../../eve/lights/Tr2Light.js";
+import { EveComponentType } from "../../../eve/EveComponentTypes.js";
 import {
   createCjsLightDataView,
   setCjsLightDataOwnerValues
@@ -263,10 +264,10 @@ export class EveSmartLightPointLight extends EveEntity
   /** Registers this entity as a light owner (EveSmartLightPointLight.cpp:56-63). */
   @carbon.method
   @impl.adapted
-  @impl.reason("Carbon's RegisterComponent<ITr2LightOwner> template is expressed as the registry's explicit component-name signature.")
+  @impl.reason("Carbon's RegisterComponent<ITr2LightOwner> template is expressed as the registry's explicit component-name signature (verbatim \"LightOwner\", Lights/ITr2LightOwner.h:18).")
   RegisterComponents()
   {
-    this.GetComponentRegistry()?.RegisterComponent?.("ITr2LightOwner", this);
+    this.GetComponentRegistry()?.RegisterComponent?.(EveComponentType.LightOwner, this);
   }
 
   /**

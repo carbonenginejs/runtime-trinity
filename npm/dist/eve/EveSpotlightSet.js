@@ -2,6 +2,7 @@ import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelH
 import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
 import { EveSpotlightLight as _EveSpotlightLight } from './EveSpotlightLight.js';
+import { EveComponentType } from './EveComponentTypes.js';
 
 let _initProto, _initClass, _init_spotlightItems, _init_extra_spotlightItems, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_coneEffect, _init_extra_coneEffect, _init_glowEffect, _init_extra_glowEffect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_lights, _init_extra_lights;
 let _EveSpotlightSet;
@@ -13,7 +14,7 @@ class EveSpotlightSet extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveSpotlightSet",
       family: "eve/attachment/spotlights"
-    })], [[[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.list("EveSpotlightSetItem")], 16, "spotlightItems"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "coneEffect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "glowEffect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, void 0, type.list("EveSpotlightLight")], 16, "lights"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetConeEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetConeEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetGlowEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlowEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSpotlightItems"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddSpotlightItem"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"]], 0, void 0, _EveEntity));
+    })], [[[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.list("EveSpotlightSetItem")], 16, "spotlightItems"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "coneEffect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "glowEffect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, void 0, type.list("EveSpotlightLight")], 16, "lights"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetConeEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetConeEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetGlowEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlowEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSpotlightItems"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddSpotlightItem"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLights"]], 0, void 0, _EveEntity));
   }
   spotlightItems = (_initProto(this), _init_spotlightItems(this, []));
   name = (_init_extra_spotlightItems(this), _init_name(this, ""));
@@ -71,6 +72,22 @@ class EveSpotlightSet extends _EveEntity {
   }
   AddLightFromSOF(light) {
     this.lights.push(_EveSpotlightLight.FromSOF(light));
+  }
+
+  /** Carbon EveSpotlightSet::RegisterComponents (cpp:527-534): LightOwner
+   * when lights are authored. */
+  RegisterComponents() {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.lights.length) {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EveSpotlightSet::GetLights (cpp:536-556): per-light submission.
+   * Awaits the LightOwner consumption pass (Tr2LightManager submission is
+   * unported); presence satisfies the "LightOwner" duck contract. */
+  GetLights(..._args) {
+    throw new Error("EveSpotlightSet.GetLights is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

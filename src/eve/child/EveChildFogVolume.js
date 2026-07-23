@@ -7,6 +7,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
+import { EveComponentType } from "../EveComponentTypes.js";
 
 
 @type.define({ className: "EveChildFogVolume", family: "eve/child" })
@@ -213,6 +214,21 @@ export class EveChildFogVolume extends EveChildTransform
   {
     this.RebuildBoundingSphere();
     return true;
+  }
+
+  /** Carbon EveChildFogVolume::RegisterComponents (cpp:69-72): unconditional
+   * FroxelFogSettings leaf self-registration. Carbon's UnRegisterComponents
+   * (cpp:74-77) only removes this same component, which EveEntity::UnRegister
+   * already did via UnRegisterAllComponents (EveEntity.cpp:90), so the JS
+   * un-side keeps the base no-op. */
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.FroxelFogSettings, this);
+    }
   }
 
   @impl.adapted

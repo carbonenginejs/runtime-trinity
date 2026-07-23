@@ -20,7 +20,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildProceduralContainer",
         family: "eve/child/procedural"
-      })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("ReRegister on display changes is engine-owned (component registry unported); the notify contract is preserved.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Entity Register/UnRegister against the component registry is engine-owned; the variable replay and swap are ported.")], 18, "ConfigureSelectedObject"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurveSetDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRangeDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddTransformModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.read, void 0, type.objectRef("IEveSpaceObjectChild")], 16, "selectedObject"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.model("IEveProceduralSelectionMethod")], 16, "selectionMethod"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("ReRegister on display changes is engine-owned (component registry unported); the notify contract is preserved.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Entity Register/UnRegister against the component registry is engine-owned; the variable replay and swap are ported.")], 18, "ConfigureSelectedObject"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMethodVariableName"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetProceduralContainerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, void 0, carbon.contextual(["camera"]), impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalToWorldTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "ChangeLOD"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateCurveSet"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurveSetDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRangeDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "PlayAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "StopAllCurveSets"], [[carbon, carbon.method, impl, impl.implemented], 18, "Setup"], [[carbon, carbon.method, impl, impl.implemented], 18, "FindSoundEmitter"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddTransformModifier"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
     }
     constructor(...args) {
       super(...args);
@@ -270,18 +270,22 @@ new class extends _identity {
       this.selectedObject?.SetInheritProperties?.(colorSet);
     }
 
-    /** Carbon EveChildProceduralContainer::RegisterComponents (cpp:322-333)
-     * registers the selected entity with the scene component registry -
-     * unported system. */
-    RegisterComponents(..._args) {
-      throw new Error("EveChildProceduralContainer.RegisterComponents is not implemented in CarbonEngineJS (component registry unported).");
+    /** Carbon EveChildProceduralContainer::RegisterComponents (cpp:322-333):
+     * forward-only to the selected object. Gate m_display. */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry && this.display) {
+        this.selectedObject?.Register?.(registry);
+      }
     }
 
-    /** Carbon EveChildProceduralContainer::UnRegisterComponents (cpp:334-344)
-     * unregisters the selected entity from the scene component registry -
-     * unported system. */
-    UnRegisterComponents(..._args) {
-      throw new Error("EveChildProceduralContainer.UnRegisterComponents is not implemented in CarbonEngineJS (component registry unported).");
+    /** Carbon EveChildProceduralContainer::UnRegisterComponents (cpp:334-344):
+     * forwards to the selected object; no display re-check. */
+    UnRegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        this.selectedObject?.UnRegister?.(registry);
+      }
     }
 
     // Copies the caller's params into a fresh child-facing record (Carbon copies

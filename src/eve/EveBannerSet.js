@@ -6,6 +6,7 @@ import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBannerItem } from "./EveBannerItem.js";
 import { EveBannerLight } from "./EveBannerLight.js";
+import { EveComponentType } from "./EveComponentTypes.js";
 
 
 @type.define({ className: "EveBannerSet", family: "eve/attachment/banners" })
@@ -125,6 +126,31 @@ export class EveBannerSet extends EveEntity
   AddLightFromSOF(light)
   {
     this.lights.push(EveBannerLight.FromSOF(light));
+  }
+
+  /** Carbon EveBannerSet::RegisterComponents (cpp:457-464): LightOwner
+   * UNCONDITIONAL (no lights-empty check, unlike the other packed sets -
+   * GetLights self-gates on display/lights instead, cpp:468). */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EveBannerSet::GetLights (cpp:466-497): average-color light
+   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
+   * submission is unported); presence satisfies the "LightOwner" duck
+   * contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EveBannerSet.GetLights is not implemented in CarbonEngineJS.");
   }
 
   static #copyBanner(source)

@@ -17,7 +17,7 @@ class EveChildExplosion extends _EveChildContainer {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildExplosion",
       family: "eve/child"
-    })], [[type.array("mat4"), 0, "localExplosionTransforms"], [[type, type.vec3], 16, "globalExplosionOffset"], [type.list("IEveSpaceObjectChild"), 0, "globalExplosionInstances"], [[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.adapted], 18, "Play"], [[carbon, carbon.method, impl, impl.implemented], 18, "Stop"], [[impl, impl.adapted], 18, "UpdateSyncronous"]], 0, void 0, _EveChildContainer));
+    })], [[type.array("mat4"), 0, "localExplosionTransforms"], [[type, type.vec3], 16, "globalExplosionOffset"], [type.list("IEveSpaceObjectChild"), 0, "globalExplosionInstances"], [[io, io.read, void 0, type.objectRef("EveChildContainer")], 16, "generatedGlobalExplosions"], [[io, io.persist, type, type.vec3], 16, "localScaling"], [[io, io.persist, type, type.vec3], 16, "globalScaling"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "globalExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosion"], [[io, io.persist, void 0, type.model("IEveSpaceObjectChild")], 16, "localExplosionShared"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "globalExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionIntervalFactor"], [[io, io.persist, type, type.float32], 16, "localExplosionDelay"], [[io, io.persist, type, type.float32], 16, "globalExplosionDelay"], [[io, io.read, type, type.float32], 16, "totalDuration"], [[io, io.persist, type, type.float32], 16, "globalDuration"], [[io, io.read, type, type.boolean], 16, "isPlaying"], [[io, io.persist, void 0, type.list("IEveSpaceObjectChild")], 16, "localExplosions"], [[io, io.persist, type, type.float32], 16, "localExplosionInterval"], [[io, io.read, type, type.float32], 16, "globalExplosionTime"], [[io, io.read, type, type.float32], 16, "wreckSwitchTime"], [[io, io.readwrite, type, type.float32], 16, "wreckSwitchOffsetFromGlobalStart"], [[io, io.read, type, type.float32], 16, "playTime"], [[io, io.persist, type, type.float32], 16, "localDuration"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLocalExplosionTransforms"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGlobalExplosionOffset"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.adapted], 18, "Play"], [[carbon, carbon.method, impl, impl.implemented], 18, "Stop"], [[impl, impl.adapted], 18, "UpdateSyncronous"]], 0, void 0, _EveChildContainer));
   }
   constructor(...args) {
     super(...args);
@@ -102,6 +102,22 @@ class EveChildExplosion extends _EveChildContainer {
     this.globalExplosionOffset[0] /= this.scaling[0];
     this.globalExplosionOffset[1] /= this.scaling[1];
     this.globalExplosionOffset[2] /= this.scaling[2];
+  }
+
+  /** Carbon EveChildExplosion::RegisterComponents (cpp:45-48): base container
+   * registration only. */
+  RegisterComponents() {
+    super.RegisterComponents();
+  }
+
+  /** Carbon EveChildExplosion::UnRegisterComponents (cpp:54-65): manually
+   * un-registers the global explosion container (spawned outside m_objects,
+   * JS field generatedGlobalExplosions), then the base container forwarding. */
+  UnRegisterComponents() {
+    if (this.generatedGlobalExplosions) {
+      this.generatedGlobalExplosions.UnRegister?.(this.GetComponentRegistry());
+    }
+    super.UnRegisterComponents();
   }
 
   /** Carbon method Play (MAP_METHOD_AND_WRAP). */

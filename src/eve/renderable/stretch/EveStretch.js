@@ -5,6 +5,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../../generated/eve/EveEntity.js";
+import { EveComponentType } from "../../EveComponentTypes.js";
 import { TriFloat } from "../../../trinityCore/TriFloat.js";
 import {
   collectRenderables,
@@ -378,6 +379,18 @@ export class EveStretch extends EveEntity
     const destination = translationMatrix(this.#destinationPosition, EveStretch.#lightDestination, this.#destinationScale);
     if (this.#displaySource) for (const light of this.sourceLights) light?.AddLight?.(lightManager, source, this.#sourceScale);
     if (this.#displayDestination) for (const light of this.destLights) light?.AddLight?.(lightManager, destination, this.#destinationScale);
+  }
+
+  /** Carbon EveStretch::RegisterComponents (cpp:606-613): LightOwner leaf
+   * self-registration. Gate m_display. */
+  @carbon.method @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
   }
 
   static Tr2Lod = Object.freeze({ TR2_LOD_UNSPECIFIED: -1, TR2_LOD_LOW: 0, TR2_LOD_MEDIUM: 1, TR2_LOD_HIGH: 2, TR2_LOD_ULTRA: 3, TR2_LOD_COUNT: 4 });

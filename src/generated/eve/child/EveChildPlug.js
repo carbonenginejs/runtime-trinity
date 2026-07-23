@@ -65,4 +65,36 @@ export class EveChildPlug extends EveChildTransform
     for (const controller of this.controllers) controller?.Start?.();
   }
 
+  /** Carbon EveChildPlug::RegisterComponents (cpp:122-135): forward-only to
+   * the plugged objects. Gate m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      for (const object of this.objects)
+      {
+        object?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildPlug::UnRegisterComponents (cpp:141-154): forwards to the
+   * plugged objects; no display re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const object of this.objects)
+      {
+        object?.UnRegister?.(registry);
+      }
+    }
+  }
+
 }

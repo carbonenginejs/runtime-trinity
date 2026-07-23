@@ -9,6 +9,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
 import { Tr2Lod } from "../../../eve/EveLODHelper.js";
+import { EveComponentType, ShouldReflect } from "../../../eve/EveComponentTypes.js";
 
 /** EveChildParticleSystem (eve/child) - generated from schema shapeHash 30e9fc72.... */
 @type.define({ className: "EveChildParticleSystem", family: "eve/child" })
@@ -121,7 +122,7 @@ export class EveChildParticleSystem extends EveChildTransform
    */
   @carbon.method
   @impl.adapted
-  @impl.reason("Component-registry integration is deferred; the re-register hook is limited to an optional duck-typed call.")
+  @impl.reason("Carbon re-registers on m_reflectionMode/m_display Var edits; JS forwards every OnModified to the EveEntity ReRegister lifecycle.")
   OnModified(_value)
   {
     this.ReRegister?.();
@@ -422,12 +423,21 @@ export class EveChildParticleSystem extends EveChildTransform
     this.transformModifiers.push(modifier);
   }
 
-  /** Carbon method RegisterComponents (EveChildParticleSystem.cpp:58-68). */
+  /** Carbon EveChildParticleSystem::RegisterComponents (cpp:58-68):
+   * ReflectionRenderable leaf self-registration behind ShouldReflect (Carbon
+   * redundantly re-checks m_display inside the outer display gate). */
   @carbon.method
-  @impl.notImplemented
-  RegisterComponents(..._args)
+  @impl.implemented
+  RegisterComponents()
   {
-    throw new Error("EveChildParticleSystem.RegisterComponents is not implemented in CarbonEngineJS.");
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      if (ShouldReflect(this.reflectionMode) && this.display)
+      {
+        registry.RegisterComponent(EveComponentType.ReflectionRenderable, this);
+      }
+    }
   }
 
   static ReflectionMode = Object.freeze({

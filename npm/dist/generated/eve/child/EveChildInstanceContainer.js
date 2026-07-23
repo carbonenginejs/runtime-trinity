@@ -15,7 +15,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveChildInstanceContainer",
         family: "eve/child"
-      })], [[[io, io.notify, io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("EveChildInstanceTransform")], 16, "transforms"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.model("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.readwrite, type, type.boolean], 16, "reset"], [[io, io.read, void 0, type.list("IEveSpaceObjectChild")], 16, "instances"], [[io, io.notify, io, io.persist, type, type.string], 16, "locatorSet"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "source"], [[io, io.read, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+      })], [[[io, io.notify, io, io.persist, void 0, type.list("IEveChildTransformModifier")], 16, "transformModifiers"], [[io, io.persist, void 0, type.list("EveChildInstanceTransform")], 16, "transforms"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "alwaysOn"], [[io, io.persist, void 0, type.model("EveChildInheritProperties")], 16, "inheritProperties"], [[io, io.readwrite, type, type.boolean], 16, "reset"], [[io, io.read, void 0, type.list("IEveSpaceObjectChild")], 16, "instances"], [[io, io.notify, io, io.persist, type, type.string], 16, "locatorSet"], [[io, io.persistOnly, void 0, type.model("IEveSpaceObjectChild")], 16, "source"], [[io, io.read, type, type.int32, void 0, schema.enum("Origin")], 16, "origin"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
     }
     constructor(...args) {
       super(...args);
@@ -73,6 +73,34 @@ new class extends _identity {
     /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
     StartControllers() {
       for (const instance of this.instances) instance?.StartControllers?.();
+    }
+
+    /** Carbon EveChildInstanceContainer::RegisterComponents (cpp:83-103):
+     * forwards the instances; with no instances (and edit mode enabled -
+     * m_disableEditMode has no JS field yet, read duck-typed) the source
+     * template registers instead. Gate IsInRegistry() && m_display. */
+    RegisterComponents() {
+      if (this.IsInRegistry() && this.display) {
+        const registry = this.GetComponentRegistry();
+        for (const instance of this.instances) {
+          instance?.Register?.(registry);
+        }
+        if (!this.instances.length && !this.disableEditMode) {
+          this.source?.Register?.(registry);
+        }
+      }
+    }
+
+    /** Carbon EveChildInstanceContainer::UnRegisterComponents (cpp:105-122):
+     * forwards the instances and the source; no display re-check. */
+    UnRegisterComponents() {
+      if (this.IsInRegistry()) {
+        const registry = this.GetComponentRegistry();
+        for (const instance of this.instances) {
+          instance?.UnRegister?.(registry);
+        }
+        this.source?.UnRegister?.(registry);
+      }
     }
   }];
   Origin = Object.freeze({

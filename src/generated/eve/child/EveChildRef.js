@@ -76,4 +76,28 @@ export class EveChildRef extends EveChildTransform
     this.child?.StartControllers?.();
   }
 
+  /** Carbon EveChildRef::RegisterComponents (cpp:87-96): forward-only to the
+   * referenced child. Gate IsInRegistry() && child && m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    if (this.IsInRegistry() && this.child !== null && this.display)
+    {
+      this.child.Register?.(this.GetComponentRegistry());
+    }
+  }
+
+  /** Carbon EveChildRef::UnRegisterComponents (cpp:98-107): forwards to the
+   * referenced child; no display re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    if (this.IsInRegistry() && this.child !== null)
+    {
+      this.child.UnRegister?.(this.GetComponentRegistry());
+    }
+  }
+
 }

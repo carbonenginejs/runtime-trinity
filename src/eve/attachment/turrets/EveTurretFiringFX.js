@@ -563,6 +563,38 @@ export class EveTurretFiringFX extends EveEntity
     for (const stretch of this.stretch) stretch?.StartControllers?.();
   }
 
+  /** Carbon EveTurretFiringFX::RegisterComponents (cpp:739-752): forwards the
+   * stretch elements. Gate m_display && m_isFiring. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display && this.isFiring)
+    {
+      for (const element of this.stretch)
+      {
+        element?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveTurretFiringFX::UnRegisterComponents (cpp:755-768): forwards
+   * the stretch elements; no display/isFiring re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const element of this.stretch)
+      {
+        element?.UnRegister?.(registry);
+      }
+    }
+  }
+
   @carbon.method
   @impl.adapted
   @impl.reason("Audio emitters are duck-typed; Carbon impact switch values are forwarded without native interfaces.")

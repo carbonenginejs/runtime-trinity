@@ -3,6 +3,7 @@
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveSpotlightLight } from "./EveSpotlightLight.js";
+import { EveComponentType } from "./EveComponentTypes.js";
 
 
 @type.define({ className: "EveSpotlightSet", family: "eve/attachment/spotlights" })
@@ -146,5 +147,28 @@ export class EveSpotlightSet extends EveEntity
   AddLightFromSOF(light)
   {
     this.lights.push(EveSpotlightLight.FromSOF(light));
+  }
+
+  /** Carbon EveSpotlightSet::RegisterComponents (cpp:527-534): LightOwner
+   * when lights are authored. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.lights.length)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EveSpotlightSet::GetLights (cpp:536-556): per-light submission.
+   * Awaits the LightOwner consumption pass (Tr2LightManager submission is
+   * unported); presence satisfies the "LightOwner" duck contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EveSpotlightSet.GetLights is not implemented in CarbonEngineJS.");
   }
 }

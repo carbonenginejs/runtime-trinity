@@ -10,6 +10,7 @@ import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schem
 import { EveChildTransform, applyTransformModifiers } from "./EveChildTransform.js";
 import { EveChildInheritProperties } from "./EveChildInheritProperties.js";
 import { EveChildUpdateParams } from "../EveChildUpdateParams.js";
+import { EveComponentType } from "../EveComponentTypes.js";
 import { Origin } from "../../generated/eve/child/enums.js";
 import { Tr2RenderReason, TR2SHADERMODEL } from "../../generated/trinityCore/enums.js";
 import { Tr2Lod } from "../EveLODHelper.js";
@@ -842,6 +843,56 @@ export class EveChildContainer extends EveChildTransform
   {
     return (this.display || !this.updateOnDisplay) &&
       (this.IsRendering() || this.displayFilter === EveChildContainer.DisplayQualityModifier.ONLY_REFLECTIONS);
+  }
+
+  /** Carbon EveChildContainer::RegisterComponents (cpp:258-284): LightOwner
+   * when lights are authored, then forwards the contained objects and the
+   * attachments. Gate m_display && IsUpdating(). */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display && this.IsUpdating())
+    {
+      if (this.lights.length)
+      {
+        registry.RegisterComponent(EveComponentType.LightOwner, this);
+      }
+
+      for (const object of this.objects)
+      {
+        object?.Register?.(registry);
+      }
+
+      for (const attachment of this.attachments)
+      {
+        attachment?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveChildContainer::UnRegisterComponents (cpp:290-311): forwards
+   * the contained objects and attachments only (own components were already
+   * removed by EveEntity::UnRegister, EveEntity.cpp:90); no display/IsUpdating
+   * re-check. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const object of this.objects)
+      {
+        object?.UnRegister?.(registry);
+      }
+
+      for (const attachment of this.attachments)
+      {
+        attachment?.UnRegister?.(registry);
+      }
+    }
   }
 
   /** Carbon EveChildContainer::PlayCurveSet (cpp:682-712): named own sets play

@@ -379,24 +379,30 @@ export class EveChildProceduralContainer extends EveChildTransform
     this.selectedObject?.SetInheritProperties?.(colorSet);
   }
 
-  /** Carbon EveChildProceduralContainer::RegisterComponents (cpp:322-333)
-   * registers the selected entity with the scene component registry -
-   * unported system. */
+  /** Carbon EveChildProceduralContainer::RegisterComponents (cpp:322-333):
+   * forward-only to the selected object. Gate m_display. */
   @carbon.method
-  @impl.notImplemented
-  RegisterComponents(..._args)
+  @impl.implemented
+  RegisterComponents()
   {
-    throw new Error("EveChildProceduralContainer.RegisterComponents is not implemented in CarbonEngineJS (component registry unported).");
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      this.selectedObject?.Register?.(registry);
+    }
   }
 
-  /** Carbon EveChildProceduralContainer::UnRegisterComponents (cpp:334-344)
-   * unregisters the selected entity from the scene component registry -
-   * unported system. */
+  /** Carbon EveChildProceduralContainer::UnRegisterComponents (cpp:334-344):
+   * forwards to the selected object; no display re-check. */
   @carbon.method
-  @impl.notImplemented
-  UnRegisterComponents(..._args)
+  @impl.implemented
+  UnRegisterComponents()
   {
-    throw new Error("EveChildProceduralContainer.UnRegisterComponents is not implemented in CarbonEngineJS (component registry unported).");
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      this.selectedObject?.UnRegister?.(registry);
+    }
   }
 
   // Copies the caller's params into a fresh child-facing record (Carbon copies

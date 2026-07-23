@@ -3,6 +3,7 @@
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EvePlaneLight } from "./EvePlaneLight.js";
+import { EveComponentType } from "./EveComponentTypes.js";
 
 
 @type.define({ className: "EvePlaneSet", family: "eve/attachment/planes" })
@@ -161,5 +162,29 @@ export class EvePlaneSet extends EveEntity
   AddLightFromSOF(light)
   {
     this.lights.push(EvePlaneLight.FromSOF(light));
+  }
+
+  /** Carbon EvePlaneSet::RegisterComponents (cpp:535-542): LightOwner when
+   * lights are authored. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.lights.length)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EvePlaneSet::GetLights (cpp:544-570): average-color light
+   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
+   * submission is unported); presence satisfies the "LightOwner" duck
+   * contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EvePlaneSet.GetLights is not implemented in CarbonEngineJS.");
   }
 }

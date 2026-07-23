@@ -15,7 +15,7 @@ class EveChildSocket extends _EveChildTransform {
     } = _applyDecs2311(this, [type.define({
       className: "EveChildSocket",
       family: "eve/child"
-    })], [[type.objectRef("IEveChildResourceLoader"), 0, "resourceLoader"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.list("IEveSocketParameter")], 16, "parameters"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.read, void 0, type.objectRef("EveChildPlug")], 16, "plug"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebind"], [[carbon, carbon.method, impl, impl.adapted], 18, "Reload"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"]], 0, void 0, _EveChildTransform));
+    })], [[type.objectRef("IEveChildResourceLoader"), 0, "resourceLoader"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.notify, io, io.persist, void 0, type.list("IEveSocketParameter")], 16, "parameters"], [[io, io.notify, io, io.persist, type, type.string], 16, "resPath"], [[io, io.read, void 0, type.objectRef("EveChildPlug")], 16, "plug"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebind"], [[carbon, carbon.method, impl, impl.adapted], 18, "Reload"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"]], 0, void 0, _EveChildTransform));
   }
   constructor(...args) {
     super(...args);
@@ -80,6 +80,22 @@ class EveChildSocket extends _EveChildTransform {
   /** Carbon method StartControllers (MAP_METHOD_AND_WRAP). */
   StartControllers() {
     this.plug?.StartControllers?.();
+  }
+
+  /** Carbon EveChildSocket::RegisterComponents (cpp:212-221): forward-only to
+   * the plug. Gate IsInRegistry() && plug && m_display. */
+  RegisterComponents() {
+    if (this.IsInRegistry() && this.plug !== null && this.display) {
+      this.plug.Register?.(this.GetComponentRegistry());
+    }
+  }
+
+  /** Carbon EveChildSocket::UnRegisterComponents (cpp:227-236): forwards to
+   * the plug; no display re-check. */
+  UnRegisterComponents() {
+    if (this.IsInRegistry() && this.plug) {
+      this.plug.UnRegister?.(this.GetComponentRegistry());
+    }
   }
   static {
     _initClass();

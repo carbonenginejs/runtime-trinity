@@ -7,6 +7,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { Tr2PostProcessAttributes } from "../../../postProcess/Tr2PostProcessAttributes.js";
+import { EveComponentType } from "../../../eve/EveComponentTypes.js";
 
 /** EveChildPostProcessVolume (eve/child) - generated from schema shapeHash 7d506595.... */
 @type.define({ className: "EveChildPostProcessVolume", family: "eve/child" })
@@ -249,6 +250,22 @@ export class EveChildPostProcessVolume extends EveChildTransform
     this.#EnsureAttributes();
     this.RebuildBoundingSphere();
     return true;
+  }
+
+  /** Carbon EveChildPostProcessVolume::RegisterComponents (cpp:62-65):
+   * unconditional PostProcessOwner leaf self-registration. Carbon's
+   * UnRegisterComponents (cpp:67-70) only removes this same component, which
+   * EveEntity::UnRegister already did via UnRegisterAllComponents
+   * (EveEntity.cpp:90), so the JS un-side keeps the base no-op. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.PostProcessOwner, this);
+    }
   }
 
   /** Returns the owned attribute record (EveChildPostProcessVolume.cpp:217-220). */

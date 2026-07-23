@@ -6,6 +6,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
+import { EveComponentType } from "../EveComponentTypes.js";
 
 
 @type.define({ className: "EveChildLightingOverride", family: "eve/child" })
@@ -46,6 +47,21 @@ export class EveChildLightingOverride extends EveChildTransform
   @io.persist
   @type.list("IEveVolume")
   volumes = [];
+
+  /** Carbon EveChildLightingOverride::RegisterComponents (cpp:47-50):
+   * unconditional EveLightingOverride leaf self-registration. Carbon's
+   * UnRegisterComponents (cpp:52-55) only removes this same component, which
+   * EveEntity::UnRegister already did via UnRegisterAllComponents
+   * (EveEntity.cpp:90), so the JS un-side keeps the base no-op. */
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.EveLightingOverride, this);
+    }
+  }
 
   @impl.implemented
   GetOverrides()

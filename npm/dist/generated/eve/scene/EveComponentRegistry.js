@@ -2,6 +2,7 @@ import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPlugin
 import { impl, carbon, type } from '@carbonenginejs/core-types/schema';
 import { CjsModel } from '@carbonenginejs/core-types/model';
 import { EveComponentCollection as _EveComponentCollecti } from './EveComponentCollection.js';
+import { EveComponentRequiredMethods } from '../../../eve/EveComponentTypes.js';
 
 let _initProto, _initClass, _init_componentCollectionLoopGuard, _init_extra_componentCollectionLoopGuard, _init_registeredEntities, _init_extra_registeredEntities;
 
@@ -79,6 +80,16 @@ class EveComponentRegistry extends CjsModel {
     return this.#componentCollections.find(collection => collection.name === componentName) ?? null;
   }
   RegisterComponent(componentName, entity) {
+    // Fail-closed duck assertion: Carbon's RegisterComponent<T> cannot compile
+    // for an entity that does not implement T; the JS port asserts the
+    // interface's pure-virtual surface (EveComponentRequiredMethods) instead.
+    if (Object.hasOwn(EveComponentRequiredMethods, componentName)) {
+      for (const method of EveComponentRequiredMethods[componentName]) {
+        if (typeof entity?.[method] !== "function") {
+          throw new TypeError(`EveComponentRegistry.RegisterComponent("${componentName}"): entity ` + `${entity?.constructor?.name ?? typeof entity} is missing required method ${method}().`);
+        }
+      }
+    }
     let collection = this.GetComponentCollection(componentName);
     if (!collection) {
       collection = this.AddCollection(componentName);

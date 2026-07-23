@@ -173,6 +173,34 @@ export class EveShip2 extends EveMobile
     }
   }
 
+  /** Carbon EveShip2::RegisterComponents (cpp:145-153): base registration,
+   * then forwards the booster set (no display gate of its own). */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    super.RegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry && this.boosters)
+    {
+      this.boosters.Register?.(registry);
+    }
+  }
+
+  /** Carbon EveShip2::UnRegisterComponents (cpp:155-163): base, then forwards
+   * the booster set. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    super.UnRegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry && this.boosters)
+    {
+      this.boosters.UnRegister?.(registry);
+    }
+  }
+
   /** Carbon EveShip2::DisplayBoosters - boosters render with the children. */
   @carbon.method
   @impl.implemented

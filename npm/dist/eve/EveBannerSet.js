@@ -5,6 +5,7 @@ import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
 import { EveBannerItem as _EveBannerItem } from './EveBannerItem.js';
 import { EveBannerLight as _EveBannerLight } from './EveBannerLight.js';
+import { EveComponentType } from './EveComponentTypes.js';
 
 let _initProto, _initClass, _init_banners, _init_extra_banners, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_isPickable, _init_extra_isPickable, _init_display, _init_extra_display, _init_key, _init_extra_key, _init_lights, _init_extra_lights, _init_primaryTextureParameter, _init_extra_primaryTextureParameter;
 let _EveBannerSet;
@@ -17,7 +18,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveBannerSet",
         family: "eve/attachment/banners"
-      })], [[[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.list("EveBannerItem")], 16, "banners"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "isPickable"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, type, type.int32], 16, "key"], [[io, io.persist, void 0, type.list("EveBannerLight")], 16, "lights"], [[io, io.persist, void 0, type.objectRef("TriTextureParameter")], 16, "primaryTextureParameter"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetReference"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddBanner"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetPickingID"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPrimaryTextureParameter"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"]], 0, void 0, _EveEntity));
+      })], [[[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.list("EveBannerItem")], 16, "banners"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[io, io.persist, type, type.boolean], 16, "isPickable"], [[io, io.readwrite, type, type.boolean], 16, "display"], [[io, io.persist, type, type.int32], 16, "key"], [[io, io.persist, void 0, type.list("EveBannerLight")], 16, "lights"], [[io, io.persist, void 0, type.objectRef("TriTextureParameter")], 16, "primaryTextureParameter"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetReference"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.implemented], 18, "AddBanner"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetKey"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetPickingID"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetShaderOption"], [[carbon, carbon.method, impl, impl.adapted], 18, "SetPrimaryTextureParameter"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLights"]], 0, void 0, _EveEntity));
     }
     banners = (_initProto(this), _init_banners(this, []));
     name = (_init_extra_banners(this), _init_name(this, ""));
@@ -67,6 +68,24 @@ new class extends _identity {
     }
     AddLightFromSOF(light) {
       this.lights.push(_EveBannerLight.FromSOF(light));
+    }
+
+    /** Carbon EveBannerSet::RegisterComponents (cpp:457-464): LightOwner
+     * UNCONDITIONAL (no lights-empty check, unlike the other packed sets -
+     * GetLights self-gates on display/lights instead, cpp:468). */
+    RegisterComponents() {
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        registry.RegisterComponent(EveComponentType.LightOwner, this);
+      }
+    }
+
+    /** Carbon EveBannerSet::GetLights (cpp:466-497): average-color light
+     * submission. Awaits the LightOwner consumption pass (Tr2LightManager
+     * submission is unported); presence satisfies the "LightOwner" duck
+     * contract. */
+    GetLights(..._args) {
+      throw new Error("EveBannerSet.GetLights is not implemented in CarbonEngineJS.");
     }
   }];
   #copyBanner(source) {

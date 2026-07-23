@@ -5,6 +5,7 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../generated/eve/EveEntity.js";
+import { EveComponentType } from "../EveComponentTypes.js";
 
 
 @type.define({ className: "EveChildInstancedMeshArea", family: "eve/child" })
@@ -378,6 +379,69 @@ export class EveChildInstancedMeshes extends EveEntity
   GetRevision()
   {
     return this.#revision;
+  }
+
+  /** Carbon EveChildInstancedMeshes::RegisterComponents (cpp:36-43):
+   * unconditional InstancedMeshProvider + ShadowCaster leaf
+   * self-registration. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.InstancedMeshProvider, this);
+      registry.RegisterComponent(EveComponentType.ShadowCaster, this);
+    }
+  }
+
+  /** Carbon EveChildInstancedMeshes::UnRegisterComponents (cpp:45-48) only
+   * calls UnregisterFromMeshManager (GPU mesh-manager handle cleanup,
+   * unported); own components were already removed by EveEntity::UnRegister
+   * (EveEntity.cpp:90). */
+  @carbon.method
+  @impl.adapted
+  @impl.reason("UnregisterFromMeshManager releases GPU mesh-group/sphere/per-object handles owned by the engine's EveInstancedMeshManager.")
+  UnRegisterComponents()
+  {
+  }
+
+  /** Carbon EveChildInstancedMeshes::AddMeshesToManager (cpp:472-535)
+   * uploads instance data to the engine-owned EveInstancedMeshManager;
+   * presence satisfies the "InstancedMeshProvider" duck contract. */
+  @carbon.method
+  @impl.notImplemented
+  AddMeshesToManager(..._args)
+  {
+    throw new Error("EveChildInstancedMeshes.AddMeshesToManager is not implemented in CarbonEngineJS.");
+  }
+
+  /** Carbon EveChildInstancedMeshes::IsCastingShadow (cpp:73-76) always
+   * returns false (instanced shadows cull per instance group); presence
+   * satisfies the "ShadowCaster" duck contract. */
+  @carbon.method
+  @impl.implemented
+  IsCastingShadow(..._args)
+  {
+    return false;
+  }
+
+  /** Carbon EveChildInstancedMeshes::GetShadowBatches (cpp:78-80) is an
+   * intentional no-op (the instanced mesh manager emits the batches). */
+  @carbon.method
+  @impl.noop
+  GetShadowBatches(..._args)
+  {
+  }
+
+  /** Carbon EveChildInstancedMeshes::GetShadowPerObjectData (cpp:82-85)
+   * returns null (per-object data flows through the mesh manager). */
+  @carbon.method
+  @impl.implemented
+  GetShadowPerObjectData(..._args)
+  {
+    return null;
   }
 
   static #GetMesh(meshes, meshId)

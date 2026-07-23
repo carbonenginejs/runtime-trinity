@@ -17,7 +17,7 @@ class EveSwarm extends _EveShip {
     } = _applyDecs2311(this, [type.define({
       className: "EveSwarm",
       family: "eve/spaceObject/swarm"
-    })], [[type.list("SwarmVehicle"), 0, "vehicles"], [type.list("EveSwarmRenderable"), 0, "renderables"], [[type, type.int32], 16, "targetIndex"], [[type, type.int32], 16, "firingIndex"], [[type, type.vec3], 16, "squadBoundsMin"], [[type, type.vec3], 16, "squadBoundsMax"], [[io, io.persist, type, type.float32], 16, "weightFormation"], [[io, io.persist, type, type.float32], 16, "weightCohesion"], [[io, io.persist, type, type.float32], 16, "weightSeparation"], [[io, io.persist, type, type.float32], 16, "weightWander"], [[io, io.persist, type, type.float32], 16, "weightAnchor"], [[io, io.persist, type, type.float32], 16, "anchorRadius0"], [[io, io.persist, type, type.float32], 16, "anchorRadius1"], [[io, io.persist, type, type.float32], 16, "weightDeceleration"], [[io, io.persist, type, type.float32], 16, "maxDeceleration"], [[io, io.persist, type, type.float32], 16, "separationDistance"], [[io, io.persist, type, type.float32], 16, "formationDistance"], [[io, io.persist, type, type.float32], 16, "wanderFluctuation"], [[io, io.persist, type, type.float32], 16, "wanderDistance"], [[io, io.persist, type, type.float32], 16, "wanderRadius"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "debugShowForces"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.persist, type, type.boolean], 16, "swarmingEnabled"], [[io, io.persist, type, type.float32], 16, "mass"], [[io, io.persist, type, type.float32], 16, "speedMultiplier"], [[io, io.persist, type, type.float32], 16, "speedMinimum"], [[io, io.persist, type, type.float32], 16, "maxDistance0"], [[io, io.persist, type, type.float32], 16, "maxDistance1"], [[io, io.persist, type, type.float32], 16, "maxTime"], [[io, io.persist, type, type.float32], 16, "agility"], [[io, io.persist, type, type.float32], 16, "speed0"], [[io, io.persist, type, type.float32], 16, "speed1"], [[io, io.readwrite, type, type.float32], 16, "timeMultiplier"], [[io, io.persist, type, type.float32], 16, "weightAlign"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddSwarmer"], [[carbon, carbon.method, impl, impl.adapted], 18, "RemoveSwarmer"], [[carbon, carbon.method, impl, impl.adapted], 18, "PickFiringOrigin"], [[carbon, carbon.method, impl, impl.adapted], 18, "EnableSwarming"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Clamps negative browser inputs and uses CPU vehicle count as the initialized source of truth.")], 18, "SetCount"]], 0, void 0, _EveShip));
+    })], [[type.list("SwarmVehicle"), 0, "vehicles"], [type.list("EveSwarmRenderable"), 0, "renderables"], [[type, type.int32], 16, "targetIndex"], [[type, type.int32], 16, "firingIndex"], [[type, type.vec3], 16, "squadBoundsMin"], [[type, type.vec3], 16, "squadBoundsMax"], [[io, io.persist, type, type.float32], 16, "weightFormation"], [[io, io.persist, type, type.float32], 16, "weightCohesion"], [[io, io.persist, type, type.float32], 16, "weightSeparation"], [[io, io.persist, type, type.float32], 16, "weightWander"], [[io, io.persist, type, type.float32], 16, "weightAnchor"], [[io, io.persist, type, type.float32], 16, "anchorRadius0"], [[io, io.persist, type, type.float32], 16, "anchorRadius1"], [[io, io.persist, type, type.float32], 16, "weightDeceleration"], [[io, io.persist, type, type.float32], 16, "maxDeceleration"], [[io, io.persist, type, type.float32], 16, "separationDistance"], [[io, io.persist, type, type.float32], 16, "formationDistance"], [[io, io.persist, type, type.float32], 16, "wanderFluctuation"], [[io, io.persist, type, type.float32], 16, "wanderDistance"], [[io, io.persist, type, type.float32], 16, "wanderRadius"], [[io, io.notify, io, io.persist, type, type.boolean], 16, "debugShowForces"], [[io, io.persist, type, type.int32], 16, "count"], [[io, io.persist, type, type.boolean], 16, "swarmingEnabled"], [[io, io.persist, type, type.float32], 16, "mass"], [[io, io.persist, type, type.float32], 16, "speedMultiplier"], [[io, io.persist, type, type.float32], 16, "speedMinimum"], [[io, io.persist, type, type.float32], 16, "maxDistance0"], [[io, io.persist, type, type.float32], 16, "maxDistance1"], [[io, io.persist, type, type.float32], 16, "maxTime"], [[io, io.persist, type, type.float32], 16, "agility"], [[io, io.persist, type, type.float32], 16, "speed0"], [[io, io.persist, type, type.float32], 16, "speed1"], [[io, io.readwrite, type, type.float32], 16, "timeMultiplier"], [[io, io.persist, type, type.float32], 16, "weightAlign"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddSwarmer"], [[carbon, carbon.method, impl, impl.adapted], 18, "RemoveSwarmer"], [[carbon, carbon.method, impl, impl.adapted], 18, "PickFiringOrigin"], [[carbon, carbon.method, impl, impl.adapted], 18, "EnableSwarming"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Clamps negative browser inputs and uses CPU vehicle count as the initialized source of truth.")], 18, "SetCount"]], 0, void 0, _EveShip));
   }
   constructor(...args) {
     super(...args);
@@ -114,6 +114,33 @@ class EveSwarm extends _EveShip {
 
   /** m_behavior.m_weightAlign (float) [READWRITE, PERSIST] */
   weightAlign = (_init_extra_timeMultiplier(this), _init_weightAlign(this, 50));
+
+  /** Carbon EveSwarm::RegisterComponents (EveSwarm.cpp:1000-1017): base
+   * registration "to register all the turrets and things", then
+   * UnRegisterAllComponents(this) because the swarm itself is container-only,
+   * then forwards the per-swarmer renderables. */
+  RegisterComponents() {
+    super.RegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry) {
+      registry.UnRegisterAllComponents(this);
+      for (const renderable of this.renderables) {
+        renderable?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveSwarm::UnRegisterComponents (EveSwarm.cpp:1019-1030): base,
+   * then forwards the renderables. */
+  UnRegisterComponents() {
+    super.UnRegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry) {
+      for (const renderable of this.renderables) {
+        renderable?.UnRegister?.(registry);
+      }
+    }
+  }
 
   /** Carbon method AddSwarmer (MAP_METHOD_AND_WRAP). */
   AddSwarmer() {

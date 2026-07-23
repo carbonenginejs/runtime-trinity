@@ -3,15 +3,24 @@
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
+import { EveEntity } from "../../generated/eve/EveEntity.js";
 
 
+// Carbon's registered space-object children multiple-inherit EveEntity
+// alongside EveChildTransform (e.g. EveChildMesh.h:56-64, EveChildContainer.h
+// :33-41); JavaScript single inheritance flattens the EveEntity registration
+// lifecycle (Register/UnRegister/GetComponentRegistry/component state) into
+// this shared child base so container RegisterComponents overrides can forward
+// child?.Register?.(registry) exactly like Carbon's BlueCastPtr<EveEntity>
+// fan-out. Children whose Carbon class is not an EveEntity simply never get
+// forwarded a registry (Carbon's BlueCastPtr fails; JS registers them with no
+// components, base RegisterComponents being a no-op).
 @type.define({
   className: "EveChildTransform",
   family: "eve/child"
 })
-export class EveChildTransform extends CjsModel
+export class EveChildTransform extends EveEntity
 {
   @type.vec3
   translation = vec3.create();

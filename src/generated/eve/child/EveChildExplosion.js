@@ -148,6 +148,29 @@ export class EveChildExplosion extends EveChildContainer
     this.globalExplosionOffset[2] /= this.scaling[2];
   }
 
+  /** Carbon EveChildExplosion::RegisterComponents (cpp:45-48): base container
+   * registration only. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    super.RegisterComponents();
+  }
+
+  /** Carbon EveChildExplosion::UnRegisterComponents (cpp:54-65): manually
+   * un-registers the global explosion container (spawned outside m_objects,
+   * JS field generatedGlobalExplosions), then the base container forwarding. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    if (this.generatedGlobalExplosions)
+    {
+      this.generatedGlobalExplosions.UnRegister?.(this.GetComponentRegistry());
+    }
+    super.UnRegisterComponents();
+  }
+
   /** Carbon method Play (MAP_METHOD_AND_WRAP). */
   @carbon.method
   @impl.adapted

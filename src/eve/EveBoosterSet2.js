@@ -8,6 +8,7 @@ import { CjsModel } from "@carbonenginejs/core-types/model";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBoosterSet2Renderable } from "./EveBoosterSet2Renderable.js";
+import { EveComponentType } from "./EveComponentTypes.js";
 
 
 @type.define({ className: "EveBoosterSet2Item", family: "eve/attachment/boosters" })
@@ -594,6 +595,30 @@ export class EveBoosterSet2 extends EveEntity
   GetRevision()
   {
     return this.#revision;
+  }
+
+  /** Carbon EveBoosterSet2::RegisterComponents (cpp:1272-1279): unconditional
+   * LightOwner leaf self-registration. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EveBoosterSet2::GetLights (cpp:1287-1330): booster/warp light
+   * submission. Awaits the LightOwner consumption pass (Tr2LightManager
+   * submission is unported); presence satisfies the "LightOwner" duck
+   * contract. */
+  @carbon.method
+  @impl.notImplemented
+  GetLights(..._args)
+  {
+    throw new Error("EveBoosterSet2.GetLights is not implemented in CarbonEngineJS.");
   }
 
   static #CreateFlares(owner, booster)

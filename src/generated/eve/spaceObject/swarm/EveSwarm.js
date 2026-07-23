@@ -172,6 +172,43 @@ export class EveSwarm extends EveShip2
   @type.float32
   weightAlign = 50;
 
+  /** Carbon EveSwarm::RegisterComponents (EveSwarm.cpp:1000-1017): base
+   * registration "to register all the turrets and things", then
+   * UnRegisterAllComponents(this) because the swarm itself is container-only,
+   * then forwards the per-swarmer renderables. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    super.RegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      registry.UnRegisterAllComponents(this);
+      for (const renderable of this.renderables)
+      {
+        renderable?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveSwarm::UnRegisterComponents (EveSwarm.cpp:1019-1030): base,
+   * then forwards the renderables. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    super.UnRegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const renderable of this.renderables)
+      {
+        renderable?.UnRegister?.(registry);
+      }
+    }
+  }
+
   /** Carbon method AddSwarmer (MAP_METHOD_AND_WRAP). */
   @carbon.method
   @impl.adapted

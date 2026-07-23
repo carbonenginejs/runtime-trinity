@@ -5,6 +5,7 @@ import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
 import { EveEntity as _EveEntity } from '../generated/eve/EveEntity.js';
 import { EveSpriteSetItem as _EveSpriteSetItem } from '../generated/eve/attachment/sprites/EveSpriteSetItem.js';
 import { EveSpriteLight as _EveSpriteLight } from './EveSpriteLight.js';
+import { EveComponentType } from './EveComponentTypes.js';
 
 let _initProto, _initClass, _init_sprites, _init_extra_sprites, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_skinned, _init_extra_skinned, _init_intensity, _init_extra_intensity, _init_display, _init_extra_display, _init_lights, _init_extra_lights;
 let _EveSpriteSet;
@@ -16,7 +17,7 @@ class EveSpriteSet extends _EveEntity {
     } = _applyDecs2311(this, [type.define({
       className: "EveSpriteSet",
       family: "eve/attachment/sprites"
-    })], [[[void 0, io.rebuild("packedGeometry"), io, io.notify, io, io.persist, void 0, type.list("EveSpriteSetItem")], 16, "sprites"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("packedGeometry"), io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.list("EveSpriteLight")], 16, "lights"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSprites"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"]], 0, void 0, _EveEntity));
+    })], [[[void 0, io.rebuild("packedGeometry"), io, io.notify, io, io.persist, void 0, type.list("EveSpriteSetItem")], 16, "sprites"], [[io, io.persist, type, type.string], 16, "name"], [[void 0, io.rebuild("packedGeometry"), io, io.notify, io, io.persist, void 0, type.objectRef("Tr2Effect")], 16, "effect"], [[void 0, io.rebuild("packedGeometry"), io, io.persist, type, type.boolean], 16, "skinned"], [[io, io.persist, type, type.float32], 16, "intensity"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.persist, void 0, type.list("EveSpriteLight")], 16, "lights"], [[carbon, carbon.method, impl, impl.implemented], 18, "Clear"], [[carbon, carbon.method, impl, impl.adapted], 18, "Add"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSprites"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetName"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetEffect"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetSkinned"], [[carbon, carbon.method, impl, impl.adapted], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddLightFromSOF"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "GetLights"]], 0, void 0, _EveEntity));
   }
   sprites = (_initProto(this), _init_sprites(this, []));
   name = (_init_extra_sprites(this), _init_name(this, ""));
@@ -88,6 +89,22 @@ class EveSpriteSet extends _EveEntity {
   }
   AddLightFromSOF(light) {
     this.lights.push(_EveSpriteLight.FromSOF(light));
+  }
+
+  /** Carbon EveSpriteSet::RegisterComponents (cpp:445-452): LightOwner when
+   * lights are authored. */
+  RegisterComponents() {
+    const registry = this.GetComponentRegistry();
+    if (registry && this.lights.length) {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
+  }
+
+  /** Carbon EveSpriteSet::GetLights (cpp:454-471): per-light submission.
+   * Awaits the LightOwner consumption pass (Tr2LightManager submission is
+   * unported); presence satisfies the "LightOwner" duck contract. */
+  GetLights(..._args) {
+    throw new Error("EveSpriteSet.GetLights is not implemented in CarbonEngineJS.");
   }
   static {
     _initClass();

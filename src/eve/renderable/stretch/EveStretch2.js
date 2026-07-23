@@ -5,6 +5,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
 import { EveEntity } from "../../../generated/eve/EveEntity.js";
+import { EveComponentType } from "../../EveComponentTypes.js";
 import { getCurveDuration, getOriginShift, getTime, makeEndpointTransforms, updateCurveSet } from "./CjsStretchRuntime.js";
 
 
@@ -203,6 +204,21 @@ export class EveStretch2 extends EveEntity
     if (!(this.#visible && this.#intensity > 0)) return;
     this.sourceLight?.AddLight?.(lightManager, this.#sourceTransform, 1);
     this.destinationLight?.AddLight?.(lightManager, this.#destinationTransform, this.#currentDestinationScale);
+  }
+
+  /** Carbon EveStretch2::RegisterComponents (cpp:389-398): LightOwner leaf
+   * self-registration. Gate (m_visible && m_intensity > 0) && a source or
+   * destination light. */
+  @carbon.method @impl.implemented
+  RegisterComponents()
+  {
+    const registry = this.GetComponentRegistry();
+    const isActive = this.#visible && this.#intensity > 0;
+    const hasLights = this.sourceLight || this.destinationLight;
+    if (registry && isActive && hasLights)
+    {
+      registry.RegisterComponent(EveComponentType.LightOwner, this);
+    }
   }
 
   GetSourcePosition(out = vec3.create())

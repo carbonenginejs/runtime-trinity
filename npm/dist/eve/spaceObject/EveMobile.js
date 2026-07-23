@@ -16,7 +16,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveMobile",
         family: "eve/spaceObject"
-      })], [[[io, io.notify, io, io.persist, void 0, type.list("EveTurretSet")], 16, "turretSets"], [[io, io.read, type, type.uint32], 16, "ActiveTurretCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List notifications are represented by a direct browser callback; registry ownership remains runtime-engine work.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Authored EveLocator2 transforms and optional animation-updater bone transforms replace Carbon's locator-type pointer surface.")], 18, "RebuildTurretPositions"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetActiveTurretCount"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Animated locator transforms use an optional animation-updater bone contract; all turret state updates remain in Trinity.")], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's native ParentData constant buffers collapse to the portable parent transform required by turret graph updates.")], 18, "UpdateTurretsAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretTransform"]], 0, void 0, _EveSpaceObject));
+      })], [[[io, io.notify, io, io.persist, void 0, type.list("EveTurretSet")], 16, "turretSets"], [[io, io.read, type, type.uint32], 16, "ActiveTurretCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List notifications are represented by a direct browser callback; registry ownership remains runtime-engine work.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "UnRegisterComponents"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretLocatorIndex"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Authored EveLocator2 transforms and optional animation-updater bone transforms replace Carbon's locator-type pointer surface.")], 18, "RebuildTurretPositions"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretLocatorCount"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetActiveTurretCount"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Animated locator transforms use an optional animation-updater bone contract; all turret state updates remain in Trinity.")], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateAsyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's native ParentData constant buffers collapse to the portable parent transform required by turret graph updates.")], 18, "UpdateTurretsAsyncronous"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalBoundingBox"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.implemented], 18, "HandleControllerEvent"], [[carbon, carbon.method, impl, impl.implemented], 18, "StartControllers"], [[carbon, carbon.method, impl, impl.implemented], 18, "DisplayChildren"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTurretTransform"]], 0, void 0, _EveSpaceObject));
     }
     turretSets = (_initProto(this), _init_turretSets(this, []));
     ActiveTurretCount = (_init_extra_turretSets(this), _init_ActiveTurretCount(this, 0));
@@ -30,6 +30,30 @@ new class extends _identity {
     }
     OnListModified() {
       this.RebuildTurretPositions();
+    }
+
+    /** Carbon EveMobile::RegisterComponents (cpp:109-120): base registration,
+     * then forwards the turret sets. Gate m_display. */
+    RegisterComponents() {
+      super.RegisterComponents();
+      const registry = this.GetComponentRegistry();
+      if (registry && this.display) {
+        for (const turretSet of this.turretSets) {
+          turretSet?.Register?.(registry);
+        }
+      }
+    }
+
+    /** Carbon EveMobile::UnRegisterComponents (cpp:126-138): base, then forwards
+     * the turret sets without re-checking display. */
+    UnRegisterComponents() {
+      super.UnRegisterComponents();
+      const registry = this.GetComponentRegistry();
+      if (registry) {
+        for (const turretSet of this.turretSets) {
+          turretSet?.UnRegister?.(registry);
+        }
+      }
     }
     GetTurretLocatorIndex(turretSetIndex, slotIndex) {
       return this.#turretSetsLocatorInfo[turretSetIndex]?.locators?.[slotIndex]?.index ?? 0;

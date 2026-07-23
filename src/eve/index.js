@@ -4,6 +4,7 @@ export * from "./DecalVSPerObjectData.js";
 export * from "./EveBasicPerObjectData.js";
 export * from "./EveChildSpherePinPerObjectData.js";
 export * from "./EveChildUpdateParams.js";
+export * from "./EveComponentTypes.js";
 export * from "./EveCustomMask.js";
 export * from "./EveBannerLight.js";
 export * from "./EveBannerItem.js";

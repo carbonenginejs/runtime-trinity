@@ -40,6 +40,40 @@ export class EveMobile extends EveSpaceObject2
     this.RebuildTurretPositions();
   }
 
+  /** Carbon EveMobile::RegisterComponents (cpp:109-120): base registration,
+   * then forwards the turret sets. Gate m_display. */
+  @carbon.method
+  @impl.implemented
+  RegisterComponents()
+  {
+    super.RegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry && this.display)
+    {
+      for (const turretSet of this.turretSets)
+      {
+        turretSet?.Register?.(registry);
+      }
+    }
+  }
+
+  /** Carbon EveMobile::UnRegisterComponents (cpp:126-138): base, then forwards
+   * the turret sets without re-checking display. */
+  @carbon.method
+  @impl.implemented
+  UnRegisterComponents()
+  {
+    super.UnRegisterComponents();
+    const registry = this.GetComponentRegistry();
+    if (registry)
+    {
+      for (const turretSet of this.turretSets)
+      {
+        turretSet?.UnRegister?.(registry);
+      }
+    }
+  }
+
   @carbon.method
   @impl.implemented
   GetTurretLocatorIndex(turretSetIndex, slotIndex)
