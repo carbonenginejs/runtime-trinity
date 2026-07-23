@@ -24,10 +24,10 @@
   "publishConfig": {
     "access": "public"
   }, 
-  "version": "0.4.3",
+  "version": "0.5.0",
   "dependencies": {
     "@carbonenginejs/core-math": "^0.1.5",
-    "@carbonenginejs/core-types": "^0.12.0",
+    "@carbonenginejs/core-types": "^0.13.0",
     "@carbonenginejs/runtime-const": "^0.1.0"
   }, 
   "type": "module", 

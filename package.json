@@ -22,7 +22,7 @@
   "name": "@carbonenginejs/runtime-trinity",
   "sideEffects": false,
   "private": true,
-  "version": "0.4.3",
+  "version": "0.5.0",
   "publishConfig": {
     "access": "public"
   },
