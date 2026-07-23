@@ -209,6 +209,27 @@ export class EveSwarm extends EveShip2
     }
   }
 
+  /** Carbon EveSwarm::GetBoundingSphere (EveSwarm.cpp:801-808): sphere from
+   * the squad bounds box (BoundingSphereFromBox, Utilities/BoundingSphere.cpp:
+   * 182-197 - center (min+max)/2, radius |min-max|/2), with the EveShip2
+   * sphere's RADIUS added on top (the ship sphere's center is discarded).
+   * Always returns true. Feeds EveSwarmRenderable.IsCastingShadow's
+   * squad-radius-at-the-fighter cull sphere. */
+  @carbon.method
+  @impl.implemented
+  GetBoundingSphere(sphere, query = 0)
+  {
+    super.GetBoundingSphere(EveSwarm.#shipSphereScratch, query);
+    const min = this.squadBoundsMin;
+    const max = this.squadBoundsMax;
+    sphere[0] = (min[0] + max[0]) * 0.5;
+    sphere[1] = (min[1] + max[1]) * 0.5;
+    sphere[2] = (min[2] + max[2]) * 0.5;
+    sphere[3] = Math.hypot(min[0] - max[0], min[1] - max[1], min[2] - max[2]) * 0.5;
+    sphere[3] += EveSwarm.#shipSphereScratch[3];
+    return true;
+  }
+
   /** Carbon method AddSwarmer (MAP_METHOD_AND_WRAP). */
   @carbon.method
   @impl.adapted
@@ -310,5 +331,7 @@ export class EveSwarm extends EveShip2
   {
     return count > 0 ? Math.floor(Math.random() * count) : 0;
   }
+
+  static #shipSphereScratch = new Float32Array(4);
 
 }

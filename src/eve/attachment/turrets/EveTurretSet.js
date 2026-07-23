@@ -9,6 +9,25 @@ import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { quat } from "@carbonenginejs/core-math/quat";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { Tr2RenderReason } from "../../../generated/trinityCore/enums.js";
+import { Tr2PerObjectData } from "../../../trinityCore/Tr2PerObjectData.js";
+import { Tr2RenderBatch } from "../../../trinityCore/Tr2RenderBatch.js";
+
+/** Carbon BoundingSphereTransform (Utilities/BoundingSphere.cpp:70-81):
+ * center = TransformCoord(center, tf); radius *= max of the basis row lengths
+ * (|GetX/Y/Z| = gl flat [0..2]/[4..6]/[8..10]). Single-matrix application -
+ * NO composition, NO operand swap. Mutates the packed (x, y, z, radius)
+ * sphere in place. */
+function BoundingSphereTransform(transform, sphere)
+{
+  vec3.transformMat4(sphere, sphere, transform);
+  sphere[3] *= Math.max(
+    Math.hypot(transform[0], transform[1], transform[2]),
+    Math.hypot(transform[4], transform[5], transform[6]),
+    Math.hypot(transform[8], transform[9], transform[10])
+  );
+  return sphere;
+}
 
 /** EveTurretSet (eve/attachment/turrets) - generated from schema shapeHash 51c12edb.... */
 @type.define({ className: "EveTurretSet", family: "eve/attachment/turrets" })
@@ -914,30 +933,120 @@ export class EveTurretSet extends EveEntity
     }
   }
 
-  /** Carbon EveTurretSet::IsCastingShadow (cpp:2022-2060) culls the turret
-   * bounding sphere; awaits the TriFrustum port (visibility pass). Presence
-   * satisfies the "ShadowCaster" duck contract. */
+  /** Carbon EveTurretSet::IsCastingShadow (cpp:2022-2051): after the
+   * display/geometry (cpp:2024) and reflection-reason (cpp:2029) early-outs -
+   * which do NOT write the out-param, so a stale previous-caster value
+   * survives at the scene call sites (EveSpaceScene.cpp:2391/2517) - the
+   * SET-level bounding sphere is transformed by EVERY turret's world matrix
+   * (including invisible ones - no per-turret visibility gate, unlike
+   * UpdateVisibility cpp:2070-2088), gated on transformed radius > 0, culled
+   * with shadowFrustum.IsVisible, and the MAX GetSizeInShadow accumulates.
+   * Returns sizeInShadow > 5 (the swarm uses 15). Carbon's float& out-param
+   * becomes the optional trailing length-1 array (out-params last). */
   @carbon.method
-  @impl.notImplemented
-  IsCastingShadow(..._args)
+  @impl.adapted
+  @impl.reason("The length-1 out array replaces the float& out-param; the shadow math is ported, including exactly which paths write the out value.")
+  IsCastingShadow(cameraFrustum, shadowFrustum, renderReason, sizeInShadowOut = null)
   {
-    throw new Error("EveTurretSet.IsCastingShadow is not implemented in CarbonEngineJS.");
+    if (!this.display || !this.geometryResource)
+    {
+      return false;
+    }
+    if (Number(renderReason ?? Tr2RenderReason.TR2RENDERREASON_NORMAL) === Tr2RenderReason.TR2RENDERREASON_REFLECTION)
+    {
+      return false;
+    }
+
+    let sizeInShadow = 0;
+    if (sizeInShadowOut)
+    {
+      sizeInShadowOut[0] = 0;
+    }
+    for (const turret of this.GetTurrets())
+    {
+      const sphere = EveTurretSet.#shadowSphereScratch;
+      vec4.copy(sphere, this.boundingSphere);
+      BoundingSphereTransform(turret.worldMatrix, sphere);
+      if (sphere[3] > 0 && shadowFrustum?.IsVisible?.(cameraFrustum, sphere))
+      {
+        sizeInShadow = Math.max(sizeInShadow, shadowFrustum.GetSizeInShadow(sphere));
+        if (sizeInShadowOut)
+        {
+          sizeInShadowOut[0] = sizeInShadow;
+        }
+      }
+    }
+    return sizeInShadow > 5;
   }
 
-  /** Carbon EveTurretSet::GetShadowBatches (cpp:2221-2258). */
+  /** Carbon EveTurretSet::GetShadowBatches (cpp:2221-2254): one instanced
+   * batch for the whole turret geometry - material m_turretEffect, instance
+   * count m_visibleCount, mesh 0 at the lowest LOD. QUIRK: shadowPixelSize is
+   * completely IGNORED (always GetMeshLod(0, 0), cpp:2235) - the swarm uses
+   * it for LOD, the turret does not. The shadow path commits without the
+   * normal path's validity check (cpp:2253 vs 2211) - equivalent here because
+   * Commit drops invalid batches. Returns whether the batch was committed
+   * (JS addition; Carbon returns void). NOTE: JS visibleCount is currently
+   * the total turret count (the adapted UpdateVisibility does no per-turret
+   * frustum cull), a pre-existing adaptation. */
   @carbon.method
-  @impl.notImplemented
-  GetShadowBatches(..._args)
+  @impl.adapted
+  @impl.reason("Instance stream, vertex declaration and realized LOD allocations (cpp:2227-2250) are engine-owned; the batch records the geometry source, turret effect, per-object data and the CPU-known instance count for the engine to realize.")
+  GetShadowBatches(batches, perObjectData, _shadowPixelSize)
   {
-    throw new Error("EveTurretSet.GetShadowBatches is not implemented in CarbonEngineJS.");
+    if (!this.display || !this.visibleCount)
+    {
+      return false;
+    }
+    if (!this.geometryResource)
+    {
+      return false;
+    }
+
+    const batch = new Tr2RenderBatch();
+    batch.SetMaterial(this.turretEffect);
+    if (!batch.IsValid())
+    {
+      return false;
+    }
+    batch.SetGeometrySource(this.geometryResource, 0, -1, -1, false);
+    batch.SetPerObjectData(perObjectData ?? null);
+    batch.instanceCount = this.visibleCount >>> 0;
+    return batches?.Commit?.(batch) === true;
   }
 
-  /** Carbon EveTurretSet::GetShadowPerObjectData (cpp:2520-2523). */
+  /** Carbon EveTurretSet::GetPerObjectData (cpp:2275-2518): early-outs on a
+   * missing/bad geometry resource RETURN NULL - and the cascade path stores
+   * that null and still calls GetShadowBatches with it (EveSpaceScene.cpp:
+   * 717/727), so a null per-object record on a batch is legal. The
+   * EveTurretSetPerObjectData fill (ship matrices, compacted per-visible
+   * turret SRT arrays, the bone palette - whose invBind * world composition
+   * swaps operands in gl-matrix - and the SH/clip PS block, cpp:2300-2511)
+   * is GPU ring-buffer work; the GPU-free record carries the live object
+   * reference for the engine serializer (EveChildMesh precedent). */
   @carbon.method
-  @impl.notImplemented
-  GetShadowPerObjectData(..._args)
+  @impl.adapted
+  @impl.reason("The EveTurretSetPerObjectData constant-block fill and bone-palette ring upload are engine-owned; the record carries the object reference the engine serializer consumes. IsGood/GetMeshCount realization gates are engine-side - the CPU gate is geometry presence.")
+  GetPerObjectData(accumulator = null)
   {
-    throw new Error("EveTurretSet.GetShadowPerObjectData is not implemented in CarbonEngineJS.");
+    if (!this.geometryResource)
+    {
+      return null;
+    }
+    const data = typeof accumulator?.Allocate === "function"
+      ? accumulator.Allocate(Tr2PerObjectData)
+      : new Tr2PerObjectData();
+    data.object = this;
+    return data;
+  }
+
+  /** Carbon EveTurretSet::GetShadowPerObjectData (cpp:2520-2523): pure
+   * forward to GetPerObjectData. */
+  @carbon.method
+  @impl.implemented
+  GetShadowPerObjectData(accumulator = null)
+  {
+    return this.GetPerObjectData(accumulator);
   }
 
   #setupFiringState()
@@ -1108,6 +1217,7 @@ export class EveTurretSet extends EveEntity
   static #localRotation = quat.create();
   static #unitScale = vec3.fromValues(1, 1, 1);
   static #inverseTurret = mat4.create();
+  static #shadowSphereScratch = vec4.create();
   static #localTarget = vec3.create();
   static #directRotation = quat.create();
   static #launcherRotation = mat4.create();

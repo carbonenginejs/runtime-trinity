@@ -7,8 +7,14 @@ import { EveComponentType } from "../../../../eve/EveComponentTypes.js";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
 import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
 import { EveSpaceObjectPSData } from "../../../../eve/EveSpaceObjectPSData.js";
 import { EveSpaceObjectVSData } from "../../../../eve/EveSpaceObjectVSData.js";
+import { Tr2PerObjectData } from "../../../../trinityCore/Tr2PerObjectData.js";
+import { Tr2RenderReason } from "../../../trinityCore/enums.js";
+
+// Packed (x, y, z, radius) cull-sphere scratch for IsCastingShadow.
+const SPHERE_SCRATCH = vec4.create();
 
 /** EveSwarmRenderable (eve/spaceObject/swarm) - generated from schema shapeHash a22c3310.... */
 @type.define({ className: "EveSwarmRenderable", family: "eve/spaceObject/swarm" })
@@ -133,27 +139,94 @@ export class EveSwarmRenderable extends EveEntity
     }
   }
 
-  /** Carbon EveSwarmRenderable::IsCastingShadow (EveSwarm.cpp:242-267) culls
-   * per-swarmer spheres; awaits the TriFrustum port (visibility pass).
-   * Presence satisfies the "ShadowCaster" duck contract. */
-  @impl.notImplemented
-  IsCastingShadow(..._args)
+  /** Carbon EveSwarmRenderable::IsCastingShadow (EveSwarm.cpp:242-267): the
+   * owner/reflection early-outs do NOT write the out-param (the scene hoists
+   * the float outside its caster loop, so a stale previous value survives -
+   * contract); the cull sphere is the OWNER's squad-wide sphere
+   * (EveSwarm.cpp:801-808) with its center overwritten by THIS fighter's
+   * world translation (cpp:257 - squad radius centered on the fighter);
+   * threshold is > 15 (the turret uses 5) - so a swarm with 5 < size <= 15
+   * casts volumetric/spot shadows (whose call sites ignore the return and
+   * re-check > 5 themselves) but not cascades. Carbon's float& out-param
+   * becomes the optional trailing length-1 array. */
+  @impl.adapted
+  @impl.reason("The length-1 out array replaces the float& out-param; the shadow math is ported, including exactly which paths write the out value.")
+  IsCastingShadow(cameraFrustum, shadowFrustum, renderReason, sizeInShadowOut = null)
   {
-    throw new Error("EveSwarmRenderable.IsCastingShadow is not implemented in CarbonEngineJS.");
+    if (!this.owner)
+    {
+      return false;
+    }
+    if (Number(renderReason ?? Tr2RenderReason.TR2RENDERREASON_NORMAL) === Tr2RenderReason.TR2RENDERREASON_REFLECTION)
+    {
+      return false;
+    }
+    if (this.owner.GetBoundingSphere?.(SPHERE_SCRATCH) !== true)
+    {
+      return false;
+    }
+    SPHERE_SCRATCH[0] = this.worldTransform[12];
+    SPHERE_SCRATCH[1] = this.worldTransform[13];
+    SPHERE_SCRATCH[2] = this.worldTransform[14];
+
+    let sizeInShadow = 0;
+    if (sizeInShadowOut)
+    {
+      sizeInShadowOut[0] = 0;
+    }
+    if (shadowFrustum?.IsVisible?.(cameraFrustum, SPHERE_SCRATCH))
+    {
+      sizeInShadow = shadowFrustum.GetSizeInShadow(SPHERE_SCRATCH);
+      if (sizeInShadowOut)
+      {
+        sizeInShadowOut[0] = sizeInShadow;
+      }
+    }
+    return sizeInShadow > 15;
   }
 
-  /** Carbon EveSwarmRenderable::GetShadowBatches (EveSwarm.cpp:269-298). */
-  @impl.notImplemented
-  GetShadowBatches(..._args)
+  /** Carbon EveSwarmRenderable::GetShadowBatches (EveSwarm.cpp:269-298): the
+   * mesh's OPAQUE areas only, per displayed area via CreateGeometryBatch -
+   * exactly Tr2MeshBase.GetBatches restricted to OPAQUE (no per-area
+   * IsCastingShadows filter; area display double-checked in Carbon). QUIRK:
+   * unlike the turret, shadowPixelSize IS consumed here - it drives the LOD
+   * select (cpp:282), which is engine-resolved at realization. Returns
+   * whether any batch was committed (JS addition; Carbon returns void). */
+  @impl.adapted
+  @impl.reason("Geometry IsGood/GetMeshLod realization (cpp:276-286) and the shadowPixelSize LOD select are engine-resolved; the delegation structure is ported (EveChildMesh precedent).")
+  GetShadowBatches(batches, perObjectData, _shadowPixelSize)
   {
-    throw new Error("EveSwarmRenderable.GetShadowBatches is not implemented in CarbonEngineJS.");
+    if (!this.mesh || this.mesh.display === false)
+    {
+      return false;
+    }
+    return this.mesh.GetBatches?.(batches, TriBatchType.TRIBATCHTYPE_OPAQUE, perObjectData) === true;
   }
 
-  /** Carbon EveSwarmRenderable::GetShadowPerObjectData (EveSwarm.cpp:300-304). */
-  @impl.notImplemented
-  GetShadowPerObjectData(..._args)
+  /** Carbon EveSwarmRenderable::GetPerObjectData (EveSwarm.cpp:61-71):
+   * allocates Tr2PerObjectDataWithPersistentBuffers over the vsData/psData
+   * blocks this class already maintains CPU-side (SetWorldTransform /
+   * SetShaderData above); the persistent device buffers are engine-owned, so
+   * the GPU-free record carries the live object reference - the engine
+   * serializer reads vsData/psData at realization. No early-outs (unlike the
+   * turret's null-returning geometry gates). */
+  @impl.adapted
+  @impl.reason("Persistent VS/PS device buffers are engine-owned; the record carries the object reference whose live vsData/psData the engine serializer consumes.")
+  GetPerObjectData(accumulator = null)
   {
-    throw new Error("EveSwarmRenderable.GetShadowPerObjectData is not implemented in CarbonEngineJS.");
+    const data = typeof accumulator?.Allocate === "function"
+      ? accumulator.Allocate(Tr2PerObjectData)
+      : new Tr2PerObjectData();
+    data.object = this;
+    return data;
+  }
+
+  /** Carbon EveSwarmRenderable::GetShadowPerObjectData (EveSwarm.cpp:300-303):
+   * pure forward to GetPerObjectData. */
+  @impl.implemented
+  GetShadowPerObjectData(accumulator = null)
+  {
+    return this.GetPerObjectData(accumulator);
   }
 
 }
