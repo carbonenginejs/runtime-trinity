@@ -25,6 +25,8 @@ export { Tr2VariableStore } from './Tr2VariableStore.js';
 export { Tr2VisibilityEvent, Tr2VisibilityResults } from './Tr2VisibilityResults.js';
 export { TriDevice } from './TriDevice.js';
 export { TriFloat } from './TriFloat.js';
+export { FLOAT_MAX, PlaneDotCoord, PlaneDotNormal, TriFrustum } from './TriFrustum.js';
+export { TriFrustumOrtho } from './TriFrustumOrtho.js';
 export { SendEventToAudEmitter, TriObserverLocal } from './TriObserverLocal.js';
 export { TriProjection } from './TriProjection.js';
 export { TriRect } from './TriRect.js';

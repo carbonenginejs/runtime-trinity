@@ -352,6 +352,8 @@ export { Tr2VariableStore } from './trinityCore/Tr2VariableStore.js';
 export { Tr2VisibilityEvent, Tr2VisibilityResults } from './trinityCore/Tr2VisibilityResults.js';
 export { TriDevice } from './trinityCore/TriDevice.js';
 export { TriFloat } from './trinityCore/TriFloat.js';
+export { FLOAT_MAX, PlaneDotCoord, PlaneDotNormal, TriFrustum } from './trinityCore/TriFrustum.js';
+export { TriFrustumOrtho } from './trinityCore/TriFrustumOrtho.js';
 export { SendEventToAudEmitter, TriObserverLocal } from './trinityCore/TriObserverLocal.js';
 export { TriProjection } from './trinityCore/TriProjection.js';
 export { TriRect } from './trinityCore/TriRect.js';

@@ -206,6 +206,230 @@ export class EveUpdateContext extends CjsModel
     return this.originShift;
   }
 
+  /**
+   * Carbon EveUpdateContext::GetDataTextureManager (h:61-64).
+   * @returns {Object|null}
+   */
+  @carbon.method
+  @impl.implemented
+  GetDataTextureManager()
+  {
+    return this.dataTextureManager;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetDataTextureManager (h:65-68).
+   * @param {Object|null} manager
+   */
+  @carbon.method
+  @impl.implemented
+  SetDataTextureManager(manager)
+  {
+    this.dataTextureManager = manager ?? null;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetGpuParticleSystem (h:70-73).
+   * @returns {Object|null}
+   */
+  @carbon.method
+  @impl.implemented
+  GetGpuParticleSystem()
+  {
+    return this.gpuParticleSystem;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetGpuParticleSystem (h:74-77).
+   * @param {Object|null} ps
+   */
+  @carbon.method
+  @impl.implemented
+  SetGpuParticleSystem(ps)
+  {
+    this.gpuParticleSystem = ps ?? null;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetBallpark (h:79-82) - stamped by UpdateOrigin.
+   * @returns {Object|null}
+   */
+  @carbon.method
+  @impl.implemented
+  GetBallpark()
+  {
+    return this.ballpark;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetTaskGroup (h:116-119).
+   * @param {Object|null} taskGroup
+   */
+  @carbon.method
+  @impl.implemented
+  SetTaskGroup(taskGroup)
+  {
+    this.taskGroup = taskGroup ?? null;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetTaskGroup (h:121-124).
+   * @returns {Object|null}
+   */
+  @carbon.method
+  @impl.implemented
+  GetTaskGroup()
+  {
+    return this.taskGroup;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetVisibilityThreshold (h:126-129).
+   * @param {Number} visibilityThreshold
+   */
+  @carbon.method
+  @impl.implemented
+  SetVisibilityThreshold(visibilityThreshold)
+  {
+    this.visibilityThreshold = visibilityThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetVisibilityThreshold (h:131-134).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetVisibilityThreshold()
+  {
+    return this.visibilityThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetHighDetailThreshold (h:136-139).
+   * @param {Number} highDetailThreshold
+   */
+  @carbon.method
+  @impl.implemented
+  SetHighDetailThreshold(highDetailThreshold)
+  {
+    this.highDetailThreshold = highDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetHighDetailThreshold (h:141-144).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetHighDetailThreshold()
+  {
+    return this.highDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetMediumDetailThreshold (h:146-149).
+   * @param {Number} mediumDetailThreshold
+   */
+  @carbon.method
+  @impl.implemented
+  SetMediumDetailThreshold(mediumDetailThreshold)
+  {
+    this.mediumDetailThreshold = mediumDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetMediumDetailThreshold (h:151-154).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetMediumDetailThreshold()
+  {
+    return this.mediumDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetLowDetailThreshold (h:156-159).
+   * @param {Number} lowDetailThreshold
+   */
+  @carbon.method
+  @impl.implemented
+  SetLowDetailThreshold(lowDetailThreshold)
+  {
+    this.lowDetailThreshold = lowDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetLowDetailThreshold (h:161-164).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetLowDetailThreshold()
+  {
+    return this.lowDetailThreshold;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetLodFactor (h:166-170) - maintains the
+   * invariant invLodFactor = 1 / lodFactor (no zero guard, matching Carbon).
+   * @param {Number} lodFactor
+   */
+  @carbon.method
+  @impl.implemented
+  SetLodFactor(lodFactor)
+  {
+    this.lodFactor = lodFactor;
+    this.invLodFactor = 1 / lodFactor;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetLodFactor (h:172-175).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetLodFactor()
+  {
+    return this.lodFactor;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetInvLodFactor (h:177-180).
+   * @returns {Number}
+   */
+  @carbon.method
+  @impl.implemented
+  GetInvLodFactor()
+  {
+    return this.invLodFactor;
+  }
+
+  /**
+   * Carbon EveUpdateContext::SetFrustum (h:182-185) - the driver stamps a
+   * ready TriFrustum per frame (spec decision 4); held by reference, not
+   * copied.
+   * @param {Object|null} frustum - TriFrustum
+   */
+  @carbon.method
+  @impl.implemented
+  SetFrustum(frustum)
+  {
+    this.frustum = frustum ?? null;
+  }
+
+  /**
+   * Carbon EveUpdateContext::GetFrustum (h:187-190).
+   * @returns {Object|null}
+   */
+  @carbon.method
+  @impl.implemented
+  GetFrustum()
+  {
+    return this.frustum;
+  }
+
   static #originScratch = new Float64Array(3);
 
   static #zeroOrigin = new Float64Array(3);
