@@ -25,6 +25,8 @@ export * from "./Tr2VariableStore.js";
 export * from "./Tr2VisibilityResults.js";
 export * from "./TriDevice.js";
 export * from "./TriFloat.js";
+export * from "./TriFrustum.js";
+export * from "./TriFrustumOrtho.js";
 export * from "./TriObserverLocal.js";
 export * from "./TriProjection.js";
 export * from "./TriRect.js";

@@ -16,7 +16,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveUpdateContext",
         family: "eve"
-      })], [[[type, type.float64], 16, "currentTime"], [[type, type.float64], 16, "lastTime"], [[type, type.float32], 16, "visibilityThreshold"], [[type, type.float32], 16, "highDetailThreshold"], [[type, type.float32], 16, "mediumDetailThreshold"], [[type, type.float32], 16, "lowDetailThreshold"], [[type, type.float32], 16, "lodFactor"], [[type, type.float32], 16, "invLodFactor"], [[type, type.boolean], 16, "raytracingEnabled"], [type.objectRef("Tr2DataTextureManager"), 0, "dataTextureManager"], [type.objectRef("Tr2GpuParticleSystem"), 0, "gpuParticleSystem"], [type.objectRef("IEveBallpark"), 0, "ballpark"], [type.objectRef("Tr2ParallelTaskGroup"), 0, "taskGroup"], [type.objectRef("TriFrustum"), 0, "frustum"], [type.rawStruct("Vector3d"), 0, "origin"], [[type, type.vec3], 16, "originShift"], [type.rawStruct("Vector3d"), 0, "originShiftRemainder"], [type.objectRef("Tr2RenderContext"), 0, "renderContext"], [type.objectRef("TriDevice"), 0, "device"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDeltaT"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateOrigin"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetOriginShift"]], 0, void 0, CjsModel));
+      })], [[[type, type.float64], 16, "currentTime"], [[type, type.float64], 16, "lastTime"], [[type, type.float32], 16, "visibilityThreshold"], [[type, type.float32], 16, "highDetailThreshold"], [[type, type.float32], 16, "mediumDetailThreshold"], [[type, type.float32], 16, "lowDetailThreshold"], [[type, type.float32], 16, "lodFactor"], [[type, type.float32], 16, "invLodFactor"], [[type, type.boolean], 16, "raytracingEnabled"], [type.objectRef("Tr2DataTextureManager"), 0, "dataTextureManager"], [type.objectRef("Tr2GpuParticleSystem"), 0, "gpuParticleSystem"], [type.objectRef("IEveBallpark"), 0, "ballpark"], [type.objectRef("Tr2ParallelTaskGroup"), 0, "taskGroup"], [type.objectRef("TriFrustum"), 0, "frustum"], [type.rawStruct("Vector3d"), 0, "origin"], [[type, type.vec3], 16, "originShift"], [type.rawStruct("Vector3d"), 0, "originShiftRemainder"], [type.objectRef("Tr2RenderContext"), 0, "renderContext"], [type.objectRef("TriDevice"), 0, "device"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTime"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDeltaT"], [[carbon, carbon.method, impl, impl.adapted], 18, "UpdateOrigin"], [[carbon, carbon.method, impl, impl.adapted], 18, "GetOrigin"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetOriginShift"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetDataTextureManager"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetDataTextureManager"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetGpuParticleSystem"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetGpuParticleSystem"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBallpark"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTaskGroup"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTaskGroup"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetVisibilityThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetVisibilityThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetHighDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetHighDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetMediumDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetMediumDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLowDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLowDetailThreshold"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetLodFactor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLodFactor"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetInvLodFactor"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetFrustum"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetFrustum"]], 0, void 0, CjsModel));
     }
     constructor(...args) {
       super(...args);
@@ -159,6 +159,170 @@ new class extends _identity {
      */
     GetOriginShift() {
       return this.originShift;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetDataTextureManager (h:61-64).
+     * @returns {Object|null}
+     */
+    GetDataTextureManager() {
+      return this.dataTextureManager;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetDataTextureManager (h:65-68).
+     * @param {Object|null} manager
+     */
+    SetDataTextureManager(manager) {
+      this.dataTextureManager = manager ?? null;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetGpuParticleSystem (h:70-73).
+     * @returns {Object|null}
+     */
+    GetGpuParticleSystem() {
+      return this.gpuParticleSystem;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetGpuParticleSystem (h:74-77).
+     * @param {Object|null} ps
+     */
+    SetGpuParticleSystem(ps) {
+      this.gpuParticleSystem = ps ?? null;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetBallpark (h:79-82) - stamped by UpdateOrigin.
+     * @returns {Object|null}
+     */
+    GetBallpark() {
+      return this.ballpark;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetTaskGroup (h:116-119).
+     * @param {Object|null} taskGroup
+     */
+    SetTaskGroup(taskGroup) {
+      this.taskGroup = taskGroup ?? null;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetTaskGroup (h:121-124).
+     * @returns {Object|null}
+     */
+    GetTaskGroup() {
+      return this.taskGroup;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetVisibilityThreshold (h:126-129).
+     * @param {Number} visibilityThreshold
+     */
+    SetVisibilityThreshold(visibilityThreshold) {
+      this.visibilityThreshold = visibilityThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetVisibilityThreshold (h:131-134).
+     * @returns {Number}
+     */
+    GetVisibilityThreshold() {
+      return this.visibilityThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetHighDetailThreshold (h:136-139).
+     * @param {Number} highDetailThreshold
+     */
+    SetHighDetailThreshold(highDetailThreshold) {
+      this.highDetailThreshold = highDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetHighDetailThreshold (h:141-144).
+     * @returns {Number}
+     */
+    GetHighDetailThreshold() {
+      return this.highDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetMediumDetailThreshold (h:146-149).
+     * @param {Number} mediumDetailThreshold
+     */
+    SetMediumDetailThreshold(mediumDetailThreshold) {
+      this.mediumDetailThreshold = mediumDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetMediumDetailThreshold (h:151-154).
+     * @returns {Number}
+     */
+    GetMediumDetailThreshold() {
+      return this.mediumDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetLowDetailThreshold (h:156-159).
+     * @param {Number} lowDetailThreshold
+     */
+    SetLowDetailThreshold(lowDetailThreshold) {
+      this.lowDetailThreshold = lowDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetLowDetailThreshold (h:161-164).
+     * @returns {Number}
+     */
+    GetLowDetailThreshold() {
+      return this.lowDetailThreshold;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetLodFactor (h:166-170) - maintains the
+     * invariant invLodFactor = 1 / lodFactor (no zero guard, matching Carbon).
+     * @param {Number} lodFactor
+     */
+    SetLodFactor(lodFactor) {
+      this.lodFactor = lodFactor;
+      this.invLodFactor = 1 / lodFactor;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetLodFactor (h:172-175).
+     * @returns {Number}
+     */
+    GetLodFactor() {
+      return this.lodFactor;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetInvLodFactor (h:177-180).
+     * @returns {Number}
+     */
+    GetInvLodFactor() {
+      return this.invLodFactor;
+    }
+
+    /**
+     * Carbon EveUpdateContext::SetFrustum (h:182-185) - the driver stamps a
+     * ready TriFrustum per frame (spec decision 4); held by reference, not
+     * copied.
+     * @param {Object|null} frustum - TriFrustum
+     */
+    SetFrustum(frustum) {
+      this.frustum = frustum ?? null;
+    }
+
+    /**
+     * Carbon EveUpdateContext::GetFrustum (h:187-190).
+     * @returns {Object|null}
+     */
+    GetFrustum() {
+      return this.frustum;
     }
   }];
   #originScratch = new Float64Array(3);
