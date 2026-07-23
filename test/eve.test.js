@@ -672,42 +672,51 @@ test("Tr2Light subclasses preserve Carbon graph defaults without resource realiz
   assertEquals(textured.texture, null);
   assertEquals(textured.Initialize(), true);
 
+  // Flattened storage (2026-07-23 decision): the Blue-mapped LightData
+  // members are real decorated fields on the concrete light classes.
   assertEquals(point.flags, 1);
   assertEquals(spot.flags, 1);
   assertEquals(textured.flags, 1);
-  assertEquals(point.lightData.brightness, 1);
-  assertEquals(point.lightData.noiseFrequency, 1);
-  assertEquals(point.lightData.noiseOctaves, 1);
-  assertEquals(point.lightData.boneIndex, -1);
-  assertVec4(point.lightData.color, [0, 0, 0, 1]);
-  assert(point.position === point.lightData.position, "the position accessor uses the canonical CjsLightData value");
-  assert(point.color === point.lightData.color, "the color accessor uses the canonical CjsLightData value");
-  point.position = [1, 2, 3];
+  assertEquals(point.brightness, 1);
+  assertEquals(point.noiseFrequency, 1);
+  assertEquals(point.noiseOctaves, 1);
+  assertEquals(point.boneIndex, -1);
+  assertVec4(point.color, [0, 0, 0, 1]);
+  assertEquals(Object.hasOwn(point, "position"), true, "flat fields are the real instance storage");
+  assertEquals(Object.hasOwn(spot, "outerAngle"), true, "flat fields are the real instance storage");
+  // The compat view shares the owner's math buffers and mirrors its values.
+  assert(point.position === point.lightData.position, "the compat view returns the flat math buffer");
+  assert(point.color === point.lightData.color, "the compat view returns the flat math buffer");
+  point.SetValues({ position: [1, 2, 3] });
   assertVec3(point.lightData.position, [1, 2, 3]);
-  point.brightness = 2.5;
+  point.SetValues({ brightness: 2.5 });
   assertEquals(point.lightData.brightness, 2.5);
-  assertEquals(CjsSchema.getField(Tr2Light, "lightData")?.type.kind, "struct");
-  assertEquals(CjsSchema.getField(Tr2Light, "lightData")?.type.className, "CjsLightData");
-  assertEquals(Object.hasOwn(point, "position"), false);
-  assertEquals(Object.hasOwn(spot, "outerAngle"), false);
+  // The flat fields carry the Carbon Blue persistence flags: this is what
+  // fixes the light round-trip asymmetry (CARBON-PARITY-REVIEW §3.2).
+  assertEquals(CjsSchema.getField(Tr2PointLight, "position")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(Tr2PointLight, "brightness")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(Tr2SpotLight, "outerAngle")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(Tr2TexturedPointLight, "texturePath")?.io?.persist, true);
+  assertEquals(CjsSchema.getField(Tr2Light, "lightData"), null, "the separate node is a compat view, not a schema field");
   assertEquals(CjsSchema.getField(Tr2TexturedPointLight, "texture")?.io?.read, true);
 
   const lightDataIdentity = point.lightData;
-  const positionIdentity = point.lightData.position;
+  const positionIdentity = point.position;
   const data = new CjsLightData();
   data.radius = 12;
   data.position.set([9, 8, 7]);
   point.SetLightData(data);
   data.radius = 99;
   data.position[0] = 99;
-  assertEquals(point.lightData, lightDataIdentity, "SetLightData retains the constructor-owned value object");
-  assertEquals(point.lightData.position, positionIdentity, "SetLightData retains mutable math buffers");
+  assertEquals(point.lightData, lightDataIdentity, "SetLightData retains the stable compat view");
+  assertEquals(point.position, positionIdentity, "SetLightData coerces into the existing math buffers");
   assertEquals(point.GetLightData().radius, 12, "Carbon SetLightData copies the value struct");
   assertVec3(point.position, [9, 8, 7]);
   assertEquals(point.GetLightData(), point.lightData, "Carbon GetLightData returns the stable value member");
   point.SetBrightnessMultiplier(0.25);
   assertEquals(point.GetBrightnessMultiplier(), 0.25);
   point.ChangeLightColor([0.1, 0.2, 0.3, 0.4]);
+  assertVec4(point.color, [0.1, 0.2, 0.3, 0.4]);
   assertVec4(point.lightData.color, [0.1, 0.2, 0.3, 0.4]);
 
   const hydrated = Tr2PointLight.from({ position: [4, 5, 6], brightness: 3 });
@@ -715,9 +724,13 @@ test("Tr2Light subclasses preserve Carbon graph defaults without resource realiz
   assertVec3(hydrated.lightData.position, [4, 5, 6]);
   assertEquals(hydrated.brightness, 3);
   assert(hydrated.position !== point.position, "light instances keep independent mutable values");
+  // The pre-flatten nested shape still hydrates (runtime-sof compat).
+  const nested = Tr2PointLight.from({ lightData: { position: [7, 8, 9], radius: 5 } });
+  assertVec3(nested.position, [7, 8, 9]);
+  assertEquals(nested.radius, 5);
   const values = hydrated.GetValues();
-  assertEquals(Object.hasOwn(values, "position"), false, "flat accessors do not duplicate serialized fields");
-  assertVec3(values.lightData.position, [4, 5, 6]);
+  assertEquals(Object.hasOwn(values, "lightData"), false, "flattened fields serialize flat");
+  assertVec3(values.position, [4, 5, 6]);
 });
 
 test("EveImpactOverlay constructs the CPU graph required by SOF", () =>

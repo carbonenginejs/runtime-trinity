@@ -10,8 +10,7 @@ import { vec3 } from "@carbonenginejs/core-math/vec3";
 import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { Tr2Light } from "../../../eve/lights/Tr2Light.js";
 import {
-  CjsLightData,
-  defineCjsLightDataAccessors,
+  createCjsLightDataView,
   setCjsLightDataOwnerValues
 } from "../../../eve/lights/CjsLightData.js";
 
@@ -19,10 +18,25 @@ import {
 @type.define({ className: "EveSmartLightPointLight", family: "eve/smartLights" })
 export class EveSmartLightPointLight extends EveEntity
 {
-  /** m_lightGroupData (LightData) */
-  @io.owned
-  @type.struct("CjsLightData")
-  lightData = new CjsLightData();
+  /** m_lightGroupData.flags (uint16_t) [READWRITE, PERSIST] */
+  @io.persist
+  @type.uint16
+  flags = 1;
+
+  /** m_lightGroupData.innerRadius (float) [READWRITE, PERSIST] */
+  @io.persist
+  @type.float32
+  innerRadius = 0;
+
+  /** m_lightGroupData.brightness (float) [READWRITE, PERSIST] */
+  @io.persist
+  @type.float32
+  brightness = 1;
+
+  /** m_lightGroupData.radius (float) [READWRITE, PERSIST] */
+  @io.persist
+  @type.float32
+  radius = 0;
 
   /** m_lightProfile (Tr2LightProfileResPtr) [READ] */
   @io.read
@@ -97,6 +111,17 @@ export class EveSmartLightPointLight extends EveEntity
 
   /** Last lightProfilePath the settle hook applied (JS-only change detection). */
   #lastAppliedProfilePath = "";
+
+  // Compat view over the flattened m_lightGroupData fields (2026-07-23
+  // flatten decision); light-manager records and the pre-flatten hydration
+  // shape keep reading a LightData-shaped object.
+  #lightDataView = null;
+
+  get lightData()
+  {
+    this.#lightDataView ??= createCjsLightDataView(this, this.constructor.LightDataFields);
+    return this.#lightDataView;
+  }
 
   SetValues(values = {}, options = {})
   {
@@ -331,8 +356,8 @@ export class EveSmartLightPointLight extends EveEntity
 
       if (this.lightType === Tr2Light.SPOT_LIGHT)
       {
-        record.outerAngle = Math.cos((2 * Math.PI * this.lightData.outerAngle) / 360);
-        record.innerAngle = Math.cos((2 * Math.PI * this.lightData.innerAngle) / 360);
+        record.outerAngle = Math.cos((2 * Math.PI * this.outerAngle) / 360);
+        record.innerAngle = Math.cos((2 * Math.PI * this.innerAngle) / 360);
       }
 
       record.lightType = this.lightType;
@@ -392,5 +417,3 @@ export class EveSmartLightPointLight extends EveEntity
   };
 
 }
-
-defineCjsLightDataAccessors(EveSmartLightPointLight, EveSmartLightPointLight.LightDataFields);

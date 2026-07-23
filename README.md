@@ -221,8 +221,8 @@ deferred geometry descriptor).
 A batch is neutral CPU DATA; the engine realizes referenced resources and
 dispatches the finalized accumulators — runtime-trinity never holds GPU handles.
 The target architecture (library-level `CjsBatchManager`, pull-realize via
-`__state.rebuild` tokens, one CPU path for WebGL1/WebGL2/WebGPU) is
-`.agents/BATCH-PIPELINE-PLAN.md`.
+`__state.rebuild` tokens, one CPU path for WebGL1/WebGL2/WebGPU) remains
+planned and is not part of the current public runtime contract.
 
 ## Distribution CPU contract
 

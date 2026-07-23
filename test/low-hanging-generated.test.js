@@ -1122,13 +1122,16 @@ test("Carbon light accessors remain backed by one shared CjsLightData", () =>
   assert.equal(light.type, Tr2Light.SPOT_LIGHT);
 
   const smartSpot = new EveSmartLightSpotLight();
-  smartSpot.innerAngle = 20;
-  smartSpot.outerAngle = 40;
+  smartSpot.SetValues({ innerAngle: 20, outerAngle: 40 });
   assert.equal(smartSpot.innerAngle, 20);
   assert.equal(smartSpot.outerAngle, 40);
+  // Flattened storage (2026-07-23 decision): the m_lightGroupData members are
+  // real persisted fields; lightData is the LightData-shaped compat view.
   assert.equal(smartSpot.lightData.constructor.name, "CjsLightData");
-  assert.equal(Object.hasOwn(smartSpot, "innerAngle"), false);
-  assert.equal(CjsSchema.getField(EveSmartLightSpotLight, "lightData")?.type.kind, "struct");
+  assert.equal(smartSpot.lightData.innerAngle, 20);
+  assert.equal(Object.hasOwn(smartSpot, "innerAngle"), true);
+  assert.equal(CjsSchema.getField(EveSmartLightSpotLight, "innerAngle")?.io?.persist, true);
+  assert.equal(CjsSchema.getField(EveSmartLightSpotLight, "brightness")?.io?.persist, true);
 });
 
 test("behavior groups maintain portable DroneAgent counts and spawn positions", () =>

@@ -168,7 +168,7 @@ export { EveChildModifierHalo } from './eve/child/modifiers/EveChildModifierHalo
 export { EveChildModifierHaloInverted } from './eve/child/modifiers/EveChildModifierHaloInverted.js';
 export { EveChildModifierSRT } from './eve/child/modifiers/EveChildModifierSRT.js';
 export { Billboard2D, DistanceBase } from './eve/child/modifiers/EveChildModifierTransformCommon.js';
-export { CjsLightData, defineCjsLightDataAccessors, setCjsLightDataOwnerValues } from './eve/lights/CjsLightData.js';
+export { CjsLightData, createCjsLightDataView, setCjsLightDataOwnerValues } from './eve/lights/CjsLightData.js';
 export { LightFeatures } from './eve/lights/LightFeatures.js';
 export { Tr2Light } from './eve/lights/Tr2Light.js';
 export { Tr2PointLight } from './eve/lights/Tr2PointLight.js';

@@ -7,9 +7,9 @@ import { quat } from '@carbonenginejs/core-math/quat';
 import { vec3 } from '@carbonenginejs/core-math/vec3';
 import { vec4 } from '@carbonenginejs/core-math/vec4';
 import { Tr2Light as _Tr2Light } from '../../../eve/lights/Tr2Light.js';
-import { CjsLightData as _CjsLightData, setCjsLightDataOwnerValues, defineCjsLightDataAccessors } from '../../../eve/lights/CjsLightData.js';
+import { createCjsLightDataView, setCjsLightDataOwnerValues } from '../../../eve/lights/CjsLightData.js';
 
-let _initProto, _initClass, _init_lightData, _init_extra_lightData, _init_lightProfile, _init_extra_lightProfile, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_lightProfilePath, _init_extra_lightProfilePath, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_staticOffsetRotation, _init_extra_staticOffsetRotation, _init_factionColor, _init_extra_factionColor, _init_useFactionColor, _init_extra_useFactionColor, _init_attributeModifiers, _init_extra_attributeModifiers, _init_customColor, _init_extra_customColor;
+let _initProto, _initClass, _init_flags, _init_extra_flags, _init_innerRadius, _init_extra_innerRadius, _init_brightness, _init_extra_brightness, _init_radius, _init_extra_radius, _init_lightProfile, _init_extra_lightProfile, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_lightProfilePath, _init_extra_lightProfilePath, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_staticOffsetRotation, _init_extra_staticOffsetRotation, _init_factionColor, _init_extra_factionColor, _init_useFactionColor, _init_extra_useFactionColor, _init_attributeModifiers, _init_extra_attributeModifiers, _init_customColor, _init_extra_customColor;
 
 /** EveSmartLightPointLight (eve/smartLights) - generated from schema shapeHash d980f7c3.... */
 let _EveSmartLightPointLi;
@@ -17,18 +17,27 @@ new class extends _identity {
   static [class EveSmartLightPointLight extends _EveEntity {
     static {
       ({
-        e: [_init_lightData, _init_extra_lightData, _init_lightProfile, _init_extra_lightProfile, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_lightProfilePath, _init_extra_lightProfilePath, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_staticOffsetRotation, _init_extra_staticOffsetRotation, _init_factionColor, _init_extra_factionColor, _init_useFactionColor, _init_extra_useFactionColor, _init_attributeModifiers, _init_extra_attributeModifiers, _init_customColor, _init_extra_customColor, _initProto],
+        e: [_init_flags, _init_extra_flags, _init_innerRadius, _init_extra_innerRadius, _init_brightness, _init_extra_brightness, _init_radius, _init_extra_radius, _init_lightProfile, _init_extra_lightProfile, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_lightProfilePath, _init_extra_lightProfilePath, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_staticOffsetRotation, _init_extra_staticOffsetRotation, _init_factionColor, _init_extra_factionColor, _init_useFactionColor, _init_extra_useFactionColor, _init_attributeModifiers, _init_extra_attributeModifiers, _init_customColor, _init_extra_customColor, _initProto],
         c: [_EveSmartLightPointLi, _initClass]
       } = _applyDecs2311(this, [type.define({
         className: "EveSmartLightPointLight",
         family: "eve/smartLights"
-      })], [[[io, io.owned, void 0, type.struct("CjsLightData")], 16, "lightData"], [[io, io.read, void 0, type.objectRef("Tr2LightProfileRes")], 16, "lightProfile"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.notify, io, io.persist, type, type.string], 16, "lightProfilePath"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.persist, type, type.quat], 16, "staticOffsetRotation"], [[io, io.notify, io, io.persist, type, type.int32], 16, "factionColor"], [[io, io.persist, type, type.boolean], 16, "useFactionColor"], [[io, io.persist, void 0, type.list("IEveSmartLightGroupAttributeModifier")], 16, "attributeModifiers"], [[io, io.persist, type, type.color], 16, "customColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface through the shared resolveGroupColor helper.")], 18, "GetGroupColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List events carry no BELIST insert mask; the inserted value (or, absent one, the whole list) is re-fanned - SetInheritProperties is idempotent.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Light-profile resolution (BeResMan lp resource) is supplied by the resource/runtime adapter; Trinity keeps only the typed path/reference.")], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The settle hook receives no changed-property list, and profile resolution belongs to the resource adapter; a detected path edit only invalidates the cached reference.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's RegisterComponent<ITr2LightOwner> template is expressed as the registry's explicit component-name signature.")], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Physical per-light packing (half floats, profile-index flag bits) moves to the renderer backend; Trinity submits the typed CPU record per placement.")], 18, "GetLights"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RenderDebugInfo"]], 0, void 0, _EveEntity));
+      })], [[[io, io.persist, type, type.uint16], 16, "flags"], [[io, io.persist, type, type.float32], 16, "innerRadius"], [[io, io.persist, type, type.float32], 16, "brightness"], [[io, io.persist, type, type.float32], 16, "radius"], [[io, io.read, void 0, type.objectRef("Tr2LightProfileRes")], 16, "lightProfile"], [[io, io.persist, type, type.string], 16, "name"], [[io, io.persist, type, type.boolean], 16, "display"], [[io, io.notify, io, io.persist, type, type.string], 16, "lightProfilePath"], [[io, io.persist, type, type.vec3], 16, "staticOffsetTranslation"], [[io, io.persist, type, type.quat], 16, "staticOffsetRotation"], [[io, io.notify, io, io.persist, type, type.int32], 16, "factionColor"], [[io, io.persist, type, type.boolean], 16, "useFactionColor"], [[io, io.persist, void 0, type.list("IEveSmartLightGroupAttributeModifier")], 16, "attributeModifiers"], [[io, io.persist, type, type.color], 16, "customColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface through the shared resolveGroupColor helper.")], 18, "GetGroupColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetColor"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetInheritProperties"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon inherits EveSmartLightBaseGroup; JS single inheritance flattens the base-group surface.")], 18, "SetControllerVariable"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("List events carry no BELIST insert mask; the inserted value (or, absent one, the whole list) is re-fanned - SetInheritProperties is idempotent.")], 18, "OnListModified"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Light-profile resolution (BeResMan lp resource) is supplied by the resource/runtime adapter; Trinity keeps only the typed path/reference.")], 18, "Initialize"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The settle hook receives no changed-property list, and profile resolution belongs to the resource adapter; a detected path edit only invalidates the cached reference.")], 18, "OnModified"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateSyncronous"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's RegisterComponent<ITr2LightOwner> template is expressed as the registry's explicit component-name signature.")], 18, "RegisterComponents"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Physical per-light packing (half floats, profile-index flag bits) moves to the renderer backend; Trinity submits the typed CPU record per placement.")], 18, "GetLights"], [[carbon, carbon.method, impl, impl.notImplemented], 18, "RenderDebugInfo"]], 0, void 0, _EveEntity));
     }
-    /** m_lightGroupData (LightData) */
-    lightData = (_initProto(this), _init_lightData(this, new _CjsLightData()));
+    /** m_lightGroupData.flags (uint16_t) [READWRITE, PERSIST] */
+    flags = (_initProto(this), _init_flags(this, 1));
+
+    /** m_lightGroupData.innerRadius (float) [READWRITE, PERSIST] */
+    innerRadius = (_init_extra_flags(this), _init_innerRadius(this, 0));
+
+    /** m_lightGroupData.brightness (float) [READWRITE, PERSIST] */
+    brightness = (_init_extra_innerRadius(this), _init_brightness(this, 1));
+
+    /** m_lightGroupData.radius (float) [READWRITE, PERSIST] */
+    radius = (_init_extra_brightness(this), _init_radius(this, 0));
 
     /** m_lightProfile (Tr2LightProfileResPtr) [READ] */
-    lightProfile = (_init_extra_lightData(this), _init_lightProfile(this, null));
+    lightProfile = (_init_extra_radius(this), _init_lightProfile(this, null));
 
     /** m_name (std::string) [READWRITE, PERSIST] */
     name = (_init_extra_lightProfile(this), _init_name(this, ""));
@@ -78,6 +87,15 @@ new class extends _identity {
 
     /** Last lightProfilePath the settle hook applied (JS-only change detection). */
     #lastAppliedProfilePath = "";
+
+    // Compat view over the flattened m_lightGroupData fields (2026-07-23
+    // flatten decision); light-manager records and the pre-flatten hydration
+    // shape keep reading a LightData-shaped object.
+    #lightDataView = null;
+    get lightData() {
+      this.#lightDataView ??= createCjsLightDataView(this, this.constructor.LightDataFields);
+      return this.#lightDataView;
+    }
     SetValues(values = {}, options = {}) {
       return setCjsLightDataOwnerValues(this, values, options, (ownerValues, ownerOptions) => super.SetValues(ownerValues, ownerOptions), this.constructor.LightDataFields);
     }
@@ -234,8 +252,8 @@ new class extends _identity {
         record.outerAngle = 0;
         record.innerAngle = 0;
         if (this.lightType === _Tr2Light.SPOT_LIGHT) {
-          record.outerAngle = Math.cos(2 * Math.PI * this.lightData.outerAngle / 360);
-          record.innerAngle = Math.cos(2 * Math.PI * this.lightData.innerAngle / 360);
+          record.outerAngle = Math.cos(2 * Math.PI * this.outerAngle / 360);
+          record.innerAngle = Math.cos(2 * Math.PI * this.innerAngle / 360);
         }
         record.lightType = this.lightType;
         record.lightData = this.lightData;
@@ -287,7 +305,6 @@ new class extends _identity {
     super(_EveSmartLightPointLi), _initClass();
   }
 }();
-defineCjsLightDataAccessors(_EveSmartLightPointLi, _EveSmartLightPointLi.LightDataFields);
 
 export { _EveSmartLightPointLi as EveSmartLightPointLight };
 //# sourceMappingURL=EveSmartLightPointLight.js.map

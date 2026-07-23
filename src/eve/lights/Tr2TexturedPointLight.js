@@ -1,8 +1,10 @@
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2TexturedPointLight.h
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2TexturedPointLight.cpp
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2TexturedPointLight_Blue.cpp
+// Flattened LightData surface (2026-07-23 decision): texturePath joins the
+// flat fields inherited from Tr2PointLight, verified against
+// lights/Tr2TexturedPointLight.json (tools-core schema build).
 import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { defineCjsLightDataAccessors } from "./CjsLightData.js";
 import { Tr2Light } from "./Tr2Light.js";
 import { Tr2PointLight } from "./Tr2PointLight.js";
 
@@ -19,6 +21,12 @@ export class Tr2TexturedPointLight extends Tr2PointLight
   @type.objectRef("TriTextureRes")
   texture = null;
 
+  /** m_lightData.texturePath (std::wstring) [READWRITE, PERSIST, NOTIFY] */
+  @io.notify
+  @io.persist
+  @type.string
+  texturePath = "";
+
   isDynamic = true;
   type = Tr2Light.POINT_LIGHT;
 
@@ -31,5 +39,3 @@ export class Tr2TexturedPointLight extends Tr2PointLight
     this.#saturation = Number(saturation);
   }
 }
-
-defineCjsLightDataAccessors(Tr2TexturedPointLight, ["texturePath"]);

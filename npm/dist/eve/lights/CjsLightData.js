@@ -52,59 +52,53 @@ new class extends _identity {
     super(_CjsLightData), _initClass();
   }
 }();
-function defineCjsLightDataAccessors(Constructor, fieldNames) {
+function createCjsLightDataView(owner, fieldNames) {
+  const view = new _CjsLightData();
   const descriptors = {};
   for (const fieldName of fieldNames) {
+    delete view[fieldName];
     descriptors[fieldName] = {
       configurable: true,
+      enumerable: true,
       get() {
-        return this.lightData[fieldName];
+        return owner[fieldName];
       },
       set(value) {
-        this.lightData.SetValues({
+        owner.SetValues({
           [fieldName]: value
         });
       }
     };
   }
-  Object.defineProperties(Constructor.prototype, descriptors);
-}
-function setCjsLightDataOwnerValues(owner, values, options, setOwnerValues, fieldNames) {
-  if (!values || typeof values !== "object") return setOwnerValues(values, options);
-  const fieldSet = new Set(fieldNames);
-  const ownerValues = {};
-  const lightValues = {};
-  let hasLightValues = false;
-  for (const [key, value] of Object.entries(values)) {
-    if (key === "lightData") continue;
-    if (fieldSet.has(key)) {
-      lightValues[key] = value;
-      hasLightValues = true;
-    } else {
-      ownerValues[key] = value;
-    }
-  }
-  if (Object.prototype.hasOwnProperty.call(values, "lightData")) {
-    const nested = values.lightData?.GetValues?.() ?? values.lightData;
-    if (nested && typeof nested === "object") {
-      for (const fieldName of _CjsLightData.Fields) {
-        if (Object.prototype.hasOwnProperty.call(nested, fieldName)) {
-          lightValues[fieldName] = nested[fieldName];
-          hasLightValues = true;
-        }
-      }
-    }
-  }
-  const ownerChanged = setOwnerValues(ownerValues, options);
-  const lightChanged = hasLightValues ? owner.lightData.SetValues(lightValues, options) : false;
-  if (options?.returnBoolean === true) return ownerChanged === true || lightChanged === true;
-  const changed = new Set();
-  if (ownerChanged instanceof Set) {
-    for (const fieldName of ownerChanged) changed.add(fieldName);
-  }
-  if (lightChanged) changed.add("lightData");
-  return changed.size ? changed : false;
+  Object.defineProperties(view, descriptors);
+  return view;
 }
 
-export { _CjsLightData as CjsLightData, defineCjsLightDataAccessors, setCjsLightDataOwnerValues };
+/**
+ * Routes a nested `lightData` value bag (the pre-flatten hydration shape,
+ * still emitted by runtime-sof) into the owner's flattened fields, then
+ * applies everything through one schema-backed SetValues pass. Explicit flat
+ * keys win over the nested bag.
+ */
+function setCjsLightDataOwnerValues(owner, values, options, setOwnerValues, fieldNames) {
+  if (!values || typeof values !== "object") return setOwnerValues(values, options);
+  if (!Object.prototype.hasOwnProperty.call(values, "lightData")) return setOwnerValues(values, options);
+  const merged = {};
+  for (const [key, value] of Object.entries(values)) {
+    if (key !== "lightData") merged[key] = value;
+  }
+  const nested = values.lightData?.GetValues?.() ?? values.lightData;
+  if (nested && typeof nested === "object") {
+    const fieldSet = new Set(fieldNames);
+    for (const fieldName of _CjsLightData.Fields) {
+      if (!fieldSet.has(fieldName)) continue;
+      if (!Object.prototype.hasOwnProperty.call(nested, fieldName)) continue;
+      if (Object.prototype.hasOwnProperty.call(values, fieldName)) continue;
+      merged[fieldName] = nested[fieldName];
+    }
+  }
+  return setOwnerValues(merged, options);
+}
+
+export { _CjsLightData as CjsLightData, createCjsLightDataView, setCjsLightDataOwnerValues };
 //# sourceMappingURL=CjsLightData.js.map

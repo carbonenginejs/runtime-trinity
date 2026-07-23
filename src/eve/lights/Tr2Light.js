@@ -2,9 +2,9 @@
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2Light.cpp
 import { CjsModel } from "@carbonenginejs/core-types/model";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, schema, type } from "@carbonenginejs/core-types/schema";
 import { PerLightShadowSetting } from "../../generated/eve/lights/enums.js";
-import { CjsLightData, setCjsLightDataOwnerValues } from "./CjsLightData.js";
+import { createCjsLightDataView, setCjsLightDataOwnerValues } from "./CjsLightData.js";
 
 
 @type.define({ className: "Tr2Light", family: "eve/lights" })
@@ -45,13 +45,21 @@ export class Tr2Light extends CjsModel
   @type.string
   lightProfilePath = "";
 
-  @io.owned
-  @type.struct("CjsLightData")
-  lightData = new CjsLightData();
-
   @type.int32
   @schema.enum("LIGHT_TYPE")
   type = Tr2Light.UNDEFINED_LIGHT;
+
+  // Compat view over the flattened light fields (2026-07-23 flatten
+  // decision): the flat decorated fields on the concrete light classes are
+  // the real storage; this keeps Carbon's GetLightData() reference surface
+  // and the runtime-sof separate-node hydration shape working.
+  #lightDataView = null;
+
+  get lightData()
+  {
+    this.#lightDataView ??= createCjsLightDataView(this, this.constructor.LightDataFields);
+    return this.#lightDataView;
+  }
 
   SetValues(values = {}, options = {})
   {
@@ -68,21 +76,21 @@ export class Tr2Light extends CjsModel
   @impl.implemented
   SetLightData(lightData)
   {
-    return this.lightData.SetValues(lightData);
+    return this.SetValues({ lightData });
   }
 
   @carbon.method
   @impl.implemented
   SetBrightnessMultiplier(multiplier)
   {
-    this.brightnessMultiplier = Number(multiplier);
+    this.SetValues({ brightnessMultiplier: Number(multiplier) });
   }
 
   @carbon.method
   @impl.implemented
   ChangeLightColor(color)
   {
-    return this.lightData.SetValues({ color }, { returnBoolean: true });
+    return this.SetValues({ color }, { returnBoolean: true });
   }
 
   @carbon.method
