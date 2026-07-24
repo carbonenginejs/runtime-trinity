@@ -426,7 +426,7 @@ export class Tr2ScalarExprKeyCurve extends CjsModel
             inTangent = Number(lastKey.right);
             deltaTime = this.Length() - Number(lastKey.time);
           }
-          return num.hermite(startValue, inTangent, outTangent, endValue, time / deltaTime);
+          return num.cubicHermite(startValue, inTangent, endValue, outTangent, time / deltaTime);
         }
       default:
         return Number(this.keys[0].value);

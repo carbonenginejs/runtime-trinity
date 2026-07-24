@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@carbonenginejs/core-math": "^0.1.5",
+    "@carbonenginejs/core-math": "^0.2.0",
     "@carbonenginejs/core-types": "file:../core-types",
     "@carbonenginejs/runtime-const": "file:../runtime-const"
   },

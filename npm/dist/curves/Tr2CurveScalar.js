@@ -58,7 +58,7 @@ new class extends _identity {
             if (length === 0) {
               return k1.value;
             }
-            return num.hermite(k0.value, k0.rightTangent * length, k1.leftTangent * length, k1.value, (time - k0.time) / length);
+            return num.cubicHermite(k0.value, k0.rightTangent * length, k1.value, k1.leftTangent * length, (time - k0.time) / length);
           }
         default:
           return 0;
@@ -77,7 +77,7 @@ new class extends _identity {
               return k1.rightTangent;
             }
             const s = (time - k0.time) / length;
-            return num.hermiteDerivative(k0.value, k0.rightTangent * length, k1.leftTangent * length, k1.value, s) / length;
+            return num.cubicHermiteDerivative(k0.value, k0.rightTangent * length, k1.value, k1.leftTangent * length, s) / length;
           }
         default:
           return 0;

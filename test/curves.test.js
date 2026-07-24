@@ -1448,3 +1448,35 @@ function makeFollowKey(time, value, interpolation = Tr2FollowCurveKeyInterpolati
     }
   };
 }
+
+test("HERMITE segments use correctly-ordered cubicHermite/Derivative (end value != end tangent)", () =>
+{
+  // end value (5) is deliberately != end tangent (3): with equal values a
+  // swap of the endValue/endTangent arguments is undetectable.
+  const k0 = { time: 0, value: 1, rightTangent: 2, leftTangent: 0, interpolation: Tr2CurveInterpolation.HERMITE };
+  const k1 = { time: 1, value: 5, rightTangent: 0, leftTangent: 3, interpolation: Tr2CurveInterpolation.HERMITE };
+  const length = k1.time - k0.time;
+
+  for (const amount of [0.25, 0.5, 0.75])
+  {
+    const time = k0.time + amount * length;
+
+    const expectedValue = num.cubicHermite(k0.value, k0.rightTangent * length, k1.value, k1.leftTangent * length, amount);
+    const value = Tr2CurveScalar.getSegmentValue(time, k0, k1);
+    assert(Math.abs(value - expectedValue) < 1e-9, `value @${amount}: ${value} vs ${expectedValue}`);
+
+    const expectedTangent = num.cubicHermiteDerivative(k0.value, k0.rightTangent * length, k1.value, k1.leftTangent * length, amount) / length;
+    const tangent = Tr2CurveScalar.getSegmentTangent(time, k0, k1);
+    assert(Math.abs(tangent - expectedTangent) < 1e-9, `tangent @${amount}: ${tangent} vs ${expectedTangent}`);
+  }
+
+  // The test is sensitive: the wrong (swapped) argument order gives a
+  // different interior value, so this coverage would fail on a regression.
+  const swapped = num.cubicHermite(k0.value, k0.rightTangent * length, k1.leftTangent * length, k1.value, 0.25);
+  const correct = num.cubicHermite(k0.value, k0.rightTangent * length, k1.value, k1.leftTangent * length, 0.25);
+  assert(Math.abs(correct - swapped) > 1e-6, "swapped vs correct argument order must differ");
+
+  // Endpoints pin to the authored values.
+  assert(Math.abs(Tr2CurveScalar.getSegmentValue(0, k0, k1) - 1) < 1e-9, "start value");
+  assert(Math.abs(Tr2CurveScalar.getSegmentValue(1, k0, k1) - 5) < 1e-9, "end value");
+});
