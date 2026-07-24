@@ -213,13 +213,17 @@ export class EveTransform extends Tr2Transform
     mat4.transpose(out.worldLast, this.#lastWorldTransform);
     if (!mat4.invert(out.worldInverse, out.world))
     {
-      // Carbon fixup (EveTransform.cpp:63-75): patch the first all-zero basis
-      // row's diagonal with 0.1 and invert that patched matrix instead.
+      // Carbon fixup (EveTransform.cpp:66-75): find the first all-zero ROW of
+      // the transposed matrix and patch its diagonal with 0.1, then invert
+      // that. Carbon tests (_11,_12,_13) / (_21,_22,_23) / (_31,_32,_33) -
+      // on the shared byte layout Carbon row r is gl flat [r*4 .. r*4+2], so
+      // the triples are [0,1,2] / [4,5,6] / [8,9,10]. (Testing [0],[4],[8]
+      // would read a COLUMN - the transpose of Carbon's test.)
       const patched = INVERSE_PATCH_SCRATCH;
       mat4.copy(patched, out.world);
-      if (patched[0] === 0 && patched[4] === 0 && patched[8] === 0) patched[0] = 0.1;
-      else if (patched[1] === 0 && patched[5] === 0 && patched[9] === 0) patched[5] = 0.1;
-      else if (patched[2] === 0 && patched[6] === 0 && patched[10] === 0) patched[10] = 0.1;
+      if (patched[0] === 0 && patched[1] === 0 && patched[2] === 0) patched[0] = 0.1;
+      else if (patched[4] === 0 && patched[5] === 0 && patched[6] === 0) patched[5] = 0.1;
+      else if (patched[8] === 0 && patched[9] === 0 && patched[10] === 0) patched[10] = 0.1;
       if (!mat4.invert(out.worldInverse, patched)) mat4.identity(out.worldInverse);
     }
     return out;
