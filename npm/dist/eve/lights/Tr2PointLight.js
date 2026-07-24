@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 import { Tr2Light as _Tr2Light } from './Tr2Light.js';
 
 let _initClass, _init_name, _init_extra_name, _init_lightProfilePath, _init_extra_lightProfilePath, _init_lightProfile, _init_extra_lightProfile, _init_castsShadows, _init_extra_castsShadows, _init_flags, _init_extra_flags, _init_position, _init_extra_position, _init_rotation, _init_extra_rotation, _init_boneIndex, _init_extra_boneIndex, _init_radius, _init_extra_radius, _init_innerRadius, _init_extra_innerRadius, _init_color, _init_extra_color, _init_brightness, _init_extra_brightness, _init_noiseAmplitude, _init_extra_noiseAmplitude, _init_noiseFrequency, _init_extra_noiseFrequency, _init_noiseOctaves, _init_extra_noiseOctaves, _init_isVolumetric, _init_extra_isVolumetric;

@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Mesh as _Tr2Mesh } from './Tr2Mesh.js';
 
 let _initProto, _initClass, _init_boundsMethod, _init_extra_boundsMethod, _init_instanceGeometryResPath, _init_extra_instanceGeometryResPath, _init_maxBounds, _init_extra_maxBounds, _init_maxInstanceSize, _init_extra_maxInstanceSize, _init_minBounds, _init_extra_minBounds, _init_instanceGeometryResource, _init_extra_instanceGeometryResource, _init_instanceMeshIndex, _init_extra_instanceMeshIndex;

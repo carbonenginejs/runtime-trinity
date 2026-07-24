@@ -6,12 +6,12 @@
 // additions are the per-frame update driver ported from Carbon
 // EveSpaceScene::Update and the scene-owned EveUpdateContext member (Carbon
 // m_updateContext - protected, so absent from the Blue schema scan).
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import { EveEntity } from "../../generated/eve/EveEntity.js";
 import { EveComponentRegistry } from "../../generated/eve/scene/EveComponentRegistry.js";
 import { Tr2PostProcess2 } from "../../postProcess/Tr2PostProcess2.js";

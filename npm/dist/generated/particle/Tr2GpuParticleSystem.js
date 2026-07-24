@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initProto, _initClass, _init_enableEmit, _init_extra_enableEmit, _init_display, _init_extra_display, _init_enableSort, _init_extra_enableSort, _init_enableUpdate, _init_extra_enableUpdate, _init_updateVisibleCount, _init_extra_updateVisibleCount, _init_maxParticles, _init_extra_maxParticles, _init_visibleCount, _init_extra_visibleCount, _init_clear, _init_extra_clear, _init_emit, _init_extra_emit, _init_sortInner, _init_extra_sortInner, _init_sortStep, _init_extra_sortStep, _init_sort, _init_extra_sort, _init_render, _init_extra_render, _init_update, _init_extra_update, _init_setDrawParameters, _init_extra_setDrawParameters, _init_setSortParameters, _init_extra_setSortParameters;
 

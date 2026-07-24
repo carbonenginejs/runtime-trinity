@@ -1,4 +1,4 @@
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderStep } from "./TriRenderStep.js";
 import { TriRenderJob } from "./TriRenderJob.js";
 

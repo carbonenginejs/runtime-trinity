@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\Behaviors\SeekTarget.h
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

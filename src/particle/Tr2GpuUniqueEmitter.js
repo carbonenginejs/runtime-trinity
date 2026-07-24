@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuUniqueEmitter.h
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuUniqueEmitter.cpp
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuUniqueEmitter_Blue.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2GpuSharedEmitter } from "./Tr2GpuSharedEmitter.js";
 
 

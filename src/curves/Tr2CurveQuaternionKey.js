@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveQuaternion.cpp
-import { quat } from "@carbonenginejs/core-math/quat";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2CurveInterpolation } from "./enums.js";
 
 

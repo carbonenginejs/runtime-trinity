@@ -1,6 +1,6 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/EveStation2.h
-import { type } from "@carbonenginejs/core-types/schema";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 import { EveSpaceObject2 } from "./EveSpaceObject2.js";
 
 /**

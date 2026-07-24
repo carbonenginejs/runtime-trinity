@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2GpuSharedEmitter, Tr2GpuUniqueEmitter, Tr2ParticleAttractorForce, Tr2ParticleDirectForce, Tr2ParticleDragForce, Tr2ParticleFluidDragForce, Tr2ParticleSpring, Tr2ParticleVortexForce } from "../npm/dist/index.js";
 
 

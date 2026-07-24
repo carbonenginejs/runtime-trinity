@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initProto, _initClass, _init_minBaseTimeBetweenTriggers, _init_extra_minBaseTimeBetweenTriggers, _init_maxBaseTimeBetweenTriggers, _init_extra_maxBaseTimeBetweenTriggers, _init_travelProgress, _init_extra_travelProgress, _init_destinationsReached, _init_extra_destinationsReached, _init_totalDestinations, _init_extra_totalDestinations, _init_distanceToTravelTimeMultiplier, _init_extra_distanceToTravelTimeMultiplier;
 

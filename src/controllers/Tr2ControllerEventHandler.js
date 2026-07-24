@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerEventHandler.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerEventHandler.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { BELIST_EVENTMASK, BELIST_INSERTED, BELIST_REMOVED } from "./contracts.js";
 
 

@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetStandardRenderStates.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetStandardRenderStates.cpp
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

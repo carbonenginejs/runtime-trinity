@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
 
 let _initProto, _initClass, _init_resourceLoader, _init_extra_resourceLoader, _init_display, _init_extra_display, _init_name, _init_extra_name, _init_loadChildAutomatically, _init_extra_loadChildAutomatically, _init_resPath, _init_extra_resPath, _init_child, _init_extra_child;

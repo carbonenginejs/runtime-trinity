@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_renderType, _init_extra_renderType, _init_lineSet, _init_extra_lineSet, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_minScreenSize, _init_extra_minScreenSize, _init_brightness, _init_extra_brightness, _init_baseColor, _init_extra_baseColor, _init_animColor, _init_extra_animColor, _init_additiveBatches, _init_extra_additiveBatches, _init_scrollSpeed, _init_extra_scrollSpeed, _init_lines, _init_extra_lines, _init_alwaysOn, _init_extra_alwaysOn, _init_currentScreenSize, _init_extra_currentScreenSize, _init_mesh, _init_extra_mesh;
 

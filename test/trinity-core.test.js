@@ -1,10 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 import { GrannyBoneOffset, Tr2DepthStencil, Tr2DirectInstanceData, Tr2ExpressionTermInfo, Tr2GpuBuffer, Tr2InstancedMesh, Tr2Mesh, Tr2MeshArea, Tr2MeshBase, Tr2PrimaryRenderContext, Tr2RenderContext, Tr2RenderTarget, Tr2RuntimeGpuBuffer, Tr2RuntimeInstanceData, Tr2SwapChain, Tr2VariableStore, Tr2VisibilityResults, TriDevice, TriObserverLocal, TriProjection, TriRect, TriSettings, TriVariable, TriView, TriViewport } from "../npm/dist/trinityCore/index.js";
 import { Tr2PresentParameters } from "../npm/dist/ui/index.js";
 import { TriBatchType } from "../npm/dist/generated/trinityCore/enums.js";

@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 import { TriLineSet as _TriLineSet } from '../trinityCore/TriLineSet.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_lineSet, _init_extra_lineSet, _init_text2d, _init_extra_text2d, _init_text3d, _init_extra_text3d, _init_autoClear, _init_extra_autoClear;
 

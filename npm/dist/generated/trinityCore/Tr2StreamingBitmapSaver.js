@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { PixelFormat } from '@carbonenginejs/runtime-const/render-context';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { PixelFormat } from '@carbonenginejs/runtime-utils/render-context';
 
 let _initProto, _initClass, _init_currentOffset, _init_extra_currentOffset, _init_height, _init_extra_height, _init_format, _init_extra_format, _init_width, _init_extra_width;
 

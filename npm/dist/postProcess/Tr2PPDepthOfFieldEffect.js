@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
 
 let _initClass, _init_bokehShape, _init_extra_bokehShape, _init_scale, _init_extra_scale, _init_cocScale, _init_extra_cocScale, _init_useTAAFriendlyBokeh, _init_extra_useTAAFriendlyBokeh, _init_focalLength, _init_extra_focalLength, _init_foregroundBlurNeeded, _init_extra_foregroundBlurNeeded, _init_focalDistance, _init_extra_focalDistance;

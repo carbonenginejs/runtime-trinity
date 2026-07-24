@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2CurveInterpolation, Tr2CurveTangentType } from './enums.js';
 import { Tr2CurveScalar as _Tr2CurveScalar } from './Tr2CurveScalar.js';
 

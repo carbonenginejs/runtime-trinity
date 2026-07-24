@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { CjsParameter } from './CjsParameter.js';
-import { TriTransformBase } from '@carbonenginejs/runtime-const/graphics';
+import { TriTransformBase } from '@carbonenginejs/runtime-utils/graphics';
 
 let _initProto, _initClass, _init_transformBase, _init_extra_transformBase, _init_rotationCenter, _init_extra_rotationCenter, _init_name, _init_extra_name, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_translation, _init_extra_translation, _init_worldTransform, _init_extra_worldTransform;
 

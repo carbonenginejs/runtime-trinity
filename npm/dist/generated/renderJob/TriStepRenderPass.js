@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 
 let _initProto, _initClass, _init_passType, _init_extra_passType, _init_scene, _init_extra_scene;

@@ -1,9 +1,9 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Tr2RenderTarget.h
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { PixelFormat, TextureType } from "@carbonenginejs/runtime-const/render-context";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { PixelFormat, TextureType } from "@carbonenginejs/runtime-utils/render-context";
 
 /** Tr2RenderTarget (trinityCore) - generated from schema shapeHash dc39c914.... */
 @type.define({ className: "Tr2RenderTarget", family: "trinityCore" })

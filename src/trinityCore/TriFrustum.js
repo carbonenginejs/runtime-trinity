@@ -9,9 +9,9 @@
 // are omitted. Matrix element mapping: Carbon row-major _rc lands at flat
 // index (r-1)*4+(c-1), which is the SAME flat index in the shared gl-matrix
 // byte layout, so every _rc below is ported as m[(r-1)*4+(c-1)] unchanged.
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import { TriFrustumTestResult } from "../generated/trinityCore/enums.js";
 
 /** std::numeric_limits<float>::max() - Carbon's "camera inside sphere" result. */

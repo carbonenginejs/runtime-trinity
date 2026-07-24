@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMobile.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMobile.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveTurretSet } from "../attachment/turrets/EveTurretSet.js";
 import { EveSpaceObject2 } from "./EveSpaceObject2.js";
 

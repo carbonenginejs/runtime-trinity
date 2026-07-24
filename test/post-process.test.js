@@ -10,7 +10,7 @@ import {
   Tr2PostProcess2,
   Tr2PostProcessAttributes
 } from "../npm/dist/index.js";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 function assert(condition, message = "assertion failed")

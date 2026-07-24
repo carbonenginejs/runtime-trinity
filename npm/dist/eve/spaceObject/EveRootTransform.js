@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveTransform as _EveTransform } from './EveTransform.js';
 
 let _initProto, _initClass, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_rotationCurve, _init_extra_rotationCurve, _init_modelTranslationCurve, _init_extra_modelTranslationCurve, _init_modelRotationCurve, _init_extra_modelRotationCurve, _init_translationCurve, _init_extra_translationCurve;

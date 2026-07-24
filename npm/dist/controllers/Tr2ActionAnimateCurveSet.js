@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { CjsControllerExpressionProgram } from './CjsControllerExpressionProgram.js';
 import { ITr2ControllerAction } from './ITr2ControllerAction.js';
 

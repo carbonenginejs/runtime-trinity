@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepClear.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepClear.cpp
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepClear_Blue.cpp
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

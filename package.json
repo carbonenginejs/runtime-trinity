@@ -22,14 +22,12 @@
   "name": "@carbonenginejs/runtime-trinity",
   "sideEffects": false,
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@carbonenginejs/core-math": "^0.2.0",
-    "@carbonenginejs/core-types": "file:../core-types",
-    "@carbonenginejs/runtime-const": "file:../runtime-const"
+    "@carbonenginejs/runtime-utils": "file:../runtime-utils"
   },
   "scripts": {
     "audit:gaps": "node scripts/audit_implementation_gaps.js",

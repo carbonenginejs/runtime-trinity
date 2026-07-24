@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionResetClipSphereCenter.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionResetClipSphereCenter.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { isArrayLike } from "@carbonenginejs/core-math/is";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { isArrayLike } from "@carbonenginejs/runtime-utils/is";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { ResetBehavior } from "./enums.js";
 import { ITr2ControllerAction } from "./ITr2ControllerAction.js";
 

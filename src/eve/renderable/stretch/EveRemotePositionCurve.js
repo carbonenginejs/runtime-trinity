@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveRemotePositionCurve.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveRemotePositionCurve.cpp
-import { num } from "@carbonenginejs/core-math/num";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { num } from "@carbonenginejs/runtime-utils/num";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

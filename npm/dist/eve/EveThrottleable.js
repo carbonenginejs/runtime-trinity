@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { CjsEveThrottleableState } from './CjsEveThrottleableState.js';
 
 let _initProto, _initClass, _init_currentUpdateFrequency, _init_extra_currentUpdateFrequency, _init_updateThrottle, _init_extra_updateThrottle, _init_maxUpdateFrequency, _init_extra_maxUpdateFrequency, _init_minUpdateFrequency, _init_extra_minUpdateFrequency;

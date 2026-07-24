@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
 import {
   EveChildMesh,
   EveChildModifierCameraOrientedRotationConstrained,

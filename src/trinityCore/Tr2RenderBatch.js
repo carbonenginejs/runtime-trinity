@@ -7,8 +7,8 @@
 // it never touches a device. The engine adapter reads a finalized accumulator's
 // batches and issues the actual draws (Carbon's Tr2RenderContextBase::RenderBatches*
 // dispatch family stays engine-side and is intentionally NOT ported here).
-import { RenderingMode } from "@carbonenginejs/runtime-const/graphics";
-import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-const/d3d";
+import { RenderingMode } from "@carbonenginejs/runtime-utils/graphics";
+import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-utils/d3d";
 
 
 // Carbon sorts batches on raw pointer identity of shader/vertex-stream objects.

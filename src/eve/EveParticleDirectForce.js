@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\EveParticleDirectForce.h
 // Source: E:\carbonengine\trinity\trinity\Eve\EveParticleDirectForce_Blue.cpp
-import { type } from "@carbonenginejs/core-types/schema";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2ParticleDirectForce } from "../particle/Tr2ParticleDirectForce.js";
 
 

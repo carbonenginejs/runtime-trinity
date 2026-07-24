@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2LineSet as _Tr2LineSet } from './Tr2LineSet.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_maxBounds, _init_extra_maxBounds, _init_minBounds, _init_extra_minBounds;
 

@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerExpression.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2ControllerExpression.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsControllerExpressionProgram } from "./CjsControllerExpressionProgram.js";
 
 

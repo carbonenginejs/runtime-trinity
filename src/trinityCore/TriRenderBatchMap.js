@@ -6,7 +6,7 @@
 // TriBatchType) plus the GetBatchesFromRenderables/FinalizeBatches/ClearBatches
 // flow, exposed as methods on a cohesive object rather than a free function. The
 // engine adapter reads the finalized per-type accumulators and issues draws.
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { Tr2RenderReason } from "../generated/trinityCore/enums.js";
 import { TriRenderBatchAccumulator, DefaultKeyGenerator, EffectKeyGenerator } from "./TriRenderBatchAccumulator.js";
 

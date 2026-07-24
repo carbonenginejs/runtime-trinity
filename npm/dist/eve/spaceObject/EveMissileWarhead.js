@@ -1,12 +1,11 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { carbonPerlin1D } from '@carbonenginejs/core-math/noise';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { sph3 } from '@carbonenginejs/core-math/sph3';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { EveMissileWarheadPerObjectData as _EveMissileWarheadPer } from '../perObjectData/EveMissileWarheadPerObjectData.js';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { carbonPerlin1D } from '@carbonenginejs/runtime-utils/noise';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { sph3 } from '@carbonenginejs/runtime-utils/sph3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveTransform as _EveTransform } from './EveTransform.js';
 
 let _initProto, _initClass, _init_pathOffsetNoiseScale, _init_extra_pathOffsetNoiseScale, _init_pathOffsetNoiseSpeed, _init_extra_pathOffsetNoiseSpeed, _init_startDataValid, _init_extra_startDataValid, _init_pathOffset, _init_extra_pathOffset, _init_maxExplosionDistance, _init_extra_maxExplosionDistance, _init_impactDuration, _init_extra_impactDuration, _init_explosionPosition, _init_extra_explosionPosition, _init_impactSize, _init_extra_impactSize, _init_spriteSet, _init_extra_spriteSet, _init_targetLocatorID, _init_extra_targetLocatorID, _init_durationEjectPhase, _init_extra_durationEjectPhase, _init_doSpread, _init_extra_doSpread, _init_acceleration, _init_extra_acceleration, _init_id, _init_extra_id, _init_startEjectVelocity, _init_extra_startEjectVelocity, _init_warheadLength, _init_extra_warheadLength, _init_warheadRadius, _init_extra_warheadRadius;
@@ -20,7 +19,7 @@ new class extends _identity {
       } = _applyDecs2311(this, [type.define({
         className: "EveMissileWarhead",
         family: "eve/spaceObject"
-      })], [[[io, io.persist, type, type.float32], 16, "pathOffsetNoiseScale"], [[io, io.persist, type, type.float32], 16, "pathOffsetNoiseSpeed"], [[io, io.readwrite, type, type.boolean], 16, "startDataValid"], [[io, io.readwrite, type, type.vec3], 16, "pathOffset"], [[io, io.persist, type, type.float32], 16, "maxExplosionDistance"], [[io, io.persist, type, type.float32], 16, "impactDuration"], [[io, io.read, type, type.vec3], 16, "explosionPosition"], [[io, io.persist, type, type.float32], 16, "impactSize"], [[io, io.persist, void 0, type.model("EveSpriteSet")], 16, "spriteSet"], [[io, io.read, type, type.int32], 16, "targetLocatorID"], [[io, io.persist, type, type.float32], 16, "durationEjectPhase"], [[io, io.readwrite, type, type.boolean], 16, "doSpread"], [[io, io.persist, type, type.float32], 16, "acceleration"], [[io, io.readwrite, type, type.int32], 16, "id"], [[io, io.persist, type, type.float32], 16, "startEjectVelocity"], [[io, io.persist, type, type.float32], 16, "warheadLength"], [[io, io.persist, type, type.float32], 16, "warheadRadius"], [[carbon, carbon.method, impl, impl.implemented], 18, "PrepareLaunch"], [[carbon, carbon.method, impl, impl.implemented], 18, "Launch"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateEndTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateState"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Targetable output parameters use the org-standard out-last calling convention.")], 18, "CheckImpact"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's pointer-derived Perlin phase is replaced with a stable per-instance 12-bit sequence.")], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The CPU flight calculation is source-faithful; current world composition is also published immediately for headless graph consumers.")], 18, "UpdateWarhead"], [[carbon, carbon.method, impl, impl.implemented], 18, "EnableParticleEmitting"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurrentOffsetTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTargetLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTargetLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetState"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWarheadID"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Persistent device buffers are engine-owned; Trinity publishes their exact CPU value record.")], 18, "GetPerObjectData"]], 0, void 0, _EveTransform));
+      })], [[[io, io.persist, type, type.float32], 16, "pathOffsetNoiseScale"], [[io, io.persist, type, type.float32], 16, "pathOffsetNoiseSpeed"], [[io, io.readwrite, type, type.boolean], 16, "startDataValid"], [[io, io.readwrite, type, type.vec3], 16, "pathOffset"], [[io, io.persist, type, type.float32], 16, "maxExplosionDistance"], [[io, io.persist, type, type.float32], 16, "impactDuration"], [[io, io.read, type, type.vec3], 16, "explosionPosition"], [[io, io.persist, type, type.float32], 16, "impactSize"], [[io, io.persist, void 0, type.model("EveSpriteSet")], 16, "spriteSet"], [[io, io.read, type, type.int32], 16, "targetLocatorID"], [[io, io.persist, type, type.float32], 16, "durationEjectPhase"], [[io, io.readwrite, type, type.boolean], 16, "doSpread"], [[io, io.persist, type, type.float32], 16, "acceleration"], [[io, io.readwrite, type, type.int32], 16, "id"], [[io, io.persist, type, type.float32], 16, "startEjectVelocity"], [[io, io.persist, type, type.float32], 16, "warheadLength"], [[io, io.persist, type, type.float32], 16, "warheadRadius"], [[carbon, carbon.method, impl, impl.implemented], 18, "PrepareLaunch"], [[carbon, carbon.method, impl, impl.implemented], 18, "Launch"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateEndTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateState"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Targetable output parameters use the org-standard out-last calling convention.")], 18, "CheckImpact"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Carbon's pointer-derived Perlin phase is replaced with a stable per-instance 12-bit sequence.")], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The CPU flight calculation is source-faithful; current world composition is also published immediately for headless graph consumers.")], 18, "UpdateWarhead"], [[carbon, carbon.method, impl, impl.implemented], 18, "EnableParticleEmitting"], [[carbon, carbon.method, impl, impl.implemented], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetLocalBoundingSphere"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetCurrentOffsetTransform"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetTargetLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "SetTargetLocator"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetState"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetWarheadID"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Constant-buffer layout/packing is engine-owned; Trinity Allocs the record from the accumulator's store and Sets logical values by name (the store transposes the matrix per the engine layout).")], 18, "GetPerObjectData"]], 0, void 0, _EveTransform));
     }
     pathOffsetNoiseScale = (_initProto(this), _init_pathOffsetNoiseScale(this, 0));
     pathOffsetNoiseSpeed = (_init_extra_pathOffsetNoiseScale(this), _init_pathOffsetNoiseSpeed(this, 1));
@@ -256,13 +255,11 @@ new class extends _identity {
     GetWarheadID() {
       return this.id;
     }
-    GetPerObjectData(accumulatorOrOut = new _EveMissileWarheadPer()) {
-      // Accepts the Carbon accumulator contract (Allocate) or a caller-owned
-      // output record (the earlier JS shape, kept for compatibility).
-      const out = typeof accumulatorOrOut?.Allocate === "function" ? accumulatorOrOut.Allocate(_EveMissileWarheadPer) : accumulatorOrOut;
-      mat4.transpose(out.world, this.worldTransform);
-      vec4.set(out.missileSize, this.warheadRadius, this.warheadLength, 0, 0);
-      return out;
+    GetPerObjectData(accumulator) {
+      const data = accumulator.Alloc("EveMissileWarheadPerObjectData");
+      data.Set("world", this.worldTransform);
+      data.Set("missileSize", [this.warheadRadius, this.warheadLength, 0, 0]);
+      return data;
     }
   }];
   State = Object.freeze({

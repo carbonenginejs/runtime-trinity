@@ -1,10 +1,10 @@
 // Ported/adapted from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/Children/EveChildLightingOverride.h
 //   trinity/trinity/Eve/SpaceObject/Children/EveChildLightingOverride.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
 import { EveComponentType } from "../EveComponentTypes.js";
 

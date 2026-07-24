@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { carbonPerlin1D } from '@carbonenginejs/core-math/noise';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { carbonPerlin1D } from '@carbonenginejs/runtime-utils/noise';
 
 let _initProto, _initClass, _init_alpha, _init_extra_alpha, _init_beta, _init_extra_beta, _init_N, _init_extra_N, _init_value, _init_extra_value, _init_scale, _init_extra_scale, _init_offset, _init_extra_offset, _init_speed, _init_extra_speed, _init_name, _init_extra_name;
 let _TriPerlinCurve;

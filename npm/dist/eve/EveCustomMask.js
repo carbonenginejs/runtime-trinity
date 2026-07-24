@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initStatic, _initClass, _init_clampU, _init_extra_clampU, _init_clampV, _init_extra_clampV, _init_position, _init_extra_position, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_materialIndex, _init_extra_materialIndex, _init_isMirrored, _init_extra_isMirrored, _init_targetMaterials, _init_extra_targetMaterials;
 let _EveCustomMask;

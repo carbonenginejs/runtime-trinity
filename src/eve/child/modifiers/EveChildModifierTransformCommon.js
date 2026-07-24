@@ -19,8 +19,8 @@
 //   camPos     = Tr2Renderer::GetViewPosition()         -> renderContext.GetViewPosition()
 //   viewMatrix = Tr2Renderer::GetViewTransform()        -> renderContext.GetViewTransform()
 //   invView    = Tr2Renderer::GetInverseViewTransform() -> renderContext.GetInverseViewTransform()
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 
 
 // Allocated once, reused in place - non-reentrant per-frame math (equivalent to

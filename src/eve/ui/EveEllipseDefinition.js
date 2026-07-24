@@ -1,9 +1,9 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/UI/EveEllipseDefinition.h
 //   trinity/trinity/Eve/UI/EveEllipseDefinition.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveEllipseDefinition", family: "eve/ui" })

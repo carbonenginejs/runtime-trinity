@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\EveParticleDragForce.h
 // Source: E:\carbonengine\trinity\trinity\Eve\EveParticleDragForce_Blue.cpp
-import { type } from "@carbonenginejs/core-types/schema";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2ParticleDragForce } from "../particle/Tr2ParticleDragForce.js";
 
 

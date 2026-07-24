@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_position, _init_extra_position, _init_pointOfInterestAnchorCenter, _init_extra_pointOfInterestAnchorCenter, _init_positionAnchorCenter, _init_extra_positionAnchorCenter, _init_pointOfInterestAnchors, _init_extra_pointOfInterestAnchors, _init_positionAnchors, _init_extra_positionAnchors, _init_localElapsedTime, _init_extra_localElapsedTime, _init_pointOfInterest, _init_extra_pointOfInterest, _init_pointOfInterestAnchorRadius, _init_extra_pointOfInterestAnchorRadius, _init_positionAnchorRadius, _init_extra_positionAnchorRadius, _init_positionAnchorForwardDirection, _init_extra_positionAnchorForwardDirection, _init_pointOfInterestAnchorForwardDirection, _init_extra_pointOfInterestAnchorForwardDirection, _init_fovBehaviours, _init_extra_fovBehaviours, _init_pointOfInterestBehaviours, _init_extra_pointOfInterestBehaviours, _init_positionBehaviours, _init_extra_positionBehaviours, _init_rollBehaviours, _init_extra_rollBehaviours, _init_roll, _init_extra_roll, _init_fov, _init_extra_fov, _init_animationTimelineLength, _init_extra_animationTimelineLength, _init_name, _init_extra_name, _init_running, _init_extra_running;
 const SCRUB_INCREMENT_DT = 1 / 60;

@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_spaceObjectParent, _init_extra_spaceObjectParent, _init_childParent, _init_extra_childParent, _init_boneCount, _init_extra_boneCount, _init_bones, _init_extra_bones, _init_ownerMaxSpeed, _init_extra_ownerMaxSpeed, _init_activationStrength, _init_extra_activationStrength, _init_controllerUpdateFrequency, _init_extra_controllerUpdateFrequency, _init_isVisible, _init_extra_isVisible, _init_localToWorldTransform, _init_extra_localToWorldTransform, _init_worldVelocity, _init_extra_worldVelocity;
 let _EveChildUpdateParams;

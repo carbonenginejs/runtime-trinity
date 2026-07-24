@@ -7,9 +7,9 @@
 // adapter - NOT a registry component and never a scene member
 // (ECS-VISIBILITY-SPEC-2026-07-23 "Shadow frustums"). The shadow member is a
 // TriFrustum held by reference (Carbon copies by value into the transient).
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { TriFrustumTestResult } from "../../trinityCore/enums.js";
 
 /** TriShadowFrustum (eve/scene) - generated from schema shapeHash 2d9400b5.... */

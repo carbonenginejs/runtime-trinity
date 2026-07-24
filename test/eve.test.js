@@ -1,11 +1,11 @@
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import { AudioGameObject, BackAndForthData, CjsEveThrottleableState, CjsLightData, DecalVSPerObjectData, EveBannerItem, EveBannerLight, EveBannerSet, EveBasicPerObjectData, EveBezierCurve, EveBoxVolume, EveChildAudio, EveChildFogVolume, EveChildLightingOverride, EveChildModifierSRT, EveChildSpherePinPerObjectData, EveChildTransform, EveChildUpdateParams, EveCircle, EveCustomMask, EveDistanceField, EveEllipseDefinition, EveEllipseSet, EveEllipsoidVolume, EveHazeSet, EveHazeSetLight, EveImpactOverlay, EveLODHelper, EveLineData, EveLocator2, EveLocatorSets, EvePerObjectPSData, EvePerObjectVSData, EvePlaneLight, EvePlaneSet, EvePlaneSetItem, EveRemotePositionCurve, EveSpaceObjectDecal, EveSpaceObjectPSData, EveSpaceObjectVSData, EveSpacePerObjectData, EveSpherePinPerObjectData, EveSphereVolume, EveSpotlightLight, EveSpotlightSet, EveSpotlightSetItem, EveSpriteLight, EveSpriteLineSet, EveSpriteLineSetItem, EveSpriteSet, EveSpriteSetItem, EveThrottleable, EveVirtualCamera, EveVirtualCameraBehaviourFloatAdd, EveVirtualCameraBehaviourFloatBase, EveVirtualCameraBehaviourFloatDamping, EveVirtualCameraBehaviourFloatNoise, EveVirtualCameraBehaviourFloatSet, EveVirtualCameraBehaviourVector3Base, EveVirtualCameraBehaviourVector3Damping, EveVirtualCameraBehaviourVector3Inertia, EveVirtualCameraBehaviourVector3MoveBetween, EveVirtualCameraBehaviourVector3MoveForward, EveVirtualCameraBehaviourVector3MoveRight, EveVirtualCameraBehaviourVector3MoveUp, EveVirtualCameraBehaviourVector3Offset, EveVirtualCameraBehaviourVector3Orbit, EveVirtualCameraBehaviourVector3Shake, EveVirtualCameraSystem, EveVirtualCameraTransitionCut, EveVirtualCameraTransitionLerp, FollowASplineData, FormationData, InertiaData, Locator, LocatorData, PlacementDataWithIdentifier, PlayFXData, ProcessLifetimeData, SeekTargetData, Tr2CurveExtrapolation, Tr2Light, Tr2Lod, Tr2PointLight, Tr2ScalarFader, Tr2SpotLight, Tr2TexturedPointLight, TriPerlinCurve } from "../npm/dist/index.js";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 function assert(condition, message = "assertion failed")

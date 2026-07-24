@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_intensity, _init_extra_intensity, _init_color, _init_extra_color, _init_detail1Scroll, _init_extra_detail1Scroll, _init_detail1Size, _init_extra_detail1Size, _init_detail2Scroll, _init_extra_detail2Scroll, _init_detail2Size, _init_extra_detail2Size, _init_detailPath, _init_extra_detailPath, _init_opacity, _init_extra_opacity, _init_shapePath, _init_extra_shapePath, _init_sineFrequency, _init_extra_sineFrequency, _init_sineMaximum, _init_extra_sineMaximum, _init_sineMinimum, _init_extra_sineMinimum;
 

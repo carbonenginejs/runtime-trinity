@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2GpuSharedEmitter as _Tr2GpuSharedEmitter } from './Tr2GpuSharedEmitter.js';
 
 let _initClass, _init_scaledByParent, _init_extra_scaledByParent, _init_attractorPosition, _init_extra_attractorPosition, _init_attractorStrength, _init_extra_attractorStrength;

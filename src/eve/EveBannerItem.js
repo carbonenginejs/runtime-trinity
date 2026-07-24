@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveBannerSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EveBannerSet.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 // Carbon persists banners as a raw structure list (BLUE_DECLARE_STRUCTURE_LIST

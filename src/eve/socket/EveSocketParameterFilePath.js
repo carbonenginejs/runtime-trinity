@@ -1,7 +1,7 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/Children/SocketParameters/EveSocketParameter.h
 // Hand-authored following the eve/socket generated pattern.
-import { type } from "@carbonenginejs/core-types/schema";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 import { EveSocketParameterString } from "../../generated/eve/socket/EveSocketParameterString.js";
 
 /**

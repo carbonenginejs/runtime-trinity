@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2ExpressionTermInfo.h
 // Source: E:\carbonengine\trinity\trinity\Tr2ExpressionTermInfo.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2ExpressionTermInfo_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 const TermType = Object.freeze({

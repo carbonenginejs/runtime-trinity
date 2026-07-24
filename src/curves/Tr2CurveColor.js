@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveColor.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveColor.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2CurveInterpolation, Tr2CurveTangentType } from "./enums.js";
 import { Tr2CurveScalar } from "./Tr2CurveScalar.js";
 

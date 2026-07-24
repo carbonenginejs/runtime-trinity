@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveEulerRotation.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2CurveEulerRotation.cpp
-import { fromYawPitchRoll, quat } from "@carbonenginejs/core-math/quat";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { fromYawPitchRoll, quat } from "@carbonenginejs/runtime-utils/quat";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2CurveInterpolation, Tr2CurveTangentType } from "./enums.js";
 import { Tr2CurveScalar } from "./Tr2CurveScalar.js";
 

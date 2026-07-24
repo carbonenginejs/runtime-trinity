@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../child/EveChildTransform.js';
 import { EveEllipseDefinition as _EveEllipseDefinition } from './EveEllipseDefinition.js';
 

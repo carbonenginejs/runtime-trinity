@@ -2,7 +2,7 @@
 // Design: runtime-trinity/agents/PER-OBJECT-DATA-DESIGN-2026-07-24.md
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
 import { RawData, RawDataStore } from "../npm/dist/index.js";
 
 

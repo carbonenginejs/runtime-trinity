@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriRenderJob.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriRenderJob.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2RenderContext } from "../trinityCore/Tr2RenderContext.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

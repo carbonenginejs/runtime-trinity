@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_translationCurve, _init_extra_translationCurve, _init_mesh, _init_extra_mesh, _init_name, _init_extra_name, _init_backgroundOccluders, _init_extra_backgroundOccluders, _init_occluders, _init_extra_occluders, _init_curveSets, _init_extra_curveSets, _init_distanceToEdgeCurves, _init_extra_distanceToEdgeCurves, _init_distanceToCenterCurves, _init_extra_distanceToCenterCurves, _init_radialAngleCurves, _init_extra_radialAngleCurves, _init_xDistanceToCenter, _init_extra_xDistanceToCenter, _init_yDistanceToCenter, _init_extra_yDistanceToCenter, _init_controllers, _init_extra_controllers, _init_bindings, _init_extra_bindings, _init_cameraFactor, _init_extra_cameraFactor, _init_position, _init_extra_position, _init_flares, _init_extra_flares, _init_update, _init_extra_update, _init_display, _init_extra_display;
 

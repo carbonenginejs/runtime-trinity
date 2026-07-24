@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_aabbMax, _init_extra_aabbMax, _init_aabbMin, _init_extra_aabbMin, _init_count, _init_extra_count;
 let _Tr2DirectInstanceDat;

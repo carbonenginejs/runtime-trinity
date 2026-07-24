@@ -1,19 +1,19 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { EveEntity as _EveEntity } from '../../generated/eve/EveEntity.js';
 import { EveChildUpdateParams as _EveChildUpdateParams } from '../EveChildUpdateParams.js';
 import { EveChildInheritProperties as _EveChildInheritPrope } from '../child/EveChildInheritProperties.js';
-import { box3 } from '@carbonenginejs/core-math/box3';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { sph3 } from '@carbonenginejs/core-math/sph3';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { box3 } from '@carbonenginejs/runtime-utils/box3';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { sph3 } from '@carbonenginejs/runtime-utils/sph3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 import { ReflectionMode } from '../../generated/eve/enums.js';
 import { EveComponentType, ShouldReflect } from '../EveComponentTypes.js';
 import { ImpactConfiguration } from '../../generated/include/enums.js';
 import { Tr2Lod, EveLODHelper } from '../EveLODHelper.js';
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 import { Tr2PerObjectData } from '../../trinityCore/Tr2PerObjectData.js';
 import { TriRenderBatchAreaBlock, Tr2RenderBatch } from '../../trinityCore/Tr2RenderBatch.js';
 

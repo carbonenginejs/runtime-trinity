@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveEntity as _EveEntity } from '../../../generated/eve/EveEntity.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { getDeltaTime, getTime, translationMatrix } from '../../renderable/stretch/CjsStretchRuntime.js';
 
 let _initProto, _initClass, _init_startCurveSet, _init_extra_startCurveSet, _init_stopCurveSet, _init_extra_stopCurveSet, _init_stretch, _init_extra_stretch, _init_name, _init_extra_name, _init_firingPeakTime, _init_extra_firingPeakTime, _init_firingDelay, _init_extra_firingDelay, _init_firingDelay2, _init_extra_firingDelay2, _init_firingDelay3, _init_extra_firingDelay3, _init_firingDelay4, _init_extra_firingDelay4, _init_firingDelay5, _init_extra_firingDelay5, _init_firingDelay6, _init_extra_firingDelay6, _init_firingDelay7, _init_extra_firingDelay7, _init_firingDelay8, _init_extra_firingDelay8, _init_firingDelay9, _init_extra_firingDelay9, _init_firingDelay0, _init_extra_firingDelay0, _init_firingDelay1, _init_extra_firingDelay1, _init_firingDelay10, _init_extra_firingDelay10, _init_endPosition, _init_extra_endPosition, _init_firingDuration, _init_extra_firingDuration, _init_isFiring, _init_extra_isFiring, _init_destinationObserver, _init_extra_destinationObserver, _init_sourceObserver, _init_extra_sourceObserver, _init_firingDurationOverride, _init_extra_firingDurationOverride, _init_useMuzzleTransform, _init_extra_useMuzzleTransform, _init_isLoopFiring, _init_extra_isLoopFiring, _init_boneName, _init_extra_boneName, _init_display, _init_extra_display, _init_scaleEffectTarget, _init_extra_scaleEffectTarget, _init_minRadius, _init_extra_minRadius, _init_maxRadius, _init_extra_maxRadius, _init_minScale, _init_extra_minScale, _init_maxScale, _init_extra_maxScale;

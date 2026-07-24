@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionSetAudioEmitterPrefix.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionSetAudioEmitterPrefix.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { ITr2ControllerAction } from "./ITr2ControllerAction.js";
 
 

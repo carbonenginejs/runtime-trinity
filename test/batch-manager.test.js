@@ -7,7 +7,7 @@ import {
   TriRenderBatchMap
 } from "../npm/dist/trinityCore/index.js";
 
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 
 const OPAQUE = TriBatchType.TRIBATCHTYPE_OPAQUE;
 const TRANSPARENT = TriBatchType.TRIBATCHTYPE_TRANSPARENT;

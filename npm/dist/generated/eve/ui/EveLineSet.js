@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { type, io, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_lines, _init_extra_lines, _init_maxCurrentLineCount, _init_extra_maxCurrentLineCount, _init_currentSubmittedLineCount, _init_extra_currentSubmittedLineCount, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_rotationCurve, _init_extra_rotationCurve, _init_effect, _init_extra_effect, _init_display, _init_extra_display, _init_renderTransparent, _init_extra_renderTransparent, _init_translationCurve, _init_extra_translationCurve;
 

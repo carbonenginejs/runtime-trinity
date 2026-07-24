@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
 
 let _initClass, _init_debug, _init_extra_debug, _init_adjustment, _init_extra_adjustment, _init_influence, _init_extra_influence, _init_minBrightness, _init_extra_minBrightness, _init_maxLuminance, _init_extra_maxLuminance, _init_maxExposure, _init_extra_maxExposure, _init_middleValue, _init_extra_middleValue, _init_minLuminance, _init_extra_minLuminance, _init_minExposure, _init_extra_minExposure, _init_decreaseSpeed, _init_extra_decreaseSpeed, _init_increaseSpeed, _init_extra_increaseSpeed, _init_maxBrightness, _init_extra_maxBrightness;

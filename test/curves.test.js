@@ -1,12 +1,12 @@
 import test from "node:test";
 import { CjsGrannyCurves, Tr2BoneMatrixCurve, Tr2CameraFollowCurveKey, Tr2CurveColor, Tr2CurveColorMixer, Tr2CurveCombiner, Tr2CurveConstant, Tr2CurveEulerRotation, Tr2CurveEulerRotationExpression, Tr2CurveExtrapolation, Tr2CurveInterpolation, Tr2CurveQuaternion, Tr2CurveQuaternionKey, Tr2CurveRandomAxisRotation, Tr2CurveScalar, Tr2CurveScalarExpression, Tr2CurveScalarKey, Tr2CurveSetRange, Tr2CurveVector2, Tr2CurveVector3, Tr2CurveVector3Expression, Tr2CurveVector3Lerp, Tr2CurveVector3LerpKeyInterpolation, Tr2DistanceTracker, Tr2FollowCurve, Tr2FollowCurveKeyInterpolation, Tr2GrannyEventTrack, Tr2GrannyTrack, Tr2GrannyTransformTrack, Tr2GrannyVectorTrack, Tr2MatrixKey, Tr2ObjectFollowCurveKey, Tr2ObjectFollowCurveKeyRotationSetting, Tr2QuaternionLerpCurve, Tr2RotationAdapter, Tr2ScalarExprKey, Tr2ScalarExprKeyCurve, Tr2ScalarFader, Tr2TranslationAdapter, TriColorSequencer, TriCurveSet, TriEventCurve, TriExtrapolation, TriPerlinCurve, TriVectorSequencer } from "../npm/dist/index.js";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { num } from "@carbonenginejs/core-math/num";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { num } from "@carbonenginejs/runtime-utils/num";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 function assert(condition, message = "assertion failed")

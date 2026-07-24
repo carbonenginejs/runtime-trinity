@@ -1,7 +1,7 @@
 // Ported/adapted from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/RenderJob/TriStepRemoteSync.h
 //   trinity/trinity/RenderJob/TriStepRemoteSync.cpp
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderStep } from "./TriRenderStep.js";
 
 

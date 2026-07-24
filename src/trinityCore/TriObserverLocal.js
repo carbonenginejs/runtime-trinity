@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\TriObserverLocal.h
 // Source: E:\carbonengine\trinity\trinity\TriObserverLocal.cpp
 // Source: E:\carbonengine\trinity\trinity\TriObserverLocal_Blue.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "TriObserverLocal", family: "trinityCore" })

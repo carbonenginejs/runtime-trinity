@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_name, _init_extra_name, _init_startTime, _init_extra_startTime, _init_endTime, _init_extra_endTime, _init_looped, _init_extra_looped;
 let _Tr2CurveSetRange;

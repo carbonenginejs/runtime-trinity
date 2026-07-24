@@ -7,8 +7,8 @@
 // center into view space with a single-matrix TransformCoord (which is
 // vec3.transformMat4 on the shared byte layout - no composition, no operand
 // order to swap).
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { TriFrustumTestResult } from "../generated/trinityCore/enums.js";
 
 const CENTER_SCRATCH = vec3.create();

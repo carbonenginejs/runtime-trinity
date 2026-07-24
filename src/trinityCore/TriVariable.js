@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\TriVariable.h
 // Source: E:\carbonengine\trinity\trinity\TriVariable.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 import { TriVariableContentType } from "../generated/trinityCore/enums.js";
 
 

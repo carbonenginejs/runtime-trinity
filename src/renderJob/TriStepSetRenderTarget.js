@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetRenderTarget.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetRenderTarget.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

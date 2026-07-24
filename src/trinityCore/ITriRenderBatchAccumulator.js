@@ -5,7 +5,7 @@
 // state plus the collect/sort contract. Concrete accumulators
 // (TriRenderBatchAccumulator) implement Commit/Finalize/Get*/TransferFrom. This
 // stays GPU-free; dispatch to the device is the engine adapter's job.
-import { RenderingMode } from "@carbonenginejs/runtime-const/graphics";
+import { RenderingMode } from "@carbonenginejs/runtime-utils/graphics";
 
 
 export class ITriRenderBatchAccumulator

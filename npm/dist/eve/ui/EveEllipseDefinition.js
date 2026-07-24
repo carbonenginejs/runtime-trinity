@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_center, _init_extra_center, _init_planeNormal, _init_extra_planeNormal, _init_rotationDegrees, _init_extra_rotationDegrees, _init_semiMajor, _init_extra_semiMajor, _init_semiMinor, _init_extra_semiMinor;
 let _EveEllipseDefinition;

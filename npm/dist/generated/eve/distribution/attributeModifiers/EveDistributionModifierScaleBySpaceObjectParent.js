@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { sph3 } from '@carbonenginejs/core-math/sph3';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { sph3 } from '@carbonenginejs/runtime-utils/sph3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_scaleFactor, _init_extra_scaleFactor, _init_authoredForBoundingRadius, _init_extra_authoredForBoundingRadius, _init_scaleCurve, _init_extra_scaleCurve;
 

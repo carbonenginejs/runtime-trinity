@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderJob as _TriRenderJob } from './TriRenderJob.js';
 import { TriRenderStep as _TriRenderStep } from './TriRenderStep.js';
 

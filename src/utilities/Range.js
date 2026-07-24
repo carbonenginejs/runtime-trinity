@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Utilities\Range.h
 // Source: E:\carbonengine\trinity\trinity\Utilities\Range.cpp
 // Source: E:\carbonengine\trinity\trinity\Utilities\Range_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

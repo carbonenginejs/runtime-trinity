@@ -3,10 +3,10 @@
 // Flattened LightData surface (2026-07-23 decision): the m_lightData.* Blue
 // attributes are real decorated fields here, verified against
 // lights/Tr2SpotLight.json (tools-core schema build).
-import { io, schema, type } from "@carbonenginejs/core-types/schema";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import { Tr2Light } from "./Tr2Light.js";
 
 

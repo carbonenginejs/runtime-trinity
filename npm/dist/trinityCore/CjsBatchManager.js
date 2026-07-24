@@ -1,4 +1,4 @@
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 import { Tr2RenderReason } from '../generated/trinityCore/enums.js';
 import { TriRenderBatchMap } from './TriRenderBatchMap.js';
 

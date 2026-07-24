@@ -1,11 +1,11 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { sph3 } from '@carbonenginejs/core-math/sph3';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { sph3 } from '@carbonenginejs/runtime-utils/sph3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../EveChildTransform.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_translation, _init_extra_translation, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_isVisible, _init_extra_isVisible, _init_circleRadius, _init_extra_circleRadius, _init_circleDistort, _init_extra_circleDistort, _init_numSegments, _init_extra_numSegments, _init_completeness, _init_extra_completeness, _init_startPoint, _init_extra_startPoint, _init_lineWidth, _init_extra_lineWidth, _init_scaleSegmentsByCompleteness, _init_extra_scaleSegmentsByCompleteness, _init_scaleEndpoints, _init_extra_scaleEndpoints, _init_billboardObjects, _init_extra_billboardObjects, _init_objectScale, _init_extra_objectScale, _init_movementSpeed, _init_extra_movementSpeed, _init_animValue, _init_extra_animValue;

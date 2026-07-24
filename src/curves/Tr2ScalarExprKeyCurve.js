@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2ScalarExprKeyCurve.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2ScalarExprKeyCurve.cpp
-import { num } from "@carbonenginejs/core-math/num";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { num } from "@carbonenginejs/runtime-utils/num";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2CurveInterpolation } from "./enums.js";
 import { Tr2ScalarExprKey } from "./Tr2ScalarExprKey.js";
 

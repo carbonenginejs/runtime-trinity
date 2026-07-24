@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { type, io, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { TunnelGroupType } from './enums.js';
 
 let _initProto, _initClass, _init_privateTunnels, _init_extra_privateTunnels, _init_shouldReassignTunnelIDs, _init_extra_shouldReassignTunnelIDs, _init_behaviorPriority, _init_extra_behaviorPriority, _init_tunnelGroupType, _init_extra_tunnelGroupType, _init_splineTunnels, _init_extra_splineTunnels, _init_smoothPullFactor, _init_extra_smoothPullFactor, _init_behaviorWeight, _init_extra_behaviorWeight, _init_enabled, _init_extra_enabled, _init_cornerSmoothener, _init_extra_cornerSmoothener;

@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { TriValueBinding as _TriValueBinding } from './TriValueBinding.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_destinationObject, _init_extra_destinationObject, _init_destinationAttribute, _init_extra_destinationAttribute, _init_valid, _init_extra_valid;

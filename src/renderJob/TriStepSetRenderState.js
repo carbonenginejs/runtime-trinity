@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetRenderState.cpp
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepSetRenderState_Blue.cpp
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
-import { RenderState } from "@carbonenginejs/runtime-const/render-context";
+import { RenderState } from "@carbonenginejs/runtime-utils/render-context";
 
 
 @type.define({ className: "TriStepSetRenderState", family: "renderJob" })

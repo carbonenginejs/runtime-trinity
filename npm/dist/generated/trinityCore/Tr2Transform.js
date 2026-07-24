@@ -1,9 +1,9 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initClass, _init_modifier, _init_extra_modifier, _init_localTransform, _init_extra_localTransform, _init_worldTransform, _init_extra_worldTransform, _init_name, _init_extra_name, _init_scaling, _init_extra_scaling, _init_rotation, _init_extra_rotation, _init_translation, _init_extra_translation, _init_distanceBasedScaleArg, _init_extra_distanceBasedScaleArg, _init_distanceBasedScaleArg2, _init_extra_distanceBasedScaleArg2, _init_mesh, _init_extra_mesh, _init_curveSets, _init_extra_curveSets, _init_useDistanceBasedScale, _init_extra_useDistanceBasedScale, _init_display, _init_extra_display, _init_update, _init_extra_update, _init_sortValueMultiplier, _init_extra_sortValueMultiplier;
 

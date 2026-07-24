@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Tr2SwapChain.h
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 
 /** Tr2SwapChain (trinityCore) - generated from schema shapeHash 955529ab.... */
 @type.define({ className: "Tr2SwapChain", family: "trinityCore" })

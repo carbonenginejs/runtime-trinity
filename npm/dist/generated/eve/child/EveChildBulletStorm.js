@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { type, io, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_instances, _init_extra_instances, _init_targetBlobs, _init_extra_targetBlobs, _init_worldTransform, _init_extra_worldTransform, _init_targetObjects, _init_extra_targetObjects, _init_objectCount, _init_extra_objectCount, _init_clipSphere, _init_extra_clipSphere, _init_sourceRadius, _init_extra_sourceRadius, _init_sourceObject, _init_extra_sourceObject, _init_multiplier, _init_extra_multiplier, _init_speed, _init_extra_speed, _init_sourceLocatorSet, _init_extra_sourceLocatorSet, _init_name, _init_extra_name, _init_range, _init_extra_range, _init_display, _init_extra_display, _init_effect, _init_extra_effect;
 

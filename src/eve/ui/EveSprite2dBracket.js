@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\EveSprite2dBracket.h
 // Source: E:\carbonengine\trinity\trinity\EveSprite2dBracket.cpp
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveSprite2dBracket", family: "eve/ui" })

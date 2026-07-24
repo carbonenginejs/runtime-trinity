@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2GrannyAnimation } from "../npm/dist/generated/trinityCore/Tr2GrannyAnimation.js";
 import { GrannyBoneOffset } from "../npm/dist/trinityCore/index.js";
 

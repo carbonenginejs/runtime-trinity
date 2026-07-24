@@ -5,14 +5,21 @@
 // 90-174, PARTICLE_CLUSTER_MIN_SIZE cpp:14).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import {
   EveLensflare,
   EvePlanet,
   EveSceneStaticParticles,
-  Tr2Lod
+  Tr2Lod,
+  TriRenderBatchAccumulator
 } from "../npm/dist/index.js";
+import { makePerObjectStore } from "./helpers/perObjectStore.js";
+
+function makeAccumulator()
+{
+  return new TriRenderBatchAccumulator().SetRawDataStore(makePerObjectStore());
+}
 
 
 const EPSILON = 1e-5;
@@ -163,10 +170,12 @@ test("EveSceneStaticParticles renderable surface: batches, shadow no-op, per-obj
 
   mat4.fromTranslation(particles.worldMatrix, [1, 2, 3]);
   mat4.fromTranslation(particles.lastWorldMatrix, [4, 5, 6]);
-  const data = particles.GetPerObjectData();
-  assert.equal(data.object, particles, "record carries the object");
-  // Transposed for HLSL packing: the translation lands in the last column
-  // (gl flat [3], [7], [11]).
-  assertClose(data.world[3], 1, "transposed world");
-  assertClose(data.lastWorld[7], 5, "transposed lastWorld");
+  const data = particles.GetPerObjectData(makeAccumulator());
+  // The store transposes on Set: logical translation [12..14] lands at [3],[7],[11].
+  const world = new Float32Array(16);
+  const lastWorld = new Float32Array(16);
+  data.Copy("world", world);
+  data.Copy("lastWorld", lastWorld);
+  assertClose(world[3], 1, "transposed world");
+  assertClose(lastWorld[7], 5, "transposed lastWorld");
 });

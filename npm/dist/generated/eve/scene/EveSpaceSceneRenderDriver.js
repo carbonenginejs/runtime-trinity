@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { PixelFormat } from '@carbonenginejs/runtime-const/render-context';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { PixelFormat } from '@carbonenginejs/runtime-utils/render-context';
 
 let _initProto, _initClass, _init_aoQuality, _init_extra_aoQuality, _init_antiAliasingQuality, _init_extra_antiAliasingQuality, _init_visualizeMethod, _init_extra_visualizeMethod, _init_postProcessingQuality, _init_extra_postProcessingQuality, _init_shadowQuality, _init_extra_shadowQuality, _init_customStencilFormat, _init_extra_customStencilFormat, _init_internalPixelFormat, _init_extra_internalPixelFormat, _init_volumetricQuality, _init_extra_volumetricQuality, _init_scene, _init_extra_scene, _init_name, _init_extra_name, _init_enableUpscaling, _init_extra_enableUpscaling, _init_projection, _init_extra_projection, _init_camera, _init_extra_camera, _init_view, _init_extra_view, _init_clearColor, _init_extra_clearColor, _init_distortionEffect, _init_extra_distortionEffect, _init_enableDistortion, _init_extra_enableDistortion, _init_reflectionCorrectionEnabled, _init_extra_reflectionCorrectionEnabled, _init_forceOpaqueBuffer, _init_extra_forceOpaqueBuffer, _init_forceNormalMap, _init_extra_forceNormalMap, _init_forceVelocityMap, _init_extra_forceVelocityMap, _init_fpsRenderer, _init_extra_fpsRenderer, _init_mainPassRenderingEnabled, _init_extra_mainPassRenderingEnabled, _init_toolsScenes, _init_extra_toolsScenes, _init_depthPassTechnique, _init_extra_depthPassTechnique, _init_postProcess, _init_extra_postProcess, _init_showFPS, _init_extra_showFPS, _init_sceneOverlay, _init_extra_sceneOverlay, _init_background, _init_extra_background, _init_SSAO, _init_extra_SSAO, _init_enableRendering, _init_extra_enableRendering;
 

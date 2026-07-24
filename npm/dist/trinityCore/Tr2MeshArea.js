@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_index, _init_extra_index, _init_count, _init_extra_count, _init_reversed, _init_extra_reversed, _init_useSHLighting, _init_extra_useSHLighting, _init_effect, _init_extra_effect, _init_castsShadows, _init_extra_castsShadows, _init_generateDepthArea, _init_extra_generateDepthArea, _init_minLod, _init_extra_minLod;
 let _Tr2MeshArea;

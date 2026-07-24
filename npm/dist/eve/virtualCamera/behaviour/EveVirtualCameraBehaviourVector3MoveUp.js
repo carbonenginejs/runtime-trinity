@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { EveVirtualCameraBehaviourVector3MoveForward as _EveVirtualCameraBeha$1 } from './EveVirtualCameraBehaviourVector3MoveForward.js';
 
 let _initProto, _initClass;

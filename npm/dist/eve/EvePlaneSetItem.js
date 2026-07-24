@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_color, _init_extra_color, _init_layer1Transform, _init_extra_layer1Transform, _init_layer2Transform, _init_extra_layer2Transform, _init_layer1Scroll, _init_extra_layer1Scroll, _init_layer2Scroll, _init_extra_layer2Scroll, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_name, _init_extra_name, _init_maskAtlasID, _init_extra_maskAtlasID, _init_boneIndex, _init_extra_boneIndex, _init_position, _init_extra_position, _init_blinkData, _init_extra_blinkData;
 let _EvePlaneSetItem;

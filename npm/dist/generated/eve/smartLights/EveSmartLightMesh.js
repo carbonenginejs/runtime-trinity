@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildInstanceMeshRenderer as _EveChildInstanceMesh } from '../child/EveChildInstanceMeshRenderer.js';
 
 let _initProto, _initClass, _init_shaderParamColorName, _init_extra_shaderParamColorName;

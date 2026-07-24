@@ -6,8 +6,8 @@
 // (GDPR-eligible and plain), then sorts / group-counts them on Finalize. The
 // engine adapter reads GetGdprBatches()/GetBatches()/IsChainedByEffect() from a
 // finalized accumulator and issues the actual draws.
-import { RenderingMode } from "@carbonenginejs/runtime-const/graphics";
-import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-const/d3d";
+import { RenderingMode } from "@carbonenginejs/runtime-utils/graphics";
+import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-utils/d3d";
 import { RenderBatchSortType } from "../generated/trinityCore/enums.js";
 import { ITriRenderBatchAccumulator } from "./ITriRenderBatchAccumulator.js";
 import { CanBeBinned, OrderOf, Tr2GdprBatchFullPartition } from "./Tr2RenderBatch.js";

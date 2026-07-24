@@ -9,9 +9,9 @@
 // TriFrustum duck (world-space planes array); the shadow member is a
 // TriFrustumOrtho held by reference (Carbon copies by value into the
 // transient).
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { PlaneDotCoord, PlaneDotNormal } from "../../../trinityCore/TriFrustum.js";
 import { TriFrustumTestResult } from "../../trinityCore/enums.js";
 

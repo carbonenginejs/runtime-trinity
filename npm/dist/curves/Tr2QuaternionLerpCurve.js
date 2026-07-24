@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { num } from '@carbonenginejs/core-math/num';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { num } from '@carbonenginejs/runtime-utils/num';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_start, _init_extra_start, _init_length, _init_extra_length, _init_value, _init_extra_value, _init_startCurve, _init_extra_startCurve, _init_endCurve, _init_extra_endCurve;
 let _Tr2QuaternionLerpCur;

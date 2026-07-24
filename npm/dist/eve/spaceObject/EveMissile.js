@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { sph3 } from '@carbonenginejs/core-math/sph3';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { sph3 } from '@carbonenginejs/runtime-utils/sph3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveLODHelper, Tr2Lod } from '../EveLODHelper.js';
 import { EveSpaceObject2 as _EveSpaceObject } from './EveSpaceObject2.js';
 import { EveMissileWarhead as _EveMissileWarhead } from './EveMissileWarhead.js';

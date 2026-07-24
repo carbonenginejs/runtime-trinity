@@ -1,6 +1,6 @@
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2RenderContext, Tr2VariableStore, Tr2VisibilityResults } from "../npm/dist/trinityCore/index.js";
 import { Tr2RenderJobs, TriRenderJob, TriRenderStep, TriStepClear, TriStepCopyRenderTarget, TriStepEnableWireframeMode, TriStepGenerateMipMaps, TriStepPopDepthStencil, TriStepPopRenderTarget, TriStepPresentSwapChain, TriStepPushDepthStencil, TriStepPushRenderTarget, TriStepRemoteSync, TriStepResolve, TriStepRunJob, TriStepSetDepthStencil, TriStepSetProjection, TriStepSetRenderState, TriStepSetRenderTarget, TriStepSetStdRndStates, TriStepSetView, TriStepSetViewport, TriStepSetVisualizationMode } from "../npm/dist/renderJob/index.js";
 import { TriStepFilterVisibilityResults } from "../npm/dist/generated/renderJob/TriStepFilterVisibilityResults.js";

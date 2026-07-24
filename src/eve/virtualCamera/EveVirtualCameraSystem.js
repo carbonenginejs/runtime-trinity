@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraSystem.h
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraSystem.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveVirtualCamera } from "./EveVirtualCamera.js";
 import { EveVirtualCameraTransitionCut } from "./transition/EveVirtualCameraTransitionCut.js";
 import { EveVirtualCameraTransitionLerp } from "./transition/EveVirtualCameraTransitionLerp.js";

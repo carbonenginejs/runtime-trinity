@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_seed, _init_extra_seed, _init_minFlashIntensity, _init_extra_minFlashIntensity, _init_maxDist, _init_extra_maxDist, _init_minDist, _init_extra_minDist, _init_minFlashRate, _init_extra_minFlashRate, _init_maxFlashRate, _init_extra_maxFlashRate, _init_display, _init_extra_display, _init_effect, _init_extra_effect, _init_numStars, _init_extra_numStars;
 

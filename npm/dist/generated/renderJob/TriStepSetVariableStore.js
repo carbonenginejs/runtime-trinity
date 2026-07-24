@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 import { Tr2VariableStore as _Tr2VariableStore } from '../../trinityCore/Tr2VariableStore.js';
 

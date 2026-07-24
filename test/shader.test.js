@@ -1,11 +1,11 @@
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import { CjsVariableStore, Tr2Effect, Tr2EffectConstant, Tr2EffectDefine, Tr2EffectDescription, Tr2EffectLibraryParameters, Tr2EffectParameterAnnotation, Tr2EffectPassParameters, Tr2EffectResource, Tr2EffectStageInput, Tr2EffectTechnique, Tr2FloatParameter, Tr2GeometryBufferParameter, Tr2Material, Tr2MaterialStageInput, Tr2Matrix4Parameter, Tr2Pass, Tr2RuntimeTextureParameter, Tr2SamplerOverride, Tr2Shader, Tr2ShaderBuffer, Tr2TextureAnimationParameter, Tr2Vector2Parameter, Tr2Vector3Parameter, Tr2Vector4Parameter, TriFloatArrayParameter, TriTextureParameter, TriTransformParameter, TriVariableParameter, TriVector4 } from "../npm/dist/index.js";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 function assert(condition, message = "assertion failed")

@@ -8,7 +8,7 @@ import {
   Tr2PerObjectData
 } from "../npm/dist/trinityCore/index.js";
 
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 
 function area(effect, { index = 0, count = 1, reversed = false, display = true } = {})
 {

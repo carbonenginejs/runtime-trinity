@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { EveVirtualCamera as _EveVirtualCamera } from '../EveVirtualCamera.js';
 
 let _initProto, _initClass, _init_sourceCamera, _init_extra_sourceCamera, _init_targetCamera, _init_extra_targetCamera, _init_transitionCamera, _init_extra_transitionCamera;

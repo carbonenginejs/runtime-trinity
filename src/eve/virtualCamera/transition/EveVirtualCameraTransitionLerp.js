@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraTransition.h
 // Source: E:\carbonengine\trinity\trinity\Eve\VirtualCamera\EveVirtualCameraTransition.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2CurveScalar } from "../../../curves/Tr2CurveScalar.js";
 import { EveVirtualCameraTransitionBase } from "./EveVirtualCameraTransitionBase.js";
 

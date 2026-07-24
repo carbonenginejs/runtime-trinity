@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriRenderStep.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriRenderStep.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "TriRenderStep", family: "renderJob" })

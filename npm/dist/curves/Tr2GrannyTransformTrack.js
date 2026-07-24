@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { CjsGrannyCurves } from './CjsGrannyCurves.js';
 import { Tr2GrannyTrack as _Tr2GrannyTrack } from './Tr2GrannyTrack.js';
 

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_name, _init_extra_name, _init_controllers, _init_extra_controllers, _init_curveSet, _init_extra_curveSet, _init_additiveEffects, _init_extra_additiveEffects, _init_decalEffects, _init_extra_decalEffects, _init_distortionEffects, _init_extra_distortionEffects, _init_opaqueEffects, _init_extra_opaqueEffects, _init_transparentEffects, _init_extra_transparentEffects, _init_update, _init_extra_update, _init_display, _init_extra_display;
 

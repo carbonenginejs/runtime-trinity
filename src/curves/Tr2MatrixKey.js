@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2BoneMatrixCurve.h
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

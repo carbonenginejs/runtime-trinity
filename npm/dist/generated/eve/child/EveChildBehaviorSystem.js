@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 
 let _initProto, _initClass, _init_splineTunnels, _init_extra_splineTunnels, _init_behaviorGroups, _init_extra_behaviorGroups, _init_instanceCount, _init_extra_instanceCount, _init_display, _init_extra_display;
 

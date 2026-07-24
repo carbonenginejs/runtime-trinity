@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_useRealTime, _init_extra_useRealTime, _init_playOnLoad, _init_extra_playOnLoad, _init_bindings, _init_extra_bindings, _init_curves, _init_extra_curves, _init_ranges, _init_extra_ranges, _init_name, _init_extra_name, _init_scale, _init_extra_scale, _init_useSimTimeRebase, _init_extra_useSimTimeRebase, _init_driver, _init_extra_driver, _init_scaledTime, _init_extra_scaledTime, _init_isPlaying, _init_extra_isPlaying;
 let _TriCurveSet;

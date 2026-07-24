@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_payloadSize, _init_extra_payloadSize, _init_libraryHandle, _init_extra_libraryHandle, _init_rayGenName, _init_extra_rayGenName, _init_missName, _init_extra_missName, _init_closestHitName, _init_extra_closestHitName, _init_anyHitName, _init_extra_anyHitName, _init_intersectionName, _init_extra_intersectionName, _init_hitGroupName, _init_extra_hitGroupName, _init_globalInput, _init_extra_globalInput, _init_localInput, _init_extra_localInput, _init_globalResourceSetDesc, _init_extra_globalResourceSetDesc;
 

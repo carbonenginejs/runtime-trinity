@@ -1,9 +1,9 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPBloomEffect as _Tr2PPBloomEffect } from './Tr2PPBloomEffect.js';
 import { Tr2PPColorCorrectionEffect as _Tr2PPColorCorrection } from './Tr2PPColorCorrectionEffect.js';
 import { Tr2PPDepthOfFieldEffect as _Tr2PPDepthOfFieldEff } from './Tr2PPDepthOfFieldEffect.js';

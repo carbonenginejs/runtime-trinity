@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2ManipulationTool as _Tr2ManipulationTool } from './Tr2ManipulationTool.js';
-import { quat } from '@carbonenginejs/core-math/quat';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
 
 let _initClass, _init_precision, _init_extra_precision, _init_rotation, _init_extra_rotation;
 

@@ -1,4 +1,4 @@
-import { num } from '@carbonenginejs/core-math/num';
+import { num } from '@carbonenginejs/runtime-utils/num';
 
 /**
  * Granny animation-curve decoding authored by cppctamber for ccpwgl2.

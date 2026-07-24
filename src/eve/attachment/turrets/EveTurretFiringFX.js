@@ -1,10 +1,10 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Turret\EveTurretFiringFX.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Turret\EveTurretFiringFX.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\Turret\EveTurretFiringFX_Blue.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveEntity } from "../../../generated/eve/EveEntity.js";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { getDeltaTime, getTime, translationMatrix } from "../../renderable/stretch/CjsStretchRuntime.js";
 
 /** EveTurretFiringFX (eve/attachment/turrets) - generated from schema shapeHash ae5459c6.... */

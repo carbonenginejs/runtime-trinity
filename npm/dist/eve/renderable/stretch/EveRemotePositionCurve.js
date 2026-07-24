@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { num } from '@carbonenginejs/core-math/num';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { num } from '@carbonenginejs/runtime-utils/num';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_delayTime, _init_extra_delayTime, _init_cycle, _init_extra_cycle, _init_value, _init_extra_value, _init_offsetDir, _init_extra_offsetDir, _init_startPositionCurve, _init_extra_startPositionCurve, _init_offsetDir2, _init_extra_offsetDir2, _init_sweepTime, _init_extra_sweepTime;
 let _EveRemotePositionCur;

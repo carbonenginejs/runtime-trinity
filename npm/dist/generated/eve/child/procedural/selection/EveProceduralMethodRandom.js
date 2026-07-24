@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { createMinStdRandom } from '../../../../../eve/CjsDistributionRandom.js';
 
 let _initProto, _initClass, _init_parameters, _init_extra_parameters, _init_debugVolumes, _init_extra_debugVolumes, _init_name, _init_extra_name, _init_totalWeight, _init_extra_totalWeight, _init_seedName, _init_extra_seedName, _init_selectedChild, _init_extra_selectedChild, _init_seed_temp, _init_extra_seed_temp;

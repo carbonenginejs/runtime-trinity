@@ -11,8 +11,8 @@
 // reference instead of Carbon's profileIndex << 4 flag packing - physical
 // packing is a renderer-backend concern. Records are scratch; the manager
 // duck must copy (Carbon's Tr2LightManager::AddLight copies by value).
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { ShadowQuality } from "../../generated/trinityCore/enums.js";
 
 /** Carbon Tr2LightManager light flags (Tr2LightManager.h:100-105). */

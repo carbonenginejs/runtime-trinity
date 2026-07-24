@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_trackObjects, _init_extra_trackObjects, _init_totalSegmentsLast, _init_extra_totalSegmentsLast, _init_requestedSegmentsLast, _init_extra_requestedSegmentsLast, _init_anchorEffect, _init_extra_anchorEffect, _init_connectorEffect, _init_extra_connectorEffect, _init_velocityEffect, _init_extra_velocityEffect, _init_activeRange, _init_extra_activeRange, _init_rangeFadeLength, _init_extra_rangeFadeLength, _init_rangeMultiplier, _init_extra_rangeMultiplier, _init_sourceRadius, _init_extra_sourceRadius, _init_interestRange, _init_extra_interestRange, _init_outsideInterestIntensity, _init_extra_outsideInterestIntensity, _init_minRadiusForRange, _init_extra_minRadiusForRange, _init_segmentsLow, _init_extra_segmentsLow, _init_segmentsMedium, _init_extra_segmentsMedium, _init_segmentsHigh, _init_extra_segmentsHigh, _init_targetMaxSegments, _init_extra_targetMaxSegments, _init_arcSegmentMultiplier, _init_extra_arcSegmentMultiplier, _init_segmentCountMultiplier, _init_extra_segmentCountMultiplier, _init_translationCurve, _init_extra_translationCurve, _init_worldPosition, _init_extra_worldPosition, _init_interestObject, _init_extra_interestObject;
 

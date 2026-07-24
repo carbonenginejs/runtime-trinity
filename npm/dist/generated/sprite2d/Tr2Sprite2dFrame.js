@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2TexturedSpriteObject as _Tr2TexturedSpriteObj } from './Tr2TexturedSpriteObject.js';
 
 let _initClass, _init_cornerScale, _init_extra_cornerScale, _init_fillCenter, _init_extra_fillCenter, _init_offset, _init_extra_offset, _init_cornerSize, _init_extra_cornerSize;

@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionPlayMeshAnimation.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Actions\Tr2ActionPlayMeshAnimation.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { DestinationType, PlayAction, StopAction } from "./enums.js";
 import { ITr2ControllerAction } from "./ITr2ControllerAction.js";
 import { Tr2BindingPoint } from "./Tr2BindingPoint.js";

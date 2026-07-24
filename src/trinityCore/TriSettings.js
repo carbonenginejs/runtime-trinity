@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/TriSettings.h
 //   trinity/trinity/TriSettings_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "TriSettings", family: "trinityCore" })

@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2TexturedSpriteObject as _Tr2TexturedSpriteObj } from './Tr2TexturedSpriteObject.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_textureOffsetBase, _init_extra_textureOffsetBase, _init_colorTo, _init_extra_colorTo, _init_colorFrom, _init_extra_colorFrom, _init_translationTo, _init_extra_translationTo, _init_translationFrom, _init_extra_translationFrom, _init_textureOffset, _init_extra_textureOffset, _init_textureWidth, _init_extra_textureWidth, _init_widthTo, _init_extra_widthTo, _init_widthFrom, _init_extra_widthFrom;
 

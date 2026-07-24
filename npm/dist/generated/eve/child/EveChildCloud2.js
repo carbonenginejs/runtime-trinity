@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, impl, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { EveEntity as _EveEntity } from '../EveEntity.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { RenderingMode } from '@carbonenginejs/runtime-const/graphics';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { RenderingMode } from '@carbonenginejs/runtime-utils/graphics';
 import { EveComponentType, ShouldReflect } from '../../../eve/EveComponentTypes.js';
 import { Tr2PerObjectData } from '../../../trinityCore/Tr2PerObjectData.js';
 import { Tr2RenderBatch } from '../../../trinityCore/Tr2RenderBatch.js';

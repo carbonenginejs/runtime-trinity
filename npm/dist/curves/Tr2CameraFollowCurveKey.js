@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2FollowCurveKeyInterpolation } from './enums.js';
 
 let _initProto, _initClass, _init_interpolation, _init_extra_interpolation, _init_fovMultiplication, _init_extra_fovMultiplication, _init_offset, _init_extra_offset, _init_enabled, _init_extra_enabled, _init_name, _init_extra_name, _init_angleZero, _init_extra_angleZero, _init_angle, _init_extra_angle, _init_objectBounds, _init_extra_objectBounds, _init_leftTangent, _init_extra_leftTangent, _init_boxPosition, _init_extra_boxPosition, _init_rightTangent, _init_extra_rightTangent, _init_rotatedLeftTangent, _init_extra_rotatedLeftTangent, _init_rotatedRightTangent, _init_extra_rotatedRightTangent, _init_time, _init_extra_time;

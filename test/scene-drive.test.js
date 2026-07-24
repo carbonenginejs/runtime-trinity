@@ -7,9 +7,9 @@
 // cpp:4091-4099; SimplePriorityBlend PriorityBlend.h:371-413.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import {
   EveComponentType,
   EveEffectRoot2,

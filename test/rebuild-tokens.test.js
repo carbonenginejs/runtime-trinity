@@ -9,7 +9,7 @@ import {
   Tr2MeshArea
 } from "../npm/dist/index.js";
 
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 
 test("packed attachment sets declare the packedGeometry consequence", () =>
 {

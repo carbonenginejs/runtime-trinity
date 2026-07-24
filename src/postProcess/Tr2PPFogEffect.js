@@ -1,11 +1,11 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/PostProcess/Effects/Tr2PPFogEffect.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema postProcess/Tr2PPFogEffect.json.).
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPEffect } from "./Tr2PPEffect.js";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 
 /** Tr2PPFogEffect (postProcess) - generated from schema shapeHash e09c106e.... */
 @type.define({ className: "Tr2PPFogEffect", family: "postProcess" })

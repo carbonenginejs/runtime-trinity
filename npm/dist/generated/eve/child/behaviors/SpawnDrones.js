@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_gridSpacing, _init_extra_gridSpacing, _init_gridFullnessFactor, _init_extra_gridFullnessFactor, _init_regenerateDrones, _init_extra_regenerateDrones, _init_count, _init_extra_count, _init_seconds, _init_extra_seconds, _init_addOnGrid, _init_extra_addOnGrid, _init_addByCount, _init_extra_addByCount, _init_enabled, _init_extra_enabled, _init_time, _init_extra_time, _init_spawnPosition, _init_extra_spawnPosition, _init_gridInfo, _init_extra_gridInfo;
 const NO_FORCES = [];

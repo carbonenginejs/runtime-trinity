@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2RuntimeTextureParameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2RuntimeTextureParameter.cpp
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2RuntimeTextureParameter_Blue.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsParameter } from "./CjsParameter.js";
 
 

@@ -1,11 +1,11 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveBoosterSet2_Blue.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EveBoosterSet2Renderable } from "./EveBoosterSet2Renderable.js";
 import { EveComponentType } from "./EveComponentTypes.js";

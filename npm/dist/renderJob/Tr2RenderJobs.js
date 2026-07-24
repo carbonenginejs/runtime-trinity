@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2RenderContext as _Tr2RenderContext } from '../trinityCore/Tr2RenderContext.js';
 import { TriRenderJob as _TriRenderJob } from './TriRenderJob.js';
 

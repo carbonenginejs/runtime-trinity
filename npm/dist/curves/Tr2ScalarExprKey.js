@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { noise } from '@carbonenginejs/core-math/noise';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { noise } from '@carbonenginejs/runtime-utils/noise';
 import { CjsControllerExpressionProgram } from '../controllers/CjsControllerExpressionProgram.js';
 import { Tr2CurveInterpolation } from './enums.js';
 

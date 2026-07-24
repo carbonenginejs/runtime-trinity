@@ -1,6 +1,6 @@
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 import { TriFrustumTestResult } from '../generated/trinityCore/enums.js';
 
 // Source: E:\carbonengine\trinity\trinity\TriFrustum.h

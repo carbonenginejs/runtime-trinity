@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
 
 let _initClass, _init_method, _init_extra_method, _init_toe, _init_extra_toe, _init_shoulder, _init_extra_shoulder, _init_blackClip, _init_extra_blackClip, _init_whiteClip, _init_extra_whiteClip, _init_blueCorrection, _init_extra_blueCorrection, _init_slope, _init_extra_slope, _init_scale, _init_extra_scale, _init_useSweeteners, _init_extra_useSweeteners, _init_shoulderStrength, _init_extra_shoulderStrength, _init_linearStrength, _init_extra_linearStrength, _init_linearAngle, _init_extra_linearAngle, _init_toeStrength, _init_extra_toeStrength, _init_toeNumerator, _init_extra_toeNumerator, _init_toeDenominator, _init_extra_toeDenominator, _init_whiteScale, _init_extra_whiteScale;

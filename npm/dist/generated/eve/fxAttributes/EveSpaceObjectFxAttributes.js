@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initClass, _init_name, _init_extra_name, _init_activationStrength, _init_extra_activationStrength, _init_activeTurretCount, _init_extra_activeTurretCount, _init_childParent, _init_extra_childParent, _init_generatedShapeEllipsoidCenter, _init_extra_generatedShapeEllipsoidCenter, _init_generatedShapeEllipsoidRadius, _init_extra_generatedShapeEllipsoidRadius, _init_killCount, _init_extra_killCount, _init_ship, _init_extra_ship, _init_boundingSphereRadius, _init_extra_boundingSphereRadius, _init_parentWorldRotation, _init_extra_parentWorldRotation, _init_parentWorldTranslation, _init_extra_parentWorldTranslation;
 

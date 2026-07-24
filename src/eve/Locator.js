@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Utils\EveLocatorSets.h
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

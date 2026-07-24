@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2Light.h
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2Light.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, impl, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, impl, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { PerLightShadowSetting } from "../../generated/eve/lights/enums.js";
 import { createCjsLightDataView, setCjsLightDataOwnerValues } from "./CjsLightData.js";
 import {

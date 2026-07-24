@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { type, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_logThickness, _init_extra_logThickness, _init_thickness, _init_extra_thickness, _init_lightDirectionality, _init_extra_lightDirectionality, _init_environmentIntensity, _init_extra_environmentIntensity, _init_environmentDirectionality, _init_extra_environmentDirectionality, _init_backgroundVisibility, _init_extra_backgroundVisibility, _init_godRayNoiseIntensity, _init_extra_godRayNoiseIntensity, _init_godRayNoiseFrequency, _init_extra_godRayNoiseFrequency, _init_godRayNoiseAnimationSpeed, _init_extra_godRayNoiseAnimationSpeed, _init_fogNoiseIntensity, _init_extra_fogNoiseIntensity, _init_fogNoiseFrequency, _init_extra_fogNoiseFrequency, _init_intensity, _init_extra_intensity, _init_priority, _init_extra_priority;
 

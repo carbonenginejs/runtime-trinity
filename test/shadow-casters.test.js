@@ -5,9 +5,9 @@
 // Utilities/BoundingSphere.cpp:182-197; BoundingSphereTransform cpp:70-81).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import {
   EveShip2,
   EveSwarm,

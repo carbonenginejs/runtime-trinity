@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildMesh as _EveChildMesh } from '../../../eve/child/EveChildMesh.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_rotationConstraint, _init_extra_rotationConstraint, _init_staticOffsetRotation, _init_extra_staticOffsetRotation, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_distribution, _init_extra_distribution, _init_staticOffsetScale, _init_extra_staticOffsetScale;
 

@@ -1,10 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { Tr2PerObjectData } from '../../../trinityCore/Tr2PerObjectData.js';
+import { type, io, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_clusters, _init_extra_clusters, _init_centerOfClusters, _init_extra_centerOfClusters, _init_boundingSphere, _init_extra_boundingSphere, _init_clusterParticleDensityAdjust, _init_extra_clusterParticleDensityAdjust, _init_estimatedSize, _init_extra_estimatedSize, _init_clusterParticleDensity, _init_extra_clusterParticleDensity, _init_maxSize, _init_extra_maxSize, _init_minSize, _init_extra_minSize, _init_mesh, _init_extra_mesh, _init_maxParticleCount, _init_extra_maxParticleCount, _init_visible, _init_extra_visible;
 
@@ -37,7 +36,7 @@ class EveSceneStaticParticles extends CjsModel {
     } = _applyDecs2311(this, [type.define({
       className: "EveSceneStaticParticles",
       family: "eve/scene"
-    })], [[type.list("ClusterData"), 0, "clusters"], [type.rawStruct("Vector3d"), 0, "centerOfClusters"], [[type, type.vec4], 16, "boundingSphere"], [[io, io.read, type, type.float32], 16, "clusterParticleDensityAdjust"], [[io, io.read, type, type.float32], 16, "estimatedSize"], [[io, io.readwrite, type, type.float32], 16, "clusterParticleDensity"], [[io, io.readwrite, type, type.float32], 16, "maxSize"], [[io, io.readwrite, type, type.float32], 16, "minSize"], [[io, io.readwrite, void 0, type.objectRef("Tr2InstancedMesh")], 16, "mesh"], [[io, io.readwrite, type, type.uint64], 16, "maxParticleCount"], [[io, io.read, type, type.boolean], 16, "visible"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsVisible"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The estimatedSize LOD select is engine-resolved at realization; the delegation structure is ported.")], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("EveSceneStaticParticlesPerObjectData's device buffers are engine-owned; the record carries the transposed matrices and the object reference.")], 18, "GetPerObjectData"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasTransparentBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSortValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddCluster"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Builds Carbon's CPU instance rows and bounds; a deterministic local PRNG replaces Carbon's process-global C rand state.")], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "ClearClusters"]], 0, void 0, CjsModel));
+    })], [[type.list("ClusterData"), 0, "clusters"], [type.rawStruct("Vector3d"), 0, "centerOfClusters"], [[type, type.vec4], 16, "boundingSphere"], [[io, io.read, type, type.float32], 16, "clusterParticleDensityAdjust"], [[io, io.read, type, type.float32], 16, "estimatedSize"], [[io, io.readwrite, type, type.float32], 16, "clusterParticleDensity"], [[io, io.readwrite, type, type.float32], 16, "maxSize"], [[io, io.readwrite, type, type.float32], 16, "minSize"], [[io, io.readwrite, void 0, type.objectRef("Tr2InstancedMesh")], 16, "mesh"], [[io, io.readwrite, type, type.uint64], 16, "maxParticleCount"], [[io, io.read, type, type.boolean], 16, "visible"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "Update"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Tr2Renderer::IsLowQuality relocates onto the update-context duck (lowQuality, default false).")], 18, "UpdateVisibility"], [[carbon, carbon.method, impl, impl.implemented], 18, "IsVisible"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetRenderables"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("The estimatedSize LOD select is engine-resolved at realization; the delegation structure is ported.")], 18, "GetBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetShadowBatches"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Constant-buffer layout/packing is engine-owned; Trinity Allocs the record from the accumulator's store and Sets the logical world/lastWorld by name (the store transposes per the engine layout). Both fields are fully CPU-filled, so no object backref is needed.")], 18, "GetPerObjectData"], [[carbon, carbon.method, impl, impl.implemented], 18, "HasTransparentBatches"], [[carbon, carbon.method, impl, impl.implemented], 18, "GetSortValue"], [[carbon, carbon.method, impl, impl.adapted], 18, "AddCluster"], [[carbon, carbon.method, impl, impl.adapted, void 0, impl.reason("Builds Carbon's CPU instance rows and bounds; a deterministic local PRNG replaces Carbon's process-global C rand state.")], 18, "Rebuild"], [[carbon, carbon.method, impl, impl.adapted], 18, "ClearClusters"]], 0, void 0, CjsModel));
   }
   /** Carbon ClusterData records retained on the CPU. */
   clusters = (_initProto(this), _init_clusters(this, []));
@@ -169,14 +168,10 @@ class EveSceneStaticParticles extends CjsModel {
    * world/lastWorld pair (HLSL packing transposes of single matrices - no
    * composition); the GPU-free record carries them plus the object
    * reference. */
-  GetPerObjectData(accumulator = null) {
-    const data = typeof accumulator?.Allocate === "function" ? accumulator.Allocate(Tr2PerObjectData) : new Tr2PerObjectData();
-    if (!data) {
-      return null;
-    }
-    data.object = this;
-    data.world = mat4.transpose(mat4.create(), this.worldMatrix);
-    data.lastWorld = mat4.transpose(mat4.create(), this.lastWorldMatrix);
+  GetPerObjectData(accumulator) {
+    const data = accumulator.Alloc("EveSceneStaticParticlesPerObjectData");
+    data.Set("world", this.worldMatrix);
+    data.Set("lastWorld", this.lastWorldMatrix);
     return data;
   }
 

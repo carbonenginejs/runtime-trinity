@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 import { Tr2RenderBatch, TriRenderBatchAreaBlock, TriRenderBatchAreaBlocksWithSharedMaterial } from './Tr2RenderBatch.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_meshIndex, _init_extra_meshIndex, _init_opaqueAreas, _init_extra_opaqueAreas, _init_decalAreas, _init_extra_decalAreas, _init_depthAreas, _init_extra_depthAreas, _init_transparentAreas, _init_extra_transparentAreas, _init_additiveAreas, _init_extra_additiveAreas, _init_pickableAreas, _init_extra_pickableAreas, _init_mirrorAreas, _init_extra_mirrorAreas, _init_decalNormalAreas, _init_extra_decalNormalAreas, _init_depthNormalAreas, _init_extra_depthNormalAreas, _init_opaquePrepassAreas, _init_extra_opaquePrepassAreas, _init_decalPrepassAreas, _init_extra_decalPrepassAreas, _init_geometryEraserAreas, _init_extra_geometryEraserAreas, _init_distortionAreas, _init_extra_distortionAreas, _init_flareAreas, _init_extra_flareAreas, _init_maxVertexScale, _init_extra_maxVertexScale, _init_maxVertexDisplacement, _init_extra_maxVertexDisplacement, _init_rotatesVertices, _init_extra_rotatesVertices;

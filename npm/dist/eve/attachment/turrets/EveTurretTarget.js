@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_targetPosition, _init_extra_targetPosition, _init_behaviour, _init_extra_behaviour, _init_positionOldInfluence, _init_extra_positionOldInfluence, _init_position, _init_extra_position, _init_positionOld, _init_extra_positionOld, _init_locator, _init_extra_locator;
 let _EveTurretTarget;

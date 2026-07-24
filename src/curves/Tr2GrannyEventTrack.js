@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2GrannyEventTrack.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2GrannyEventTrack.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsGrannyCurves } from "./CjsGrannyCurves.js";
 import { Tr2GrannyTrack } from "./Tr2GrannyTrack.js";
 

@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initProto, _initClass, _init_lifeTimeFormula, _init_extra_lifeTimeFormula, _init_activationOverLifetime, _init_extra_activationOverLifetime, _init_activationValue, _init_extra_activationValue, _init_playTime, _init_extra_playTime, _init_crossFadeDuration, _init_extra_crossFadeDuration, _init_crossFadeIntensity, _init_extra_crossFadeIntensity, _init_perInstanceOffset, _init_extra_perInstanceOffset, _init_attributeMultiplier, _init_extra_attributeMultiplier, _init_startsActive, _init_extra_startsActive, _init_restartPlayTimeWhenInactive, _init_extra_restartPlayTimeWhenInactive, _init_finalAttributeMultiplier, _init_extra_finalAttributeMultiplier, _init_active, _init_extra_active, _init_delayedActivation, _init_extra_delayedActivation;
 

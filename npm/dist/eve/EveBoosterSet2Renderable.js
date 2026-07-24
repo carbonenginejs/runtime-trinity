@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_trailIntensity, _init_extra_trailIntensity, _init_trailsTotalLength, _init_extra_trailsTotalLength, _init_isVisible, _init_extra_isVisible, _init_trailsVisible, _init_extra_trailsVisible, _init_boostersVisible, _init_extra_boostersVisible, _init_trailsTimeDelta, _init_extra_trailsTimeDelta, _init_boosterHighLod, _init_extra_boosterHighLod, _init_trailsBoundsMax, _init_extra_trailsBoundsMax, _init_trailsBoundsMin, _init_extra_trailsBoundsMin, _init_overallIntensity, _init_extra_overallIntensity, _init_parentRotation, _init_extra_parentRotation, _init_parentSpeed, _init_extra_parentSpeed;
 let _EveBoosterSet2Render;

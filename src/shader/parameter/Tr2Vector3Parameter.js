@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Vector3Parameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Vector3Parameter.cpp
-import { num } from "@carbonenginejs/core-math/num";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { num } from "@carbonenginejs/runtime-utils/num";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsVectorParameter } from "./CjsVectorParameter.js";
 
 

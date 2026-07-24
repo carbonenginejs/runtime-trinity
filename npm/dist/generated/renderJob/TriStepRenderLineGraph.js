@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 
 let _initProto, _initClass, _init_lineGraphs, _init_extra_lineGraphs, _init_scale, _init_extra_scale, _init_legendScale, _init_extra_legendScale, _init_autoScale, _init_extra_autoScale, _init_showLegend, _init_extra_showLegend, _init_maxLegend, _init_extra_maxLegend, _init_scaleChangeCallback, _init_extra_scaleChangeCallback;

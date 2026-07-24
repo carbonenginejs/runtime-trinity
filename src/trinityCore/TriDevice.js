@@ -1,9 +1,9 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/TriDevice.h
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { PresentInterval, SwapEffect, UpscalingSetting, UpscalingTechnique } from "@carbonenginejs/runtime-const/render-context";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { PresentInterval, SwapEffect, UpscalingSetting, UpscalingTechnique } from "@carbonenginejs/runtime-utils/render-context";
 
 /** TriDevice (trinityCore) - generated from schema shapeHash 1db3a492.... */
 @type.define({ className: "TriDevice", family: "trinityCore" })

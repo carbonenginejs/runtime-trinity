@@ -1,5 +1,5 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Light as _Tr2Light } from '../../../eve/lights/Tr2Light.js';
 import { EveSmartLightPointLight as _EveSmartLightPointLi } from './EveSmartLightPointLight.js';
 

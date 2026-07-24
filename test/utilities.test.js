@@ -1,6 +1,6 @@
 import test from "node:test";
 import { Range } from "../npm/dist/index.js";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 function assertEquals(actual, expected)

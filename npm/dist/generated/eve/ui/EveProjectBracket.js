@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initClass, _init_marginLeft, _init_extra_marginLeft, _init_marginRight, _init_extra_marginRight, _init_marginTop, _init_extra_marginTop, _init_marginBottom, _init_extra_marginBottom, _init_ballTrackingScaling, _init_extra_ballTrackingScaling, _init_bracketUpdateCallback, _init_extra_bracketUpdateCallback, _init_displayChangeCallback, _init_extra_displayChangeCallback, _init_minDispRange, _init_extra_minDispRange, _init_maxDispRange, _init_extra_maxDispRange, _init_trackBall, _init_extra_trackBall, _init_cameraDistance, _init_extra_cameraDistance, _init_trackPosition, _init_extra_trackPosition, _init_isInFront, _init_extra_isInFront, _init_offsetX, _init_extra_offsetX, _init_integerCoordinates, _init_extra_integerCoordinates, _init_name, _init_extra_name, _init_parent, _init_extra_parent, _init_dock, _init_extra_dock, _init_projectedPosition, _init_extra_projectedPosition, _init_rawProjectedPosition, _init_extra_rawProjectedPosition, _init_trackTransform, _init_extra_trackTransform, _init_bracket, _init_extra_bracket, _init_bracketIcon, _init_extra_bracketIcon, _init_offsetY, _init_extra_offsetY, _init_isVisible, _init_extra_isVisible;
 

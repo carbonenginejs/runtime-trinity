@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_screenMargin, _init_extra_screenMargin, _init_cameraDistance, _init_extra_cameraDistance, _init_projectedHeight, _init_extra_projectedHeight, _init_integerCoordinates, _init_extra_integerCoordinates, _init_maxProjectedHeight, _init_extra_maxProjectedHeight, _init_maxProjectedWidth, _init_extra_maxProjectedWidth, _init_minProjectedHeight, _init_extra_minProjectedHeight, _init_minProjectedWidth, _init_extra_minProjectedWidth, _init_name, _init_extra_name, _init_object, _init_extra_object, _init_parent, _init_extra_parent, _init_bracket, _init_extra_bracket, _init_projectedWidth, _init_extra_projectedWidth, _init_projectedX, _init_extra_projectedX, _init_projectedY, _init_extra_projectedY, _init_projectedZ, _init_extra_projectedZ;
 

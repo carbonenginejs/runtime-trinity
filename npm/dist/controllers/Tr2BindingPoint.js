@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { copyArrayLike, fillArrayLike } from '@carbonenginejs/core-math/utils';
-import { isArrayLike } from '@carbonenginejs/core-math/is';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, CjsSchema } from '@carbonenginejs/core-types/schema';
+import { copyArrayLike, fillArrayLike } from '@carbonenginejs/runtime-utils/utils';
+import { isArrayLike } from '@carbonenginejs/runtime-utils/is';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, CjsSchema } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_path, _init_extra_path, _init_object, _init_extra_object, _init_attribute, _init_extra_attribute, _init_resolvedObject, _init_extra_resolvedObject, _init_notifyPtr, _init_extra_notifyPtr, _init_entry, _init_extra_entry, _init_destination, _init_extra_destination, _init_entryOffset, _init_extra_entryOffset, _init_arraySize, _init_extra_arraySize;
 const SWIZZLE_OFFSETS = {

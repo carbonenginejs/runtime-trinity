@@ -10,8 +10,8 @@
 // Matrix_inline.h:531-546 / 749-765; Tr2Light::GetLight Tr2Light.cpp:152-163.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import {
   EveChildCloud2,
   Tr2PointLight,

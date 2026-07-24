@@ -1,14 +1,14 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
 import { EveChildQuad as _EveChildQuad } from '../child/EveChildQuad.js';
 import { resolveGroupColor } from './EveSmartLightBaseGroup.js';
 import { Tr2Effect as _Tr2Effect } from '../../../shader/Tr2Effect.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_effect, _init_extra_effect, _init_brightness, _init_extra_brightness, _init_display, _init_extra_display, _init_staticQuadScale, _init_extra_staticQuadScale, _init_staticOffsetTranslation, _init_extra_staticOffsetTranslation, _init_editMode, _init_extra_editMode, _init_softQuad, _init_extra_softQuad, _init_factionColor, _init_extra_factionColor, _init_useFactionColor, _init_extra_useFactionColor, _init_attributeModifiers, _init_extra_attributeModifiers, _init_customColor, _init_extra_customColor;
 

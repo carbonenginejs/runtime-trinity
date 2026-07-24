@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2FollowCurveKey.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2FollowCurveKey.cpp
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2FollowCurveKeyInterpolation, RotationSetting } from "./enums.js";
 
 

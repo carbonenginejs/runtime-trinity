@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_currentTime, _init_extra_currentTime, _init_lastTime, _init_extra_lastTime, _init_visibilityThreshold, _init_extra_visibilityThreshold, _init_highDetailThreshold, _init_extra_highDetailThreshold, _init_mediumDetailThreshold, _init_extra_mediumDetailThreshold, _init_lowDetailThreshold, _init_extra_lowDetailThreshold, _init_lodFactor, _init_extra_lodFactor, _init_invLodFactor, _init_extra_invLodFactor, _init_raytracingEnabled, _init_extra_raytracingEnabled, _init_dataTextureManager, _init_extra_dataTextureManager, _init_gpuParticleSystem, _init_extra_gpuParticleSystem, _init_ballpark, _init_extra_ballpark, _init_taskGroup, _init_extra_taskGroup, _init_frustum, _init_extra_frustum, _init_origin, _init_extra_origin, _init_originShift, _init_extra_originShift, _init_originShiftRemainder, _init_extra_originShiftRemainder, _init_renderContext, _init_extra_renderContext, _init_device, _init_extra_device;
 

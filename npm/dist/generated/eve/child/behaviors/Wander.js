@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { carbonPerlin1D } from '@carbonenginejs/core-math/noise';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { carbonPerlin1D } from '@carbonenginejs/runtime-utils/noise';
 
 let _initProto, _initClass, _init_behaviorPriority, _init_extra_behaviorPriority, _init_rand, _init_extra_rand, _init_rand2, _init_extra_rand2, _init_rand3, _init_extra_rand3, _init_freq, _init_extra_freq, _init_weightWander, _init_extra_weightWander, _init_enabled, _init_extra_enabled;
 

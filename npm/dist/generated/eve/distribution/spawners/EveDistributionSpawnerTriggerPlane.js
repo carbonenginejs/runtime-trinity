@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat } from '@carbonenginejs/core-math/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
 
 let _initProto, _initClass, _init_triggerChance, _init_extra_triggerChance, _init_planeRotation, _init_extra_planeRotation, _init_startSequenceAtFirstTrigger, _init_extra_startSequenceAtFirstTrigger, _init_playDuration, _init_extra_playDuration, _init_delayBeforeActivation, _init_extra_delayBeforeActivation, _init_reversePlaneAnimation, _init_extra_reversePlaneAnimation;
 

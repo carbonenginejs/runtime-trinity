@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Sprite2dVertexBase as _Tr2Sprite2dVertexBas } from '../../sprite2d/Tr2Sprite2dVertexBase.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
 
 let _initProto, _initClass;
 

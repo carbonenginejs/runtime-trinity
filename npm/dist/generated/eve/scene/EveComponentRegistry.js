@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { impl, carbon, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { impl, carbon, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { EveComponentCollection as _EveComponentCollecti } from './EveComponentCollection.js';
 import { EveComponentRequiredMethods } from '../../../eve/EveComponentTypes.js';
 

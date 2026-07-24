@@ -12,8 +12,8 @@ import {
   EffectKeyGenerator
 } from "../npm/dist/trinityCore/index.js";
 
-import { RenderingMode } from "@carbonenginejs/runtime-const/graphics";
-import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-const/d3d";
+import { RenderingMode } from "@carbonenginejs/runtime-utils/graphics";
+import { D3dPrimitiveTopology } from "@carbonenginejs/runtime-utils/d3d";
 
 // A synthetic material: SetMaterial derives the shader from GetShaderStateInterface.
 function makeMaterial(shader, gdrCompatible = false)

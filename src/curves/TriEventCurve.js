@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\TriEventCurve.h
 // Source: E:\carbonengine\trinity\trinity\Curves\TriEventCurve.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { TRIEXTRAPOLATION } from "./enums.js";
 import { TriEventKey } from "./TriEventKey.js";
 

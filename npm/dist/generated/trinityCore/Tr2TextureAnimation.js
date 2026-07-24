@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initProto, _initClass, _init_fps, _init_extra_fps, _init_frame, _init_extra_frame, _init_time, _init_extra_time, _init_paused, _init_extra_paused, _init_updateOnlyWhenRendered, _init_extra_updateOnlyWhenRendered, _init_resPath, _init_extra_resPath, _init_looped, _init_extra_looped;
 

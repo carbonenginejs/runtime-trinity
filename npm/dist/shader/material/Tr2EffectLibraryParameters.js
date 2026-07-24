@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { Tr2MaterialStageInput as _Tr2MaterialStageInpu } from './Tr2MaterialStageInput.js';
 
 let _initClass, _init_localInput, _init_extra_localInput, _init_globalInput, _init_extra_globalInput, _init_globalResourceSetDesc, _init_extra_globalResourceSetDesc, _init_globalResourceSet, _init_extra_globalResourceSet, _init_reroutedParameters, _init_extra_reroutedParameters, _init_usedResources, _init_extra_usedResources, _init_usedTextures, _init_extra_usedTextures, _init_globalResourceSetDirty, _init_extra_globalResourceSetDirty, _init_usedTexturesDirty, _init_extra_usedTexturesDirty;

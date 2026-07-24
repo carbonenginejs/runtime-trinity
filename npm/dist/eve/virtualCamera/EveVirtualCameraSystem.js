@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { EveVirtualCamera as _EveVirtualCamera } from './EveVirtualCamera.js';
 import { EveVirtualCameraTransitionCut as _EveVirtualCameraTran } from './transition/EveVirtualCameraTransitionCut.js';
 import { EveVirtualCameraTransitionLerp as _EveVirtualCameraTran$1 } from './transition/EveVirtualCameraTransitionLerp.js';

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
 
 let _initClass, _init_directionalWeight, _init_extra_directionalWeight, _init_steps, _init_extra_steps, _init_sizeScale, _init_extra_sizeScale, _init_step1Size, _init_extra_step1Size, _init_step1Tint, _init_extra_step1Tint, _init_step2Size, _init_extra_step2Size, _init_step2Tint, _init_extra_step2Tint, _init_step3Size, _init_extra_step3Size, _init_step3Tint, _init_extra_step3Tint, _init_step4Size, _init_extra_step4Size, _init_step4Tint, _init_extra_step4Tint, _init_step5Size, _init_extra_step5Size, _init_step5Tint, _init_extra_step5Tint, _init_step6Size, _init_extra_step6Size, _init_step6Tint, _init_extra_step6Tint, _init_brightness, _init_extra_brightness, _init_exposureDependency, _init_extra_exposureDependency, _init_grimePath, _init_extra_grimePath, _init_grimeWeight, _init_extra_grimeWeight, _init_luminanceScale, _init_extra_luminanceScale, _init_luminanceThreshold, _init_extra_luminanceThreshold;

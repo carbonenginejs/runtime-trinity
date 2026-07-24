@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2MaterialParameterStore.h
 // Source: E:\carbonengine\trinity\trinity\Tr2MaterialParameterStore.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2MaterialParameterStore_Blue.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 
 /** Tr2MaterialParameterStore (trinityCore) - generated from schema shapeHash 119f32c2.... */
 @type.define({ className: "Tr2MaterialParameterStore", family: "trinityCore" })

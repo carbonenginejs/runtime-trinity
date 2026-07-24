@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\TriSequencer.h
 // Source: E:\carbonengine\trinity\trinity\TriSequencer.cpp
 // Source: E:\carbonengine\trinity\trinity\TriMath.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { carbonPerlin1D } from "@carbonenginejs/core-math/noise";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
+import { carbonPerlin1D } from "@carbonenginejs/runtime-utils/noise";
 
 
 @type.define({

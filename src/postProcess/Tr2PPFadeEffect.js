@@ -1,9 +1,9 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/PostProcess/Effects/Tr2PPFadeEffect.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema postProcess/Tr2PPFadeEffect.json.).
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPEffect } from "./Tr2PPEffect.js";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 
 /** Tr2PPFadeEffect (postProcess) - generated from schema shapeHash 4a4789e6.... */
 @type.define({ className: "Tr2PPFadeEffect", family: "postProcess" })

@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveMobile as _EveMobile } from '../../../eve/spaceObject/EveMobile.js';
 import { TriFloat as _TriFloat } from '../../../trinityCore/TriFloat.js';
 

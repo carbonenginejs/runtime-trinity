@@ -1,21 +1,21 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveSpaceObject2.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveSpaceObject2.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveSpaceObject2_Blue.cpp
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveEntity } from "../../generated/eve/EveEntity.js";
 import { EveChildUpdateParams } from "../EveChildUpdateParams.js";
 import { EveChildInheritProperties } from "../child/EveChildInheritProperties.js";
-import { box3 } from "@carbonenginejs/core-math/box3";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { sph3 } from "@carbonenginejs/core-math/sph3";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { box3 } from "@carbonenginejs/runtime-utils/box3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { sph3 } from "@carbonenginejs/runtime-utils/sph3";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import { ReflectionMode } from "../../generated/eve/enums.js";
 import { EveComponentType, ShouldReflect } from "../EveComponentTypes.js";
 import { ImpactConfiguration } from "../../generated/include/enums.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { Tr2PerObjectData } from "../../trinityCore/Tr2PerObjectData.js";
 import { Tr2RenderBatch, TriRenderBatchAreaBlock } from "../../trinityCore/Tr2RenderBatch.js";
 

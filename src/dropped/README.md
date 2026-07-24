@@ -16,16 +16,16 @@ Every quarantined file has an explicit disposition:
 | File | Why it is not a runtime model | Replacement |
 |---|---|---|
 | `AreaBoundsInfo.js` | Native Granny extended-data record nested inside `MeshBoundsInfo`; it is neither Blue-exposed nor independently persisted. | Plain `{ bounds, vertexCount }` data owned by the GR2/geometry reader boundary. |
-| `BoundingBox.js` | Native `granny_real32[3]` min/max record used only while decoding Granny extended data; it is not a Blue graph class. | `@carbonenginejs/core-math/box3` or plain `{ min, max }` reader data. |
+| `BoundingBox.js` | Native `granny_real32[3]` min/max record used only while decoding Granny extended data; it is not a Blue graph class. | `@carbonenginejs/runtime-utils/box3` or plain `{ min, max }` reader data. |
 | `CASConstants.js` | Native AMD sharpening constant struct nested in the post-process renderer; it is not Blue-exposed or independently persisted. | Plain pair of four-lane numeric/bit-pattern arrays produced by the renderer's CAS parameter builder. |
 | `EveInstancedMeshManager.js` | Native scene-owned instancing manager with GPU buffers, allocator state, picking state, and nested C++ records; it has no `BLUE_CLASS` declaration or persisted graph identity. | Engine-owned instancing realization fed by Trinity instance data and scene objects. |
 | `EveSpherePinIndexTree.js` | Native spherical geometry index with private pointer-backed `Face`/`TreeNode` storage; it is not Blue-exposed or serialized. | Engine/resource-side spatial index built from decoded geometry when sphere-pin picking needs it. |
-| `ITriColor.js` | Pure interface for the retired Blue/Python color wrapper; it has no independent graph state. | `@carbonenginejs/core-math/vec4` and schema `color` fields. |
+| `ITriColor.js` | Pure interface for the retired Blue/Python color wrapper; it has no independent graph state. | `@carbonenginejs/runtime-utils/vec4` and schema `color` fields. |
 | `ITriDevice.js` | Pure device interface; the emitted `adapter` member was nested creation data, not interface state. | Maintained device-free `TriDevice` graph plus injected engine realization. |
 | `ITriEffectTextureParameter.js` | Pure interface; the emitted `UV_SET_MAX_COUNT` is a static constant, not instance state. | Concrete maintained texture-parameter graph classes. |
-| `ITriMatrix.js` | Pure interface for the Blue/Python matrix wrapper; it has no independent graph state. | `@carbonenginejs/core-math/mat4`; the concrete `TriMatrix` quarantine is owned by runtime-character. |
-| `ITriQuaternion.js` | Pure interface for the retired Blue/Python quaternion wrapper. | `@carbonenginejs/core-math/quat` and schema `quat` fields. |
-| `ITriVector.js` | Pure interface for the retired Blue/Python vector wrapper. | `@carbonenginejs/core-math/vec3` and schema vector fields. |
+| `ITriMatrix.js` | Pure interface for the Blue/Python matrix wrapper; it has no independent graph state. | `@carbonenginejs/runtime-utils/mat4`; the concrete `TriMatrix` quarantine is owned by runtime-character. |
+| `ITriQuaternion.js` | Pure interface for the retired Blue/Python quaternion wrapper. | `@carbonenginejs/runtime-utils/quat` and schema `quat` fields. |
+| `ITriVector.js` | Pure interface for the retired Blue/Python vector wrapper. | `@carbonenginejs/runtime-utils/vec3` and schema vector fields. |
 | `MeshBoundsInfo.js` | Packed native Granny extended-data layout containing pointers and counts; it is reader implementation data, not a persisted Trinity object. | A detached plain record produced by the GR2/geometry reader, with arrays replacing native pointers/counts. |
 | `Point.js` | Native integer helper record, not a persisted Blue object. | Plain `{ x, y }` records at adapter boundaries. |
 | `Tr2CurveBase.js` | Generic C++ template whose emitted `KeyValue`/`Key` fields are unresolved template parameters. | Maintained concrete curve classes own concrete storage and behavior. |
@@ -38,10 +38,10 @@ Every quarantined file has an explicit disposition:
 | `Tr2ParticleStreamIterator.js` | Internal C++ template that advances typed pointers through particle buffers; the scanner exposed its stride local as model state. | Plain typed-array indexing inside maintained CPU particle simulation code. |
 | `Tr2RaytracingMeshArea.js` | Native per-area BLAS/cache helper with device acceleration structures; it has no `BLUE_CLASS` declaration and the emitted `true` field is a method literal. | Raytracing engine backend area state associated with the maintained graph/resource owner. |
 | `Tr2Rect.js` | Native integer rectangle record, not a persisted Blue object. | Plain `{ left, top, right, bottom }` records at adapter boundaries. |
-| `TriColor.js` | Blue/Python scripting wrapper around native color math. | `@carbonenginejs/core-math/vec4`. |
-| `TriPerlinNoise.js` | Real native seeded-noise utility, but not a Blue/persisted model; the scanner emitted only private constants and omitted its gradient state and behavior. | Source-backed deterministic `createPerlinNoise1D` and `carbonPerlin1D` in `@carbonenginejs/core-math/noise`; legacy ccpwgl `perlin1`/`perlin1D` remain separate. |
-| `TriQuaternion.js` | Blue/Python scripting wrapper around native quaternion math. | `@carbonenginejs/core-math/quat`. |
-| `TriVector.js` | Blue/Python scripting wrapper around native vector math. | `@carbonenginejs/core-math/vec3`. |
+| `TriColor.js` | Blue/Python scripting wrapper around native color math. | `@carbonenginejs/runtime-utils/vec4`. |
+| `TriPerlinNoise.js` | Real native seeded-noise utility, but not a Blue/persisted model; the scanner emitted only private constants and omitted its gradient state and behavior. | Source-backed deterministic `createPerlinNoise1D` and `carbonPerlin1D` in `@carbonenginejs/runtime-utils/noise`; legacy ccpwgl `perlin1`/`perlin1D` remain separate. |
+| `TriQuaternion.js` | Blue/Python scripting wrapper around native quaternion math. | `@carbonenginejs/runtime-utils/quat`. |
+| `TriVector.js` | Blue/Python scripting wrapper around native vector math. | `@carbonenginejs/runtime-utils/vec3`. |
 | `Vector3d.js` | Native double-precision math value struct; scanner fields such as `d`, `dDiv`, and `norm` are constructor/operator locals, not instance state. | Three-element numeric/`Float64Array` values at double-precision boundaries; schema references remain structural `Vector3d` records. |
 | `Vector4d.js` | Native double-precision math value struct; scanner fields such as `d`, `dDiv`, and `f` are constructor/operator locals, not instance state. | Four-element numeric/`Float64Array` values at double-precision boundaries. |
 
@@ -83,7 +83,7 @@ and injected browser host objects.
 investigated on 2026-07-17 during the trinity CPU-completion pass:
 
 - They are Blue/Python SCRIPTING WRAPPERS (`IPythonMethods`, `Py*` thunks)
-  around Carbon's native math, fully redundant with `@carbonenginejs/core-math`
+  around Carbon's native math, fully redundant with `@carbonenginejs/runtime-utils`
   (gl-matrix based), which every runtime class already uses.
 - Carbon's `Matrix` is row-major while core-math/gl-matrix is column-major;
   delegating these wrappers to core-math would silently transpose. The

@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_initialTranslation, _init_extra_initialTranslation, _init_initialRotation, _init_extra_initialRotation, _init_initialScale, _init_extra_initialScale, _init_additionalTranslation, _init_extra_additionalTranslation, _init_translationFrameDelta, _init_extra_translationFrameDelta, _init_additionalRotation, _init_extra_additionalRotation, _init_additionalScale, _init_extra_additionalScale, _init_boneIndex, _init_extra_boneIndex, _init_lifeTime, _init_extra_lifeTime, _init_uniqueID, _init_extra_uniqueID, _init_initialPlacementID, _init_extra_initialPlacementID;
 let _PlacementDataWithIde;

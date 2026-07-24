@@ -1,9 +1,9 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { carbonPerlin1D } from '@carbonenginejs/core-math/noise';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { carbonPerlin1D } from '@carbonenginejs/runtime-utils/noise';
 import { Tr2Effect as _Tr2Effect } from '../../../../shader/Tr2Effect.js';
 
 let _initProto, _initClass, _init_display, _init_extra_display, _init_boosterOffset, _init_extra_boosterOffset, _init_atlasIndex, _init_extra_atlasIndex, _init_atlasIndex2, _init_extra_atlasIndex2, _init_boosterEffect, _init_extra_boosterEffect, _init_flareCount, _init_extra_flareCount, _init_displayAmbientFlare, _init_extra_displayAmbientFlare, _init_displayBoosters, _init_extra_displayBoosters, _init_displayHazeFlare, _init_extra_displayHazeFlare, _init_ambientFlareBrightness, _init_extra_ambientFlareBrightness, _init_haloFlareBrightness, _init_extra_haloFlareBrightness, _init_ambientFlareColor, _init_extra_ambientFlareColor, _init_haloFlareColor, _init_extra_haloFlareColor, _init_lightColor, _init_extra_lightColor, _init_ambientFlareEffect, _init_extra_ambientFlareEffect, _init_haloFlareEffect, _init_extra_haloFlareEffect, _init_ambientFlareNoiseAmplitude, _init_extra_ambientFlareNoiseAmplitude, _init_haloFlareNoiseAmplitude, _init_extra_haloFlareNoiseAmplitude, _init_ambientFlareNoiseOctaves, _init_extra_ambientFlareNoiseOctaves, _init_haloFlareNoiseOctaves, _init_extra_haloFlareNoiseOctaves, _init_ambientFlareNoiseSpeed, _init_extra_ambientFlareNoiseSpeed, _init_haloFlareNoiseSpeed, _init_extra_haloFlareNoiseSpeed, _init_ambientFlareOffset, _init_extra_ambientFlareOffset, _init_haloFlareOffset, _init_extra_haloFlareOffset, _init_lightRadius, _init_extra_lightRadius, _init_ambientFlareScale, _init_extra_ambientFlareScale, _init_haloFlareScale, _init_extra_haloFlareScale;

@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Sprite2dVertexBase as _Tr2Sprite2dVertexBas } from './Tr2Sprite2dVertexBase.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_clipRect, _init_extra_clipRect, _init_glowBrightness, _init_extra_glowBrightness, _init_transformIndex, _init_extra_transformIndex, _init_blendMode, _init_extra_blendMode, _init_spriteEffect, _init_extra_spriteEffect, _init_tileMode, _init_extra_tileMode, _init_outlineColor, _init_extra_outlineColor, _init_outlineThreshold, _init_extra_outlineThreshold;
 

@@ -1,4 +1,4 @@
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 class CjsParameter extends CjsModel {
   static isScalarDestination(value) {

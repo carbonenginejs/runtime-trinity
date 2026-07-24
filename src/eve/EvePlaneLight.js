@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsLightData } from "./lights/CjsLightData.js";
 
 

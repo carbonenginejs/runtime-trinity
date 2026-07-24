@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { type, io, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildContainer as _EveChildContainer } from '../../../eve/child/EveChildContainer.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_localExplosionTransforms, _init_extra_localExplosionTransforms, _init_globalExplosionOffset, _init_extra_globalExplosionOffset, _init_globalExplosionInstances, _init_extra_globalExplosionInstances, _init_generatedGlobalExplosions, _init_extra_generatedGlobalExplosions, _init_localScaling, _init_extra_localScaling, _init_globalScaling, _init_extra_globalScaling, _init_globalExplosion, _init_extra_globalExplosion, _init_localExplosion, _init_extra_localExplosion, _init_localExplosionShared, _init_extra_localExplosionShared, _init_globalExplosions, _init_extra_globalExplosions, _init_localExplosionIntervalFactor, _init_extra_localExplosionIntervalFactor, _init_localExplosionDelay, _init_extra_localExplosionDelay, _init_globalExplosionDelay, _init_extra_globalExplosionDelay, _init_totalDuration, _init_extra_totalDuration, _init_globalDuration, _init_extra_globalDuration, _init_isPlaying, _init_extra_isPlaying, _init_localExplosions, _init_extra_localExplosions, _init_localExplosionInterval, _init_extra_localExplosionInterval, _init_globalExplosionTime, _init_extra_globalExplosionTime, _init_wreckSwitchTime, _init_extra_wreckSwitchTime, _init_wreckSwitchOffsetFromGlobalStart, _init_extra_wreckSwitchOffsetFromGlobalStart, _init_playTime, _init_extra_playTime, _init_localDuration, _init_extra_localDuration;
 

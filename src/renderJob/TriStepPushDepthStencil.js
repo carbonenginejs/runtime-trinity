@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepPushDepthStencil.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepPushDepthStencil.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderStep } from "./TriRenderStep.js";
 import { TriRenderJob } from "./TriRenderJob.js";
 

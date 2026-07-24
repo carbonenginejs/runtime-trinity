@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Fader\Tr2ScalarFader.cpp
-import { num } from "@carbonenginejs/core-math/num";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { num } from "@carbonenginejs/runtime-utils/num";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 const TRI_PI = Math.PI;

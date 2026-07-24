@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2Mesh.h
 // Source: E:\carbonengine\trinity\trinity\Tr2Mesh.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2Mesh_Blue.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2MeshBase } from "./Tr2MeshBase.js";
 import { Tr2SerializedMorphAnimation } from "./Tr2SerializedMorphAnimation.js";
 

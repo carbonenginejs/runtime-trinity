@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveTrailsSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveTrailsSet.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveTrailsSet", family: "eve/attachment/boosters" })

@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveSmartLightAttributeModifierBucket as _EveSmartLightAttribu$1 } from './EveSmartLightAttributeModifierBucket.js';
 import { CjsControllerExpressionProgram } from '../../../../controllers/CjsControllerExpressionProgram.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_expression, _init_extra_expression, _init_name, _init_extra_name, _init_expressionInputs, _init_extra_expressionInputs;
 

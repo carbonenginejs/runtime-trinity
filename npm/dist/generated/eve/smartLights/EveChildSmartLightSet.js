@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveChildTransform as _EveChildTransform } from '../../../eve/child/EveChildTransform.js';
 import { EveChildInheritProperties as _EveChildInheritPrope } from '../../../eve/child/EveChildInheritProperties.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_display, _init_extra_display, _init_distribution, _init_extra_distribution, _init_lightGroups, _init_extra_lightGroups;
 

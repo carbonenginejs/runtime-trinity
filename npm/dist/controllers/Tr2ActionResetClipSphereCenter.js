@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { isArrayLike } from '@carbonenginejs/core-math/is';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { isArrayLike } from '@carbonenginejs/runtime-utils/is';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { ResetBehavior } from './enums.js';
 import { ITr2ControllerAction } from './ITr2ControllerAction.js';
 

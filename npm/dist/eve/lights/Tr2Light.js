@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { PerLightShadowSetting } from '../../generated/eve/lights/enums.js';
 import { createCjsLightDataView, setCjsLightDataOwnerValues } from './CjsLightData.js';
 import { MatrixCopyFrom3x4, AreLightFlagsValid, AsPerPointLightData, AsPerSpotLightData, CreateLightRecord } from './lightConversion.js';

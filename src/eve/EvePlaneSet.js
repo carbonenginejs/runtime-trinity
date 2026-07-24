@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\Sets\EvePlaneSet.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveEntity } from "../generated/eve/EveEntity.js";
 import { EvePlaneLight } from "./EvePlaneLight.js";
 import { EveComponentType } from "./EveComponentTypes.js";

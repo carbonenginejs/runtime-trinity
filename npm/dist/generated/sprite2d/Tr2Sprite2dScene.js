@@ -1,10 +1,10 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_pickState, _init_extra_pickState, _init_ubershader2d, _init_extra_ubershader2d, _init_ubershader3d, _init_extra_ubershader3d, _init_displayWidth, _init_extra_displayWidth, _init_displayHeight, _init_extra_displayHeight, _init_backgroundColor, _init_extra_backgroundColor, _init_background, _init_extra_background, _init_captureIndexDataCapacity, _init_extra_captureIndexDataCapacity, _init_curveSets, _init_extra_curveSets, _init_ignoreClip, _init_extra_ignoreClip, _init_clearFinishedCurveSets, _init_extra_clearFinishedCurveSets, _init_clearBackground, _init_extra_clearBackground, _init_is2dRender, _init_extra_is2dRender, _init_is2dPick, _init_extra_is2dPick, _init_drawWireFrame, _init_extra_drawWireFrame, _init_display, _init_extra_display, _init_isFullscreen, _init_extra_isFullscreen, _init_depthMax, _init_extra_depthMax, _init_maxSpriteCount, _init_extra_maxSpriteCount, _init_depthMin, _init_extra_depthMin, _init_lastPickPos, _init_extra_lastPickPos, _init_rotation, _init_extra_rotation, _init_scaling, _init_extra_scaling, _init_children, _init_extra_children, _init_maxDrawCallsToRender, _init_extra_maxDrawCallsToRender, _init_maxItemsToRender, _init_extra_maxItemsToRender, _init_name, _init_extra_name, _init_translation, _init_extra_translation, _init_defaultTextureUpdates, _init_extra_defaultTextureUpdates, _init_displayX, _init_extra_displayX, _init_displayY, _init_extra_displayY;
 

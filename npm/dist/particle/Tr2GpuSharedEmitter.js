@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_continuousEmitter, _init_extra_continuousEmitter, _init_rate, _init_extra_rate, _init_emissionDensity, _init_extra_emissionDensity, _init_maxEmissionDensity, _init_extra_maxEmissionDensity, _init_maxDisplacement, _init_extra_maxDisplacement, _init_position, _init_extra_position, _init_direction, _init_extra_direction, _init_angle, _init_extra_angle, _init_innerAngle, _init_extra_innerAngle, _init_radius, _init_extra_radius, _init_inheritVelocity, _init_extra_inheritVelocity, _init_minSpeed, _init_extra_minSpeed, _init_maxSpeed, _init_extra_maxSpeed, _init_minLifeTime, _init_extra_minLifeTime, _init_maxLifeTime, _init_extra_maxLifeTime, _init_sizes, _init_extra_sizes, _init_sizeVariance, _init_extra_sizeVariance, _init_color, _init_extra_color, _init_color2, _init_extra_color2, _init_color3, _init_extra_color3, _init_color4, _init_extra_color4, _init_textureIndex, _init_extra_textureIndex, _init_colorMidpoint, _init_extra_colorMidpoint, _init_velocityStretchRotation, _init_extra_velocityStretchRotation, _init_drag, _init_extra_drag, _init_turbulenceAmplitude, _init_extra_turbulenceAmplitude, _init_turbulenceFrequency, _init_extra_turbulenceFrequency, _init_gravity, _init_extra_gravity;
 let _Tr2GpuSharedEmitter;

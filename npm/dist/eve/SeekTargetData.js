@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_bucketId, _init_extra_bucketId, _init_locatorIndex, _init_extra_locatorIndex, _init_timePassed, _init_extra_timePassed, _init_position, _init_extra_position, _init_direction, _init_extra_direction, _init_arrived, _init_extra_arrived, _init_hasSpawned, _init_extra_hasSpawned;
 let _SeekTargetData;

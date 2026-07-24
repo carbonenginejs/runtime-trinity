@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/Children/SocketParameters/EveSocketParameter.h
 // Hand-authored following the eve/socket generated pattern (SOCKET_PARAM_DECLARE macro family).
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveSocketParameterBindingBase } from "./EveSocketParameterBindingBase.js";
 
 /** EveSocketParameterVector4 (eve/socket) - SOCKET_PARAMETER_DEFINE(Vector4, (0, 0, 0, 0)). */

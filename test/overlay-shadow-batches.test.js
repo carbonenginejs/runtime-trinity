@@ -8,7 +8,7 @@ import {
   TriRenderBatchAccumulator
 } from "../npm/dist/index.js";
 
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 
 const OPAQUE = TriBatchType.TRIBATCHTYPE_OPAQUE;
 const DECAL = TriBatchType.TRIBATCHTYPE_DECAL;

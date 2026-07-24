@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\UI\EveUiObject.h
 // Source: E:\carbonengine\trinity\trinity\Eve\UI\EveUiObject.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\UI\EveUiObject_Blue.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveSpaceObject2 } from "../spaceObject/EveSpaceObject2.js";
 import { TriBatchType } from "../../generated/trinityCore/enums.js";
 

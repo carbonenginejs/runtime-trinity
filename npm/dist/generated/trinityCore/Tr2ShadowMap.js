@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initClass, _init_shadowSplitMode, _init_extra_shadowSplitMode, _init_denoiser, _init_extra_denoiser, _init_cascadeEffect, _init_extra_cascadeEffect, _init_splitCount, _init_extra_splitCount, _init_debugColorSplit, _init_extra_debugColorSplit, _init_SplitNr, _init_extra_SplitNr, _init_SplitNr2, _init_extra_SplitNr2, _init_SplitNr3, _init_extra_SplitNr3, _init_SplitNr4, _init_extra_SplitNr4, _init_SplitNr5, _init_extra_SplitNr5, _init_SplitNr6, _init_extra_SplitNr6, _init_SplitNr7, _init_extra_SplitNr7, _init_SplitNr8, _init_extra_SplitNr8, _init_SplitNr9, _init_extra_SplitNr9, _init_SplitNr0, _init_extra_SplitNr0, _init_SplitNr1, _init_extra_SplitNr1, _init_SplitNr10, _init_extra_SplitNr10, _init_SplitNr11, _init_extra_SplitNr11, _init_SplitNr12, _init_extra_SplitNr12, _init_SplitNr13, _init_extra_SplitNr13, _init_SplitNr14, _init_extra_SplitNr14, _init_disableShimmer, _init_extra_disableShimmer, _init_size, _init_extra_size;
 

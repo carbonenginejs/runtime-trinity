@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, schema } from '@carbonenginejs/core-types/schema';
+import { io, type, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Sprite2dContainer as _Tr2Sprite2dContainer } from './Tr2Sprite2dContainer.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_blendMode, _init_extra_blendMode, _init_spriteEffect, _init_extra_spriteEffect, _init_backgroundColor, _init_extra_backgroundColor, _init_color, _init_extra_color, _init_clearBackground, _init_extra_clearBackground;
 

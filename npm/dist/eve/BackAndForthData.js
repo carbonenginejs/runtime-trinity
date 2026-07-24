@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_locatorTarget, _init_extra_locatorTarget, _init_locatorDirection, _init_extra_locatorDirection, _init_locatorIndex, _init_extra_locatorIndex, _init_seek, _init_extra_seek, _init_deliver, _init_extra_deliver, _init_arrived, _init_extra_arrived, _init_timePassed, _init_extra_timePassed;
 let _BackAndForthData;

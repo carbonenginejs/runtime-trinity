@@ -1,10 +1,10 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/PostProcess/Effects/Tr2PPVignetteEffect.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema postProcess/Tr2PPVignetteEffect.json.).
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPEffect } from "./Tr2PPEffect.js";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 
 /** Tr2PPVignetteEffect (postProcess) - generated from schema shapeHash 8d16cbb2.... */
 @type.define({ className: "Tr2PPVignetteEffect", family: "postProcess" })

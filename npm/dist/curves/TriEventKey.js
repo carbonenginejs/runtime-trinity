@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_callable, _init_extra_callable, _init_callableArgs, _init_extra_callableArgs, _init_value, _init_extra_value, _init_time, _init_extra_time;
 let _TriEventKey;

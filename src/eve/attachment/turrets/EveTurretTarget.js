@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Turret\EveTurretTarget.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Turret\EveTurretTarget.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveTurretTarget", family: "eve/attachment/turrets" })

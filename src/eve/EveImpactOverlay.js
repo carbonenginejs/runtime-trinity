@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveImpactOverlay.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveImpactOverlay.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Attachments\EveImpactOverlay_Blue.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2ScalarFader } from "../curves/Tr2ScalarFader.js";
 import { ImpactConfiguration } from "../generated/include/enums.js";
 

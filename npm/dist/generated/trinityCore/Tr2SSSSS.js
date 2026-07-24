@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_subSurfaceFrontScatterColor, _init_extra_subSurfaceFrontScatterColor, _init_subSurfaceScatteringWidth, _init_extra_subSurfaceScatteringWidth, _init_hasSSSSSInScene, _init_extra_hasSSSSSInScene, _init_enabled, _init_extra_enabled;
 

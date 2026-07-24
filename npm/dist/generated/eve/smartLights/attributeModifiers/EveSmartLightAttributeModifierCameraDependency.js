@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveSmartLightAttributeModifierBucket as _EveSmartLightAttribu$1 } from './EveSmartLightAttributeModifierBucket.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initProto, _initClass, _init_minimumDistance, _init_extra_minimumDistance, _init_maximumDistance, _init_extra_maximumDistance, _init_lookAtVisionCone, _init_extra_lookAtVisionCone, _init_useCameraDistance, _init_extra_useCameraDistance, _init_inverselookAtFormula, _init_extra_inverselookAtFormula, _init_useCameraLookAt, _init_extra_useCameraLookAt, _init_inverseDistanceFormula, _init_extra_inverseDistanceFormula, _init_useCameraPlacement, _init_extra_useCameraPlacement, _init_inversePlacementFormula, _init_extra_inversePlacementFormula, _init_angleOverwrite, _init_extra_angleOverwrite, _init_positionOverwrite, _init_extra_positionOverwrite, _init_lookAtIntensity, _init_extra_lookAtIntensity, _init_placementIntensity, _init_extra_placementIntensity, _init_overwriteObjectDirection, _init_extra_overwriteObjectDirection, _init_overwritePosition, _init_extra_overwritePosition, _init_maximumActivation, _init_extra_maximumActivation, _init_minimumActivation, _init_extra_minimumActivation;
 

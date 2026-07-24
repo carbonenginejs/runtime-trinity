@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepGenerateMipMaps.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepGenerateMipMaps.cpp
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

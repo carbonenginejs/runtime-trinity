@@ -1,11 +1,11 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, impl } from '@carbonenginejs/core-types/schema';
+import { type, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveEntity as _EveEntity } from '../../EveEntity.js';
 import { EveComponentType } from '../../../../eve/EveComponentTypes.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { TriBatchType } from '@carbonenginejs/runtime-const/graphics';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { TriBatchType } from '@carbonenginejs/runtime-utils/graphics';
 import { EveSpaceObjectPSData as _EveSpaceObjectPSData } from '../../../../eve/EveSpaceObjectPSData.js';
 import { EveSpaceObjectVSData as _EveSpaceObjectVSData } from '../../../../eve/EveSpaceObjectVSData.js';
 import { Tr2PerObjectData } from '../../../../trinityCore/Tr2PerObjectData.js';

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { Tr2EffectDescription as _Tr2EffectDescription } from './reflection/Tr2EffectDescription.js';
 
 let _initClass, _init_sortValue, _init_extra_sortValue, _init_effect, _init_extra_effect, _init_hasVertexBufferAccessInRtShadow, _init_extra_hasVertexBufferAccessInRtShadow;

@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_baseCutoffData, _init_extra_baseCutoffData, _init_turretSetData, _init_extra_turretSetData, _init_shipMatrix, _init_extra_shipMatrix, _init_prevShipMatrix, _init_extra_prevShipMatrix, _init_currentBoneOffset, _init_extra_currentBoneOffset, _init_prevBoneOffset, _init_extra_prevBoneOffset, _init__unused, _init_extra__unused, _init_turretTranslation, _init_extra_turretTranslation, _init_turretRotation, _init_extra_turretRotation;
 

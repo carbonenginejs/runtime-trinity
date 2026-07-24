@@ -1,4 +1,4 @@
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 
 
 export class CjsParameter extends CjsModel

@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Shader/Tr2Effect.h
 // Hand-maintained from Tr2Effect.cpp's Blue structure definition and defaults.
-import { io, schema, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 import { Tr2RenderContext } from "../../trinityCore/Tr2RenderContext.js";
 
 /** Tr2SamplerOverride (shader) - generated from schema shapeHash b3478476.... */

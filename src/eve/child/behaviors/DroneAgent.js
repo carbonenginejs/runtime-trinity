@@ -1,11 +1,11 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/Children/Behaviors/DroneAgent.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema eve/child/behaviors/DroneAgent.json.).
-import { type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 
 /** DroneAgent (eve/child/behaviors) - generated from schema shapeHash c50899e8.... */
 @type.define({ className: "DroneAgent", family: "eve/child/behaviors" })

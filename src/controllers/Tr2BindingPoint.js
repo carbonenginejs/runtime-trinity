@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2BindingPoint.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2BindingPoint.cpp
-import { copyArrayLike, fillArrayLike } from "@carbonenginejs/core-math/utils";
-import { isArrayLike } from "@carbonenginejs/core-math/is";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { CjsSchema, carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { copyArrayLike, fillArrayLike } from "@carbonenginejs/runtime-utils/utils";
+import { isArrayLike } from "@carbonenginejs/runtime-utils/is";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { CjsSchema, carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 const SWIZZLE_OFFSETS = {

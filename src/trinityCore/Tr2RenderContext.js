@@ -15,10 +15,10 @@
 //    GetConstantBuffer/GetBackBuffer, and Fork/Join parallel encoding - is NOT
 //    ported: batch rendering awaits the material/batch runtime; parallel
 //    encoding is intentionally omitted in single-threaded JS.
-import { type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { Tr2VariableStore } from "./Tr2VariableStore.js";
 
 /** Tr2RenderContext (trinityCore) - generated from schema shapeHash 73e2a4e7.... */

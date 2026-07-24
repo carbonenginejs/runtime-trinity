@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type, io, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type, io, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_projectionType, _init_extra_projectionType, _init_fov, _init_extra_fov, _init_aspect, _init_extra_aspect, _init_left, _init_extra_left, _init_right, _init_extra_right, _init_bottom, _init_extra_bottom, _init_top, _init_extra_top, _init_zn, _init_extra_zn, _init_zf, _init_extra_zf, _init_customTransform, _init_extra_customTransform, _init_transform, _init_extra_transform;
 let _TriProjection;

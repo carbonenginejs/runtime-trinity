@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2InstancedMesh.h
 // Source: E:\carbonengine\trinity\trinity\Tr2InstancedMesh.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2InstancedMesh_Blue.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2Mesh } from "./Tr2Mesh.js";
 
 

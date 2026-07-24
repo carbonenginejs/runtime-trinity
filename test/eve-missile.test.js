@@ -1,29 +1,30 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 import {
   EveLocator2,
   EveLocatorSets,
   EveMissile,
   EveMissileWarhead,
-  EveMissileWarheadPerObjectData,
   EveMobile,
   EveSpaceObject2,
   EveTransform,
   EveTurretSet,
   EveTurretSetPSData,
   EveTurretSetVSData,
-  Locator
+  Locator,
+  TriRenderBatchAccumulator
 } from "../npm/dist/index.js";
+import { makePerObjectStore } from "./helpers/perObjectStore.js";
 
 
 test("missile, transform, and mobile classes are maintained Carbon graph owners", () =>
 {
-  for (const constructor of [EveTransform, EveMissileWarhead, EveMissile, EveMobile, EveMissileWarheadPerObjectData])
+  for (const constructor of [EveTransform, EveMissileWarhead, EveMissile, EveMobile])
   {
     assert.equal(CjsSchema.GetConstructor(constructor.name), constructor);
   }
@@ -87,8 +88,11 @@ test("EveMissileWarhead follows Carbon launch, state, particle, impact, and POD 
   assert.deepEqual(Array.from(warhead.explosionPosition), Array.from(warhead.GetWorldPosition()));
   assert.equal(warhead.CheckImpact(0.1, 2, null), EveMissileWarhead.StateChangeEvent.EVT_NONE);
 
-  const data = warhead.GetPerObjectData();
-  assert.deepEqual(Array.from(data.missileSize), [1, 1, 0, 0]);
+  const accumulator = new TriRenderBatchAccumulator().SetRawDataStore(makePerObjectStore());
+  const data = warhead.GetPerObjectData(accumulator);
+  const missileSize = new Float32Array(4);
+  data.Copy("missileSize", missileSize);
+  assert.deepEqual(Array.from(missileSize), [1, 1, 0, 0]);
   const sphere = vec4.create();
   assert.equal(warhead.GetLocalBoundingSphere(sphere), true);
   assert.equal(sphere[3], 0.5);

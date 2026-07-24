@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, CjsSchema } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl, CjsSchema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2Material as _Tr2Material } from './Tr2Material.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 import { Tr2ConstantEffectParameter as _Tr2ConstantEffectPar } from './parameter/Tr2ConstantEffectParameter.js';
 import { Tr2FloatParameter as _Tr2FloatParameter } from './parameter/Tr2FloatParameter.js';
 import { Tr2GeometryBufferParameter as _Tr2GeometryBufferPar } from './parameter/Tr2GeometryBufferParameter.js';

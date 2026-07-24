@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveStretch3.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveStretch3.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveEntity } from "../../../generated/eve/EveEntity.js";
 import { TriFloat } from "../../../trinityCore/TriFloat.js";
 import { EveChildUpdateParams } from "../../EveChildUpdateParams.js";

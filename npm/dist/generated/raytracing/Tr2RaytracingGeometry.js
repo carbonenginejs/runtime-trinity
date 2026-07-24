@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
 
 let _initClass, _init_positionOffset, _init_extra_positionOffset, _init_boneOffset, _init_extra_boneOffset, _init_boneWeightsOffset, _init_extra_boneWeightsOffset, _init_mesh, _init_extra_mesh, _init_area, _init_extra_area, _init_material, _init_extra_material, _init_perObjectData, _init_extra_perObjectData, _init_vertexBufferData, _init_extra_vertexBufferData, _init_worldTransform, _init_extra_worldTransform, _init_materialIndex, _init_extra_materialIndex, _init_isTransparent, _init_extra_isTransparent, _init_bakedMorphOffset, _init_extra_bakedMorphOffset, _init_geometryData, _init_extra_geometryData, _init_threadLocalGeometryData, _init_extra_threadLocalGeometryData, _init_tlas, _init_extra_tlas, _init_skinVerticesEffect, _init_extra_skinVerticesEffect, _init_skinVerticesData, _init_extra_skinVerticesData, _init_skinnedVertices, _init_extra_skinnedVertices, _init_usedResources, _init_extra_usedResources, _init_threadLocalUsedResources, _init_extra_threadLocalUsedResources, _init_instanceCount, _init_extra_instanceCount, _init_worldTransforms, _init_extra_worldTransforms;
 

@@ -2,10 +2,10 @@
 //   trinity/trinity/Eve/SpaceObject/Children/EveChildFogVolume.h
 //   trinity/trinity/Eve/SpaceObject/Children/EveChildFogVolume.cpp
 //   trinity/trinity/Eve/SpaceObject/Children/EveChildFogVolume_Blue.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveChildTransform } from "./EveChildTransform.js";
 import { EveComponentType } from "../EveComponentTypes.js";
 

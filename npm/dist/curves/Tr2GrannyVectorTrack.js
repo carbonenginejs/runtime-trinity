@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { CjsGrannyCurves } from './CjsGrannyCurves.js';
 import { Tr2GrannyTrack as _Tr2GrannyTrack } from './Tr2GrannyTrack.js';
 

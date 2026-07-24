@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_buffer, _init_extra_buffer, _init_clearWithFloat, _init_extra_clearWithFloat, _init_floatValue, _init_extra_floatValue, _init_bitValue, _init_extra_bitValue, _init_bitValue2, _init_extra_bitValue2, _init_bitValue3, _init_extra_bitValue3, _init_bitValue4, _init_extra_bitValue4;
 

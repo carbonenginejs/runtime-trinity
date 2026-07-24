@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2FollowCurveKeyInterpolation, RotationSetting } from './enums.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_object, _init_extra_object, _init_time, _init_extra_time, _init_interpolation, _init_extra_interpolation, _init_leftTangent, _init_extra_leftTangent, _init_rightTangent, _init_extra_rightTangent, _init_rotatedLeftTangent, _init_extra_rotatedLeftTangent, _init_rotatedRightTangent, _init_extra_rotatedRightTangent, _init_offsetLocatorName, _init_extra_offsetLocatorName, _init_offset, _init_extra_offset, _init_rotationSetting, _init_extra_rotationSetting;

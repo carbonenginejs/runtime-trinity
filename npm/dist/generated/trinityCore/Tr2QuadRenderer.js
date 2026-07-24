@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { Tr2RenderBatch } from '../../trinityCore/Tr2RenderBatch.js';
 
 let _initProto, _initClass, _init_vertexBufferOffset, _init_extra_vertexBufferOffset, _init_lastInstanceDataSize, _init_extra_lastInstanceDataSize, _init_bufferAlignment, _init_extra_bufferAlignment, _init_bufferSize, _init_extra_bufferSize;

@@ -1,10 +1,10 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveEllipsoidVolume.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveEllipsoidVolume.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\Volume\EveEllipsoidVolume_Blue.cpp
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

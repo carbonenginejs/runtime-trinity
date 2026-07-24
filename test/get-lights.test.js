@@ -9,8 +9,8 @@
 // EveChildMesh.cpp:1638-1652).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import {
   AsPerPointLightData,
   AsPerSpotLightData,

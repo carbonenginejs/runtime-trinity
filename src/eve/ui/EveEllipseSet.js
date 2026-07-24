@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/UI/EveEllipseSet.h
 //   trinity/trinity/Eve/UI/EveEllipseSet.cpp
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { carbon, io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { carbon, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveChildTransform } from "../child/EveChildTransform.js";
 import { EveEllipseDefinition } from "./EveEllipseDefinition.js";
 

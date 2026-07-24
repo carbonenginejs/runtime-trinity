@@ -1,11 +1,11 @@
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Tr2PostProcessAttributes.h
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Tr2PostProcessAttributes.cpp
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Tr2PostProcessAttributes_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPBloomEffect } from "./Tr2PPBloomEffect.js";
 import { Tr2PPColorCorrectionEffect } from "./Tr2PPColorCorrectionEffect.js";
 import { Tr2PPDepthOfFieldEffect } from "./Tr2PPDepthOfFieldEffect.js";

@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Matrix4Parameter.h
 // Source: E:\carbonengine\trinity\trinity\Shader\Parameter\Tr2Matrix4Parameter.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { CjsVectorParameter } from "./CjsVectorParameter.js";
 
 

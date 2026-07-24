@@ -1,7 +1,7 @@
 import test from "node:test";
 import { BELIST_INSERTED, BELIST_REMOVED, CjsControllerExpressionProgram, EveChildUpdateParams, ITr2GenericEmitter, TR2_DIRTY_ALL, Tr2ActionAnimateCurveSet, Tr2ActionAnimateValue, Tr2ActionBindRTPC, Tr2ActionCallback, Tr2ActionChildEffect, Tr2ActionOverlay, Tr2ActionPlayCurveSet, Tr2ActionPlayMeshAnimation, Tr2ActionPlaySound, Tr2ActionPython, Tr2ActionResetClipSphereCenter, Tr2ActionSetAttenuationScaling, Tr2ActionSetAudioEmitterPrefix, Tr2ActionSetAudioSwitch, Tr2ActionSetExternalControllerVariable, Tr2ActionSetShaderOption, Tr2ActionSetValue, Tr2ActionSpawnParticles, Tr2BindingPoint, Tr2Controller, Tr2ControllerEventHandler, Tr2ControllerExpression, Tr2ControllerFloatVariable, Tr2ControllerReference, Tr2StateMachine, Tr2StateMachineState, Tr2StateMachineTransition, Tr2SyncToAnimation, Tr2TimelineController, PlayAction, ResetBehavior, StopAction, Type } from "../npm/dist/index.js";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 
 
 function assert(condition, message = "assertion failed")

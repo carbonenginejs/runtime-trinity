@@ -1,5 +1,5 @@
-import { RenderingMode } from '@carbonenginejs/runtime-const/graphics';
-import { D3dPrimitiveTopology } from '@carbonenginejs/runtime-const/d3d';
+import { RenderingMode } from '@carbonenginejs/runtime-utils/graphics';
+import { D3dPrimitiveTopology } from '@carbonenginejs/runtime-utils/d3d';
 
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/TriRenderBatch.h

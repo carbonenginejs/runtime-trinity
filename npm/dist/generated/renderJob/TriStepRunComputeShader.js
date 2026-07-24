@@ -1,5 +1,5 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { TriRenderStep as _TriRenderStep } from '../../renderJob/TriRenderStep.js';
 
 let _initProto, _initClass, _init_groupDimX, _init_extra_groupDimX, _init_groupDimY, _init_extra_groupDimY, _init_groupDimZ, _init_extra_groupDimZ, _init_effect, _init_extra_effect, _init_indirectionBuffer, _init_extra_indirectionBuffer, _init_offsetForArgs, _init_extra_offsetForArgs;

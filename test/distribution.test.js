@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 import { EveBoxVolume } from "../npm/dist/eve/volume/EveBoxVolume.js";
 import { EveEllipsoidVolume } from "../npm/dist/eve/volume/EveEllipsoidVolume.js";
 import { EveSphereVolume } from "../npm/dist/eve/volume/EveSphereVolume.js";

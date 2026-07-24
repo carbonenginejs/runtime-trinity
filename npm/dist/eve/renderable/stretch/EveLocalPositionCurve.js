@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_behavior, _init_extra_behavior, _init_impactSize, _init_extra_impactSize, _init_offset, _init_extra_offset, _init_positionOffset, _init_extra_positionOffset, _init_parentPositionCurve, _init_extra_parentPositionCurve, _init_alignPositionCurve, _init_extra_alignPositionCurve, _init_value, _init_extra_value, _init_boundingSize, _init_extra_boundingSize, _init_parentRotationCurve, _init_extra_parentRotationCurve, _init_parent, _init_extra_parent, _init_turretSetObject, _init_extra_turretSetObject, _init_muzzleIndex, _init_extra_muzzleIndex, _init_damageLocatorIndex, _init_extra_damageLocatorIndex, _init_locatorIndex, _init_extra_locatorIndex, _init_locatorSetName, _init_extra_locatorSetName;
 let _EveLocalPositionCurv;

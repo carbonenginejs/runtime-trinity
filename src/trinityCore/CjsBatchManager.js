@@ -14,7 +14,7 @@
 // finalized accumulators is engine work and never lives here. The manager holds
 // a reference DOWN to the engine hooks - it is not a device member, and no GPU
 // handle ever enters this class.
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { Tr2RenderReason } from "../generated/trinityCore/enums.js";
 import { TriRenderBatchMap } from "./TriRenderBatchMap.js";
 

@@ -1,6 +1,6 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { hasUnboundParticleElements } from '../../particle/particleElementBinding.js';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_isValid, _init_extra_isValid, _init_generators, _init_extra_generators, _init_maxParticles, _init_extra_maxParticles, _init_rate, _init_extra_rate, _init_particleSystem, _init_extra_particleSystem;

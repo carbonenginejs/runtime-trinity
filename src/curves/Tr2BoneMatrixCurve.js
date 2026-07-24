@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2BoneMatrixCurve.h
 // Source: E:\carbonengine\trinity\trinity\Curves\Tr2BoneMatrixCurve.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { isArrayLike } from "@carbonenginejs/core-math/is";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { isArrayLike } from "@carbonenginejs/runtime-utils/is";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2MatrixKey } from "./Tr2MatrixKey.js";
 
 

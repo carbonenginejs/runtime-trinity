@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Curves\TriCurveSet.h
 // Source: E:\carbonengine\trinity\trinity\Curves\TriCurveSet.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

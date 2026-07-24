@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 
 let _initProto, _initClass, _init_ascender, _init_extra_ascender, _init_cursorX, _init_extra_cursorX, _init_cursorY, _init_extra_cursorY, _init_descender, _init_extra_descender, _init_letterSpace, _init_extra_letterSpace, _init_limit, _init_extra_limit, _init_asc, _init_extra_asc, _init_des, _init_extra_des, _init_underline, _init_extra_underline;
 

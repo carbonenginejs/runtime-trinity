@@ -1,8 +1,8 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/UI/Tr2PresentParameters.h
 // Hand-maintained from Carbon source; runtime-device owns the canonical JS class.
-import { io, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 
 /** Tr2PresentParameters (ui) - generated from schema shapeHash 0f696098.... */
 @type.define({ className: "Tr2PresentParameters", family: "ui" })

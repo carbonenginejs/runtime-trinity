@@ -2,10 +2,10 @@
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuSharedEmitter.cpp
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuSharedEmitter_Blue.cpp
 // Source: E:\carbonengine\trinity\trinity\Particle\Tr2GpuParticleSystem.h
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "Tr2GpuSharedEmitter", family: "particle" })

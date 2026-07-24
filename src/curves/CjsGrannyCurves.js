@@ -7,7 +7,7 @@
  * clean-room implementation, the package is MIT, and the canonical reader now
  * lives at @carbonenginejs/runtime-resource/formats/gr2.
  */
-import { num } from "@carbonenginejs/core-math/num";
+import { num } from "@carbonenginejs/runtime-utils/num";
 
 const fr = Math.fround;
 const CURVE_DECODERS = Object.freeze([Object.freeze({

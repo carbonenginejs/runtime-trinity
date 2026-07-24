@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPTaaEffect.h
 // Source: E:\carbonengine\trinity\trinity\PostProcess\Effects\Tr2PPTaaEffect.cpp
-import { io, schema, type } from "@carbonenginejs/core-types/schema";
+import { io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPEffect } from "./Tr2PPEffect.js";
 
 

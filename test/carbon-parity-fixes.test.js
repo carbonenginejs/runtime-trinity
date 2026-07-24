@@ -34,10 +34,10 @@ import {
   Vec3TransformByViewport
 } from "../npm/dist/index.js";
 
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 
 function assertClose(actual, expected, message)
 {

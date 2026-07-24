@@ -1,13 +1,13 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\LineSetPaths\EveCircle_Blue.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { sph3 } from "@carbonenginejs/core-math/sph3";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { sph3 } from "@carbonenginejs/runtime-utils/sph3";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveChildTransform } from "../EveChildTransform.js";
 
 

@@ -1,4 +1,4 @@
-import { RenderingMode } from '@carbonenginejs/runtime-const/graphics';
+import { RenderingMode } from '@carbonenginejs/runtime-utils/graphics';
 
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/TriRenderBatch.h (ITriRenderBatchAccumulator)

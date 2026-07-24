@@ -15,9 +15,9 @@
 // Field types verified against Carbon EveUpdateContext.h. Per the engine field
 // rules: only reference fields (objectRef) default to null; scalars default to
 // 0 / false and fixed vectors to a zero vector.
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
 
 /** EveUpdateContext (eve) - hand-maintained from schema shapeHash 227e2060.... */
 @type.define({ className: "EveUpdateContext", family: "eve" })

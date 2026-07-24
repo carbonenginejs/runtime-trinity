@@ -1,7 +1,7 @@
 import test from "node:test";
 import { EveSprite2dBracket } from "../npm/dist/index.js";
-import { vec2 } from "@carbonenginejs/core-math/vec2";
-import { CjsSchema } from "@carbonenginejs/core-types/schema";
+import { vec2 } from "@carbonenginejs/runtime-utils/vec2";
+import { CjsSchema } from "@carbonenginejs/runtime-utils/schema";
 
 
 test("EveSprite2dBracket ports Carbon's CPU-side UI contract", () =>

@@ -1,12 +1,12 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\EveTransform.h
 // Source: E:\carbonengine\trinity\trinity\Eve\EveTransform.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { sph3 } from "@carbonenginejs/core-math/sph3";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { sph3 } from "@carbonenginejs/runtime-utils/sph3";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { Tr2Transform } from "../../generated/trinityCore/Tr2Transform.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 

@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshArea.h
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshArea.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshArea_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "Tr2MeshArea", family: "trinityCore" })

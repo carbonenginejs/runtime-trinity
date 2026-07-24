@@ -1,6 +1,6 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\Behaviors\FollowASpline.h
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_stages, _init_extra_stages;
 let _Tr2PostProcess;

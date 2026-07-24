@@ -1,8 +1,8 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2VariableStore.h
 // Source: E:\carbonengine\trinity\trinity\Tr2VariableStore.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2VariableStore_Blue.cpp
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 import { TriVariable } from "./TriVariable.js";
 import { TriVariableContentType } from "../generated/trinityCore/enums.js";
 

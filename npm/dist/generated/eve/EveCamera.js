@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { quat, fromYawPitchRoll } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { quat, fromYawPitchRoll } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { Tr2CurveScalar as _Tr2CurveScalar } from '../../curves/Tr2CurveScalar.js';
 import { Tr2CurveInterpolation, Tr2CurveTangentType } from '../../curves/enums.js';
 import { TriProjection as _TriProjection } from '../../trinityCore/TriProjection.js';

@@ -1,13 +1,12 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMissileWarhead.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMissileWarhead.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { carbonPerlin1D } from "@carbonenginejs/core-math/noise";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { sph3 } from "@carbonenginejs/core-math/sph3";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { EveMissileWarheadPerObjectData } from "../perObjectData/EveMissileWarheadPerObjectData.js";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { carbonPerlin1D } from "@carbonenginejs/runtime-utils/noise";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { sph3 } from "@carbonenginejs/runtime-utils/sph3";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveTransform } from "./EveTransform.js";
 
 
@@ -345,17 +344,13 @@ export class EveMissileWarhead extends EveTransform
 
   @carbon.method
   @impl.adapted
-  @impl.reason("Persistent device buffers are engine-owned; Trinity publishes their exact CPU value record.")
-  GetPerObjectData(accumulatorOrOut = new EveMissileWarheadPerObjectData())
+  @impl.reason("Constant-buffer layout/packing is engine-owned; Trinity Allocs the record from the accumulator's store and Sets logical values by name (the store transposes the matrix per the engine layout).")
+  GetPerObjectData(accumulator)
   {
-    // Accepts the Carbon accumulator contract (Allocate) or a caller-owned
-    // output record (the earlier JS shape, kept for compatibility).
-    const out = typeof accumulatorOrOut?.Allocate === "function"
-      ? accumulatorOrOut.Allocate(EveMissileWarheadPerObjectData)
-      : accumulatorOrOut;
-    mat4.transpose(out.world, this.worldTransform);
-    vec4.set(out.missileSize, this.warheadRadius, this.warheadLength, 0, 0);
-    return out;
+    const data = accumulator.Alloc("EveMissileWarheadPerObjectData");
+    data.Set("world", this.worldTransform);
+    data.Set("missileSize", [this.warheadRadius, this.warheadLength, 0, 0]);
+    return data;
   }
 
   static State = Object.freeze({

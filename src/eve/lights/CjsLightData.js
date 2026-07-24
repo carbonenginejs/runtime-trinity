@@ -1,10 +1,10 @@
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2Light.h
 // Source: E:\carbonengine\trinity\trinity\Lights\Tr2Light.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { schema, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { schema, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({

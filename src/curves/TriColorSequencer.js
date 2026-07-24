@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\TriSequencer.h
 // Source: E:\carbonengine\trinity\trinity\TriSequencer.cpp
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
-import { TriOperator } from "@carbonenginejs/runtime-const/graphics";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
+import { TriOperator } from "@carbonenginejs/runtime-utils/graphics";
 
 
 @type.define({ className: "TriColorSequencer", family: "curves" })

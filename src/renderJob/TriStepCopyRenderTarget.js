@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepCopyRenderTarget.h
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepCopyRenderTarget.cpp
 // Source: E:\carbonengine\trinity\trinity\RenderJob\TriStepCopyRenderTarget_Blue.cpp
-import { CjsSchema, carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsSchema, carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { TriRenderJob } from "./TriRenderJob.js";
 import { TriRenderStep } from "./TriRenderStep.js";
 

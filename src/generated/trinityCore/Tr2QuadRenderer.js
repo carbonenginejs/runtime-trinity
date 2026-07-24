@@ -7,8 +7,8 @@
 // onto the class; corrected to Carbon's nested shape. GPU realization (quad
 // vertex/index buffers, ring instance buffer upload, vertex-declaration
 // handles) is engine-owned and reads the merged CPU state emitted here.
-import { carbon, impl, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
+import { carbon, impl, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
 import { Tr2RenderBatch } from "../../trinityCore/Tr2RenderBatch.js";
 
 /** One registered quad effect (Carbon Tr2QuadRenderer::EffectRecord). */

@@ -1,11 +1,11 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildEffectPropagator.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildEffectPropagator.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildEffectPropagator_Blue.cpp
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 import { EveChildContainer } from "./EveChildContainer.js";
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 import { Tr2Lod } from "../EveLODHelper.js";
 
 // Module scratch for the trigger-driven locator paths (allocation rules:

@@ -1,8 +1,8 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PrimitiveSet as _Tr2PrimitiveSet } from './Tr2PrimitiveSet.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_lines, _init_extra_lines, _init_maxCurrentLineCount, _init_extra_maxCurrentLineCount, _init_currentSubmittedLineCount, _init_extra_currentSubmittedLineCount, _init_pickingVertexDeclHandle, _init_extra_pickingVertexDeclHandle, _init_pickingVertexBuffer, _init_extra_pickingVertexBuffer, _init_triangles, _init_extra_triangles, _init_maxCurrentTriangleCount, _init_extra_maxCurrentTriangleCount, _init_currentSubmittedTriangleCount, _init_extra_currentSubmittedTriangleCount;
 

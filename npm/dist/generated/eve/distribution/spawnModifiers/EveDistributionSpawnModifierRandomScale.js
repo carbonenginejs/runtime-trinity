@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 import { getDistributionSeed, createMinStdRandom } from '../../../../eve/CjsDistributionRandom.js';
 
 let _initProto, _initClass, _init_minScale, _init_extra_minScale, _init_maxScale, _init_extra_maxScale, _init_consistentRandom, _init_extra_consistentRandom, _init_uniformScale, _init_extra_uniformScale, _init_overrideScale, _init_extra_overrideScale;

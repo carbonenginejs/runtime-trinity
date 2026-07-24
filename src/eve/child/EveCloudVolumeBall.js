@@ -1,10 +1,10 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/Eve/SpaceObject/Children/EveCloudEditableVolume.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema eve/child/EveCloudVolumeBall.json.).
-import { io, type } from "@carbonenginejs/core-types/schema";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 
 /** EveCloudVolumeBall (eve/child) - generated from schema shapeHash 70440408.... */
 @type.define({ className: "EveCloudVolumeBall", family: "eve/child" })

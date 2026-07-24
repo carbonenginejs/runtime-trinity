@@ -1,11 +1,11 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, carbon, impl, type } from '@carbonenginejs/core-types/schema';
+import { io, carbon, impl, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2TexturedSpriteObject as _Tr2TexturedSpriteObj } from './Tr2TexturedSpriteObject.js';
 import { Tr2Sprite2dTriangle as _Tr2Sprite2dTriangle } from '../../sprite2d/Tr2Sprite2dTriangle.js';
 import { Tr2Sprite2dVertex as _Tr2Sprite2dVertex } from './Tr2Sprite2dVertex.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_triangles, _init_extra_triangles, _init_vertices, _init_extra_vertices;
 

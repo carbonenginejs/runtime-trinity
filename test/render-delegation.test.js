@@ -4,7 +4,6 @@ import { test } from "node:test";
 import {
   CjsBatchManager,
   EveMissileWarhead,
-  EveMissileWarheadPerObjectData,
   EveSpaceObject2,
   EveSpaceScene,
   EveTransform,
@@ -15,7 +14,7 @@ import {
   TriRenderBatchAccumulator
 } from "../npm/dist/index.js";
 
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { makePerObjectStore, makeRenderContextWithStore } from "./helpers/perObjectStore.js";
 
 // An accumulator wired with a test per-object-data store.
@@ -285,11 +284,11 @@ test("EveSpaceObject2.GetPerObjectData/GetSortValue honor the Carbon contracts",
   assert.equal(object.GetSortValue(context), 5, "plain distance, no multiplier");
 });
 
-test("EveMissileWarhead.GetPerObjectData accepts the accumulator contract", () =>
+test("EveMissileWarhead.GetPerObjectData Allocs a RawData record from the store", () =>
 {
   const warhead = new EveMissileWarhead();
-  const data = warhead.GetPerObjectData(new TriRenderBatchAccumulator());
-  assert.ok(data instanceof EveMissileWarheadPerObjectData);
+  const data = warhead.GetPerObjectData(makeAccumulator());
+  assert.ok(data instanceof RawData);
 });
 
 test("end-to-end: real EveTransform through CjsBatchManager produces finalized batches", () =>

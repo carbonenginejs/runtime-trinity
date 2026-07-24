@@ -1,10 +1,10 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { mat3 } from '@carbonenginejs/core-math/mat3';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { io, type, impl, carbon } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
+import { mat3 } from '@carbonenginejs/runtime-utils/mat3';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { io, type, impl, carbon } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
 import { CjsGrannyCurves } from '../../curves/CjsGrannyCurves.js';
 import { GrannyBoneOffset as _GrannyBoneOffset } from '../../trinityCore/GrannyBoneOffset.js';
 

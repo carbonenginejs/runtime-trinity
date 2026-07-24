@@ -24,11 +24,9 @@
   "publishConfig": {
     "access": "public"
   }, 
-  "version": "0.5.0",
+  "version": "0.6.0",
   "dependencies": {
-    "@carbonenginejs/core-math": "^0.1.5",
-    "@carbonenginejs/core-types": "^0.13.0",
-    "@carbonenginejs/runtime-const": "^0.1.0"
+    "@carbonenginejs/runtime-utils": "^0.1.0"
   }, 
   "type": "module", 
   "description": "CarbonEngineJS Trinity graph classes and JSON contract."

@@ -1,8 +1,8 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, carbon, impl, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_renderFrequency, _init_extra_renderFrequency, _init_currentFrame, _init_extra_currentFrame, _init_customSourceTexture, _init_extra_customSourceTexture, _init_backlightColor, _init_extra_backlightColor, _init_backlightContrast, _init_extra_backlightContrast, _init_hollywoodMode, _init_extra_hollywoodMode, _init_reflectionTexture, _init_extra_reflectionTexture, _init_hdrOutput, _init_extra_hdrOutput, _init_lockPosition, _init_extra_lockPosition, _init_position, _init_extra_position, _init_reflectionSize, _init_extra_reflectionSize, _init_unfilteredTexture, _init_extra_unfilteredTexture;
 

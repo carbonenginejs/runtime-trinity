@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveLocalPositionCurve.h
 // Source: E:\carbonengine\trinity\trinity\Eve\Renderable\Stretch\EveLocalPositionCurve.cpp
-import { quat } from "@carbonenginejs/core-math/quat";
-import { vec3 } from "@carbonenginejs/core-math/vec3";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
+import { quat } from "@carbonenginejs/runtime-utils/quat";
+import { vec3 } from "@carbonenginejs/runtime-utils/vec3";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, schema, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveLocalPositionCurve", family: "eve/renderable/stretch" })

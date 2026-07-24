@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { type } from '@carbonenginejs/core-types/schema';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { type } from '@carbonenginejs/runtime-utils/schema';
 
 let _initClass, _init_worldMatrix, _init_extra_worldMatrix, _init_pinPosition, _init_extra_pinPosition, _init_pinRotation, _init_extra_pinRotation, _init_pinColor, _init_extra_pinColor, _init_pinThreshold, _init_extra_pinThreshold, _init_pinRadiusPrecalc, _init_extra_pinRadiusPrecalc, _init_pinUV, _init_extra_pinUV;
 let _EveSpherePinPerObjec;

@@ -1,7 +1,7 @@
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2TimelineController.h
 // Source: E:\carbonengine\trinity\trinity\Controllers\Tr2TimelineController.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { GetControllerActualTimeSeconds, GetControllerFrameTimeSeconds } from "./contracts.js";
 import { CjsEveThrottleableState } from "../eve/CjsEveThrottleableState.js";
 import { Tr2TimelineEntry } from "./Tr2TimelineEntry.js";

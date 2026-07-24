@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, impl } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { noise } from '@carbonenginejs/core-math/noise';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { io, type, impl } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { noise } from '@carbonenginejs/runtime-utils/noise';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_amplitude, _init_extra_amplitude, _init_frequency, _init_extra_frequency, _init_noiseLevel, _init_extra_noiseLevel, _init_noiseRatio, _init_extra_noiseRatio;
 

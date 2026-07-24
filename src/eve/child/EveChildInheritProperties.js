@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildInheritProperties.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildInheritProperties.cpp
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\Children\EveChildInheritProperties_Blue.cpp
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 
 
 const COLOR_PROPERTIES = Object.freeze([

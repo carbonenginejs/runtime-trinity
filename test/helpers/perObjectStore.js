@@ -14,6 +14,14 @@ export const TEST_PER_OBJECT_STRUCTS = {
     { name: "world",        size: 16, encoding: Type.MATRIX },
     { name: "worldLast",    size: 16, encoding: Type.MATRIX },
     { name: "worldInverse", size: 16, encoding: Type.MATRIX }
+  ],
+  EveMissileWarheadPerObjectData: [
+    { name: "world",       size: 16, encoding: Type.MATRIX },
+    { name: "missileSize", size: 4,  encoding: Type.VECTOR }
+  ],
+  EveSceneStaticParticlesPerObjectData: [
+    { name: "world",     size: 16, encoding: Type.MATRIX },
+    { name: "lastWorld", size: 16, encoding: Type.MATRIX }
   ]
 };
 

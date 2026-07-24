@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveSmartLightBaseAttributeModifier as _EveSmartLightBaseAtt } from './EveSmartLightBaseAttributeModifier.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initProto, _initClass, _init_factionColor, _init_extra_factionColor, _init_blendValue, _init_extra_blendValue, _init_useFactionColor, _init_extra_useFactionColor, _init_blendColor, _init_extra_blendColor, _init_brightnessMultiplier, _init_extra_brightnessMultiplier, _init_saturationMultiplier, _init_extra_saturationMultiplier;
 

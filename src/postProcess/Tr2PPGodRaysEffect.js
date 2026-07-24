@@ -1,9 +1,9 @@
 // Ported from CarbonEngine (MIT, (c) 2026 CCP Games) - https://github.com/carbonengine/trinity
 //   trinity/trinity/PostProcess/Effects/Tr2PPGodRaysEffect.h
 // Promoted to hand-maintained source 2026-07-23 (Carbon-verified property shell; schema postProcess/Tr2PPGodRaysEffect.json.).
-import { io, type } from "@carbonenginejs/core-types/schema";
+import { io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2PPEffect } from "./Tr2PPEffect.js";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
 
 /** Tr2PPGodRaysEffect (postProcess) - generated from schema shapeHash 14c380e1.... */
 @type.define({ className: "Tr2PPGodRaysEffect", family: "postProcess" })

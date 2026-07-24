@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
-import { vec2 } from '@carbonenginejs/core-math/vec2';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
+import { vec2 } from '@carbonenginejs/runtime-utils/vec2';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
 
 let _initClass, _init_intensity, _init_extra_intensity, _init_totalAmount, _init_extra_totalAmount, _init_totalPower, _init_extra_totalPower, _init_backgroundOcclusion, _init_extra_backgroundOcclusion, _init_brightnessThreshold, _init_extra_brightnessThreshold, _init_brightnessThreshold2, _init_extra_brightnessThreshold2, _init_brightnessAdjustmentAmount, _init_extra_brightnessAdjustmentAmount, _init_blendDistance, _init_extra_blendDistance, _init_blendBias, _init_extra_blendBias, _init_blendAmount, _init_extra_blendAmount, _init_blendPower, _init_extra_blendPower, _init_blendDistance2, _init_extra_blendDistance2, _init_blendBias2, _init_extra_blendBias2, _init_blendAmount2, _init_extra_blendAmount2, _init_blendPower2, _init_extra_blendPower2, _init_blendDistance3, _init_extra_blendDistance3, _init_blendBias3, _init_extra_blendBias3, _init_blendAmount3, _init_extra_blendAmount3, _init_blendPower3, _init_extra_blendPower3, _init_areaSize, _init_extra_areaSize, _init_areaScale, _init_extra_areaScale, _init_areaCenter, _init_extra_areaCenter, _init_colorInfluence, _init_extra_colorInfluence, _init_color, _init_extra_color, _init_nebulaInfluence, _init_extra_nebulaInfluence, _init_nebulaBlur, _init_extra_nebulaBlur, _init_originalBrightenOnly, _init_extra_originalBrightenOnly;
 

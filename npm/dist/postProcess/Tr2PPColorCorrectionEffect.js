@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { io, type } from '@carbonenginejs/core-types/schema';
+import { io, type } from '@carbonenginejs/runtime-utils/schema';
 import { Tr2PPEffect as _Tr2PPEffect } from './Tr2PPEffect.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initClass, _init_whiteTint, _init_extra_whiteTint, _init_colorSaturation, _init_extra_colorSaturation, _init_colorContrast, _init_extra_colorContrast, _init_colorGamma, _init_extra_colorGamma, _init_colorGain, _init_extra_colorGain, _init_colorOffset, _init_extra_colorOffset, _init_whiteTemperature, _init_extra_whiteTemperature;
 

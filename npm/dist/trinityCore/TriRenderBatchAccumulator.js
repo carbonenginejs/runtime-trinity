@@ -1,5 +1,5 @@
-import { RenderingMode } from '@carbonenginejs/runtime-const/graphics';
-import { D3dPrimitiveTopology } from '@carbonenginejs/runtime-const/d3d';
+import { RenderingMode } from '@carbonenginejs/runtime-utils/graphics';
+import { D3dPrimitiveTopology } from '@carbonenginejs/runtime-utils/d3d';
 import { RenderBatchSortType } from '../generated/trinityCore/enums.js';
 import { ITriRenderBatchAccumulator } from './ITriRenderBatchAccumulator.js';
 import { OrderOf, Tr2GdprBatchFullPartition } from './Tr2RenderBatch.js';

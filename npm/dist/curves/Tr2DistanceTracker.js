@@ -1,7 +1,7 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 
 let _initProto, _initClass, _init_name, _init_extra_name, _init_value, _init_extra_value, _init_signedDistance, _init_extra_signedDistance, _init_distanceToClosest, _init_extra_distanceToClosest, _init_direction, _init_extra_direction, _init_sourceObject, _init_extra_sourceObject, _init_targetObject, _init_extra_targetObject, _init_sourcePosition, _init_extra_sourcePosition, _init_targetPosition, _init_extra_targetPosition;
 let _Tr2DistanceTracker;

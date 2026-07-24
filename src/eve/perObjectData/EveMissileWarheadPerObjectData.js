@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMissileWarhead.h
 // Source: E:\carbonengine\trinity\trinity\Eve\SpaceObject\EveMissileWarhead.cpp
-import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { vec4 } from "@carbonenginejs/core-math/vec4";
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { type } from "@carbonenginejs/core-types/schema";
+import { mat4 } from "@carbonenginejs/runtime-utils/mat4";
+import { vec4 } from "@carbonenginejs/runtime-utils/vec4";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { type } from "@carbonenginejs/runtime-utils/schema";
 
 
 @type.define({ className: "EveMissileWarheadPerObjectData", family: "eve/perObjectData" })

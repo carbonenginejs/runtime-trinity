@@ -1,7 +1,7 @@
 import { identity as _identity, applyDecs2311 as _applyDecs2311 } from '../../_virtual/_rollupPluginBabelHelpers.js';
-import { type, schema } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { Tr2CpuUsage, Tr2GpuUsage } from '@carbonenginejs/runtime-const/render-context';
+import { type, schema } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { Tr2CpuUsage, Tr2GpuUsage } from '@carbonenginejs/runtime-utils/render-context';
 
 let _initClass, _init_elements, _init_extra_elements, _init_texture, _init_extra_texture, _init_dimensions, _init_extra_dimensions, _init_onTextureChange, _init_extra_onTextureChange, _init_increment, _init_extra_increment, _init_cpuUsage, _init_extra_cpuUsage, _init_gpuUsage, _init_extra_gpuUsage;
 

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../_virtual/_rollupPluginBabelHelpers.js';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { CjsGrannyCurves } from './CjsGrannyCurves.js';
 
 let _initProto, _initClass, _init_grannyResPath, _init_extra_grannyResPath, _init_cycle, _init_extra_cycle, _init_duration, _init_extra_duration, _init_grannyRes, _init_extra_grannyRes, _init_name, _init_extra_name, _init_group, _init_extra_group;

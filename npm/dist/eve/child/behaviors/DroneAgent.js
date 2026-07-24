@@ -1,9 +1,9 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { type } from '@carbonenginejs/core-types/schema';
-import { CjsModel } from '@carbonenginejs/core-types/model';
-import { mat4 } from '@carbonenginejs/core-math/mat4';
-import { quat } from '@carbonenginejs/core-math/quat';
-import { vec3 } from '@carbonenginejs/core-math/vec3';
+import { type } from '@carbonenginejs/runtime-utils/schema';
+import { CjsModel } from '@carbonenginejs/runtime-utils/model';
+import { mat4 } from '@carbonenginejs/runtime-utils/mat4';
+import { quat } from '@carbonenginejs/runtime-utils/quat';
+import { vec3 } from '@carbonenginejs/runtime-utils/vec3';
 
 let _initClass, _init_closestAgentInGroup, _init_extra_closestAgentInGroup, _init_rotation, _init_extra_rotation, _init_position, _init_extra_position, _init_acceleration, _init_extra_acceleration, _init_velocity, _init_extra_velocity, _init_accelerationLength, _init_extra_accelerationLength, _init_velocityLength, _init_extra_velocityLength, _init_target, _init_extra_target, _init_targetDirection, _init_extra_targetDirection, _init_id, _init_extra_id, _init_lifetime, _init_extra_lifetime, _init_playFX, _init_extra_playFX, _init_fxStartTime, _init_extra_fxStartTime, _init_lastTransform, _init_extra_lastTransform, _init_xfade, _init_extra_xfade, _init_isVisible, _init_extra_isVisible, _init_screenSize, _init_extra_screenSize;
 

@@ -1,6 +1,6 @@
 import { applyDecs2311 as _applyDecs2311 } from '../../../_virtual/_rollupPluginBabelHelpers.js';
-import { vec4 } from '@carbonenginejs/core-math/vec4';
-import { io, type, carbon, impl } from '@carbonenginejs/core-types/schema';
+import { vec4 } from '@carbonenginejs/runtime-utils/vec4';
+import { io, type, carbon, impl } from '@carbonenginejs/runtime-utils/schema';
 import { EveSocketParameterBindingBase as _EveSocketParameterBi } from './EveSocketParameterBindingBase.js';
 
 let _initProto, _initClass, _init_value, _init_extra_value;

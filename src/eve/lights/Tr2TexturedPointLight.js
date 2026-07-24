@@ -4,7 +4,7 @@
 // Flattened LightData surface (2026-07-23 decision): texturePath joins the
 // flat fields inherited from Tr2PointLight, verified against
 // lights/Tr2TexturedPointLight.json (tools-core schema build).
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
 import { Tr2Light } from "./Tr2Light.js";
 import { Tr2PointLight } from "./Tr2PointLight.js";
 

@@ -1,9 +1,9 @@
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshBase.h
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshBase.cpp
 // Source: E:\carbonengine\trinity\trinity\Tr2MeshBase_Blue.cpp
-import { CjsModel } from "@carbonenginejs/core-types/model";
-import { carbon, impl, io, type } from "@carbonenginejs/core-types/schema";
-import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { CjsModel } from "@carbonenginejs/runtime-utils/model";
+import { carbon, impl, io, type } from "@carbonenginejs/runtime-utils/schema";
+import { TriBatchType } from "@carbonenginejs/runtime-utils/graphics";
 import { Tr2RenderBatch, TriRenderBatchAreaBlock, TriRenderBatchAreaBlocksWithSharedMaterial } from "./Tr2RenderBatch.js";
 
 
