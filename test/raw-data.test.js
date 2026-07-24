@@ -3,11 +3,29 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mat4 } from "@carbonenginejs/core-math/mat4";
-import { RawData, RawDataStore, DefaultPacker } from "../npm/dist/index.js";
+import { RawData, RawDataStore } from "../npm/dist/index.js";
 
 
 const EPSILON = 1e-6;
 const Type = RawDataStore.Type;
+
+// The library ships NO packer - the consumer always supplies one. This trivial
+// tight packer (no padding) stands in for an engine's packer across the tests.
+const TightPacker = {
+  ResolveLayout(_structName, def)
+  {
+    const fields = {};
+    let offset = 0;
+
+    for (const field of def)
+    {
+      fields[field.name] = { offset, size: field.size, elements: field.elements, encoding: field.encoding };
+      offset += field.size * field.elements;
+    }
+
+    return { fields, stride: offset };
+  }
+};
 
 function assertClose(actual, expected, message)
 {
@@ -25,16 +43,22 @@ function MakeWorld()
   return m;
 }
 
-test.beforeEach(() => RawDataStore.clearStructs());
+// A store with one struct registered against the tight packer.
+function MakeStore(name, def, options)
+{
+  const store = new RawDataStore(TightPacker, options);
+  store.RegisterStruct(name, def);
+  return store;
+}
 
-test("DefaultPacker resolves tight offsets and stride", () =>
+test("TightPacker resolves tight offsets and stride (name-keyed contract)", () =>
 {
   const def = RawDataStore.normalizeDef([
     { name: "world",     size: 16, encoding: Type.MATRIX },
     { name: "shipData",  size: 4,  encoding: Type.VECTOR },
     { name: "masks",     size: 16, elements: 2, encoding: Type.MATRIX }
   ]);
-  const layout = DefaultPacker.ResolveLayout(def);
+  const layout = TightPacker.ResolveLayout("VS", def);
 
   assert.equal(layout.fields.world.offset, 0, "world at 0");
   assert.equal(layout.fields.shipData.offset, 16, "shipData after world");
@@ -44,8 +68,7 @@ test("DefaultPacker resolves tight offsets and stride", () =>
 
 test("Set(MATRIX) stores the TRANSPOSE (translation moves to [3],[7],[11])", () =>
 {
-  RawDataStore.addStruct("VS", [{ name: "world", size: 16, encoding: Type.MATRIX }]);
-  const vs = new RawDataStore().Alloc("VS");
+  const vs = MakeStore("VS", [{ name: "world", size: 16, encoding: Type.MATRIX }]).Alloc("VS");
   const world = MakeWorld();
 
   vs.Set("world", world);
@@ -56,29 +79,23 @@ test("Set(MATRIX) stores the TRANSPOSE (translation moves to [3],[7],[11])", () 
   {
     assertClose(packed[i], expected[i], `packed[${i}]`);
   }
-  // Logical translation lives at [12],[13],[14]; transposed it lands at
-  // [3],[7],[11] - the column that catches an orientation error.
   assertClose(packed[3], world[12], "translation x transposed to [3]");
   assertClose(packed[7], world[13], "translation y transposed to [7]");
   assertClose(packed[11], world[14], "translation z transposed to [11]");
-  // An asymmetric off-diagonal basis element must differ from the logical
-  // value ([2]/[8] carry rotateY's +/-sin scaled by the non-uniform scale).
+  // An asymmetric off-diagonal basis element ([2]/[8] carry rotateY's +/-sin).
   assert.notEqual(packed[2], world[2], "off-diagonal basis element transposed");
   assertClose(packed[2], world[8], "packed[2] == logical[8]");
 });
 
 test("SetRaw writes GPU-form bytes with NO encoding (the worldInverse idiom)", () =>
 {
-  RawDataStore.addStruct("VS", [
+  const vs = MakeStore("VS", [
     { name: "world",        size: 16, encoding: Type.MATRIX },
     { name: "worldInverse", size: 16, encoding: Type.MATRIX }
-  ]);
-  const vs = new RawDataStore().Alloc("VS");
+  ]).Alloc("VS");
   const world = MakeWorld();
 
   vs.Set("world", world);
-  // Carbon: Inverse(data->m_worldInverse, data->m_world) - invert the already
-  // packed (transposed) world and store it raw. == Transpose(Inverse(world)).
   const packedWorld = mat4.clone(vs.GetData().subarray(0, 16));
   const rawInverse = mat4.invert(mat4.create(), packedWorld);
   vs.SetRaw("worldInverse", rawInverse);
@@ -94,11 +111,10 @@ test("SetRaw writes GPU-form bytes with NO encoding (the worldInverse idiom)", (
 
 test("Set(UINT) bit-casts into the uint lanes; Set(VECTOR) copies", () =>
 {
-  RawDataStore.addStruct("VS", [
+  const vs = MakeStore("VS", [
     { name: "shipData",    size: 4, encoding: Type.VECTOR },
     { name: "boneOffsets", size: 4, encoding: Type.UINT }
-  ]);
-  const vs = new RawDataStore().Alloc("VS");
+  ]).Alloc("VS");
 
   vs.Set("shipData", [0.5, 1.5, 2.5, 3.5]);
   vs.Set("boneOffsets", [7, 0xdeadbeef, 0, 42]);
@@ -115,21 +131,17 @@ test("Set(UINT) bit-casts into the uint lanes; Set(VECTOR) copies", () =>
 
 test("Set(MATRIX_3X4) packs a mat4 column-stride into 12 floats (gotcha 7)", () =>
 {
-  RawDataStore.addStruct("VS", [{ name: "bone", size: 12, encoding: Type.MATRIX_3X4 }]);
-  const vs = new RawDataStore().Alloc("VS");
-  // A recognizable mat4 (flat index == value) to check the stride mapping.
+  const vs = MakeStore("VS", [{ name: "bone", size: 12, encoding: Type.MATRIX_3X4 }]).Alloc("VS");
   const m = Float32Array.from({ length: 16 }, (_, i) => i);
 
   vs.Set("bone", m);
   const packed = vs.GetData();
-  // rows: (v0,v4,v8,v12) / (v1,v5,v9,v13) / (v2,v6,v10,v14)
   assert.deepEqual(Array.from(packed.subarray(0, 12)), [0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14]);
 });
 
 test("Copy writes OUT into a caller buffer and is NOT a live reference", () =>
 {
-  RawDataStore.addStruct("VS", [{ name: "shipData", size: 4, encoding: Type.VECTOR }]);
-  const vs = new RawDataStore().Alloc("VS");
+  const vs = MakeStore("VS", [{ name: "shipData", size: 4, encoding: Type.VECTOR }]).Alloc("VS");
   vs.Set("shipData", [1, 2, 3, 4]);
 
   const out = new Float32Array(4);
@@ -142,19 +154,15 @@ test("Copy writes OUT into a caller buffer and is NOT a live reference", () =>
 
 test("defaults are applied on Alloc; unwritten non-default fields are arena garbage", () =>
 {
-  RawDataStore.addStruct("VS", [
+  const store = MakeStore("VS", [
     { name: "shipData", size: [0, 1, 0, 1], encoding: Type.VECTOR }, // size-as-defaults
     { name: "extra",    size: 4, encoding: Type.VECTOR }
   ]);
-  const store = new RawDataStore();
 
   const a = store.Alloc("VS");
   assert.deepEqual(Array.from(a.GetData().subarray(0, 4)), [0, 1, 0, 1], "defaults applied");
   a.Set("extra", [5, 6, 7, 8]);
 
-  // Reuse the same arena region: reset, alloc again. shipData re-defaults;
-  // `extra` still shows the previous tenant's bytes UNLESS rewritten (the
-  // Carbon "unwritten = garbage" contract).
   store.Reset();
   const b = store.Alloc("VS");
   assert.deepEqual(Array.from(b.GetData().subarray(0, 4)), [0, 1, 0, 1], "defaults re-applied on realloc");
@@ -163,8 +171,7 @@ test("defaults are applied on Alloc; unwritten non-default fields are arena garb
 
 test("arena: consecutive Allocs get non-overlapping slots; Reset rewinds and reuses", () =>
 {
-  RawDataStore.addStruct("VS", [{ name: "v", size: 4, encoding: Type.VECTOR }]);
-  const store = new RawDataStore();
+  const store = MakeStore("VS", [{ name: "v", size: 4, encoding: Type.VECTOR }]);
 
   const a = store.Alloc("VS");
   const b = store.Alloc("VS");
@@ -175,16 +182,13 @@ test("arena: consecutive Allocs get non-overlapping slots; Reset rewinds and reu
 
   store.Reset();
   const c = store.Alloc("VS");
-  // c reuses a's slot (same backing bytes) - proves the buffer is RETAINED,
-  // not reallocated.
   assert.equal(c.GetData().buffer, a.GetData().buffer, "same backing ArrayBuffer after reset");
   assert.equal(c.GetData().byteOffset, a.GetData().byteOffset, "c reuses a's slot");
 });
 
 test("arena grows into new chunks without invalidating earlier views", () =>
 {
-  RawDataStore.addStruct("Big", [{ name: "v", size: 4, encoding: Type.VECTOR }]);
-  const store = new RawDataStore(DefaultPacker, { chunkFloats: 8 }); // 2 slots per chunk
+  const store = MakeStore("Big", [{ name: "v", size: 4, encoding: Type.VECTOR }], { chunkFloats: 8 });
 
   const a = store.Alloc("Big");
   a.Set("v", [1, 2, 3, 4]);
@@ -196,27 +200,66 @@ test("arena grows into new chunks without invalidating earlier views", () =>
   assert.deepEqual(Array.from(a.GetData()), [1, 2, 3, 4], "earlier view still valid across growth");
 });
 
-test("Alloc throws for an unregistered struct; Has reflects the layout", () =>
+test("Alloc throws for an unregistered struct; Has reflects registration", () =>
 {
-  assert.throws(() => new RawDataStore().Alloc("Nope"), /unknown struct/);
+  const store = new RawDataStore(TightPacker);
+  assert.equal(store.Has("VS"), false);
+  assert.throws(() => store.Alloc("VS"), /not registered/);
 
-  RawDataStore.addStruct("VS", [{ name: "world", size: 16, encoding: Type.MATRIX }]);
-  const vs = new RawDataStore().Alloc("VS");
-  assert.equal(vs.Has("world"), true);
-  assert.equal(vs.Has("missing"), false);
+  store.RegisterStruct("VS", [{ name: "world", size: 16, encoding: Type.MATRIX }]);
+  assert.equal(store.Has("VS"), true);
+  const vs = store.Alloc("VS");
   assert.throws(() => vs.Set("missing", [0]), /unknown field/);
 });
 
-test("engine contract: a custom packer supplies offsets/padding; Set honours them", () =>
+test("a store REQUIRES a packer - no silent fallback", () =>
 {
-  RawDataStore.addStruct("VS", [
-    { name: "a", size: 4, encoding: Type.VECTOR },
-    { name: "b", size: 4, encoding: Type.VECTOR }
-  ]);
-  // A std140-ish packer that pads every field up to an 8-float boundary.
-  const paddingPacker = {
-    ResolveLayout(def)
+  assert.throws(() => new RawDataStore(), /needs a packer/);
+  assert.throws(() => new RawDataStore(null), /needs a packer/);
+  assert.throws(() => new RawDataStore({}), /needs a packer/);
+  assert.throws(() => RawDataStore.from({}), /supplied no packer/);
+});
+
+test("the engine MUST cover every registered struct - RegisterStruct fails loud otherwise", () =>
+{
+  // A reflection-style packer that only knows two structs, keyed by name.
+  const reflected = {
+    layouts: {
+      Known: { fields: { a: { offset: 0, size: 4, elements: 1, encoding: Type.VECTOR } }, stride: 4 }
+    },
+    ResolveLayout(name)
     {
+      const layout = this.layouts[name];
+
+      if (!layout)
+      {
+        return null; // not covered by this engine's shaders
+      }
+
+      return layout;
+    }
+  };
+  const store = RawDataStore.from(reflected);
+
+  store.RegisterStruct("Known", [{ name: "a", size: 4, encoding: Type.VECTOR }]);
+  assert.equal(store.Has("Known"), true, "covered struct registers");
+
+  assert.throws(
+    () => store.RegisterStruct("Unknown", [{ name: "a", size: 4, encoding: Type.VECTOR }]),
+    /supplied no layout for struct "Unknown"/,
+    "an uncovered struct fails loud at registration, naming it"
+  );
+  assert.equal(store.Has("Unknown"), false, "the uncovered struct is not registered");
+});
+
+test("Register bulk-registers a struct map; the packer receives the struct NAME", () =>
+{
+  // A packer that pads b to an 8-float boundary and asserts it gets the name.
+  const seenNames = [];
+  const paddingPacker = {
+    ResolveLayout(name, def)
+    {
+      seenNames.push(name);
       const fields = {};
       let offset = 0;
 
@@ -229,38 +272,23 @@ test("engine contract: a custom packer supplies offsets/padding; Set honours the
       return { fields, stride: offset };
     }
   };
-  const store = RawDataStore.from(paddingPacker);
-  const vs = store.Alloc("VS");
+  const store = RawDataStore.from(paddingPacker).Register({
+    VS: [{ name: "a", size: 4, encoding: Type.VECTOR }, { name: "b", size: 4, encoding: Type.VECTOR }],
+    PS: [{ name: "c", size: 4, encoding: Type.VECTOR }]
+  });
 
+  assert.deepEqual(seenNames.sort(), ["PS", "VS"], "packer keyed by struct name");
+  const vs = store.Alloc("VS");
   vs.Set("a", [1, 1, 1, 1]);
   vs.Set("b", [2, 2, 2, 2]);
-  // b lands at the engine-supplied padded offset 8, not the tight offset 4.
   assertClose(vs.GetData()[8], 2, "b written at the packer's padded offset");
   assertClose(vs.GetData()[4], 0, "the pad gap is untouched");
   assert.equal(vs.GetLayout().stride, 16, "padded stride");
 });
 
-test("SetPacker overrides one struct's layout on a store", () =>
-{
-  RawDataStore.addStruct("VS", [{ name: "a", size: 4, encoding: Type.VECTOR }]);
-  const store = new RawDataStore();
-  store.SetPacker("VS", {
-    ResolveLayout()
-    {
-      return { fields: { a: { offset: 4, size: 4, elements: 1, encoding: Type.VECTOR } }, stride: 8 };
-    }
-  });
-
-  const vs = store.Alloc("VS");
-  vs.Set("a", [7, 7, 7, 7]);
-  assertClose(vs.GetData()[4], 7, "override offset used");
-  assert.equal(vs.GetData().length, 8, "override stride used");
-});
-
 test("direct construction: a persistent (self-owned) payload bypasses the arena", () =>
 {
-  // Static-placeable path: an object owns its buffer, never Alloc'd/Reset.
-  const layout = DefaultPacker.ResolveLayout(RawDataStore.normalizeDef([
+  const layout = TightPacker.ResolveLayout("VS", RawDataStore.normalizeDef([
     { name: "world", size: 16, encoding: Type.MATRIX }
   ]));
   layout.defaults = [];

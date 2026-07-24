@@ -1,13 +1,31 @@
 import { RawData, RawDataType } from './RawData.js';
-import { DefaultPacker } from './packer.js';
 
 // Factory + arena for RawData constant-data payloads.
 //
-// Two halves (PER-OBJECT-DATA-DESIGN-2026-07-24.md):
-//   - STATIC struct registry - the logical shapes (name -> field defs). Shared
-//     across all stores because a struct's shape is backend-neutral.
-//   - INSTANCE, per-engine - a packer (physical offsets/padding for one
-//     backend) plus a retained bump arena that hands out transient RawData.
+// A store is PER-ENGINE (one CjsLibrary = one live backend). It is built with a
+// packer (the backend's physical layout rules) and structs are REGISTERED on
+// the instance - registration resolves each struct through the packer right
+// then, so a struct the engine cannot pack fails loud at registration, naming
+// it. The engine must supply a packer for every registered struct; there is no
+// silent fallback and no built-in default packer - the consumer always brings
+// its own (an engine, or a trivial tight packer in tests).
+//
+// THE PACKER CONTRACT (the engine-facing duck):
+//
+//   ResolveLayout(structName, normalizedDef) -> {
+//     fields: { [name]: { offset, size, elements, encoding } },  // float offsets
+//     stride: number                                             // floats/instance
+//   }
+//
+// `structName` lets a reflection-based engine packer key its per-struct shader
+// layout by name (a generic packer ignores it). Offsets are FLOAT offsets
+// relative to one instance's slot (the same offset indexes the Float32 and
+// Uint32 views). A packer that cannot lay out a struct must throw or return
+// null - the store treats that as "not covered" and fails loud at
+// RegisterStruct. Trinity owns the LOGICAL shape (names/sizes/encoding kinds);
+// the packer owns the PHYSICAL layout (offsets/padding), which is backend-
+// specific (WebGL sets uniforms individually; a WebGPU UBO applies std140), so
+// Trinity never computes offsets.
 //
 // Allocation is an ARENA (bump), not a free-list:
 //   - Alloc(name) bumps a cursor and returns a view ("snip off what you need")
@@ -23,14 +41,13 @@ import { DefaultPacker } from './packer.js';
 // tenant's bytes - that reproduces Carbon's "unwritten slots = allocator
 // garbage" (declared defaults are re-applied on Alloc; everything else is
 // write-what-you-rely-on).
+//
+// Design: PER-OBJECT-DATA-DESIGN-2026-07-24.md
 class RawDataStore {
-  /** Default packer for this store (one backend). */
-  #packer = DefaultPacker;
+  /** The engine's packer (physical offsets/padding). Required. */
+  #packer = null;
 
-  /** Per-struct packer overrides: name -> packer. */
-  #perName = new Map();
-
-  /** Resolved-layout cache: name -> { fields, stride, defaults }. */
+  /** Registered layouts: name -> { fields, stride, defaults }. */
   #layouts = new Map();
 
   /** Retained arena chunks (Float32) and their Uint32 aliases. */
@@ -43,13 +60,17 @@ class RawDataStore {
   #cursor = 0;
 
   /**
-   * @param {object} [packer] - the engine's packer (has ResolveLayout); default
-   *   is the tight-packing GPU-free packer.
+   * @param {object} packer - the backend packer (has ResolveLayout(name, def)).
+   *   REQUIRED - the store ships no default; a store with no packer cannot lay
+   *   out any struct.
    * @param {object} [options]
    * @param {number} [options.chunkFloats] - arena chunk size in floats.
    */
-  constructor(packer = DefaultPacker, options = {}) {
-    this.#packer = packer ?? DefaultPacker;
+  constructor(packer, options = {}) {
+    if (!packer || typeof packer.ResolveLayout !== "function") {
+      throw new Error("RawDataStore needs a packer with ResolveLayout(name, def)");
+    }
+    this.#packer = packer;
     if (Number.isInteger(options.chunkFloats) && options.chunkFloats > 0) {
       this.#chunkFloats = options.chunkFloats;
     }
@@ -57,12 +78,60 @@ class RawDataStore {
   }
 
   /**
-   * Bind a packer for one struct name (overrides the store default). Invalidates
-   * any cached layout for that name.
+   * Register several structs at once: { StructName: def, ... }. Each `def` is a
+   * field-def array (see RegisterStruct). Returns the store for chaining.
    */
-  SetPacker(name, packer) {
-    this.#perName.set(name, packer);
-    this.#layouts.delete(name);
+  Register(structs) {
+    for (const name of Object.keys(structs)) {
+      this.RegisterStruct(name, structs[name]);
+    }
+    return this;
+  }
+
+  /**
+   * Register one struct and RESOLVE it through the packer immediately. `def` is
+   * an array of field defs: { name, encoding, size, elements?, default? }, where
+   * `size` may instead be a defaults ARRAY whose length is the size. Throws -
+   * naming the struct - if the packer supplies no layout for it (the engine must
+   * cover every struct). Returns the store for chaining.
+   */
+  RegisterStruct(name, def) {
+    const normalized = RawDataStore.normalizeDef(def);
+    let resolved;
+    try {
+      resolved = this.#packer.ResolveLayout(name, normalized);
+    } catch (error) {
+      throw new Error(`RawDataStore: packer failed to lay out struct "${name}": ${error.message}`);
+    }
+    if (!resolved || !resolved.fields || !Number.isFinite(resolved.stride)) {
+      throw new Error(`RawDataStore: packer supplied no layout for struct "${name}" (the engine must pack every registered struct)`);
+    }
+    if (resolved.stride > this.#chunkFloats) {
+      throw new Error(`RawDataStore: struct "${name}" (${resolved.stride} floats) exceeds the chunk size (${this.#chunkFloats})`);
+    }
+    const defaults = [];
+    for (const field of normalized) {
+      if (field.default) {
+        const entry = resolved.fields[field.name];
+        if (entry) {
+          defaults.push({
+            offset: entry.offset,
+            values: field.default
+          });
+        }
+      }
+    }
+    this.#layouts.set(name, {
+      fields: resolved.fields,
+      stride: resolved.stride,
+      defaults
+    });
+    return this;
+  }
+
+  /** Whether a struct has been registered on this store. */
+  Has(name) {
+    return this.#layouts.has(name);
   }
 
   /**
@@ -71,11 +140,11 @@ class RawDataStore {
    * Valid until the next Reset().
    */
   Alloc(name) {
-    const layout = this.#ResolveLayout(name);
-    const stride = layout.stride;
-    if (stride > this.#chunkFloats) {
-      throw new Error(`RawDataStore: struct "${name}" (${stride} floats) exceeds the chunk size (${this.#chunkFloats})`);
+    const layout = this.#layouts.get(name);
+    if (!layout) {
+      throw new Error(`RawDataStore: struct "${name}" is not registered on this store (call Register/RegisterStruct first)`);
     }
+    const stride = layout.stride;
     if (this.#cursor + stride > this.#chunkFloats) {
       this.#chunkIndex++;
       this.#cursor = 0;
@@ -104,84 +173,19 @@ class RawDataStore {
     this.#chunkIndex = 0;
     this.#cursor = 0;
   }
-  #ResolveLayout(name) {
-    const cached = this.#layouts.get(name);
-    if (cached) {
-      return cached;
-    }
-    const def = RawDataStore.getStruct(name);
-    if (!def) {
-      throw new Error(`RawDataStore: unknown struct "${name}" (register it with RawDataStore.addStruct)`);
-    }
-    const packer = this.#perName.get(name) ?? this.#packer;
-    const resolved = packer.ResolveLayout(def);
-    const defaults = [];
-    for (const field of def) {
-      if (field.default) {
-        defaults.push({
-          offset: resolved.fields[field.name].offset,
-          values: field.default
-        });
-      }
-    }
-    const layout = {
-      fields: resolved.fields,
-      stride: resolved.stride,
-      defaults
-    };
-    this.#layouts.set(name, layout);
-    return layout;
-  }
   #AddChunk() {
     const chunk = new Float32Array(this.#chunkFloats);
     this.#chunks.push(chunk);
     this.#chunkAliases.push(new Uint32Array(chunk.buffer));
   }
 
-  /** Registered struct defs (normalized), shared across all stores. */
-  static #structs = new Map();
-
   /** The field encoding kinds (packing directives). */
   static Type = RawDataType;
 
   /**
-   * Register a struct shape. `def` is an array of field defs:
-   *   { name, encoding, size, elements?, default? }
-   * `size` may instead be a defaults ARRAY whose length is the size.
-   */
-  static addStruct(name, def) {
-    RawDataStore.#structs.set(name, RawDataStore.normalizeDef(def));
-  }
-
-  /**
-   * Register several structs. Accepts [name, def] pairs or { name, def }
-   * (or { name, fields }) objects.
-   */
-  static addStructs(list) {
-    for (const entry of list) {
-      if (Array.isArray(entry)) {
-        RawDataStore.addStruct(entry[0], entry[1]);
-      } else {
-        RawDataStore.addStruct(entry.name, entry.def ?? entry.fields);
-      }
-    }
-  }
-  static getStruct(name) {
-    return RawDataStore.#structs.get(name) ?? null;
-  }
-  static hasStruct(name) {
-    return RawDataStore.#structs.has(name);
-  }
-  static removeStruct(name) {
-    return RawDataStore.#structs.delete(name);
-  }
-  static clearStructs() {
-    RawDataStore.#structs.clear();
-  }
-
-  /**
    * Normalize a raw def: default elements to 1, resolve size-as-defaults-array,
-   * require a name and encoding.
+   * require a name and encoding. Physical offsets are NOT computed here - that
+   * is the packer's job.
    */
   static normalizeDef(def) {
     return def.map(field => {
@@ -211,12 +215,15 @@ class RawDataStore {
   }
 
   /**
-   * Build a per-engine store. `engine` may itself be a packer (have
-   * ResolveLayout) or expose one via GetRawDataPacker()/rawDataPacker;
-   * otherwise the tight DefaultPacker is used.
+   * Build a per-engine store. `engine` must expose a packer - itself (has
+   * ResolveLayout), or via GetRawDataPacker()/rawDataPacker. Throws if none:
+   * the engine MUST supply a packer.
    */
   static from(engine, options = {}) {
-    const packer = typeof engine?.ResolveLayout === "function" ? engine : engine?.GetRawDataPacker?.() ?? engine?.rawDataPacker ?? DefaultPacker;
+    const packer = typeof engine?.ResolveLayout === "function" ? engine : engine?.GetRawDataPacker?.() ?? engine?.rawDataPacker ?? null;
+    if (!packer) {
+      throw new Error("RawDataStore.from: the engine supplied no packer (needs ResolveLayout / GetRawDataPacker / rawDataPacker)");
+    }
     return new RawDataStore(packer, options);
   }
 }

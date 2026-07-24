@@ -333,7 +333,6 @@ export { GrannyBoneOffset } from './trinityCore/GrannyBoneOffset.js';
 export { ITriRenderBatchAccumulator } from './trinityCore/ITriRenderBatchAccumulator.js';
 export { RawData, RawDataEncoders, RawDataType } from './trinityCore/rawData/RawData.js';
 export { RawDataStore } from './trinityCore/rawData/RawDataStore.js';
-export { DefaultPacker } from './trinityCore/rawData/packer.js';
 export { Tr2BindingVector3 } from './trinityCore/Tr2BindingVector3.js';
 export { Tr2DepthStencil } from './trinityCore/Tr2DepthStencil.js';
 export { Tr2DirectInstanceData } from './trinityCore/Tr2DirectInstanceData.js';
