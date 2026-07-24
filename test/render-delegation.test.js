@@ -3,12 +3,12 @@ import { test } from "node:test";
 
 import {
   CjsBatchManager,
-  EveBasicPerObjectData,
   EveMissileWarhead,
   EveMissileWarheadPerObjectData,
   EveSpaceObject2,
   EveSpaceScene,
   EveTransform,
+  RawData,
   Tr2Mesh,
   Tr2MeshArea,
   Tr2PerObjectData,
@@ -16,6 +16,13 @@ import {
 } from "../npm/dist/index.js";
 
 import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
+import { makePerObjectStore, makeRenderContextWithStore } from "./helpers/perObjectStore.js";
+
+// An accumulator wired with a test per-object-data store.
+function makeAccumulator()
+{
+  return new TriRenderBatchAccumulator().SetRawDataStore(makePerObjectStore());
+}
 
 const OPAQUE = TriBatchType.TRIBATCHTYPE_OPAQUE;
 const TRANSPARENT = TriBatchType.TRIBATCHTYPE_TRANSPARENT;
@@ -112,17 +119,25 @@ test("GetPerObjectData applies the Carbon singular-world patch fixup", () =>
   const transform = new EveTransform();
   transform.worldTransform[0] = 0; // zero X basis -> singular world
 
-  const data = transform.GetPerObjectData();
-  assert.ok(Math.abs(data.worldInverse[0] - 10) < 1e-5, "patched 0.1 diagonal inverts to 10");
-  assert.equal(data.worldInverse[5], 1, "unaffected rows invert normally");
+  const data = transform.GetPerObjectData(makeAccumulator());
+  const inv = new Float32Array(16);
+  data.Copy("worldInverse", inv); // stored transposed; diagonal is transpose-invariant
+  assert.ok(Math.abs(inv[0] - 10) < 1e-5, "patched 0.1 diagonal inverts to 10");
+  assert.equal(inv[5], 1, "unaffected rows invert normally");
 });
 
-test("GetPerObjectData accepts the Carbon accumulator contract (Allocate)", () =>
+test("GetPerObjectData Allocs a RawData record from the accumulator store", () =>
 {
   const transform = new EveTransform();
-  const accumulator = new TriRenderBatchAccumulator();
-  const data = transform.GetPerObjectData(accumulator);
-  assert.ok(data instanceof EveBasicPerObjectData, "record allocated through the accumulator");
+  const data = transform.GetPerObjectData(makeAccumulator());
+  assert.ok(data instanceof RawData, "record Alloc'd through the accumulator store");
+  // world is stored TRANSPOSED by the store (Set encodes) - translation moves
+  // from logical [12..14] to [3],[7],[11].
+  transform.worldTransform[12] = 9;
+  const world = transform.GetPerObjectData(makeAccumulator());
+  const out = new Float32Array(16);
+  world.Copy("world", out);
+  assert.equal(out[3], 9, "logical translation transposed to [3]");
 });
 
 test("EveSpaceScene.GetRenderables aggregates objects and the camera attachment parent", () =>
@@ -166,10 +181,15 @@ test("manager transparent pass draws renderables back-to-front in insertion orde
   const manager = new CjsBatchManager();
   manager.Initialize();
 
+  const store = makePerObjectStore();
   const context = {
     GetViewPosition()
     {
       return [ 0, 0, 0 ];
+    },
+    GetRawDataStore()
+    {
+      return store;
     }
   };
 
@@ -281,11 +301,11 @@ test("end-to-end: real EveTransform through CjsBatchManager produces finalized b
   const manager = new CjsBatchManager();
   manager.Initialize();
 
-  const batchMap = manager.Collect([ transform ]);
+  const batchMap = manager.Collect([ transform ], undefined, makeRenderContextWithStore());
   const batches = batchMap.GetAccumulator(OPAQUE).GetBatches();
   assert.equal(batches.length, 1);
   assert.equal(batches[0].material, effect);
-  assert.ok(batches[0].objectData instanceof EveBasicPerObjectData,
-    "per-object data allocated once through the pool accumulator and attached to the batch");
+  assert.ok(batches[0].objectData instanceof RawData,
+    "per-object data Alloc'd once through the pool accumulator store and attached to the batch");
   assert.equal(batches[0].groupCount, 1, "finalize ran");
 });

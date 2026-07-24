@@ -25,6 +25,15 @@ class TriRenderBatchMap {
   GetAccumulator(batchType) {
     return this.accumulators.get(batchType) ?? null;
   }
+
+  // Bind the per-object-data store (from the render context) onto every
+  // accumulator - GetPerObjectData Allocs pooled records through it.
+  SetRawDataStore(store) {
+    for (const accumulator of this.accumulators.values()) {
+      accumulator.SetRawDataStore(store);
+    }
+    return this;
+  }
   GetBatchTypes() {
     return Array.from(this.accumulators.keys());
   }

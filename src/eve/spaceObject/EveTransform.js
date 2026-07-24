@@ -8,7 +8,6 @@ import { vec4 } from "@carbonenginejs/core-math/vec4";
 import { carbon, impl, io, schema, type } from "@carbonenginejs/core-types/schema";
 import { TriBatchType } from "@carbonenginejs/runtime-const/graphics";
 import { Tr2Transform } from "../../generated/trinityCore/Tr2Transform.js";
-import { EveBasicPerObjectData } from "../EveBasicPerObjectData.js";
 import { EveLODHelper, Tr2Lod } from "../EveLODHelper.js";
 
 // Static scratch for the singular-world patch fixup (allocation rules: hot
@@ -197,36 +196,37 @@ export class EveTransform extends Tr2Transform
     return out;
   }
 
-  // Accepts either an accumulator (the Carbon ITr2Renderable contract - the
-  // record is allocated through accumulator.Allocate) or a caller-owned output
-  // record (the earlier JS shape, kept for compatibility).
+  // Carbon EveTransform::GetPerObjectData (EveTransform.cpp:49-77): fills the
+  // EveBasicPerObjectData constant record. Trinity writes LOGICAL matrices by
+  // name; the store (engine-supplied layout) transposes them on Set. Carbon's
+  // worldInverse = Inverse(transposed world) == Transpose(Inverse(world)), so
+  // it is just Set("worldInverse", Inverse(world)) - the store transposes.
   @carbon.method
   @impl.adapted
-  @impl.reason("Constant-buffer allocation is engine-owned; Trinity publishes the same backend-neutral matrix record.")
-  GetPerObjectData(accumulatorOrOut = new EveBasicPerObjectData())
+  @impl.reason("Constant-buffer layout/packing is engine-owned; Trinity Allocs the record from the accumulator's store and Sets logical values by name (the store transposes per the engine layout).")
+  GetPerObjectData(accumulator)
   {
-    const out = typeof accumulatorOrOut?.Allocate === "function"
-      ? accumulatorOrOut.Allocate(EveBasicPerObjectData)
-      : accumulatorOrOut;
+    const data = accumulator.Alloc("EveBasicPerObjectData");
 
-    mat4.transpose(out.world, this.worldTransform);
-    mat4.transpose(out.worldLast, this.#lastWorldTransform);
-    if (!mat4.invert(out.worldInverse, out.world))
+    data.Set("world", this.worldTransform);
+    data.Set("worldLast", this.#lastWorldTransform);
+
+    if (!mat4.invert(INVERSE_PATCH_SCRATCH, this.worldTransform))
     {
-      // Carbon fixup (EveTransform.cpp:66-75): find the first all-zero ROW of
-      // the transposed matrix and patch its diagonal with 0.1, then invert
-      // that. Carbon tests (_11,_12,_13) / (_21,_22,_23) / (_31,_32,_33) -
-      // on the shared byte layout Carbon row r is gl flat [r*4 .. r*4+2], so
-      // the triples are [0,1,2] / [4,5,6] / [8,9,10]. (Testing [0],[4],[8]
-      // would read a COLUMN - the transpose of Carbon's test.)
+      // Carbon singular fixup (EveTransform.cpp:66-75): patch the first
+      // all-zero basis of the LOGICAL world (its column [0,1,2]/[4,5,6]/
+      // [8,9,10] equals Carbon's transposed-world row test on the shared
+      // layout) with a 0.1 diagonal, then invert that.
       const patched = INVERSE_PATCH_SCRATCH;
-      mat4.copy(patched, out.world);
+      mat4.copy(patched, this.worldTransform);
       if (patched[0] === 0 && patched[1] === 0 && patched[2] === 0) patched[0] = 0.1;
       else if (patched[4] === 0 && patched[5] === 0 && patched[6] === 0) patched[5] = 0.1;
       else if (patched[8] === 0 && patched[9] === 0 && patched[10] === 0) patched[10] = 0.1;
-      if (!mat4.invert(out.worldInverse, patched)) mat4.identity(out.worldInverse);
+      if (!mat4.invert(INVERSE_PATCH_SCRATCH, patched)) mat4.identity(INVERSE_PATCH_SCRATCH);
     }
-    return out;
+
+    data.Set("worldInverse", INVERSE_PATCH_SCRATCH);
+    return data;
   }
 
   /** Carbon declares the renderable batch contract on Tr2Transform

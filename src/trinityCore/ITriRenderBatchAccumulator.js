@@ -15,10 +15,42 @@ export class ITriRenderBatchAccumulator
     this.userData = 0;
 
     this.renderingMode = RenderingMode.RM_ANY;
+
+    // The per-object-data store (a RawDataStore), set once from the render
+    // context at scene setup. The engine builds it from its own struct
+    // reflection; Trinity never defines a struct here.
+    this.rawDataStore = null;
+  }
+
+  // Bind the per-object-data store (from the render context). Carbon's pool
+  // allocator (Tr2Renderer::GetPoolAllocator) relocates onto this store.
+  SetRawDataStore(store)
+  {
+    this.rawDataStore = store;
+    return this;
+  }
+
+  GetRawDataStore()
+  {
+    return this.rawDataStore;
+  }
+
+  // Lease a transient per-object payload for a registered struct (the pooled
+  // per-object-data allocation). Requires a store - there is no fallback; a
+  // missing store is a setup error, not a silent tight-pack.
+  Alloc(name)
+  {
+    if (!this.rawDataStore)
+    {
+      throw new Error(`ITriRenderBatchAccumulator: no per-object-data store bound (set it from the render context before Alloc "${name}")`);
+    }
+
+    return this.rawDataStore.Alloc(name);
   }
 
   // Carbon pool-allocates per-object data from the accumulator; in JS the GC
-  // owns lifetime, so this just constructs the requested per-object-data object.
+  // owns lifetime, so this just constructs the requested object. Retained for
+  // the deferred { object: this } sites during the per-object-data migration.
   Allocate(Constructor)
   {
     return new Constructor();
