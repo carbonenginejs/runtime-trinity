@@ -1,6 +1,9 @@
 export { CjsBatchManager } from './CjsBatchManager.js';
 export { GrannyBoneOffset } from './GrannyBoneOffset.js';
 export { ITriRenderBatchAccumulator } from './ITriRenderBatchAccumulator.js';
+export { RawData, RawDataEncoders, RawDataType } from './rawData/RawData.js';
+export { RawDataStore } from './rawData/RawDataStore.js';
+export { DefaultPacker } from './rawData/packer.js';
 export { Tr2BindingVector3 } from './Tr2BindingVector3.js';
 export { Tr2DepthStencil } from './Tr2DepthStencil.js';
 export { Tr2DirectInstanceData } from './Tr2DirectInstanceData.js';

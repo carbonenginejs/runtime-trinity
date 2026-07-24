@@ -1,6 +1,7 @@
 export * from "./CjsBatchManager.js";
 export * from "./GrannyBoneOffset.js";
 export * from "./ITriRenderBatchAccumulator.js";
+export * from "./rawData/index.js";
 export * from "./Tr2BindingVector3.js";
 export * from "./Tr2DepthStencil.js";
 export * from "./Tr2DirectInstanceData.js";
